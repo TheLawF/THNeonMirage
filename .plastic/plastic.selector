@@ -1,0 +1,4 @@
+repository "MonopolyMarket@ideal_paradox@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"

@@ -1,0 +1,13 @@
+/.idea/.idea.MonopolyMarket/.idea/.gitignore
+/.idea/.idea.MonopolyMarket/.idea/dataSources.xml
+/.idea/.idea.MonopolyMarket/.idea/indexLayout.xml
+/.idea/.idea.MonopolyMarket/.idea/sqldialects.xml
+/.idea/.idea.MonopolyMarket/.idea/vcs.xml
+/Library/**
+/UserSettings/**
+/ProjectSettings/**
+/obj/**
+/Assets/TextMesh Pro/**
+/Logs/**
+/Temp/**
+/Assets/Resources/Fonts/思源黑体CN-Regular.asset
