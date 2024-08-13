@@ -19,6 +19,11 @@ namespace THNeonMirage.Manager
             
         }
 
+        private void Update()
+        {
+            
+        }
+
         public void CreateMap()
         {
             

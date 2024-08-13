@@ -25,10 +25,11 @@ namespace THNeonMirage.Data
         public DiceType DiceType;
         public Attribute Attribute;
         public Inventory Inventory;
+        
+        public GameObject playerObj;
 
         private void Start()
         {
-            
         }
 
         private void Update()
@@ -39,7 +40,7 @@ namespace THNeonMirage.Data
             }
             else
             {
-                
+                playerObj.SetActive(false);
             }
         }
     }
