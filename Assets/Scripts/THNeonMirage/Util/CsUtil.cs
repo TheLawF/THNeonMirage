@@ -6,12 +6,13 @@ namespace THNeonMirage.Util
 {
     public class CsUtil
     {
-        public static void ForAct(int count, Action action)
+        public static void ForAct(int count, Action<int> action)
         {
-            for (var j = 0; j < count; j++) action.Invoke();
+            for (var index = 0; index < count; index++) action.Invoke(index);
         }
 
-        public static void ForAddToList(int count, List<GameObject> listToAdd, Func<int, GameObject> func) 
-            => ForAct(count, () => listToAdd.Add(func.Invoke(count)));
+        public static void ForAddToList(int count, List<GameObject> listToAdd, Func<int, GameObject> indexToObjFunc) 
+            => ForAct(count, i => listToAdd.Add(indexToObjFunc.Invoke(i)));
+        
     }
 }

@@ -4,12 +4,6 @@ namespace THNeonMirage.Map
 {
     public class StartTile : FieldTile
     {
-        private void Start()
-        {
-            id = 0;
-            fieldName = "StartField";
-            fieldType = Type.Official;
-        }
 
         public override void OnPlayerStop(Player player)
         {
@@ -19,6 +13,10 @@ namespace THNeonMirage.Map
         public override void OnPlayerPassBy(Player player)
         {
             
+        }
+
+        public StartTile(int id, string fieldName, Type fieldType) : base(id, fieldName, fieldType)
+        {
         }
     }
 }

@@ -8,5 +8,9 @@ namespace THNeonMirage.Map
         {
             
         }
+
+        public BlankTile(int id, string fieldName, Type fieldType) : base(id, fieldName, fieldType)
+        {
+        }
     }
 }

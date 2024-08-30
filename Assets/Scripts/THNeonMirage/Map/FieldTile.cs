@@ -10,7 +10,15 @@ namespace THNeonMirage.Map
         public int id;
         public string fieldName;
         public Type fieldType;
-    
+
+        protected FieldTile(int id, string fieldName, Type fieldType)
+        {
+            this.id = id;
+            this.fieldName = fieldName;
+            this.fieldType = fieldType;
+        }
+
+
         public enum Type
         {
             Official,
