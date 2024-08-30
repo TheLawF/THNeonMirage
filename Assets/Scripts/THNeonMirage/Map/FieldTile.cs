@@ -5,7 +5,7 @@ using UnityEngine;
 namespace THNeonMirage.Map
 {
     [Serializable]
-    public abstract class MapField : MonoBehaviour
+    public abstract class FieldTile : Component
     {
         public int id;
         public string fieldName;

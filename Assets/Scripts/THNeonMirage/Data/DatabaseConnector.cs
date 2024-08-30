@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using MySql.Data.MySqlClient;
 using UnityEngine;
 
@@ -79,9 +80,12 @@ namespace THNeonMirage.Data
         /// <summary>
         /// 使用Linq查询代替SQL语句查询
         /// </summary>
-        public void LinqSelect<T>(IEnumerable<T> enumerable, Predicate<IEnumerable<T>> predicate)
+        public TOut LinqSelect<TIn, TOut>(string query, Predicate<TIn> predicate, Func<Predicate<TIn>, TOut> predictFunc)
+            where TOut : class where TIn : new()
         {
-            
+            var enumerable = SelectQuery(query).AsEnumerable().Select(_ => new TIn());
+            if (enumerable.Any(predicate.Invoke)) return predictFunc.Target as TOut;
+            return null;
         }
     }
 }

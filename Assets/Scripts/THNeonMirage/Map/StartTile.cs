@@ -2,7 +2,7 @@ using THNeonMirage.Data;
 
 namespace THNeonMirage.Map
 {
-    public class StartField : MapField
+    public class StartTile : FieldTile
     {
         private void Start()
         {
