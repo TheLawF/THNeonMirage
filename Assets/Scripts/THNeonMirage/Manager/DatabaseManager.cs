@@ -25,7 +25,8 @@ namespace THNeonMirage.Manager
         public TMP_InputField passwordInput;
 
         public GameObject playerPrefab;
-        public GameObject canvas;
+        public GameObject homePanel;
+        public GameObject hud;
 
         private void Start()
         {
@@ -101,7 +102,8 @@ namespace THNeonMirage.Manager
             usernameInput.text = "";
             passwordInput.text = "";
             
-            canvas.SetActive(false);
+            homePanel.SetActive(false);
+            hud.SetActive(true);
         }
 
         public static string EncryptPassword(string password)

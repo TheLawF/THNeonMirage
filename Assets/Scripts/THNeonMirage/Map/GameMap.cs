@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using THNeonMirage.Data;
+using THNeonMirage.Manager;
 using THNeonMirage.Util;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Random = System.Random;
 
 namespace THNeonMirage.Map
@@ -11,7 +13,7 @@ namespace THNeonMirage.Map
     [Serializable]
     public class GameMap : MonoBehaviour
     {
-        public GameObject mapManager;
+        public GameObject gameManager;
         public GameObject playerPrefab;
         public GameObject tilePrefab;
         
@@ -19,6 +21,7 @@ namespace THNeonMirage.Map
         public List<GameObject> fieldObjects;
 
         public static Random Random = new ();
+        public static bool firstUse = true;
         public static readonly List<Predicate<int>> IndexGroup = new (new Predicate<int>[]
         {
             x => x > 0 & x < 10,
@@ -94,10 +97,11 @@ namespace THNeonMirage.Map
             return instance;
         }
 
-        public int WithFieldType<T>(GameObject go, int id, string fieldName, FieldTile.Type fieldType)
-        where T : FieldTile
+        public int WithFieldType<TFt>(GameObject go, int id, string fieldName, FieldTile.Type fieldType)
+        where TFt: FieldTile
         {
-            go.AddComponent<T>();
+            go.AddComponent<TFt>();
+
             var ft = go.GetComponent<FieldTile>();
             ft.id = id == -1 ? ft.id : id;
             ft.fieldName = fieldName;
