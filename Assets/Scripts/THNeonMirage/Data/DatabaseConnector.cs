@@ -58,7 +58,6 @@ namespace THNeonMirage.Data
         /// <returns></returns>
         public DataTable SelectQuery(string query)
         {
-            var list = new List<string>();
             var dataTable = new DataTable();
             var command = new MySqlCommand(query, connection);
             var reader = command.ExecuteReader();

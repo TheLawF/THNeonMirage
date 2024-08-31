@@ -102,7 +102,6 @@ namespace THNeonMirage.Manager
             passwordInput.text = "";
             
             canvas.SetActive(false);
-            var mapObj = GameObject.Find("MapObject");
         }
 
         public static string EncryptPassword(string password)

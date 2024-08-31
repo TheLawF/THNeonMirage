@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using THNeonMirage.Data;
 using THNeonMirage.Util;
-using Unity.VisualScripting;
-using UnityEditorInternal.VersionControl;
 using UnityEngine;
 using Random = System.Random;
 
@@ -82,7 +80,7 @@ namespace THNeonMirage.Map
             
             var instance = Utils.SwitchByMap(list, index);
             
-            Debug.Log($"编号{index}的地块位于: {instance.transform.position.ToString()}");
+           // Debug.Log($"编号{index}的地块位于: {instance.transform.position.ToString()}");
             var _ = index switch
             {
                 0 => WithFieldType<StartTile>(instance, index, "月虹金融中心", FieldTile.Type.Official),

@@ -43,6 +43,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\THNeonMirage\Map\FieldTile.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\UserData.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\UIManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\Authorization.cs" />
@@ -60,7 +61,6 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Server\MapController.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\DatabaseManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
@@ -68,11 +68,11 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\SceneManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\BlankTile.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Utils.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\Player.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Server\ServerPlayer.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\BazaarTile.cs" />
@@ -93,8 +93,6 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Data\DatabaseConnector.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Client\UIManager.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Manager\SceneManager.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Sprites" />
@@ -114,16 +112,18 @@
      <Folder Include="Assets\Resources" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
      <Folder Include="Assets\Settings\Scenes" />
+     <None Include="Assets\Resources\Lang\zh_cn.json" />
      <Folder Include="Assets\TextMesh Pro" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Resources" />
+     <Folder Include="Assets\Resources\Lang" />
      <Folder Include="Assets\Scripts\THNeonMirage\Util" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
+     <Folder Include="Assets\Resources\Textures" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Materials" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
-     <Folder Include="Assets\Scripts\THNeonMirage\Client" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
@@ -134,13 +134,14 @@
      <Folder Include="Assets\Scripts" />
      <Folder Include="Assets\TextMesh Pro\Resources\Style Sheets" />
      <Folder Include="Assets\TextMesh Pro\Fonts" />
+     <None Include="Assets\Resources\UI\dice.json" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
      <Folder Include="Assets\Scripts\THNeonMirage" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Prefabs" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Scenes" />
-     <Folder Include="Assets\Scripts\THNeonMirage\Server" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
      <Folder Include="Assets\Scripts\THNeonMirage\Manager" />
+     <Folder Include="Assets\Resources\UI" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
      <Folder Include="Assets\Prefabs" />

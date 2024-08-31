@@ -1,7 +1,4 @@
-using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace THNeonMirage.Manager
 {
@@ -14,15 +11,7 @@ namespace THNeonMirage.Manager
         public float dragSpeed = 0.8F;
         private Vector2 worldPos, startPos, moveDirection;
         private Vector3 cameraPrevPos;
-
-        private Vector2 GetWorldPos(Vector3 mousePos)
-        {
-            var factor = Screen.height / gameCamera.orthographicSize / 2;
-            var x = (mousePos.x - Screen.width / 2) / factor;
-            var y = (mousePos.y - Screen.height / 2) / factor;
-            return new Vector2(x, y);
-        }
-
+        
         private void Update()
         {
             if (!allowZoom || !allowDrag) return;
@@ -41,6 +30,14 @@ namespace THNeonMirage.Manager
             var t = transform;
             t.position = new Vector3(cameraPrevPos.x - moveDirection.x, cameraPrevPos.y - moveDirection.y,
                 t.position.z);
+        }
+        
+        private Vector2 GetWorldPos(Vector3 mousePos)
+        {
+            var factor = Screen.height / gameCamera.orthographicSize / 2;
+            var x = (mousePos.x - Screen.width / 2) / factor;
+            var y = (mousePos.y - Screen.height / 2) / factor;
+            return new Vector2(x, y);
         }
     }
 }

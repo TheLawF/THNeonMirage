@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 
-namespace THNeonMirage.Client
+namespace THNeonMirage.Manager
 {
     public class UIManager: MonoBehaviour
     {
-        public Canvas canvas;
+        public Camera mainCamera;
         private void Start()
         {
             
