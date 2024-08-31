@@ -117,5 +117,6 @@ namespace THNeonMirage.Map
             mapObj.GetComponent<GameMap>().players.Add(Instantiate(playerPrefab));
             OnUserLogin?.Invoke(playerPrefab, mapObj);
         }
+
     }
 }

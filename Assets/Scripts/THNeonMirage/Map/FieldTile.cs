@@ -10,12 +10,24 @@ namespace THNeonMirage.Map
         public int id;
         public string fieldName;
         public Type fieldType;
+        public Color backGroundColor;
 
-        public enum Type
+        private SpriteRenderer spriteRenderer;
+
+        private void Start()
         {
-            Official,
-            Bazaar,
-            Custom
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            backGroundColor = spriteRenderer.color;
+        }
+
+        private void OnMouseOver()
+        {
+            spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+        }
+
+        private void OnMouseExit()
+        {
+            spriteRenderer.color = backGroundColor;
         }
 
         public abstract void OnPlayerStop(Player player);
@@ -25,6 +37,11 @@ namespace THNeonMirage.Map
         
         }
 
-        
+        public enum Type
+        {
+            Official,
+            Bazaar,
+            Custom
+        }
     }
 }
