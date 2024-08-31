@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using THNeonMirage.Data;
 using THNeonMirage.Util;
+using Unity.VisualScripting;
+using UnityEditorInternal.VersionControl;
 using UnityEngine;
 using Random = System.Random;
 
@@ -11,81 +13,99 @@ namespace THNeonMirage.Map
     [Serializable]
     public class GameMap : MonoBehaviour
     {
+        public GameObject mapManager;
         public GameObject playerPrefab;
-        public GameObject fieldPrefab;
+        public GameObject tilePrefab;
         
         public List<GameObject> players;
         public List<GameObject> fieldObjects;
 
-        public static Random Random = new Random();
+        public static Random Random = new ();
+        public static readonly List<Predicate<int>> IndexGroup = new (new Predicate<int>[]
+        {
+            x => x > 0 & x < 10,
+            x => x > 10 & x < 20,
+            x => x > 20 & x < 30,
+            x => x > 30 & x < 40,
+            _ => true
+        });
+
+        public static readonly List<Predicate<int>> TypeIndex = new (new Predicate<int>[]
+        {
+            x => x == 0,
+            x => x == 10,
+            x => x == 20,
+            x => x >= 4 & x < 7 | x >= 14 & x < 17 | x >= 24 & x < 27 | x >= 34 & x < 37
+        });
 
         private void Start()
         {
             fieldObjects = new List<GameObject>();
-            CsUtil.ForAddToList(40, fieldObjects, i => InitField(fieldPrefab, i));
+            InitField(tilePrefab, 1);
+
+            Utils.ForAddToList(40, fieldObjects, i => InitField(tilePrefab, i));
             fieldObjects.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(
                 (float)Random.NextDouble(), (float)Random.NextDouble(), (float)Random.NextDouble()));
         }
 
         private void Update()
         {
+            
         }
 
+        private void ShouldRenderTile(int index, bool shouldRender) => fieldObjects[index].SetActive(shouldRender);
+
         /// <summary>
-        /// 用代码初始化大富翁地块的位置，这些地块将会围成一个正方形
+        /// 用代码初始化大富翁地块的位置，这些地块将会围成一个正方形，然后根据索引为不同的地块对象实例动态挂载脚本
         /// </summary>
-        /// <param name="fp">Field Prefab：地块预制件</param>
+        /// <param name="tp">Tile Prefab：地块预制件</param>
         /// <param name="index">Index：地块的索引</param>
-        /// <returns></returns>
-        private GameObject InitField(GameObject fp, int index)
+        /// <returns>实例化且挂载了 FieldTile 的地块对象</returns>
+        private GameObject InitField(GameObject tp, int index)
         {
-            var nwPos = Vector3.left + Vector3.up;
-            var nePos = Vector3.right + Vector3.up;
-            var swPos = Vector3.left + Vector3.down;
-            var sePos = Vector3.right + Vector3.down;
+            var uUnit = Vector3.right;
+            var vUnit = Vector3.up;
+            var startPos = Vector3.right * 5 + Vector3.up * 5;
+            
+            var uOffset = new Vector3(index % 10, 0);
+            var vOffset = new Vector3(0, index % 10);
 
-            var verticalOffset = - new Vector3(0, index % 10);
-            var horizontalOffset = - new Vector3(index % 10, 0);
 
-            Debug.Log(index);
-            var instance = index switch
+            var list = new List<Func<GameObject>>(new Func<GameObject>[]
             {
-                >= 0 and < 5 => Instantiate(fp, nwPos + verticalOffset, Quaternion.identity),
-                >= 5 and < 10 => Instantiate(fp, Vector3.left + verticalOffset, Quaternion.identity),
-                >= 10 and < 15 => Instantiate(fp, swPos + horizontalOffset, Quaternion.identity),
-                >= 15 and < 20 => Instantiate(fp, Vector3.down + horizontalOffset, Quaternion.identity),
-                >= 20 and < 25 => Instantiate(fp, nePos + horizontalOffset, Quaternion.identity),
-                >= 25 and < 30 => Instantiate(fp, Vector3.right + horizontalOffset, Quaternion.identity),
-                >= 30 and < 35 => Instantiate(fp, sePos + horizontalOffset, Quaternion.identity),
-                >= 35 and < 40 => Instantiate(fp, Vector3.up + horizontalOffset, Quaternion.identity),
-                
-                _ => Instantiate(fp, Vector3.zero, Quaternion.identity),
+                () => Instantiate(tp, startPos - uOffset, Quaternion.identity),
+                () => Instantiate(tp, startPos - uUnit * 10 - vOffset, Quaternion.identity),
+                () => Instantiate(tp, startPos - uUnit * 10 - vUnit * 10 + uOffset, Quaternion.identity),
+                () => Instantiate(tp, startPos - vUnit * 10 + vOffset, Quaternion.identity),
+                () => Instantiate(tp, Vector3.zero, Quaternion.identity)
+            });
+            
+            var instance = Utils.SwitchByMap(list, index);
+            
+            Debug.Log($"编号{index}的地块位于: {instance.transform.position.ToString()}");
+            var _ = index switch
+            {
+                0 => WithFieldType<StartTile>(instance, index, "月虹金融中心", FieldTile.Type.Official),
+                10 => WithFieldType<VillageTile>(instance, index, "人里工会", FieldTile.Type.Official),
+                20 => WithFieldType<HotelTile>(instance, index, "红魔酒店", FieldTile.Type.Official),
+                >= 4 and <= 6 or >= 14 and <= 16 or >= 24 and <= 26 or >= 34 and <= 36 => 
+                    WithFieldType<BazaarTile>(instance, index, "默认摊位", FieldTile.Type.Bazaar),
+                _ => WithFieldType<BlankTile>(instance, index, "空白地区", FieldTile.Type.Custom)
             };
             
-            WithComponent(instance, index);
             return instance;
         }
 
-        /// <summary>
-        /// 根据索引为不同的地块对象实例动态挂载脚本
-        /// </summary>
-        /// <param name="go">Game Object：地块对象的实例</param>
-        /// <param name="index">Index：地块的索引</param>
-        /// <returns></returns>
-        public GameObject WithComponent(GameObject go, int index)
+        public int WithFieldType<T>(GameObject go, int id, string fieldName, FieldTile.Type fieldType)
+        where T : FieldTile
         {
-            FieldTile fieldTile = index switch
-            {
-                0 => new StartTile(0, "月虹金融大厦", FieldTile.Type.Official),
-                10 => new VillageTile(10, "人里工会", FieldTile.Type.Official),
-                20 => new HotelTile(20, "红魔大酒店", FieldTile.Type.Official),
-                >= 4 and <= 6 or >= 14 and <= 16 or >= 24 and <= 26 or >= 34 and <= 36 => new BazaarTile(
-                    index, "默认摊位", FieldTile.Type.Bazaar),
-                _ => new BlankTile(index, "空白地块", FieldTile.Type.Official)
-            };
-            
-            go.AddComponent(fieldTile.GetType());
-            return go;
+            go.AddComponent<T>();
+            var ft = go.GetComponent<FieldTile>();
+            ft.id = id == -1 ? ft.id : id;
+            ft.fieldName = fieldName;
+            ft.fieldType = fieldType;
+
+            return 1;
         }
 
         public int GetPlayerCountOn(int fieldId)

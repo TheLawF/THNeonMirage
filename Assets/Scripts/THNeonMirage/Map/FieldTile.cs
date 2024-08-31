@@ -5,19 +5,11 @@ using UnityEngine;
 namespace THNeonMirage.Map
 {
     [Serializable]
-    public abstract class FieldTile : Component
+    public abstract class FieldTile : MonoBehaviour
     {
         public int id;
         public string fieldName;
         public Type fieldType;
-
-        protected FieldTile(int id, string fieldName, Type fieldType)
-        {
-            this.id = id;
-            this.fieldName = fieldName;
-            this.fieldType = fieldType;
-        }
-
 
         public enum Type
         {
@@ -33,5 +25,6 @@ namespace THNeonMirage.Map
         
         }
 
+        
     }
 }

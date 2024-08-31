@@ -15,8 +15,5 @@ namespace THNeonMirage.Map
             
         }
 
-        public StartTile(int id, string fieldName, Type fieldType) : base(id, fieldName, fieldType)
-        {
-        }
     }
 }

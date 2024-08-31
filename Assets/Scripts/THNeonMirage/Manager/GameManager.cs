@@ -32,15 +32,15 @@ namespace THNeonMirage.Manager
         public void CreatePlayer() => Instantiate(playerPrefab);
         
         public int StartServer() => 
-            NetworkManager.Singleton.StartServer() ? LogUtil.Info("服务器启动成功") : LogUtil.Error("服务器启动失败");
+            NetworkManager.Singleton.StartServer() ? Utils.Info("服务器启动成功") : Utils.Error("服务器启动失败");
 
         public int StartClient() =>
-            NetworkManager.Singleton.StartClient() ? LogUtil.Info("客户端启动成功") : LogUtil.Error("客户端启动失败");
+            NetworkManager.Singleton.StartClient() ? Utils.Info("客户端启动成功") : Utils.Error("客户端启动失败");
 
         public int StartHost()
         {
             
-            return NetworkManager.Singleton.StartHost() ? LogUtil.Info("主机启动成功") : LogUtil.Error("主机启动失败");
+            return NetworkManager.Singleton.StartHost() ? Utils.Info("主机启动成功") : Utils.Error("主机启动失败");
         }
 
         public void ShutDown() => NetworkManager.Singleton.Shutdown();
