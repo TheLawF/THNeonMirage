@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace THNeonMirage.Manager
@@ -18,7 +19,7 @@ namespace THNeonMirage.Manager
         private void Update()
         {
             if (!allowZoom || !allowDrag) return;
-            var delta = Input.GetAxis("Mouse ScrollWheel");
+            var delta = gameCamera.orthographicSize <= 0 ? 0 : Input.GetAxis("Mouse ScrollWheel");
             gameCamera.orthographicSize -= delta * zoomSpeed;
             worldPos = GetWorldPos(Input.mousePosition);
             

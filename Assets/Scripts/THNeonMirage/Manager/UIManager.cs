@@ -11,12 +11,12 @@ namespace THNeonMirage.Manager
         public Color backgroundColor;
         public string text;
 
+        
+        public bool shouldRenderTooltip;
         public GameObject hoverText;
         private TMP_Text foregroundText;
-        private bool shouldRenderTooltip;
         private void Start()
         {
-            foregroundText = hoverText.GetComponent<TMP_Text>();
         }
 
         private void OnGUI()
