@@ -21,7 +21,7 @@ namespace THNeonMirage.Map
         public List<GameObject> fieldObjects;
 
         public static Random Random = new ();
-        public static bool firstUse = true;
+        public static bool FirstUse = true;
         public static readonly List<Predicate<int>> IndexGroup = new (new Predicate<int>[]
         {
             x => x > 0 & x < 10,

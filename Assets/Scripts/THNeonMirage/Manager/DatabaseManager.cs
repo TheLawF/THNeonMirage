@@ -23,7 +23,7 @@ namespace THNeonMirage.Manager
 
         public TMP_InputField usernameInput;
         public TMP_InputField passwordInput;
-
+        
         public GameObject playerPrefab;
         public GameObject homePanel;
         public GameObject hud;
@@ -104,6 +104,7 @@ namespace THNeonMirage.Manager
             
             homePanel.SetActive(false);
             hud.SetActive(true);
+            // gameManager.GetComponent<SceneManager>().SwitchCamera(true, false);
         }
 
         public static string EncryptPassword(string password)

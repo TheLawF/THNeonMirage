@@ -5,10 +5,13 @@ namespace THNeonMirage.Manager
     public class SceneManager: MonoBehaviour
     {
         public Camera gameCamera;
+        public Camera uiCamera;
+
         public bool allowZoom = true;
         public bool allowDrag = true;
         public float zoomSpeed = 10F;
         public float dragSpeed = 0.8F;
+        
         private Vector2 worldPos, startPos, moveDirection;
         private Vector3 cameraPrevPos;
         
@@ -38,6 +41,20 @@ namespace THNeonMirage.Manager
             var x = (mousePos.x - Screen.width / 2) / factor;
             var y = (mousePos.y - Screen.height / 2) / factor;
             return new Vector2(x, y);
+        }
+
+        public void SwitchCamera(bool enableMain, bool enableUI)
+        {
+            if (enableMain)
+            {
+                gameCamera.enabled = true;
+                uiCamera.enabled = false;
+                return;
+            }
+
+            if (!enableUI) return;
+            gameCamera.enabled = false;
+            uiCamera.enabled = true;
         }
     }
 }
