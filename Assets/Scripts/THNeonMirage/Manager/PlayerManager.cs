@@ -13,20 +13,18 @@ namespace System.Runtime.CompilerServices
 namespace THNeonMirage.Data
 {
     [Serializable]
-    public class Player : NetworkBehaviour
+    public class PlayerManager : NetworkBehaviour
     {
         public string Name;
-        public string EmailAddr;
         public string Id;
         public string Password;
-        public bool IsAdministrator;
 
         public int Position;
         public DiceType DiceType;
         public Attribute Attribute;
         public Inventory Inventory;
         
-        public GameObject playerObj;
+        private bool IsAdministrator;
 
         private void Start()
         {
@@ -40,7 +38,7 @@ namespace THNeonMirage.Data
             }
             else
             {
-                playerObj.SetActive(false);
+                
             }
         }
     }

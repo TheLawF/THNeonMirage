@@ -7,6 +7,7 @@ namespace THNeonMirage.Data
     {
         private DatabaseConnector connector;
         public string Name { get; private set; }
+        public int Pos { get; set; }
 
         public UserData(DatabaseConnector connector)
         {
@@ -16,6 +17,7 @@ namespace THNeonMirage.Data
         public Authorization.Status Register(string username, string password)
         {
             Name = username;
+            Pos = 0;
             var date = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
             var queryUserCount = $"SELECT COUNT(*) FROM userinfo WHERE username = '{username}'";
             var queryInsertNewUser = $"INSERT INTO userinfo (username, password, createtime) VALUES ('{username}', '{password}', '{date}')";
@@ -34,7 +36,6 @@ namespace THNeonMirage.Data
                 }
                 connector.Disconnect();
                 return Authorization.Status.DuplicateUser;
-
             }
             catch (Exception e)
             {
@@ -54,21 +55,19 @@ namespace THNeonMirage.Data
             var dataTable = connector.SelectQuery(queryUserExists);
             if (dataTable.Rows.Count == 1)
             {
+                // var savedPos = dataTable.Rows[0]["position"];
                 var storedPassword = dataTable.Rows[0]["password"].ToString();
                 if (storedPassword == password)
                 {
                     connector.Disconnect();
                     return Authorization.Status.LoginSuccess;
                 }
-                
                 connector.Disconnect();
                 return Authorization.Status.PasswordError;
             }
-            
             connector.Disconnect();
             return Authorization.Status.UserNonExist;
         }
-
     }
 }
 

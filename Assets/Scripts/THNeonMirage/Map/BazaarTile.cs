@@ -4,7 +4,7 @@ namespace THNeonMirage.Map
 {
     public class BazaarTile : FieldTile
     {
-        public override void OnPlayerStop(Player player)
+        public override void OnPlayerStop(PlayerManager playerManager)
         {
             
         }

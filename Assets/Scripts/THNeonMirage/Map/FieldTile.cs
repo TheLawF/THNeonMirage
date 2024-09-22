@@ -44,9 +44,9 @@ namespace THNeonMirage.Map
             hoverPanel.SetActive(false);
         }
 
-        public abstract void OnPlayerStop(Player player);
+        public abstract void OnPlayerStop(PlayerManager playerManager);
 
-        public virtual void OnPlayerPassBy(Player player)
+        public virtual void OnPlayerPassBy(PlayerManager playerManager)
         {
         
         }

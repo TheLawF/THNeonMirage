@@ -5,12 +5,12 @@ namespace THNeonMirage.Map
     public class StartTile : FieldTile
     {
 
-        public override void OnPlayerStop(Player player)
+        public override void OnPlayerStop(PlayerManager playerManager)
         {
             
         }
 
-        public override void OnPlayerPassBy(Player player)
+        public override void OnPlayerPassBy(PlayerManager playerManager)
         {
             
         }

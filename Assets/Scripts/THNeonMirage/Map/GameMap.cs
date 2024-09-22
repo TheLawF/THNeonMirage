@@ -1,17 +1,19 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using THNeonMirage.Data;
-using THNeonMirage.Manager;
 using THNeonMirage.Util;
+using Unity.Netcode;
+using UnityEditor.VersionControl;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Random = System.Random;
 
 namespace THNeonMirage.Map
 {
     [Serializable]
-    public class GameMap : MonoBehaviour
+    public class GameMap : NetworkBehaviour
     {
         public GameObject gameManager;
         public GameObject playerPrefab;
@@ -20,8 +22,25 @@ namespace THNeonMirage.Map
         public List<GameObject> players;
         public List<GameObject> fieldObjects;
 
+        private static Vector3 uUnit = Vector3.right;
+        private static Vector3 vUnit = Vector3.up;
+        private static Vector3 startPos = Vector3.right * 5 + Vector3.up * 5;
+
         public static Random Random = new ();
         public static bool FirstUse = true;
+        public static readonly Dictionary<int, string> TileDict = new()
+        {
+            {0, "失乐园入口"}, {10, "梦乐园"}, {11, "感情的摩天轮"}, {12, "旋转木马"}, {13, "碰碰车"},
+            {20, "红魔大酒店"}, {28, "失乐园出口"}, {30, "水上乐园"}, {31, "水滑梯"}, {32, "泳池"}
+        };
+
+        public static readonly Dictionary<Range, Func<int, Vector3>> PosInRange = new()
+        {
+            {..10, index => startPos - new Vector3(index % 10, 0)},
+            {10..20, index => startPos - uUnit * 10 - new Vector3(0, index % 10)},
+            {20..30, index => startPos - uUnit * 10 - vUnit * 10 + new Vector3(index % 10, 0)},
+            {30..40, index => startPos - vUnit * 10 + new Vector3(0, index % 10)}
+        };
         public static readonly List<Predicate<int>> IndexGroup = new (new Predicate<int>[]
         {
             x => x > 0 & x < 10,
@@ -63,13 +82,9 @@ namespace THNeonMirage.Map
         /// <returns>实例化且挂载了 FieldTile 的地块对象</returns>
         private GameObject InitField(GameObject tp, int index)
         {
-            var uUnit = Vector3.right;
-            var vUnit = Vector3.up;
-            var startPos = Vector3.right * 5 + Vector3.up * 5;
             
             var uOffset = new Vector3(index % 10, 0);
             var vOffset = new Vector3(0, index % 10);
-
 
             var list = new List<Func<GameObject>>(new Func<GameObject>[]
             {
@@ -83,7 +98,7 @@ namespace THNeonMirage.Map
             var instance = Utils.SwitchByMap(list, index);
             
            // Debug.Log($"编号{index}的地块位于: {instance.transform.position.ToString()}");
-            var _ = index switch
+           var _ = index switch
             {
                 0 => WithFieldType<StartTile>(instance, index, "月虹金融中心", FieldTile.Type.Official),
                 10 => WithFieldType<VillageTile>(instance, index, "人里工会", FieldTile.Type.Official),
@@ -105,19 +120,26 @@ namespace THNeonMirage.Map
             ft.id = id == -1 ? ft.id : id;
             ft.fieldName = fieldName;
             ft.fieldType = fieldType;
-
+            
             return 1;
         }
 
+        private Vector3 GetPlayerPosByIndex(int index) => PosInRange.First(pair => 
+            Utils.IsInRange(pair.Key, index)).Value.Invoke(index);
+
         public int GetPlayerCountOn(int fieldId)
-            => players.Count(player => player.GetComponent<Player>().Position == fieldId);
+            => players.Count(player => player.GetComponent<PlayerManager>().Position == fieldId);
 
-        public static event Action<GameObject, GameObject> OnUserLogin;
-        public static void CreateAvatar(GameObject playerPrefab, GameObject mapObj)
+        public int StartServer() => 
+            NetworkManager.Singleton.StartServer() ? Utils.Info("服务器启动成功") : Utils.Error("服务器启动失败");
+
+        public int StartClient() =>
+            NetworkManager.Singleton.StartClient() ? Utils.Info("客户端启动成功") : Utils.Error("客户端启动失败");
+
+        public int StartHost()
         {
-            mapObj.GetComponent<GameMap>().players.Add(Instantiate(playerPrefab));
-            OnUserLogin?.Invoke(playerPrefab, mapObj);
+            return NetworkManager.Singleton.StartHost() ? Utils.Info("主机启动成功") : Utils.Error("主机启动失败");
         }
-
+        public void ShutDown() => NetworkManager.Singleton.Shutdown();
     }
 }

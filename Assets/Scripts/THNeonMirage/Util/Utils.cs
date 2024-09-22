@@ -103,6 +103,8 @@ namespace THNeonMirage.Util
             return 1;
         };
 
+        public static bool IsInRange(Range range, int num) => num >= range.Start.Value && num < range.End.Value;
+        
         public static int Info(string info) => OfInfo(info).Invoke(info);
         public static int Warn(string warn) => OfWarn(warn).Invoke(warn);
         public static int Error(string error) => OfError(error).Invoke(error);

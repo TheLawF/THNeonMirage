@@ -10,7 +10,7 @@ namespace THNeonMirage.Manager
     public class GameManager : MonoBehaviour
     {
         public GameObject playerPrefab;
-        private NetworkVariable<Player> serverPlayer;
+        private NetworkVariable<PlayerManager> serverPlayer;
 
         private void Start()
         {

@@ -72,7 +72,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\BlankTile.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Utils.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Data\Player.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\PlayerManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\BazaarTile.cs" />
@@ -93,6 +93,7 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Data\DatabaseConnector.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Util\GameMapEventArgs.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Sprites" />
