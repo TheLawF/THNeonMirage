@@ -24,6 +24,7 @@ namespace THNeonMirage.Data
             {
                 connection = new MySqlConnection(connectionString);
                 connection.Open();
+                
                 return true;
             }
             catch (MySqlException ex)

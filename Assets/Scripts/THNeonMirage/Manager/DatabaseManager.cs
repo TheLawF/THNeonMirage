@@ -14,7 +14,7 @@ namespace THNeonMirage.Manager
     {
         private MySqlConnection connection;
         private DatabaseConnector Connector;
-        private UserData User;
+        private User User;
 
         private string serverName = "localhost";
         private string dbName = "UnityGameUsers";	//数据库名
@@ -32,7 +32,7 @@ namespace THNeonMirage.Manager
         private void Start()
         {
             Connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
-            User = new UserData(Connector);
+            User = new User(Connector);
             Debug.Log("连接数据库成功");
         }
 
@@ -44,23 +44,23 @@ namespace THNeonMirage.Manager
             if (username == "" || pwd == "") Debug.LogWarning("账号或密码不能为空");
             else
             {
-                var status = User.Register(username, pwd);
+                var status = User.Register(username, pwd).Status;
                 switch (status)
                 {
-                    case Authorization.Status.RegisterSuccess:
+                    case Authorization.ConnectionStatus.RegisterSuccess:
                         Debug.Log("注册成功");
                         break;
-                    case Authorization.Status.DuplicateUser:
+                    case Authorization.ConnectionStatus.DuplicateUser:
                         Debug.LogWarning("用户名已存在，请选择不同的用户名！");
                         break;
-                    case Authorization.Status.ConnectionError:
+                    case Authorization.ConnectionStatus.ConnectionError:
                         Debug.LogError("连接错误");
                         break;
                     default:
-                    case Authorization.Status.Failed:
-                    case Authorization.Status.LoginSuccess:
-                    case Authorization.Status.UserNonExist:
-                    case Authorization.Status.PasswordError:
+                    case Authorization.ConnectionStatus.Failed:
+                    case Authorization.ConnectionStatus.LoginSuccess:
+                    case Authorization.ConnectionStatus.UserNonExist:
+                    case Authorization.ConnectionStatus.PasswordError:
                         Debug.LogWarning("注册失败");
                         break;
                 }
@@ -77,25 +77,25 @@ namespace THNeonMirage.Manager
             if (username == "" || pwd == "") Debug.LogWarning("账号或密码不能为空");
             else
             {
-                var status = User.Login(username, pwd);
+                var status = User.Login(username, pwd).Status;
                 switch (status)
                 {
-                    case Authorization.Status.LoginSuccess:
+                    case Authorization.ConnectionStatus.LoginSuccess:
                         Debug.Log("登录成功");
                         break;
-                    case Authorization.Status.UserNonExist:
+                    case Authorization.ConnectionStatus.UserNonExist:
                         Debug.LogWarning("用户名已存在，请选择不同的用户名！");
                         break;
-                    case Authorization.Status.PasswordError:
+                    case Authorization.ConnectionStatus.PasswordError:
                         Debug.LogWarning("用户名或者密码错误");
                         break;
-                    case Authorization.Status.ConnectionError:
+                    case Authorization.ConnectionStatus.ConnectionError:
                         Debug.LogWarning("连接错误");
                         break;
                     default:
-                    case Authorization.Status.Failed:
-                    case Authorization.Status.RegisterSuccess:
-                    case Authorization.Status.DuplicateUser:
+                    case Authorization.ConnectionStatus.Failed:
+                    case Authorization.ConnectionStatus.RegisterSuccess:
+                    case Authorization.ConnectionStatus.DuplicateUser:
                         Debug.LogWarning("登录失败");
                         break;
                 }

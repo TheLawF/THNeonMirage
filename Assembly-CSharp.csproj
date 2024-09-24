@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\THNeonMirage\Map\FieldTile.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Data\UserData.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Data\User.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\UIManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
@@ -60,6 +60,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Util\GameMapEventArgs.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\DatabaseManager.cs" />
@@ -93,7 +94,7 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Data\DatabaseConnector.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Util\GameMapEventArgs.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Data\PlayerData.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Sprites" />
