@@ -1,5 +1,6 @@
 using System;
 using THNeonMirage.Data;
+using THNeonMirage.Manager;
 
 namespace THNeonMirage.Util
 {

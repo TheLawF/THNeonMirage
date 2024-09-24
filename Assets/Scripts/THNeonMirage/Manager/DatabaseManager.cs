@@ -1,4 +1,3 @@
-using System;
 using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
@@ -6,7 +5,6 @@ using THNeonMirage.Data;
 using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace THNeonMirage.Manager
 {

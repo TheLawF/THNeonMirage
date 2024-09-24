@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using THNeonMirage.Data;
+using THNeonMirage.Manager;
 using THNeonMirage.Util;
 using Unity.Netcode;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using Random = System.Random;
 

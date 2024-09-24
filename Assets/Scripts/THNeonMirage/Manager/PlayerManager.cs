@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace System.Runtime.CompilerServices
 {
@@ -15,7 +13,7 @@ namespace System.Runtime.CompilerServices
     }
 }
 
-namespace THNeonMirage.Data
+namespace THNeonMirage.Manager
 {
     [Serializable]
     public class PlayerManager : NetworkBehaviour
