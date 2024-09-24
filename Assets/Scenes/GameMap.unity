@@ -495,6 +495,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 411483111}
+  - component: {fileID: 411483113}
   - component: {fileID: 411483112}
   m_Layer: 0
   m_Name: GameManager
@@ -535,6 +536,27 @@ MonoBehaviour:
   tilePrefab: {fileID: 3760131361438333896, guid: 75f399b04c8aee54b9762348c8c99f00, type: 3}
   players: []
   fieldObjects: []
+--- !u!114 &411483113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411483109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 1608383048
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &417163156
 GameObject:
   m_ObjectHideFlags: 0
@@ -2510,7 +2532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   usernameInput: {fileID: 489814401}
   passwordInput: {fileID: 1484285371}
-  playerPrefab: {fileID: 7916386799387198227, guid: f197fe91cd0b16940b7ccfdace8c5a9a, type: 3}
+  mapObject: {fileID: 411483109}
+  playerPrefab: {fileID: 43493456111164759, guid: 56b9e47bc294b6140a5cbddb63ecb27d, type: 3}
   homePanel: {fileID: 1112391708}
   hud: {fileID: 567977018}
 --- !u!4 &1439646834

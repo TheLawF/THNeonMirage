@@ -19,7 +19,7 @@ namespace THNeonMirage.Map
         public GameObject playerPrefab;
         public GameObject tilePrefab;
         
-        public List<GameObject> players;
+        public List<PlayerManager> players;
         public List<GameObject> fieldObjects;
 
         private static Vector3 uUnit = Vector3.right;
@@ -125,8 +125,7 @@ namespace THNeonMirage.Map
             return 1;
         }
 
-        private Vector3 GetPlayerPosByIndex(int index) => PosInRange.First(pair => 
-            Utils.IsInRange(pair.Key, index)).Value.Invoke(index);
+        
 
         public int GetPlayerCountOn(int fieldId)
             => players.Count(player => player.GetComponent<PlayerManager>().Position == fieldId);

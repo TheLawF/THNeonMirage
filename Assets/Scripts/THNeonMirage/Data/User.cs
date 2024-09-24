@@ -58,6 +58,7 @@ namespace THNeonMirage.Data
             {
                 // var savedPos = dataTable.Rows[0]["position"];
                 var storedPassword = dataTable.Rows[0]["password"].ToString();
+                Pos = int.Parse(dataTable.Rows[0]["position"].ToString());
                 if (storedPassword == password)
                 {
                     connector.Disconnect();

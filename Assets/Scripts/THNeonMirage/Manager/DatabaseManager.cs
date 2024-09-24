@@ -15,6 +15,7 @@ namespace THNeonMirage.Manager
         private MySqlConnection connection;
         private DatabaseConnector Connector;
         private User User;
+        private PlayerData player_data;
 
         private string serverName = "localhost";
         private string dbName = "UnityGameUsers";	//数据库名
@@ -24,7 +25,8 @@ namespace THNeonMirage.Manager
 
         public TMP_InputField usernameInput;
         public TMP_InputField passwordInput;
-        
+
+        public GameObject mapObject;
         public GameObject playerPrefab;
         public GameObject homePanel;
         public GameObject hud;
@@ -77,8 +79,9 @@ namespace THNeonMirage.Manager
             if (username == "" || pwd == "") Debug.LogWarning("账号或密码不能为空");
             else
             {
-                var status = User.Login(username, pwd).Status;
-                switch (status)
+                var authorization = User.Login(username, pwd);
+                player_data = authorization.PlayerData;
+                switch (authorization.Status)
                 {
                     case Authorization.ConnectionStatus.LoginSuccess:
                         Debug.Log("登录成功");
@@ -102,9 +105,14 @@ namespace THNeonMirage.Manager
             }
             usernameInput.text = "";
             passwordInput.text = "";
-            
             homePanel.SetActive(false);
             hud.SetActive(true);
+            
+            if (player_data == null) return;
+            var player = Instantiate(playerPrefab).GetComponent<PlayerManager>()
+                .SetName(player_data.UserName).SetPosition(player_data.Position);
+            mapObject.GetComponent<GameMap>().players.Add(player);
+            
             // gameManager.GetComponent<SceneManager>().SwitchCamera(true, false);
         }
 

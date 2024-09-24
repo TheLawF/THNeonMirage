@@ -1,8 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using THNeonMirage.Map;
+using THNeonMirage.Util;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 namespace System.Runtime.CompilerServices
 {
     class IsExternalInit
@@ -15,7 +20,7 @@ namespace THNeonMirage.Data
     [Serializable]
     public class PlayerManager : NetworkBehaviour
     {
-        public string Name;
+        public string UserName;
         public string Id;
         public string Password;
 
@@ -41,6 +46,21 @@ namespace THNeonMirage.Data
                 
             }
         }
+
+        public PlayerManager SetName(string userName)
+        {
+            UserName = userName;
+            return this;
+        }
+        
+        public PlayerManager SetPosition(int position)
+        {
+            Position = position;
+            transform.position = GetPlayerPosByIndex(Position);
+            return this;
+        }
+        public Vector3 GetPlayerPosByIndex(int index) => GameMap.PosInRange.First(pair => 
+            Utils.IsInRange(pair.Key, index)).Value.Invoke(index);
     }
 
     [Serializable]
