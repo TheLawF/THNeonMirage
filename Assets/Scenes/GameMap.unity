@@ -697,6 +697,8 @@ MonoBehaviour:
   text: "\u6295\u63B7\u4E00\u6B21"
   shouldRenderTooltip: 0
   hoverText: {fileID: 0}
+  fontAsset: {fileID: 11400000, guid: 1ab2f1de63c35ff4488f93f3fc16b0de, type: 2}
+  DiceValue: 0
 --- !u!1 &489814399
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,8 +1046,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 377.88, y: -138.65}
-  m_SizeDelta: {x: -755.76, y: -277.31}
+  m_AnchoredPosition: {x: 380.57385, y: -164.92}
+  m_SizeDelta: {x: -761.1477, y: -329.8407}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &567977020
 MonoBehaviour:

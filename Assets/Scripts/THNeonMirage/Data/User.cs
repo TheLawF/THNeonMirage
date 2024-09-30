@@ -20,8 +20,9 @@ namespace THNeonMirage.Data
             Pos = 0;
             var date = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
             var queryUserCount = $"SELECT COUNT(*) FROM userinfo WHERE username = '{username}'";
-            var queryInsertNewUser = $"INSERT INTO userinfo (username, password, createtime, position(0)) VALUES " +
-                                     $"('{username}', '{password}', '{date}', '{Pos}')";
+            var queryInsertNewUser = 
+                "INSERT INTO userinfo (username, password, createtime, position(0))" +
+                $"VALUES ('{username}', '{password}', '{date}', '{Pos}')";
 
             if (!connector.Connect()) return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError); // 连接错误
             try
