@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using THNeonMirage.Data;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using Unity.Netcode;
@@ -21,12 +22,29 @@ namespace THNeonMirage.Manager
         public string UserName;
         public string Id;
         public string Password;
-
-        public int Position;
+        
         public DiceType DiceType;
         public Attribute Attribute;
         public Inventory Inventory;
-        
+
+        public int Position;
+        // {
+        //     get => _position;
+        //     set
+        //     {
+        //         if (value is < 0 and >= -40)
+        //         {
+        //             _position = -value;
+        //         }
+        //         _position = value switch
+        //         {
+        //             <= -40 => -value % 40,
+        //             >= 40 => value % 40,
+        //             _ => _position
+        //         };
+        //     }
+        // }
+
         private bool IsAdministrator;
 
         private void Start()
@@ -35,6 +53,7 @@ namespace THNeonMirage.Manager
 
         private void Update()
         {
+            transform.position = GetPlayerPosByIndex(Position);
             if (IsClient && IsOwner)
             {
                 
@@ -45,6 +64,13 @@ namespace THNeonMirage.Manager
             }
         }
 
+        public PlayerManager Init(PlayerData playerData)
+        {
+            UserName = playerData.UserName;
+            SetPosition(playerData.Position);
+            return this;
+        }
+
         public PlayerManager SetName(string userName)
         {
             UserName = userName;
@@ -53,7 +79,16 @@ namespace THNeonMirage.Manager
         
         public PlayerManager SetPosition(int position)
         {
-            Position = position;
+            if (Position + position is < 0 and >= -40)
+            {
+                Position = -position;
+            }
+            Position = position switch
+            {
+                <= -40 => -position % 40,
+                >= 40 => position % 40,
+                _ => position
+            };
             transform.position = GetPlayerPosByIndex(Position);
             return this;
         }

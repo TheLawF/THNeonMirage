@@ -696,9 +696,9 @@ MonoBehaviour:
   backgroundColor: {r: 0, g: 0, b: 0, a: 0}
   text: "\u6295\u63B7\u4E00\u6B21"
   shouldRenderTooltip: 0
-  hoverText: {fileID: 0}
   fontAsset: {fileID: 11400000, guid: 1ab2f1de63c35ff4488f93f3fc16b0de, type: 2}
   DiceValue: 0
+  databaseObj: {fileID: 1439646832}
 --- !u!1 &489814399
 GameObject:
   m_ObjectHideFlags: 0

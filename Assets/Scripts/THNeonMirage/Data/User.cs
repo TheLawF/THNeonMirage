@@ -72,6 +72,14 @@ namespace THNeonMirage.Data
             connector.Disconnect();
             return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.UserNonExist);
         }
+
+        public Authorization SaveData(PlayerData playerData)
+        {
+            var savePosQuery = $"UPDATE userinfo SET position = {playerData.Position} WHERE username = '{playerData.UserName}'";
+            if (!connector.Connect()) return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
+            connector.ExecuteNonQuery(savePosQuery);
+            return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.SaveSuccess);
+        }
     }
 }
 

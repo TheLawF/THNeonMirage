@@ -10,10 +10,12 @@ namespace THNeonMirage.Manager
 {
     public class DatabaseManager : MonoBehaviour
     {
+        private GameObject playerObj;
+        
         private MySqlConnection connection;
         private DatabaseConnector Connector;
-        private User User;
         private PlayerData player_data;
+        private User User;
 
         private string serverName = "localhost";
         private string dbName = "UnityGameUsers";	//数据库名
@@ -31,6 +33,7 @@ namespace THNeonMirage.Manager
 
         private void Start()
         {
+            playerPrefab.GetComponent<PlayerManager>().Position = 0;
             Connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
             User = new User(Connector);
             Debug.Log("连接数据库成功");
@@ -107,11 +110,19 @@ namespace THNeonMirage.Manager
             hud.SetActive(true);
             
             if (player_data == null) return;
-            var player = Instantiate(playerPrefab).GetComponent<PlayerManager>()
-                .SetName(player_data.UserName).SetPosition(player_data.Position);
+            playerObj = Instantiate(playerPrefab);
+            var player = playerObj.GetComponent<PlayerManager>().Init(player_data);
+            playerObj.transform.position = player.GetPlayerPosByIndex(player.Position);
             mapObject.GetComponent<GameMap>().players.Add(player);
+            UIManager.playerObj = playerObj;
             
+            Debug.Log($"Position(Start): {player.Position}");
             // gameManager.GetComponent<SceneManager>().SwitchCamera(true, false);
+        }
+
+        public void UpdateUserData(PlayerData playerData)
+        {
+            User.SaveData(playerData);
         }
 
         public static string EncryptPassword(string password)

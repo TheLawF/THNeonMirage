@@ -1,3 +1,4 @@
+using THNeonMirage.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,18 +13,21 @@ namespace THNeonMirage.Manager
         public string text;
 
         public bool shouldRenderTooltip;
-        public GameObject hoverText;
+        public static GameObject playerObj;
         public TMP_FontAsset fontAsset;
 
         [DisplayOnly] 
         public int DiceValue;
-
+        public GameObject databaseObj;
+        
+        private DatabaseManager dbManager;
+        private PlayerManager player;
         private Random random = new();
         private TMP_Text foreground_text;
-        private GUIStyle _guiStyle = new GUIStyle();
         private void Start()
         {
             DiceValue = 1;
+            dbManager = databaseObj.GetComponent<DatabaseManager>();
         }
 
         private void OnGUI()
@@ -35,7 +39,10 @@ namespace THNeonMirage.Manager
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
         {
+            player = playerObj.GetComponent<PlayerManager>();
             DiceValue = random.Next(1,7);
+            player.SetPosition(player.Position + DiceValue);
+            dbManager.UpdateUserData(new PlayerData(player.UserName, player.Position));
             shouldRenderTooltip = true;
         }
 

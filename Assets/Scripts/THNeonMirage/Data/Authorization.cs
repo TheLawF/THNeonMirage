@@ -36,6 +36,7 @@ namespace THNeonMirage.Data
         {
             RegisterSuccess,
             LoginSuccess,
+            SaveSuccess,
             DuplicateUser,
             UserNonExist,
             PasswordError,
