@@ -5,6 +5,7 @@ using THNeonMirage.Manager;
 using THNeonMirage.Util;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = System.Random;
 
 namespace THNeonMirage.Map
@@ -12,10 +13,8 @@ namespace THNeonMirage.Map
     [Serializable]
     public class GameMap : NetworkBehaviour
     {
-        public GameObject gameManager;
-        public GameObject playerPrefab;
+        public GameObject settingsPanel;
         public GameObject tilePrefab;
-        
         public List<PlayerManager> players;
         public List<GameObject> fieldObjects;
 
@@ -57,6 +56,7 @@ namespace THNeonMirage.Map
 
         private void Start()
         {
+            Span<int> span = stackalloc int[1];
             fieldObjects = new List<GameObject>();
             InitField(tilePrefab, 1);
 
@@ -67,7 +67,10 @@ namespace THNeonMirage.Map
 
         private void Update()
         {
-            
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                settingsPanel.SetActive(true);
+            }
         }
 
         private void ShouldRenderTile(int index, bool shouldRender) => fieldObjects[index].SetActive(shouldRender);
@@ -121,9 +124,7 @@ namespace THNeonMirage.Map
             
             return 1;
         }
-
         
-
         public int GetPlayerCountOn(int fieldId)
             => players.Count(player => player.GetComponent<PlayerManager>().Position == fieldId);
 

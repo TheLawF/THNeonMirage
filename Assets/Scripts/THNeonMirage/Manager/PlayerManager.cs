@@ -19,31 +19,14 @@ namespace THNeonMirage.Manager
     [Serializable]
     public class PlayerManager : NetworkBehaviour
     {
+        public int Position;
         public string UserName;
         public string Id;
         public string Password;
-        
+
         public DiceType DiceType;
         public Attribute Attribute;
         public Inventory Inventory;
-
-        public int Position;
-        // {
-        //     get => _position;
-        //     set
-        //     {
-        //         if (value is < 0 and >= -40)
-        //         {
-        //             _position = -value;
-        //         }
-        //         _position = value switch
-        //         {
-        //             <= -40 => -value % 40,
-        //             >= 40 => value % 40,
-        //             _ => _position
-        //         };
-        //     }
-        // }
 
         private bool IsAdministrator;
 

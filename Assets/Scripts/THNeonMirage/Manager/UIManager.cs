@@ -11,8 +11,8 @@ namespace THNeonMirage.Manager
         public Texture2D backgroundTexture;
         public Color backgroundColor;
         public string text;
-
-        public bool shouldRenderTooltip;
+        
+        public bool canRenderTooltip;
         public static GameObject playerObj;
         public TMP_FontAsset fontAsset;
 
@@ -20,6 +20,7 @@ namespace THNeonMirage.Manager
         public int DiceValue;
         public GameObject databaseObj;
         
+        private bool shouldRenderTooltip;
         private DatabaseManager dbManager;
         private PlayerManager player;
         private Random random = new();
@@ -33,7 +34,7 @@ namespace THNeonMirage.Manager
         private void OnGUI()
         {
             GUI.contentColor = Color.black;
-            if (shouldRenderTooltip) GUI.Label(new Rect(10, 10, 200, 20), ToString());
+            if (canRenderTooltip && shouldRenderTooltip) GUI.Label(new Rect(10, 10, 200, 20), ToString());
         }
         
         public void OnMouseExit() => shouldRenderTooltip = false;

@@ -96,6 +96,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
      <Compile Include="Assets\Scripts\UnityEngine\DisplayOnly.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Sprites" />
@@ -143,6 +144,7 @@
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Prefabs" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Scenes" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
+     <Folder Include="Assets\Scripts\THNeonMirage\Util\Math" />
      <Folder Include="Assets\Scripts\THNeonMirage\Manager" />
      <Folder Include="Assets\Resources\UI" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />

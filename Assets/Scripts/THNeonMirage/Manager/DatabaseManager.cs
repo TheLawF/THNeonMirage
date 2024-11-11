@@ -116,7 +116,7 @@ namespace THNeonMirage.Manager
             mapObject.GetComponent<GameMap>().players.Add(player);
             UIManager.playerObj = playerObj;
             
-            Debug.Log($"Position(Start): {player.Position}");
+            // Debug.Log($"Position(Start): {player.Position}");
             // gameManager.GetComponent<SceneManager>().SwitchCamera(true, false);
         }
 
