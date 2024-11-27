@@ -11,14 +11,13 @@ namespace THNeonMirage.Manager
 {
     public class DatabaseManager : MonoBehaviour
     {
-        private GameObject playerObj;
         
-        private MySqlConnection connection;
-        private DatabaseConnector Connector;
         [NotNull]
         private PlayerData player_data;
-        private User User;
-
+        private MySqlConnection connection;
+        private DatabaseConnector connector;
+        
+        private User _user;
         private string serverName = "localhost";
         private string dbName = "UnityGameUsers";	//数据库名
         private string adminName = "root";		//登录数据库的用户名
@@ -28,16 +27,23 @@ namespace THNeonMirage.Manager
         public TMP_InputField usernameInput;
         public TMP_InputField passwordInput;
 
-        public GameObject mapObject;
-        public GameObject playerPrefab;
-        public GameObject homePanel;
         public GameObject hud;
+        public GameObject homePanel;
+        public GameObject mapObject;
+        public GameObject inGamePanel;
+        
+        [DisplayOnly]
+        public GameObject playerObj;
+        public GameObject playerPrefab;
+        
+        
+        
 
         private void Start()
         {
             playerPrefab.GetComponent<PlayerManager>().Position = 0;
-            Connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
-            User = new User(Connector);
+            connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
+            _user = new User(connector);
             Debug.Log("连接数据库成功");
         }
 
@@ -49,7 +55,7 @@ namespace THNeonMirage.Manager
             if (username == "" || pwd == "") Debug.LogWarning("账号或密码不能为空");
             else
             {
-                var status = User.Register(username, pwd).Status;
+                var status = _user.Register(username, pwd).Status;
                 switch (status)
                 {
                     case Authorization.ConnectionStatus.RegisterSuccess:
@@ -84,7 +90,7 @@ namespace THNeonMirage.Manager
             if (username == "" || pwd == "") Debug.LogWarning("账号或密码不能为空");
             else
             {
-                var authorization = User.Login(username, pwd);
+                var authorization = _user.Login(username, pwd);
                 player_data = authorization.PlayerData;
                 switch (authorization.Status)
                 {
@@ -112,23 +118,31 @@ namespace THNeonMirage.Manager
             }
             usernameInput.text = "";
             passwordInput.text = "";
-            homePanel.SetActive(false);
-            hud.SetActive(true);
             
-            // if (player_data == null) return;
+            homePanel.SetActive(false);
+            inGamePanel.SetActive(true);
+            hud.SetActive(true);
+
             playerObj = Instantiate(playerPrefab);
             var player = playerObj.GetComponent<PlayerManager>().Init(player_data);
-            playerObj.transform.position = player.GetPlayerPosByIndex(player.Position);
-            mapObject.GetComponent<GameMap>().players.Add(player);
-            TooltipHandler.playerObj = playerObj;
+            var map = mapObject.GetComponent<GameMap>();
             
-            // Debug.Log($"Position(Start): {player.Position}");
-            // gameManager.GetComponent<SceneManager>().SwitchCamera(true, false);
+            map.players.Add(player);
+            playerObj.transform.position = player.GetPlayerPosByIndex(player.Position);
+            DiceHandler.playerObj = playerObj;
+
+            var handler = inGamePanel.GetComponent<ToggleHandler>();
+            var tile = map.fieldObjects[player.Position].GetComponent<FieldTile>();
+            
+            handler.Price1 = tile.Price1;
+            handler.Price2 = tile.Price2;
+            handler.Price3 = tile.Price3;
+            handler.playerObj = playerObj;
         }
 
         public void UpdateUserData(PlayerData playerData)
         {
-            User.SaveData(playerData);
+            _user.SaveData(playerData);
         }
 
         public static string EncryptPassword(string password)

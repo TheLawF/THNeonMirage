@@ -20,6 +20,10 @@ namespace THNeonMirage.Map
 
         private SpriteRenderer spriteRenderer;
         private string tooltipString;
+        
+        public int Price1 { get; set; }
+        public int Price2 { get; set; }
+        public int Price3 { get; set; }
 
         private void Start()
         {
@@ -27,6 +31,10 @@ namespace THNeonMirage.Map
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
             spriteRenderer = GetComponent<SpriteRenderer>();
             backGroundColor = spriteRenderer.color;
+
+            Price1 = 10000;
+            Price2 = 12000;
+            Price3 = 15000;
         }
 
         private void OnMouseOver()

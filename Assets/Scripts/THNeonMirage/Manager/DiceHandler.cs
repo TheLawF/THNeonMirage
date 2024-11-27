@@ -6,7 +6,7 @@ using Random = System.Random;
 
 namespace THNeonMirage.Manager
 {
-    public class TooltipHandler: MonoBehaviour, IPointerClickHandler
+    public class DiceHandler: MonoBehaviour, IPointerClickHandler
     {
         
         public bool canRenderTooltip;

@@ -6,6 +6,7 @@ using THNeonMirage.Map;
 using THNeonMirage.Util;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace System.Runtime.CompilerServices
 {
@@ -21,13 +22,15 @@ namespace THNeonMirage.Manager
     {
         public int Position;
         public string UserName;
+        public int Balance;
+
         public string Id;
         public string Password;
 
         public DiceType DiceType;
         public Attribute Attribute;
         public Inventory Inventory;
-
+        
         private bool IsAdministrator;
 
         private void Start()

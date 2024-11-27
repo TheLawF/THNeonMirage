@@ -59,7 +59,7 @@ namespace THNeonMirage.Map
         private void Start()
         {
             fieldObjects = new List<GameObject>();
-            InitField(tilePrefab, 1);
+            // InitField(tilePrefab, 1);
 
             Utils.ForAddToList(40, fieldObjects, i => InitField(tilePrefab, i));
             fieldObjects.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
