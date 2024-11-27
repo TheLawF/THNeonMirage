@@ -1711,7 +1711,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2106838136}
+        m_TargetAssemblyTypeName: THNeonMirage.Manager.ToggleHandler, Assembly-CSharp
+        m_MethodName: OnPrice1Changed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &905930698
 GameObject:
@@ -2311,7 +2323,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1112391709
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3195,7 +3207,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2106838136}
+        m_TargetAssemblyTypeName: THNeonMirage.Manager.ToggleHandler, Assembly-CSharp
+        m_MethodName: OnPrice3Changed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1386858777
 GameObject:
@@ -3460,10 +3484,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   usernameInput: {fileID: 489814401}
   passwordInput: {fileID: 1484285371}
-  mapObject: {fileID: 411483109}
-  playerPrefab: {fileID: 43493456111164759, guid: 56b9e47bc294b6140a5cbddb63ecb27d, type: 3}
-  homePanel: {fileID: 1112391708}
   hud: {fileID: 567977018}
+  homePanel: {fileID: 1112391708}
+  mapObject: {fileID: 411483109}
+  inGamePanel: {fileID: 2106838132}
+  playerObj: {fileID: 0}
+  playerPrefab: {fileID: 43493456111164759, guid: 56b9e47bc294b6140a5cbddb63ecb27d, type: 3}
 --- !u!4 &1439646834
 Transform:
   m_ObjectHideFlags: 0
@@ -4228,7 +4254,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1578977797}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2106838136}
+        m_TargetAssemblyTypeName: THNeonMirage.Manager.ToggleHandler, Assembly-CSharp
+        m_MethodName: OnPurchase
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1578977797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5421,7 +5459,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2106838136}
+        m_TargetAssemblyTypeName: THNeonMirage.Manager.ToggleHandler, Assembly-CSharp
+        m_MethodName: OnPrice2Changed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &2106838132
 GameObject:
@@ -5434,13 +5484,14 @@ GameObject:
   - component: {fileID: 2106838133}
   - component: {fileID: 2106838135}
   - component: {fileID: 2106838134}
+  - component: {fileID: 2106838136}
   m_Layer: 5
   m_Name: InGamePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2106838133
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5465,7 +5516,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000020981}
+  m_AnchoredPosition: {x: 0, y: -0.000015258789}
   m_SizeDelta: {x: -560.1401, y: -0.000030518}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2106838134
@@ -5506,3 +5557,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2106838132}
   m_CullTransparentMesh: 1
+--- !u!114 &2106838136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2106838132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c97672507d8480aa6d8bb7490c55b59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerObj: {fileID: 0}
+  toggleList:
+  - {fileID: 818407317}
+  - {fileID: 2075426497}
+  - {fileID: 1347946713}
