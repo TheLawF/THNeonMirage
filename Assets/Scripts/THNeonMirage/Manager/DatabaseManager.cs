@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
@@ -14,6 +15,7 @@ namespace THNeonMirage.Manager
         
         private MySqlConnection connection;
         private DatabaseConnector Connector;
+        [NotNull]
         private PlayerData player_data;
         private User User;
 
@@ -59,6 +61,8 @@ namespace THNeonMirage.Manager
                     case Authorization.ConnectionStatus.ConnectionError:
                         Debug.LogError("连接错误");
                         break;
+                    case Authorization.ConnectionStatus.SaveSuccess:
+                        break;
                     default:
                     case Authorization.ConnectionStatus.Failed:
                     case Authorization.ConnectionStatus.LoginSuccess:
@@ -96,6 +100,8 @@ namespace THNeonMirage.Manager
                     case Authorization.ConnectionStatus.ConnectionError:
                         Debug.LogWarning("连接错误");
                         break;
+                    case Authorization.ConnectionStatus.SaveSuccess:
+                        break;
                     default:
                     case Authorization.ConnectionStatus.Failed:
                     case Authorization.ConnectionStatus.RegisterSuccess:
@@ -109,12 +115,12 @@ namespace THNeonMirage.Manager
             homePanel.SetActive(false);
             hud.SetActive(true);
             
-            if (player_data == null) return;
+            // if (player_data == null) return;
             playerObj = Instantiate(playerPrefab);
             var player = playerObj.GetComponent<PlayerManager>().Init(player_data);
             playerObj.transform.position = player.GetPlayerPosByIndex(player.Position);
             mapObject.GetComponent<GameMap>().players.Add(player);
-            UIManager.playerObj = playerObj;
+            TooltipHandler.playerObj = playerObj;
             
             // Debug.Log($"Position(Start): {player.Position}");
             // gameManager.GetComponent<SceneManager>().SwitchCamera(true, false);

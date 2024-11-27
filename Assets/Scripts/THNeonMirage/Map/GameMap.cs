@@ -5,6 +5,7 @@ using THNeonMirage.Manager;
 using THNeonMirage.Util;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.Serialization;
 using Random = System.Random;
 
@@ -24,6 +25,7 @@ namespace THNeonMirage.Map
 
         public static Random Random = new ();
         public static bool FirstUse = true;
+        private ObjectPool<GameObject> pool;
         public static readonly Dictionary<int, string> TileDict = new()
         {
             {0, "失乐园入口"}, {10, "梦乐园"}, {11, "感情的摩天轮"}, {12, "旋转木马"}, {13, "碰碰车"},
@@ -56,7 +58,6 @@ namespace THNeonMirage.Map
 
         private void Start()
         {
-            Span<int> span = stackalloc int[1];
             fieldObjects = new List<GameObject>();
             InitField(tilePrefab, 1);
 

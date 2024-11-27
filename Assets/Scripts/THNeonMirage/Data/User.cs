@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace THNeonMirage.Data
 {
+    // public record PlayerData(string UserName, int Position, int Coin);
     public class User
     {
         private DatabaseConnector connector;

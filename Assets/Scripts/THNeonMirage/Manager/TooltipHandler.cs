@@ -6,15 +6,11 @@ using Random = System.Random;
 
 namespace THNeonMirage.Manager
 {
-    public class UIManager: MonoBehaviour, IPointerClickHandler
+    public class TooltipHandler: MonoBehaviour, IPointerClickHandler
     {
-        public Texture2D backgroundTexture;
-        public Color backgroundColor;
-        public string text;
         
         public bool canRenderTooltip;
         public static GameObject playerObj;
-        public TMP_FontAsset fontAsset;
 
         [DisplayOnly] 
         public int DiceValue;

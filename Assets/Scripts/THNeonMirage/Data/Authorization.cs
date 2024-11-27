@@ -1,3 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace THNeonMirage.Data
 {
     public class Authorization
@@ -12,7 +14,7 @@ namespace THNeonMirage.Data
             Status = status;
         }
 
-        public Authorization SetData(PlayerData playerData)
+        public Authorization SetData([NotNull] PlayerData playerData)
         {
             PlayerData = playerData;
             return this;
