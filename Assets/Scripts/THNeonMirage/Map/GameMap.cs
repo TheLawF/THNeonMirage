@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using THNeonMirage.Data;
 using THNeonMirage.Manager;
 using THNeonMirage.Util;
 using Unity.Netcode;
@@ -26,10 +27,11 @@ namespace THNeonMirage.Map
         public static Random Random = new ();
         public static bool FirstUse = true;
         private ObjectPool<GameObject> pool;
-        public static readonly Dictionary<int, string> TileDict = new()
+        public static readonly Dictionary<int, FieldData> TileDict = new()
         {
-            {0, "失乐园入口"}, {10, "梦乐园"}, {11, "感情的摩天轮"}, {12, "旋转木马"}, {13, "碰碰车"},
-            {20, "红魔大酒店"}, {28, "失乐园出口"}, {30, "水上乐园"}, {31, "水滑梯"}, {32, "泳池"}
+            {0, new FieldData("梦乐园城堡", 0, 0, 0, -10000, typeof(StartTile))},
+            {8, new FieldData("村纱的海盗船", 50000, 60000, 80000, -12000, typeof(PirateShip))},
+            {11, new FieldData("感情的摩天轮", 60000, 80000,  100000, -20000, typeof(PirateShip))},
         };
 
         public static readonly Dictionary<Range, Func<int, Vector3>> PosInRange = new()
@@ -39,22 +41,11 @@ namespace THNeonMirage.Map
             {20..30, index => startPos - uUnit * 10 - vUnit * 10 + new Vector3(index % 10, 0)},
             {30..40, index => startPos - vUnit * 10 + new Vector3(0, index % 10)}
         };
-        public static readonly List<Predicate<int>> IndexGroup = new (new Predicate<int>[]
-        {
-            x => x > 0 & x < 10,
-            x => x > 10 & x < 20,
-            x => x > 20 & x < 30,
-            x => x > 30 & x < 40,
-            _ => true
-        });
 
-        public static readonly List<Predicate<int>> TypeIndex = new (new Predicate<int>[]
+        public static readonly Dictionary<int, Action> TileActions = new()
         {
-            x => x == 0,
-            x => x == 10,
-            x => x == 20,
-            x => x >= 4 & x < 7 | x >= 14 & x < 17 | x >= 24 & x < 27 | x >= 34 & x < 37
-        });
+            { 0, () => {} }, { 9, ToggleHandler.DisplayPanel }
+        };
 
         private void Start()
         {
@@ -84,16 +75,16 @@ namespace THNeonMirage.Map
         /// <returns>实例化且挂载了 FieldTile 的地块对象</returns>
         private GameObject InitField(GameObject tp, int index)
         {
-            
-            var uOffset = new Vector3(index % 10, 0);
-            var vOffset = new Vector3(0, index % 10);
+            const int side = 10;
+            var uOffset = new Vector3(index % side, 0);
+            var vOffset = new Vector3(0, index % side);
 
             var list = new List<Func<GameObject>>(new Func<GameObject>[]
             {
                 () => Instantiate(tp, startPos - uOffset, Quaternion.identity),
-                () => Instantiate(tp, startPos - uUnit * 10 - vOffset, Quaternion.identity),
-                () => Instantiate(tp, startPos - uUnit * 10 - vUnit * 10 + uOffset, Quaternion.identity),
-                () => Instantiate(tp, startPos - vUnit * 10 + vOffset, Quaternion.identity),
+                () => Instantiate(tp, startPos - uUnit * side - vOffset, Quaternion.identity),
+                () => Instantiate(tp, startPos - uUnit * side - vUnit * side + uOffset, Quaternion.identity),
+                () => Instantiate(tp, startPos - vUnit * side + vOffset, Quaternion.identity),
                 () => Instantiate(tp, Vector3.zero, Quaternion.identity)
             });
             

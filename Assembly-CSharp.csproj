@@ -41,9 +41,11 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\THNeonMirage\Data\FieldData.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\FieldTile.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\User.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\DiceHandler.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\PirateShip.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\Authorization.cs" />
@@ -51,6 +53,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\ToggleHandler.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\PlayerData.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\HotelTile.cs" />
@@ -97,7 +100,8 @@
      <Compile Include="Assets\Scripts\UnityEngine\DisplayOnly.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Manager\ToggleHandler.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\DialogueHandler.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\FerrisWheel.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Sprites" />
@@ -105,7 +109,6 @@
      <Folder Include="Assets\TextMesh Pro\Sprites" />
      <Folder Include="Assets\TextMesh Pro\Resources\Sprite Assets" />
      <Folder Include="Assets\Scenes" />
-     <Folder Include="Assets\Scripts\THNeonMirage\Data" />
      <Folder Include="Assets\Settings" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
      <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
@@ -156,7 +159,6 @@
      <Folder Include="Assets\TextMesh Pro\Documentation" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
-     <Folder Include="Assets\Scripts\THNeonMirage\Map" />
      <Folder Include="Assets\Scripts\UnityEngine" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Resources\Fonts &amp; Materials" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Resources\Color Gradient Presets" />

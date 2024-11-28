@@ -4,6 +4,7 @@ using THNeonMirage.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace THNeonMirage.Map
 {
@@ -21,9 +22,10 @@ namespace THNeonMirage.Map
         private SpriteRenderer spriteRenderer;
         private string tooltipString;
         
-        public int Price1 { get; set; }
-        public int Price2 { get; set; }
-        public int Price3 { get; set; }
+        public int price1;
+        public int price2;
+        public int price3;
+        public int tolls;
 
         private void Start()
         {
@@ -32,9 +34,9 @@ namespace THNeonMirage.Map
             spriteRenderer = GetComponent<SpriteRenderer>();
             backGroundColor = spriteRenderer.color;
 
-            Price1 = 10000;
-            Price2 = 12000;
-            Price3 = 15000;
+            price1 = 10000;
+            price2 = 12000;
+            price3 = 15000;
         }
 
         private void OnMouseOver()

@@ -11,7 +11,6 @@ namespace THNeonMirage.Manager
 {
     public class DatabaseManager : MonoBehaviour
     {
-        
         [NotNull]
         private PlayerData player_data;
         private MySqlConnection connection;
@@ -37,8 +36,6 @@ namespace THNeonMirage.Manager
         public GameObject playerPrefab;
         
         
-        
-
         private void Start()
         {
             playerPrefab.GetComponent<PlayerManager>().Position = 0;
@@ -134,9 +131,10 @@ namespace THNeonMirage.Manager
             var handler = inGamePanel.GetComponent<ToggleHandler>();
             var tile = map.fieldObjects[player.Position].GetComponent<FieldTile>();
             
-            handler.Price1 = tile.Price1;
-            handler.Price2 = tile.Price2;
-            handler.Price3 = tile.Price3;
+            handler.Price1 = tile.price1;
+            handler.Price2 = tile.price2;
+            handler.Price3 = tile.price3;
+            
             handler.playerObj = playerObj;
         }
 
