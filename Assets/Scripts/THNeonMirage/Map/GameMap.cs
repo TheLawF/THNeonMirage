@@ -42,11 +42,48 @@ namespace THNeonMirage.Map
             new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
             new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
             new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            
             new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
             new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
             new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
             new FieldData("村纱的海盗船", null,50000, 60000, 80000, -12000, typeof(PirateShip)), 
             new FieldData("感情的摩天轮", null,60000, 80000,  100000, -20000, typeof(FerrisWheel)),
+            
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
         };
 
         public static readonly Dictionary<Range, Func<int, Vector3>> PosInRange = new()

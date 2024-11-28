@@ -128,7 +128,9 @@ namespace THNeonMirage.Manager
             
             map.players.Add(player);
             player.Balance = 600000;
+            player.inGamePanel = inGamePanel;
             player.BalanceText = balanceDisplay.GetComponent<TMP_Text>();
+            
             playerObj.transform.position = player.GetPlayerPosByIndex(player.Position);
             DiceHandler.playerObj = playerObj;
 
@@ -138,8 +140,8 @@ namespace THNeonMirage.Manager
             handler.Price1 = tile.price1;
             handler.Price2 = tile.price2;
             handler.Price3 = tile.price3;
-            
-            handler.playerObj = playerObj;
+
+            handler.player = player;
         }
 
         public void UpdateUserData(PlayerData playerData)

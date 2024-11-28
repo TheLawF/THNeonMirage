@@ -33,15 +33,23 @@ namespace THNeonMirage.Manager
         public Inventory Inventory;
         
         private bool IsAdministrator;
+        public GameObject inGamePanel;
+        private ToggleHandler toggle_handler;
         public TMP_Text BalanceText { private get; set; }
+
         private void Start()
         {
+            toggle_handler = inGamePanel.GetComponent<ToggleHandler>();
         }
 
         private void Update()
         {
             transform.position = GetPlayerPosByIndex(Position);
             BalanceText.SetText($"月虹币余额：{Balance}");
+            
+            toggle_handler.Price1 = GameMap.Fields[Position].FirstBid;
+            toggle_handler.Price2 = GameMap.Fields[Position].SecondBid;
+            toggle_handler.Price3 = GameMap.Fields[Position].ThirdBid;
             if (IsClient && IsOwner)
             {
                 
