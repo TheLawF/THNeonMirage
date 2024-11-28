@@ -4,6 +4,7 @@ using System.Linq;
 using THNeonMirage.Data;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -32,7 +33,7 @@ namespace THNeonMirage.Manager
         public Inventory Inventory;
         
         private bool IsAdministrator;
-
+        public TMP_Text BalanceText { private get; set; }
         private void Start()
         {
         }
@@ -40,6 +41,7 @@ namespace THNeonMirage.Manager
         private void Update()
         {
             transform.position = GetPlayerPosByIndex(Position);
+            BalanceText.SetText($"月虹币余额：{Balance}");
             if (IsClient && IsOwner)
             {
                 

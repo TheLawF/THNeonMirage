@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &43493456111164759
+--- !u!1 &9110736245687120657
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 43493456111164752}
-  - component: {fileID: 43493456111164755}
-  - component: {fileID: 43493456111164753}
-  - component: {fileID: 43493456111164754}
+  - component: {fileID: 9110736245687120662}
+  - component: {fileID: 9110736245687120661}
+  - component: {fileID: 9110736245687120663}
+  - component: {fileID: 9110736245687120660}
   m_Layer: 0
   m_Name: PlayerObject
   m_TagString: Untagged
@@ -19,28 +19,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &43493456111164752
+--- !u!4 &9110736245687120662
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 43493456111164759}
+  m_GameObject: {fileID: 9110736245687120657}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 5, z: 0}
+  m_LocalPosition: {x: 39.342346, y: 105.59966, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &43493456111164755
+--- !u!212 &9110736245687120661
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 43493456111164759}
+  m_GameObject: {fileID: 9110736245687120657}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -86,20 +86,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &43493456111164753
+--- !u!114 &9110736245687120663
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 43493456111164759}
+  m_GameObject: {fileID: 9110736245687120657}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2420282285
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 796012930
+  InScenePlacedSourceGlobalObjectIdHash: 2420282285
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -107,20 +107,22 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &43493456111164754
+--- !u!114 &9110736245687120660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 43493456111164759}
+  m_GameObject: {fileID: 9110736245687120657}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1d602748d2bb554493bab4de8e152b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Position: 3
   UserName: 
+  Balance: 0
   Id: 
   Password: 
   DiceType: 0
-  Position: 3
+  BalanceDisplay: {fileID: 0}

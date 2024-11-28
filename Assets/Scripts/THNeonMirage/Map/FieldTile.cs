@@ -21,7 +21,9 @@ namespace THNeonMirage.Map
 
         private SpriteRenderer spriteRenderer;
         private string tooltipString;
-        
+
+        [DisplayOnly]
+        public int occupiedCount;
         public int price1;
         public int price2;
         public int price3;
@@ -64,8 +66,10 @@ namespace THNeonMirage.Map
         public enum Type
         {
             Official,
+            Facility,
             Bazaar,
-            Custom
+            Stage,
+            Other
         }
 
     }

@@ -9,6 +9,7 @@ namespace THNeonMirage.Data
         private DatabaseConnector connector;
         public string Name { get; private set; }
         public int Pos { get; set; }
+        public string Json = "{\"inventory\":[]}";
 
         public User(DatabaseConnector connector)
         {
@@ -17,8 +18,9 @@ namespace THNeonMirage.Data
 
         public Authorization Register(string username, string password)
         {
-            Name = username;
             Pos = 0;
+            Name = username;
+            
             var date = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
             var queryUserCount = $"SELECT COUNT(*) FROM userinfo WHERE username = '{username}'";
             var queryInsertNewUser = 

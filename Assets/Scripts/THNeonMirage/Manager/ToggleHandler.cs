@@ -9,6 +9,7 @@ namespace THNeonMirage.Manager
     public class ToggleHandler : MonoBehaviour
     {
         public GameObject playerObj;
+        public GameObject inGamePanel;
         private PlayerManager m_player;
 
         public List<GameObject> toggleList;
@@ -28,7 +29,7 @@ namespace THNeonMirage.Manager
             toggle_2 = toggleList[1].GetComponent<Toggle>();
             toggle_3 = toggleList[2].GetComponent<Toggle>();
             
-            toggleList[0].GetComponentInChildren<TMP_Text>().SetText( $"第一收购价：{Price1}");
+            toggleList[0].GetComponentInChildren<TMP_Text>().SetText($"第一收购价：{Price1}");
             toggleList[1].GetComponentInChildren<TMP_Text>().SetText($"第二收购价：{Price2}");
             toggleList[2].GetComponentInChildren<TMP_Text>().SetText($"第三收购价：{Price3}");
         }
@@ -57,6 +58,11 @@ namespace THNeonMirage.Manager
         public void OnPurchase()
         {
             m_player.Balance -= Price;
+        }
+
+        public void ClosePanel()
+        {
+            inGamePanel.SetActive(false);
         }
 
         public static void DisplayPanel()

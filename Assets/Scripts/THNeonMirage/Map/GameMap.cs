@@ -4,7 +4,9 @@ using System.Linq;
 using THNeonMirage.Data;
 using THNeonMirage.Manager;
 using THNeonMirage.Util;
+using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Serialization;
@@ -17,6 +19,7 @@ namespace THNeonMirage.Map
     {
         public GameObject settingsPanel;
         public GameObject tilePrefab;
+        
         public List<PlayerManager> players;
         public List<GameObject> fieldObjects;
 
@@ -26,12 +29,24 @@ namespace THNeonMirage.Map
 
         public static Random Random = new ();
         public static bool FirstUse = true;
-        private ObjectPool<GameObject> pool;
-        public static readonly Dictionary<int, FieldData> TileDict = new()
+        
+        public const string Castle = "梦乐园城堡";
+        public const string Ship = "村纱的海盗船";
+        public const string Wheel = "感情的摩天轮";
+        private const string Bazaar = "摊位";
+
+        public static readonly List<FieldData> Fields = new()
         {
-            {0, new FieldData("梦乐园城堡", 0, 0, 0, -10000, typeof(StartTile))},
-            {8, new FieldData("村纱的海盗船", 50000, 60000, 80000, -12000, typeof(PirateShip))},
-            {11, new FieldData("感情的摩天轮", 60000, 80000,  100000, -20000, typeof(PirateShip))},
+            new FieldData("梦乐园城堡",null, 0, 0, 0, -10000, typeof(StartTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData(Bazaar, null,0, 0, 0, 0, typeof(BazaarTile)),
+            new FieldData("村纱的海盗船", null,50000, 60000, 80000, -12000, typeof(PirateShip)), 
+            new FieldData("感情的摩天轮", null,60000, 80000,  100000, -20000, typeof(FerrisWheel)),
         };
 
         public static readonly Dictionary<Range, Func<int, Vector3>> PosInRange = new()
@@ -54,7 +69,6 @@ namespace THNeonMirage.Map
 
             Utils.ForAddToList(40, fieldObjects, i => InitField(tilePrefab, i));
             fieldObjects.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
-            
         }
 
         private void Update()
@@ -89,23 +103,30 @@ namespace THNeonMirage.Map
             });
             
             var instance = Utils.SwitchByMap(list, index);
-            
-           // Debug.Log($"编号{index}的地块位于: {instance.transform.position.ToString()}");
-           var _ = index switch
+            // var _ = index switch
+            // {
+            //     0 => WithFieldData<StartTile>(instance, index, Fields[index]),
+            //     10 => WithFieldData<FerrisWheel>(instance, index, Fields[index]),
+            //     20 => WithFieldData<PirateShip>(instance, index, Fields[index]),
+            //     >= 4 and <= 6 or >= 14 and <= 16 or >= 24 and <= 26 or >= 34 and <= 36 => 
+            //         WithFieldData<BlankTile>(instance, index, Fields[index]),
+            //     _ => WithFieldData<BazaarTile>(instance, index, Fields[index])
+            // };
+            var _ = index switch
             {
                 0 => WithFieldType<StartTile>(instance, index, "月虹金融中心", FieldTile.Type.Official),
                 10 => WithFieldType<VillageTile>(instance, index, "人里工会", FieldTile.Type.Official),
                 20 => WithFieldType<HotelTile>(instance, index, "红魔酒店", FieldTile.Type.Official),
                 >= 4 and <= 6 or >= 14 and <= 16 or >= 24 and <= 26 or >= 34 and <= 36 => 
                     WithFieldType<BazaarTile>(instance, index, "默认摊位", FieldTile.Type.Bazaar),
-                _ => WithFieldType<BlankTile>(instance, index, "空白地区", FieldTile.Type.Custom)
+                _ => WithFieldType<BlankTile>(instance, index, "空白地区", FieldTile.Type.Other)
             };
-            
+            // WithFieldData(instance, index, Fields[index], Fields[index].FieldType);
             return instance;
         }
 
         public int WithFieldType<TFt>(GameObject go, int id, string fieldName, FieldTile.Type fieldType)
-        where TFt: FieldTile
+            where TFt: FieldTile
         {
             go.AddComponent<TFt>();
 
@@ -113,6 +134,23 @@ namespace THNeonMirage.Map
             ft.id = id == -1 ? ft.id : id;
             ft.fieldName = fieldName;
             ft.fieldType = fieldType;
+            
+            return 1;
+        }
+        
+        public int WithFieldData<TF>(GameObject go, int id, FieldData fieldData) where TF: FieldTile
+        {
+            go.AddComponent<TF>();
+            var ft = go.GetComponent<FieldTile>();
+            
+            ft.id = id == -1 ? ft.id : id;
+            ft.price1 = fieldData.FirstBid;
+            ft.price2 = fieldData.SecondBid;
+            ft.price3 = fieldData.ThirdBid;
+
+            ft.tolls = fieldData.Tolls;
+            ft.fieldName = fieldData.Name;
+            ft.fieldType = FieldTile.Type.Other;
             
             return 1;
         }

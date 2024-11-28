@@ -6,6 +6,7 @@ using THNeonMirage.Data;
 using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace THNeonMirage.Manager
 {
@@ -35,7 +36,8 @@ namespace THNeonMirage.Manager
         public GameObject playerObj;
         public GameObject playerPrefab;
         
-        
+        public GameObject balanceDisplay;
+
         private void Start()
         {
             playerPrefab.GetComponent<PlayerManager>().Position = 0;
@@ -125,6 +127,8 @@ namespace THNeonMirage.Manager
             var map = mapObject.GetComponent<GameMap>();
             
             map.players.Add(player);
+            player.Balance = 600000;
+            player.BalanceText = balanceDisplay.GetComponent<TMP_Text>();
             playerObj.transform.position = player.GetPlayerPosByIndex(player.Position);
             DiceHandler.playerObj = playerObj;
 
