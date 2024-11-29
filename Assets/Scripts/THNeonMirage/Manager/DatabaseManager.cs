@@ -135,11 +135,7 @@ namespace THNeonMirage.Manager
             DiceHandler.playerObj = playerObj;
 
             var handler = inGamePanel.GetComponent<ToggleHandler>();
-            var tile = map.fieldObjects[player.Position].GetComponent<FieldTile>();
-            
-            handler.Price1 = tile.price1;
-            handler.Price2 = tile.price2;
-            handler.Price3 = tile.price3;
+            // var tile = map.fieldObjects[player.Position].GetComponent<FieldTile>();
 
             handler.player = player;
         }

@@ -46,10 +46,10 @@ namespace THNeonMirage.Manager
         {
             transform.position = GetPlayerPosByIndex(Position);
             BalanceText.SetText($"月虹币余额：{Balance}");
-            
-            toggle_handler.Price1 = GameMap.Fields[Position].FirstBid;
-            toggle_handler.Price2 = GameMap.Fields[Position].SecondBid;
-            toggle_handler.Price3 = GameMap.Fields[Position].ThirdBid;
+
+            toggle_handler.SetPrice(GameMap.Fields[Position].FirstBid, GameMap.Fields[Position].SecondBid,
+                GameMap.Fields[Position].ThirdBid);
+
             if (IsClient && IsOwner)
             {
                 

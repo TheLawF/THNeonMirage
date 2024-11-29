@@ -346,8 +346,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17.1, y: 0}
-  m_SizeDelta: {x: 213.2413, y: 40}
+  m_AnchoredPosition: {x: 20.152, y: 1}
+  m_SizeDelta: {x: 239.51, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &179410988
 MonoBehaviour:
@@ -1983,8 +1983,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.9999847, y: 48.699997}
-  m_SizeDelta: {x: 255.3828, y: 40}
+  m_AnchoredPosition: {x: 14.219, y: 48.699997}
+  m_SizeDelta: {x: 279.82, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &818407319
 MonoBehaviour:
@@ -3479,8 +3479,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2, y: -51}
-  m_SizeDelta: {x: 255.3828, y: 40}
+  m_AnchoredPosition: {x: 14.219, y: -51}
+  m_SizeDelta: {x: 279.82, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1347946715
 MonoBehaviour:
@@ -4008,8 +4008,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17.1, y: 0}
-  m_SizeDelta: {x: 213.2413, y: 40}
+  m_AnchoredPosition: {x: 19.645, y: 1}
+  m_SizeDelta: {x: 240.53, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1445898802
 MonoBehaviour:
@@ -4219,8 +4219,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 17.1, y: 0}
-  m_SizeDelta: {x: 213.2413, y: 40}
+  m_AnchoredPosition: {x: 19.645, y: 1}
+  m_SizeDelta: {x: 240.53, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1483224239
 MonoBehaviour:
@@ -5382,7 +5382,6 @@ GameObject:
   - component: {fileID: 1839643487}
   - component: {fileID: 1839643486}
   - component: {fileID: 1839643485}
-  - component: {fileID: 1839643488}
   m_Layer: 5
   m_Name: Cancel
   m_TagString: Untagged
@@ -5454,19 +5453,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1839643486}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1839643488}
-        m_TargetAssemblyTypeName: THNeonMirage.Manager.ToggleHandler, Assembly-CSharp
-        m_MethodName: DisplayPanel
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1839643486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5505,21 +5492,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1839643483}
   m_CullTransparentMesh: 1
---- !u!114 &1839643488
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1839643483}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c97672507d8480aa6d8bb7490c55b59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inGamePanel: {fileID: 2106838132}
-  player: {fileID: 0}
-  toggleList: []
 --- !u!1 &1863792613
 GameObject:
   m_ObjectHideFlags: 0
@@ -6172,8 +6144,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.9999847, y: -0.7999878}
-  m_SizeDelta: {x: 255.3828, y: 40}
+  m_AnchoredPosition: {x: 14.219, y: -0.7999878}
+  m_SizeDelta: {x: 279.82, y: 40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2075426499
 MonoBehaviour:
@@ -6333,9 +6305,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c97672507d8480aa6d8bb7490c55b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGamePanel: {fileID: 2106838132}
   player: {fileID: 0}
   toggleList:
   - {fileID: 818407317}
   - {fileID: 2075426497}
   - {fileID: 1347946713}
+  object1: {fileID: 818407317}
+  object2: {fileID: 2075426497}
+  object3: {fileID: 1347946713}
