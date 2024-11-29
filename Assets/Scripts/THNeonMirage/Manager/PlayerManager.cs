@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using THNeonMirage.Data;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using TMPro;
 using Unity.Netcode;
+using Unity.VisualScripting;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace System.Runtime.CompilerServices
 {
-    class IsExternalInit
+    internal class IsExternalInit
     {
     }
 }
@@ -30,8 +34,7 @@ namespace THNeonMirage.Manager
 
         public DiceType DiceType;
         public Attribute Attribute;
-        public Inventory Inventory;
-        
+
         private bool IsAdministrator;
         public GameObject inGamePanel;
         private ToggleHandler toggle_handler;
@@ -104,24 +107,40 @@ namespace THNeonMirage.Manager
     [Serializable]
     public record Attribute(int Health, int AttackDamage);
 
-    [Serializable]
+    // [Serializable]
+    // public class Inventory
+    // {
+    //     public static readonly int MAX_COUNT = 10;
+    //     public readonly List<ItemStack> Slots = new(10);
+// 
+    //     public void AddItemToInventory(int index, ItemStack item)
+    //     {
+    //         if (Slots.Count < index) Slots[index] = item;
+    //         else Slots.Add(item);
+    //     }
+// 
+    //     public void TransferItem(int prevSlot, int targetSlot)
+    //     {
+    //         if (Slots[targetSlot] != null) return;
+    //         Slots[targetSlot] = Slots[prevSlot];
+    //         Slots[prevSlot] = null;
+    //     }
+    // }
+
     public class Inventory
     {
-        public static readonly int MAX_COUNT = 10;
-        public readonly List<ItemStack> Slots = new(10);
+        public List<int> Inv;
 
-        public void AddItemToInventory(int index, ItemStack item)
+        public Inventory(List<int> inventory)
         {
-            if (Slots.Count < index) Slots[index] = item;
-            else Slots.Add(item);
+            this.Inv = inventory;
         }
-
-        public void TransferItem(int prevSlot, int targetSlot)
-        {
-            if (Slots[targetSlot] != null) return;
-            Slots[targetSlot] = Slots[prevSlot];
-            Slots[prevSlot] = null;
-        }
+    }
+    
+    public class OccupiedFields
+    {
+        
+            
     }
 
     [Serializable]

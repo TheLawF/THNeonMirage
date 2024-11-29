@@ -32,9 +32,9 @@ namespace THNeonMirage.Manager
 
         private void Start()
         {
-            text1 = object1.GetComponentInChildren<TMP_Text>();
-            text2 = object2.GetComponentInChildren<TMP_Text>();
-            text3 = object3.GetComponentInChildren<TMP_Text>();
+            text1 = toggleList[0].GetComponentInChildren<TMP_Text>();
+            text2 = toggleList[1].GetComponentInChildren<TMP_Text>();
+            text3 = toggleList[2].GetComponentInChildren<TMP_Text>();
 
             t1 = object1.GetComponent<Toggle>();
             t2 = object2.GetComponent<Toggle>();

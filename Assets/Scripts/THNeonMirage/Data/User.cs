@@ -1,4 +1,15 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using THNeonMirage.Manager;
+using THNeonMirage.Util;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace THNeonMirage.Data
@@ -9,7 +20,8 @@ namespace THNeonMirage.Data
         private DatabaseConnector connector;
         public string Name { get; private set; }
         public int Pos { get; set; }
-        public string Json = "{\"inventory\":[]}";
+        public const string inventory = "{\"inventory\":[]}";
+        public const string fields = "{\"occupied_fields\": {[\"field_id\": 1, \"bid\": 1]}}";
 
         public User(DatabaseConnector connector)
         {
@@ -20,25 +32,33 @@ namespace THNeonMirage.Data
         {
             Pos = 0;
             Name = username;
-            
+
             var date = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
             var queryUserCount = $"SELECT COUNT(*) FROM userinfo WHERE username = '{username}'";
-            var queryInsertNewUser = 
-                "INSERT INTO userinfo (username, password, createtime, position(0))" +
-                $"VALUES ('{username}', '{password}', '{date}', '{Pos}')";
+            var newUserQuery =
+                $"INSERT INTO userinfo (username, password, createtime, position, {nameof(inventory)}) " +
+                $"VALUES ('{username}', '{password}', '{date}', '{Pos}', '{inventory}')";
 
-            if (!connector.Connect()) return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError); // 连接错误
+            // var newUserQuery = 
+            //     $"INSERT INTO userinfo (username, password, createtime, position(0), inventory(\"{{}}\"), fields(\"{{}}\")))" +
+            //     $"VALUES ('{Name}', '{password}', '{date}', '{Pos}', '{PlayerInvData}', '{PlayerFieldData}')";
+
+            if (!connector.Connect())
+                return new Authorization(Authorization.Role.User,
+                    Authorization.ConnectionStatus.ConnectionError); // 连接错误
             try
             {
                 // 执行查询用户名数量的语句，从查询结果中获取数量，如果已存在同名用户则关闭链接
-                var dataTable = connector.SelectQuery(queryUserCount);
+                // var dataTable = connector.SelectQuery(queryUserCount);
+                var dataTable = connector.QueryJson(queryUserCount, nameof(inventory), inventory);
                 var count = int.Parse(dataTable.Rows[0][0].ToString());
                 if (count == 0)
                 {
-                    connector.ExecuteNonQuery(queryInsertNewUser);
+                    connector.ExecuteNonQuery(newUserQuery);
                     connector.Disconnect();
                     return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.RegisterSuccess);
                 }
+
                 connector.Disconnect();
                 return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.DuplicateUser);
             }
@@ -54,13 +74,14 @@ namespace THNeonMirage.Data
         {
             // 执行查询指定用户名记录的语句，查询用户输入的用户名是否存在于数据库中
             Name = username;
-            var queryUserExists = $"SELECT * FROM userinfo WHERE username = '{username}' LIMIT 1";
-            if (!connector.Connect()) return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
-            
-            var dataTable = connector.SelectQuery(queryUserExists);
+            var queryUser = $"SELECT * FROM userinfo WHERE username = '{username}' LIMIT 1";
+            if (!connector.Connect())
+                return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
+
+            var dataTable = connector.SelectQuery(queryUser);
+            var npd = FromJsonQuery(queryUser);
             if (dataTable.Rows.Count == 1)
             {
-                // var savedPos = dataTable.Rows[0]["position"];
                 var storedPassword = dataTable.Rows[0]["password"].ToString();
                 Pos = int.Parse(dataTable.Rows[0]["position"].ToString());
                 if (storedPassword == password)
@@ -69,20 +90,70 @@ namespace THNeonMirage.Data
                     return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.LoginSuccess)
                         .SetData(new PlayerData(Name, Pos));
                 }
+
                 connector.Disconnect();
                 return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.PasswordError);
             }
+
             connector.Disconnect();
             return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.UserNonExist);
         }
 
         public Authorization SaveData(PlayerData playerData)
         {
-            var savePosQuery = $"UPDATE userinfo SET position = {playerData.Position} WHERE username = '{playerData.UserName}'";
-            if (!connector.Connect()) return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
+            var savePosQuery =
+                $"UPDATE userinfo SET position = {playerData.Position} WHERE username = '{playerData.UserName}'";
+            if (!connector.Connect())
+                return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
             connector.ExecuteNonQuery(savePosQuery);
             return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.SaveSuccess);
         }
+
+        public NeoPlayerData FromJsonQuery(string query)
+        {
+            var pairList = new List<Pair<int, int>>();
+
+            var name = connector.GetAsString(query, "username");
+            int.TryParse(connector.GetAsString(query, "position"), out var position);
+            int.TryParse(connector.GetAsString(query, "balance"), out var balance);
+
+            var jsonInv = connector.GetAsString(query, nameof(inventory));
+            var jsonFields = connector.GetAsString(query, nameof(fields));
+
+            var inv = Utils.CastJsonAsList<int>(jsonInv, "inv");
+            var fieldsToken = Utils.CastJsonAsList<JObject>(jsonFields, "fields");
+
+            fieldsToken?.ForEach(o =>
+            {
+                var id = Utils.CastJsonAsInt(o, "id");
+                var bid = Utils.CastJsonAsInt(o, "bid");
+                var pair = Pair<int, int>.Of(id, bid);
+
+                pairList.Add(pair);
+            });
+
+            // Debug.Log($"Player Data: {{name: {name}, pos: {position} balance: {balance}," +
+            //           $" inventory: {ListString(inv)}, fields: {ListString(pairList)}}}");
+            return new NeoPlayerData(name, position, balance, inv, pairList);
+        }
+        
+        public static string ListString(ICollection list)
+        {
+            var sb = new StringBuilder();
+            sb.Append("[");
+            // var enumerable = list as object[] ?? list.Cast<object>().ToArray();
+            foreach (var each in list)
+            {
+                sb.Append(each);
+                sb.Append(list.GetEnumerator().MoveNext() ? "," : "");
+            }
+
+            sb.Append("]");
+            return sb.ToString();
+        }
+
     }
+    
+
 }
 

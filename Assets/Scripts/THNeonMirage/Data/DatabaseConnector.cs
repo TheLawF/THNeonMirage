@@ -9,7 +9,7 @@ namespace THNeonMirage.Data
 {
     public class DatabaseConnector
     {
-        private string connectionString; // 存储 MySQL 连接字符串
+        private static string connectionString; // 存储 MySQL 连接字符串
         private MySqlConnection connection; // 存储 MySQL 连接实例
 
         
@@ -67,6 +67,29 @@ namespace THNeonMirage.Data
             return dataTable;
         }
 
+        public DataTable QueryJson(string query, string column, string json)
+        {
+            var dataTable = new DataTable();
+            var command = new MySqlCommand(query, connection);
+            command.Parameters.AddWithValue(column, json);
+            var reader = command.ExecuteReader();
+
+            dataTable.Load(reader);
+            reader.Close();
+            return dataTable;
+        }
+
+        public string GetAsString(string query, string columnName)
+        {
+            var dataTable = new DataTable();
+            var command = new MySqlCommand(query, connection);
+            var reader = command.ExecuteReader();
+            dataTable.Load(reader);
+            var json = dataTable.Rows[0][columnName].ToString();
+            reader.Close();
+            return json;
+        }
+
         /// <summary>
         /// 执行非查询语句（如 Insert, Update, Delete）
         /// </summary>
@@ -86,6 +109,38 @@ namespace THNeonMirage.Data
             var enumerable = SelectQuery(query).AsEnumerable().Select(_ => new TIn());
             if (enumerable.Any(predicate.Invoke)) return predictFunc.Target as TOut;
             return null;
+        }
+        
+        public static void ReadSql(string query, string tableName, string columnName)
+        {
+            using var connection = new MySqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                using var command = new MySqlCommand(query, connection);
+                command.Parameters.AddWithValue("@userinfo", tableName);
+                command.Parameters.AddWithValue("@inventory", columnName);
+                using var reader = command.ExecuteReader();
+                
+                if (reader.Read())
+                {
+                    var column = reader.GetString("COLUMN_NAME");
+                    var dataType = reader.GetString("DATA_TYPE");
+                    // var columnType = reader.GetString("COLUMN_TYPE");
+
+                    Debug.Log($"字段名称: {column}");
+                    Debug.Log($"数据类型: {dataType}");
+                    // Debug.Log($"完整类型: {columnType}");
+                }
+                else
+                {
+                    Debug.Log("未找到指定字段。");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.Log($"发生错误: {ex.Message}");
+            }
         }
     }
 }

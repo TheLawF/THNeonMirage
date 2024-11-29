@@ -1,6 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Text;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
 
 namespace THNeonMirage.Util
@@ -16,6 +20,35 @@ namespace THNeonMirage.Util
             for (var index = 0; index < count; index++) action.Invoke(index);
         }
 
+        public static object GetFieldValue(object obj, string fieldName)
+            => obj.GetType().GetField(fieldName).GetValue(obj);
+        
+        
+        public static T GetFieldValueAndCast<T>(object obj, string fieldName) => (T) GetFieldValue(obj, fieldName);
+        
+
+        public static List<T> CastJsonAsList<T>(string json, string fieldName) 
+            => JObject.Parse(json)[fieldName]?.ToObject<List<T>>();
+
+        public static int CastJsonAsInt(JObject jo, string fieldName) 
+            => jo[fieldName].Type == JTokenType.Integer ? (int)jo[fieldName] : 0;
+        
+        public static string PrintList(ICollection list)
+        {
+            var sb = new StringBuilder();
+            sb.Append("[");
+            // var enumerable = list as object[] ?? list.Cast<object>().ToArray();
+            foreach (var each in list)
+            {
+                sb.Append(each);
+                sb.Append(list.GetEnumerator().MoveNext() ? "," : "");
+            }
+            
+
+            sb.Append("]");
+            return sb.ToString();
+        }
+        
         /// <summary>
         /// 将物体实例化之后循环添加到列表
         /// </summary>
