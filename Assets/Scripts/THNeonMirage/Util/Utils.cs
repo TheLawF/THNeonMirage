@@ -32,7 +32,7 @@ namespace THNeonMirage.Util
 
         public static int CastJsonAsInt(JObject jo, string fieldName) 
             => jo[fieldName].Type == JTokenType.Integer ? (int)jo[fieldName] : 0;
-        
+
         public static string PrintList(ICollection list)
         {
             var sb = new StringBuilder();
@@ -43,8 +43,8 @@ namespace THNeonMirage.Util
                 sb.Append(each);
                 sb.Append(list.GetEnumerator().MoveNext() ? "," : "");
             }
-            
 
+            sb.Remove(sb.Length - 1, 1);
             sb.Append("]");
             return sb.ToString();
         }

@@ -99,10 +99,30 @@ namespace THNeonMirage.Data
             return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.UserNonExist);
         }
 
-        public Authorization SaveData(PlayerData playerData)
+        public Authorization UpdateAll(PlayerData playerData)
+        {
+            var savePosQuery =
+                $"UPDATE userinfo SET position = {playerData.Position}, balance = '{playerData.Balance}' WHERE username = '{playerData.UserName}'";
+            if (!connector.Connect())
+                return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
+            connector.ExecuteNonQuery(savePosQuery);
+            return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.SaveSuccess);
+        }
+        
+        public Authorization Update(PlayerData playerData)
         {
             var savePosQuery =
                 $"UPDATE userinfo SET position = {playerData.Position} WHERE username = '{playerData.UserName}'";
+            if (!connector.Connect())
+                return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
+            connector.ExecuteNonQuery(savePosQuery);
+            return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.SaveSuccess);
+        }
+
+        public Authorization Update(string name, string columnName, object data)
+        {
+            var savePosQuery =
+                $"UPDATE userinfo SET '{columnName}' = {data} WHERE username = '{name}'";
             if (!connector.Connect())
                 return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
             connector.ExecuteNonQuery(savePosQuery);
@@ -135,6 +155,16 @@ namespace THNeonMirage.Data
             // Debug.Log($"Player Data: {{name: {name}, pos: {position} balance: {balance}," +
             //           $" inventory: {ListString(inv)}, fields: {ListString(pairList)}}}");
             return new NeoPlayerData(name, position, balance, inv, pairList);
+        }
+
+        public string InvToJson(List<int> inv)
+        {
+            return JsonConvert.SerializeObject(inv);
+        }
+        
+        public string FieldsToJson(List<Pair<int, int>> inv)
+        {
+            return JsonConvert.SerializeObject(inv);
         }
         
         public static string ListString(ICollection list)

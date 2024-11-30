@@ -19,12 +19,6 @@ namespace THNeonMirage.Data
             PlayerData = playerData;
             return this;
         }
-        
-        public Authorization SetData(string userName, int position)
-        {
-            PlayerData = new PlayerData(userName, position);
-            return this;
-        }
 
         public enum Role
         {

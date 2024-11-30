@@ -142,7 +142,7 @@ namespace THNeonMirage.Manager
 
         public void UpdateUserData(PlayerData playerData)
         {
-            _user.SaveData(playerData);
+            _user.Update(playerData);
         }
 
         public static string EncryptPassword(string password)
