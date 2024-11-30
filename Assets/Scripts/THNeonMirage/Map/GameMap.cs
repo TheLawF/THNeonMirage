@@ -193,7 +193,7 @@ namespace THNeonMirage.Map
         }
         
         public int GetPlayerCountOn(int fieldId)
-            => players.Count(player => player.GetComponent<PlayerManager>().Position == fieldId);
+            => players.Count(player => player.GetComponent<PlayerManager>().PlayerData.Position == fieldId);
 
         public int StartServer() => 
             NetworkManager.Singleton.StartServer() ? Utils.Info("服务器启动成功") : Utils.Error("服务器启动失败");

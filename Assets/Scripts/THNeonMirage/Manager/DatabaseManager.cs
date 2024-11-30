@@ -40,7 +40,7 @@ namespace THNeonMirage.Manager
 
         private void Start()
         {
-            playerPrefab.GetComponent<PlayerManager>().Position = 0;
+            playerPrefab.GetComponent<PlayerManager>().PlayerData.Position = 0;
             connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
             _user = new User(connector);
             Debug.Log("连接数据库成功");
@@ -127,11 +127,12 @@ namespace THNeonMirage.Manager
             var map = mapObject.GetComponent<GameMap>();
             
             map.players.Add(player);
-            player.Balance = 600000;
+            player.PlayerData.Balance = 600000;
+            player.database = this;
             player.inGamePanel = inGamePanel;
             player.BalanceText = balanceDisplay.GetComponent<TMP_Text>();
             
-            playerObj.transform.position = player.GetPlayerPosByIndex(player.Position);
+            playerObj.transform.position = player.GetPlayerPosByIndex(player.PlayerData.Position);
             DiceHandler.playerObj = playerObj;
 
             var handler = inGamePanel.GetComponent<ToggleHandler>();
@@ -140,10 +141,9 @@ namespace THNeonMirage.Manager
             handler.player = player;
         }
 
-        public void UpdateUserData(PlayerData playerData)
-        {
-            _user.Update(playerData);
-        }
+        public void SaveAll(PlayerData playerData) => _user.SaveAll(playerData);
+        public void Save(string username, string columnName, object data) => _user.Save(username, columnName, data);
+        
 
         public static string EncryptPassword(string password)
         {

@@ -10,7 +10,6 @@ namespace THNeonMirage.Manager
     public class ToggleHandler : MonoBehaviour
     {
         public PlayerManager player;
-
         public List<GameObject> toggleList;
 
         public GameObject object1;
@@ -63,8 +62,9 @@ namespace THNeonMirage.Manager
 
         public void OnPurchase()
         {
-            if (player.Balance < price1) return;
-            player.Balance -= t1.isOn ? price1 : t2.isOn ? price2 : t3.isOn ? price3 : 0;
+            if (player.PlayerData.Balance < price1) return;
+            player.PlayerData.Balance -= t1.isOn ? price1 : t2.isOn ? price2 : t3.isOn ? price3 : 0;
+            player.Save("balance", player.PlayerData.Balance);
         }
 
 

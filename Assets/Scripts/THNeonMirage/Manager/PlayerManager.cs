@@ -25,9 +25,11 @@ namespace THNeonMirage.Manager
     [Serializable]
     public class PlayerManager : NetworkBehaviour
     {
-        public int Position;
-        public string UserName;
-        public int Balance;
+        // public int Position;
+        // public string UserName;
+        // public int Balance;
+
+        public PlayerData PlayerData;
 
         public string Id;
         public string Password;
@@ -38,6 +40,8 @@ namespace THNeonMirage.Manager
         private bool IsAdministrator;
         public GameObject inGamePanel;
         private ToggleHandler toggle_handler;
+        [DisplayOnly]
+        public DatabaseManager database;
         public TMP_Text BalanceText { private get; set; }
 
         private void Start()
@@ -47,48 +51,44 @@ namespace THNeonMirage.Manager
 
         private void Update()
         {
-            transform.position = GetPlayerPosByIndex(Position);
-            BalanceText.SetText($"月虹币余额：{Balance}");
+            transform.position = GetPlayerPosByIndex(PlayerData.Position);
+            BalanceText.SetText($"月虹币余额：{PlayerData.Balance}");
 
-            toggle_handler.SetPrice(GameMap.Fields[Position].FirstBid, GameMap.Fields[Position].SecondBid,
-                GameMap.Fields[Position].ThirdBid);
+            toggle_handler.SetPrice(
+                GameMap.Fields[PlayerData.Position].FirstBid,
+                GameMap.Fields[PlayerData.Position].SecondBid,
+                GameMap.Fields[PlayerData.Position].ThirdBid);
 
             if (IsClient && IsOwner)
             {
                 
             }
-            else
-            {
-                
-            }
         }
+
+        public void SaveAll(PlayerData playerData) => database.SaveAll(playerData);
+        public void Save(string columnName, object data) => database.Save(PlayerData.UserName, columnName, data);
+
 
         public PlayerManager Init(PlayerData playerData)
         {
-            UserName = playerData.UserName;
+            PlayerData = playerData;
             SetPosition(playerData.Position);
             return this;
         }
 
-        public PlayerManager SetName(string userName)
-        {
-            UserName = userName;
-            return this;
-        }
-        
         public PlayerManager SetPosition(int position)
         {
-            if (Position + position is < 0 and >= -40)
+            if (PlayerData.Position + position is < 0 and >= -40)
             {
-                Position = -position;
+                PlayerData.Position = -position;
             }
-            Position = position switch
+            PlayerData.Position = position switch
             {
                 <= -40 => -position % 40,
                 >= 40 => position % 40,
                 _ => position
             };
-            transform.position = GetPlayerPosByIndex(Position);
+            transform.position = GetPlayerPosByIndex(PlayerData.Position);
             return this;
         }
         public Vector3 GetPlayerPosByIndex(int index) => GameMap.PosInRange.First(pair => 
