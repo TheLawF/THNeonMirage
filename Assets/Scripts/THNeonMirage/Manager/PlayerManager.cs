@@ -47,6 +47,7 @@ namespace THNeonMirage.Manager
         private void Start()
         {
             toggle_handler = inGamePanel.GetComponent<ToggleHandler>();
+            PlayerData = new PlayerData();
         }
 
         private void Update()

@@ -112,7 +112,7 @@ namespace THNeonMirage.Data
         public Authorization Save(string name, string columnName, object data)
         {
             var savePosQuery =
-                $"UPDATE userinfo SET '{columnName}' = {data} WHERE username = '{name}'";
+                $"UPDATE userinfo SET {columnName} = {data} WHERE username = '{name}'";
             if (!connector.Connect())
                 return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
             connector.ExecuteNonQuery(savePosQuery);

@@ -40,7 +40,7 @@ namespace THNeonMirage.Manager
 
         private void Start()
         {
-            playerPrefab.GetComponent<PlayerManager>().PlayerData.Position = 0;
+            // playerPrefab.GetComponent<PlayerManager>().PlayerData.Position = 0;
             connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
             _user = new User(connector);
             Debug.Log("连接数据库成功");
@@ -91,6 +91,7 @@ namespace THNeonMirage.Manager
             {
                 var authorization = _user.Login(username, pwd);
                 player_data = authorization.PlayerData;
+                Debug.Log(player_data);
                 switch (authorization.Status)
                 {
                     case Authorization.ConnectionStatus.LoginSuccess:

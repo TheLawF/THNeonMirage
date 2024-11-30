@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using THNeonMirage.Util;
+using Utils = UnityEngine.Diagnostics.Utils;
 
 namespace THNeonMirage.Data
 {
@@ -63,5 +64,11 @@ namespace THNeonMirage.Data
 
         public List<int> CopyInv() => new (Inventory);
         public List<Pair<int, int>> CopyFields() => new (Fields);
+
+        public override string ToString()
+            => $@"Player: {{ UserName: {UserName}, Pos: {Position}, Balance: {Balance},
+                     Inventory: {Util.Utils.PrintList(Inventory)}, 
+                     Fields: {Util.Utils.PrintList(Fields)}}}";
+        
     }
 }
