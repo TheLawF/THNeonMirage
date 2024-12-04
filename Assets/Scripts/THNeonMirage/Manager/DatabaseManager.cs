@@ -144,7 +144,6 @@ namespace THNeonMirage.Manager
 
         public void SaveAll(PlayerData playerData) => _user.SaveAll(playerData);
         public void Save(string username, string columnName, object data) => _user.Save(username, columnName, data);
-        
 
         public static string EncryptPassword(string password)
         {

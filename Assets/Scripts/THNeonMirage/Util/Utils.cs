@@ -33,19 +33,25 @@ namespace THNeonMirage.Util
         public static int CastJsonAsInt(JObject jo, string fieldName) 
             => jo[fieldName].Type == JTokenType.Integer ? (int)jo[fieldName] : 0;
 
-        public static string PrintList(ICollection list)
+        public static string ListToString(ICollection list)
         {
             var sb = new StringBuilder();
-            sb.Append("[");
-            // var enumerable = list as object[] ?? list.Cast<object>().ToArray();
+            sb.Append('[');
             foreach (var each in list)
             {
                 sb.Append(each);
                 sb.Append(list.GetEnumerator().MoveNext() ? "," : "");
             }
-
             sb.Remove(sb.Length - 1, 1);
-            sb.Append("]");
+            sb.Append(']');
+            return sb.ToString();
+        }
+
+        public static string ListToJsonString(string key, ICollection list)
+        {
+            var sb = new StringBuilder();
+            sb.Append($"\"{key}\":");
+            sb.Append(ListToString(list));
             return sb.ToString();
         }
         

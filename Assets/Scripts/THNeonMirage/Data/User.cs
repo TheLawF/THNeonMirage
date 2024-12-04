@@ -1,15 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
-using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using THNeonMirage.Manager;
 using THNeonMirage.Util;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace THNeonMirage.Data
@@ -124,9 +119,9 @@ namespace THNeonMirage.Data
             var savePosQuery = $@"UPDATE userinfo 
                 SET position = {playerData.Position},
                     balance = {playerData.Balance},
-                    fields = {FieldsToJson(playerData.Fields)},
-                    inventory = {InvToJson(playerData.Inventory)} 
-                WHERE username = {playerData.UserName}";
+                    fields = '{FieldsToJson(playerData.Fields)}',
+                    inventory = '{InvToJson(playerData.Inventory)}' 
+                WHERE username = '{playerData.UserName}'";
             if (!connector.Connect())
                 return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
             connector.ExecuteNonQuery(savePosQuery);
@@ -161,14 +156,20 @@ namespace THNeonMirage.Data
             return new NeoPlayerData(name, position, balance, inv, pairList);
         }
 
-        public string InvToJson(List<int> inv)
+        private static string InvToJson(ICollection inv) => Utils.ListToJsonString("inv", inv);
+
+        private static string FieldsToJson(List<Pair<int, int>> list)
         {
-            return JsonConvert.SerializeObject(inv);
-        }
-        
-        public string FieldsToJson(List<Pair<int, int>> inv)
-        {
-            return JsonConvert.SerializeObject(inv);
+            var sb = new StringBuilder();
+            sb.Append("{\"fields\":[");
+            foreach (var each in list)
+            {
+                sb.Append(each.ToJsonString("id", "bid"));
+                sb.Append(list.GetEnumerator().MoveNext() ? "," : "");
+            }
+            sb.Remove(sb.Length - 1, 1);
+            sb.Append("]}");
+            return sb.ToString();
         }
         
         public static string ListString(ICollection list)
@@ -181,7 +182,6 @@ namespace THNeonMirage.Data
                 sb.Append(each);
                 sb.Append(list.GetEnumerator().MoveNext() ? "," : "");
             }
-
             sb.Append("]");
             return sb.ToString();
         }

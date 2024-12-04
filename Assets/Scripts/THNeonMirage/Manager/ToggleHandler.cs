@@ -73,11 +73,11 @@ namespace THNeonMirage.Manager
             
         }
 
-        public void SetPrice(int price1, int price2, int price3)
+        public void SetPrice(int p1, int p2, int p3)
         {
-            this.price1 = price1;
-            this.price2 = price2;
-            this.price3 = price3;
+            price1 = p1;
+            price2 = p2;
+            price3 = p3;
         }
     }
 }

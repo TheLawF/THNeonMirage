@@ -11,8 +11,8 @@ namespace THNeonMirage.Data
         public string UserName { get; set; }
         public int Position { get; set; }
         public int Balance { get; set; }
-        public List<int> Inventory { get; }
-        public List<Pair<int, int>> Fields { get; }
+        public List<int> Inventory { get; private set; }
+        public List<Pair<int, int>> Fields { get; private set; }
 
         public PlayerData(string userName, int position) : this()
         {
@@ -56,6 +56,18 @@ namespace THNeonMirage.Data
             return this;
         }
 
+        private PlayerData SetInv(List<int> inv)
+        {
+            Inventory = inv;
+            return this;
+        }
+        
+        private PlayerData SetFields(List<Pair<int, int>> fields)
+        {
+            Fields = fields;
+            return this;
+        }
+
         public PlayerData AddField(int fieldId, int bidId)
         {
             Fields.Add(new Pair<int, int>(fieldId, bidId));
@@ -67,8 +79,10 @@ namespace THNeonMirage.Data
 
         public override string ToString()
             => $@"Player: {{ UserName: {UserName}, Pos: {Position}, Balance: {Balance},
-                     Inventory: {Util.Utils.PrintList(Inventory)}, 
-                     Fields: {Util.Utils.PrintList(Fields)}}}";
-        
+                     Inventory: {Util.Utils.ListToString(Inventory)}, 
+                     Fields: {Util.Utils.ListToString(Fields)}}}";
+
+        public PlayerData Copy() => new PlayerData().Name(UserName).Pos(Position).SetBalance(Balance)
+            .SetInv(Inventory).SetFields(Fields);
     }
 }

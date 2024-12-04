@@ -40,7 +40,8 @@ namespace THNeonMirage.Manager
             DiceValue = random.Next(1,7);
             player.SetPosition(player.PlayerData.Position + DiceValue);
             // dbManager.UpdateUserData(new PlayerData(player.UserName, player.Position));
-            player.Save("position", player.PlayerData.Position);
+            // player.Save("position", player.PlayerData.Position);
+            player.SaveAll(player.PlayerData.Copy());
             shouldRenderTooltip = true;
         }
 
