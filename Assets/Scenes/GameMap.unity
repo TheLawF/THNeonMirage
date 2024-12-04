@@ -1087,9 +1087,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 964c3591b15e40148f37a9f02b1df855, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canRenderTooltip: 0
   DiceValue: 0
-  databaseObj: {fileID: 1439646832}
+  pos: 0
+  canRenderTooltip: 0
+  playerObject: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &489814399
 GameObject:
   m_ObjectHideFlags: 0
@@ -3889,6 +3891,7 @@ MonoBehaviour:
   inGamePanel: {fileID: 2106838132}
   playerObj: {fileID: 0}
   playerPrefab: {fileID: 9110736245687120657, guid: db4c84b7937087a4c96002f6fff8f6fc, type: 3}
+  diceObject: {fileID: 417163156}
   balanceDisplay: {fileID: 719447476}
 --- !u!4 &1439646834
 Transform:

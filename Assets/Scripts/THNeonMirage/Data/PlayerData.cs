@@ -1,11 +1,14 @@
+using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using THNeonMirage.Util;
+using UnityEngine;
 using Utils = UnityEngine.Diagnostics.Utils;
 
 namespace THNeonMirage.Data
 {
     // int Balance, List<int> Items, List<Pair<int,int>> OccupiedFields
+    [Serializable]
     public class PlayerData
     {
         public string UserName { get; set; }

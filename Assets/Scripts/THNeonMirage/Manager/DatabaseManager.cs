@@ -1,9 +1,12 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
 using THNeonMirage.Data;
 using THNeonMirage.Map;
+using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -16,10 +19,11 @@ namespace THNeonMirage.Manager
         private PlayerData player_data;
         private MySqlConnection connection;
         private DatabaseConnector connector;
+        private DiceHandler dice;
         
         private User _user;
         private string serverName = "localhost";
-        private string dbName = "UnityGameUsers";	//数据库名
+        private string dbName = "unitygameusers";	//数据库名
         private string adminName = "root";		//登录数据库的用户名
         private string adminPwd = "123456";		//登录数据库的密码
         private string port = "3306";			//MySQL服务的端口号
@@ -35,12 +39,13 @@ namespace THNeonMirage.Manager
         [DisplayOnly]
         public GameObject playerObj;
         public GameObject playerPrefab;
-        
+        public GameObject diceObject;
         public GameObject balanceDisplay;
 
         private void Start()
         {
             // playerPrefab.GetComponent<PlayerManager>().PlayerData.Position = 0;
+            dice = diceObject.GetComponent<DiceHandler>();
             connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
             _user = new User(connector);
             Debug.Log("连接数据库成功");
@@ -91,7 +96,6 @@ namespace THNeonMirage.Manager
             {
                 var authorization = _user.Login(username, pwd);
                 player_data = authorization.PlayerData;
-                Debug.Log(player_data);
                 switch (authorization.Status)
                 {
                     case Authorization.ConnectionStatus.LoginSuccess:
@@ -133,16 +137,17 @@ namespace THNeonMirage.Manager
             player.inGamePanel = inGamePanel;
             player.BalanceText = balanceDisplay.GetComponent<TMP_Text>();
             
-            playerObj.transform.position = player.GetPlayerPosByIndex(player.PlayerData.Position);
-            DiceHandler.playerObj = playerObj;
-
             var handler = inGamePanel.GetComponent<ToggleHandler>();
-            // var tile = map.fieldObjects[player.Position].GetComponent<FieldTile>();
-
             handler.player = player;
+
+            dice.player = player;
+            dice.player.PlayerData.Position = player.PlayerData.Position;
+            dice.pos = player.PlayerData.Position;
+            dice.playerObject = playerObj;
+            
         }
 
-        public void SaveAll(PlayerData playerData) => _user.SaveAll(playerData);
+        public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);
         public void Save(string username, string columnName, object data) => _user.Save(username, columnName, data);
 
         public static string EncryptPassword(string password)

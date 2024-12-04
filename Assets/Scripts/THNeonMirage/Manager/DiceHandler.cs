@@ -8,23 +8,21 @@ namespace THNeonMirage.Manager
 {
     public class DiceHandler: MonoBehaviour, IPointerClickHandler
     {
-        
-        public bool canRenderTooltip;
-        public static GameObject playerObj;
-
         [DisplayOnly] 
         public int DiceValue;
-        public GameObject databaseObj;
-        
+        public int pos;
+        public bool canRenderTooltip;
         private bool shouldRenderTooltip;
-        private DatabaseManager dbManager;
-        private PlayerManager player;
+
+        public GameObject playerObject;
+        public PlayerManager player;
+        
         private Random random = new();
         private TMP_Text foreground_text;
+        
         private void Start()
         {
             DiceValue = 1;
-            dbManager = databaseObj.GetComponent<DatabaseManager>();
         }
 
         private void OnGUI()
@@ -36,12 +34,11 @@ namespace THNeonMirage.Manager
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
         {
-            player = playerObj.GetComponent<PlayerManager>();
             DiceValue = random.Next(1,7);
-            player.SetPosition(player.PlayerData.Position + DiceValue);
-            // dbManager.UpdateUserData(new PlayerData(player.UserName, player.Position));
-            // player.Save("position", player.PlayerData.Position);
-            player.SaveAll(player.PlayerData.Copy());
+            pos += DiceValue;
+            player.SetPosition(pos);
+            player.SaveAll(player.PlayerData);
+            // Debug.Log($"Index = {player.PlayerData.Position}, Pos = {pos}, Dice = {DiceValue}");
             shouldRenderTooltip = true;
         }
 

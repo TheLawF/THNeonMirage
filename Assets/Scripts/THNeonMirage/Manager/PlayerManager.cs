@@ -1,17 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using THNeonMirage.Data;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using TMPro;
 using Unity.Netcode;
-using Unity.VisualScripting;
-using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace System.Runtime.CompilerServices
 {
@@ -52,13 +47,13 @@ namespace THNeonMirage.Manager
 
         private void Update()
         {
-            transform.position = GetPlayerPosByIndex(PlayerData.Position);
+            // transform.position = GetPlayerPosByIndex(PlayerData.Position);
             BalanceText.SetText($"月虹币余额：{PlayerData.Balance}");
 
-            toggle_handler.SetPrice(
-                GameMap.Fields[PlayerData.Position].FirstBid,
-                GameMap.Fields[PlayerData.Position].SecondBid,
-                GameMap.Fields[PlayerData.Position].ThirdBid);
+            // toggle_handler.SetPrice(
+            //     GameMap.Fields[PlayerData.Position].FirstBid,
+            //     GameMap.Fields[PlayerData.Position].SecondBid,
+            //     GameMap.Fields[PlayerData.Position].ThirdBid);
 
             if (IsClient && IsOwner)
             {
@@ -66,9 +61,8 @@ namespace THNeonMirage.Manager
             }
         }
 
-        public void SaveAll(PlayerData playerData) => database.SaveAll(playerData);
+        public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
         public void Save(string columnName, object data) => database.Save(PlayerData.UserName, columnName, data);
-
 
         public PlayerManager Init(PlayerData playerData)
         {
@@ -77,6 +71,22 @@ namespace THNeonMirage.Manager
             return this;
         }
 
+        public PlayerManager SetPosition(GameObject player, int position)
+        {
+            if (PlayerData.Position + position is < 0 and >= -40)
+            {
+                PlayerData.Position = -position;
+            }
+            PlayerData.Position = position switch
+            {
+                <= -40 => -position % 40,
+                >= 40 => position % 40,
+                _ => position
+            };
+            player.transform.position = GetPlayerPosByIndex(PlayerData.Position);
+            return this;
+        }
+        
         public PlayerManager SetPosition(int position)
         {
             if (PlayerData.Position + position is < 0 and >= -40)
@@ -91,6 +101,13 @@ namespace THNeonMirage.Manager
             };
             transform.position = GetPlayerPosByIndex(PlayerData.Position);
             return this;
+        }
+
+        public void Move(int steps)
+        {
+            PlayerData.Position += steps;
+            transform.position =
+                GetPlayerPosByIndex(PlayerData.Position >= 40 ? PlayerData.Position % 40 : PlayerData.Position);
         }
         public Vector3 GetPlayerPosByIndex(int index) => GameMap.PosInRange.First(pair => 
             Utils.IsInRange(pair.Key, index)).Value.Invoke(index);

@@ -67,7 +67,6 @@ namespace THNeonMirage.Manager
             player.Save("balance", player.PlayerData.Balance);
         }
 
-
         public static void DisplayPanel()
         {
             

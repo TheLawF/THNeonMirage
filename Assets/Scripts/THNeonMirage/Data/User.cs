@@ -74,16 +74,18 @@ namespace THNeonMirage.Data
                 return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
 
             var dataTable = connector.SelectQuery(queryUser);
-            var npd = FromJsonQuery(queryUser);
             if (dataTable.Rows.Count == 1)
             {
                 var storedPassword = dataTable.Rows[0]["password"].ToString();
                 Pos = int.Parse(dataTable.Rows[0]["position"].ToString());
+                // var inv = dataTable.Rows[0]["inventory"].ToString();
+                // var fields = dataTable.Rows[0]["fields"].ToString();
+                
                 if (storedPassword == password)
                 {
                     connector.Disconnect();
                     return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.LoginSuccess)
-                        .SetData(new PlayerData(Name, Pos));
+                        .SetData(new PlayerData().Name(Name).Pos(Pos));
                 }
 
                 connector.Disconnect();
@@ -94,15 +96,20 @@ namespace THNeonMirage.Data
             return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.UserNonExist);
         }
 
-        // public Authorization Update(PlayerData playerData)
-        // {
-        //     var savePosQuery =
-        //         $"UPDATE userinfo SET position = {playerData.Position} WHERE username = '{playerData.UserName}'";
-        //     if (!connector.Connect())
-        //         return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
-        //     connector.ExecuteNonQuery(savePosQuery);
-        //     return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.SaveSuccess);
-        // }
+        public Authorization Update(PlayerData playerData)
+        {
+            const string savePosQuery = "UPDATE userinfo SET position = @pos WHERE username = @name";
+            if (!connector.Connect())
+            {
+                return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
+            }
+            connector.ExecuteByParams(savePosQuery, new Dictionary<string, object>
+            {
+                {"@pos", playerData.Position},
+                {"@name", playerData.UserName}
+            });
+            return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.SaveSuccess);
+        }
 
         public Authorization Save(string name, string columnName, object data)
         {

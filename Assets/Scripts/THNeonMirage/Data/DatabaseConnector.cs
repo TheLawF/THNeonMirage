@@ -11,7 +11,7 @@ namespace THNeonMirage.Data
     {
         private static string connectionString; // 存储 MySQL 连接字符串
         private MySqlConnection connection; // 存储 MySQL 连接实例
-
+        private string server, database, uid, password;
         
         public DatabaseConnector(string server, string database, string uid, string password)
         {
@@ -98,6 +98,15 @@ namespace THNeonMirage.Data
         {
             var command = new MySqlCommand(query, connection);
             command.ExecuteNonQuery();
+        }
+
+        public void ExecuteByParams(string query, Dictionary<string, object> kvDict)
+        {
+            var command = new MySqlCommand(query, connection);
+            foreach (var kv in kvDict) 
+                command.Parameters.AddWithValue(kv.Key, kv.Value);
+            command.ExecuteNonQuery();
+            Debug.Log("Update Success");
         }
 
         /// <summary>
