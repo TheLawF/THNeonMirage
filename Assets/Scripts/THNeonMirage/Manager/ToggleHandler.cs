@@ -64,7 +64,7 @@ namespace THNeonMirage.Manager
         {
             if (player.PlayerData.Balance < price1) return;
             player.PlayerData.Balance -= t1.isOn ? price1 : t2.isOn ? price2 : t3.isOn ? price3 : 0;
-            player.Save("balance", player.PlayerData.Balance);
+            // player.Save("balance", player.PlayerData.Balance);
         }
 
         public static void DisplayPanel()
