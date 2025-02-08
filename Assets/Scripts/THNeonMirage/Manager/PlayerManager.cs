@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ExitGames.Client.Photon.StructWrapping;
 using THNeonMirage.Data;
+using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UIElements;
 
 namespace System.Runtime.CompilerServices
 {
@@ -49,7 +53,6 @@ namespace THNeonMirage.Manager
         {
             // transform.position = GetPlayerPosByIndex(PlayerData.Position);
             BalanceText.SetText($"月虹币余额：{PlayerData.Balance}");
-
             // toggle_handler.SetPrice(
             //     GameMap.Fields[PlayerData.Position].FirstBid,
             //     GameMap.Fields[PlayerData.Position].SecondBid,

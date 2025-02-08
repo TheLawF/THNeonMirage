@@ -125,9 +125,7 @@ namespace THNeonMirage.Data
         {
             var savePosQuery = $@"UPDATE userinfo 
                 SET position = {playerData.Position},
-                    balance = {playerData.Balance},
-                    fields = '{FieldsToJson(playerData.Fields)}',
-                    inventory = '{InvToJson(playerData.Inventory)}' 
+                    balance = {playerData.Balance} 
                 WHERE username = '{playerData.UserName}'";
             if (!connector.Connect())
                 return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);

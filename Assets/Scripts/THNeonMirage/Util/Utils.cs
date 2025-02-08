@@ -31,9 +31,7 @@ namespace THNeonMirage.Util
         public static object GetFieldValue(object obj, string fieldName)
             => obj.GetType().GetField(fieldName).GetValue(obj);
         
-        
         public static T GetFieldValueAndCast<T>(object obj, string fieldName) => (T) GetFieldValue(obj, fieldName);
-        
 
         public static List<T> CastJsonAsList<T>(string json, string fieldName) 
             => JObject.Parse(json)[fieldName]?.ToObject<List<T>>();
@@ -70,6 +68,9 @@ namespace THNeonMirage.Util
         /// <param name="listToAdd">准备添加的列表</param>
         /// <param name="indexToObjFunc">使用索引值实例化物体对象的函数</param>
         public static void ForAddToList(int count, List<GameObject> listToAdd, Func<int, GameObject> indexToObjFunc)
+            => ForAct(count, i => listToAdd.Add(indexToObjFunc.Invoke(i)));
+        
+        public static void ForAddToList<T>(int count, List<T> listToAdd, Func<int, T> indexToObjFunc)
             => ForAct(count, i => listToAdd.Add(indexToObjFunc.Invoke(i)));
 
         /// <summary>
