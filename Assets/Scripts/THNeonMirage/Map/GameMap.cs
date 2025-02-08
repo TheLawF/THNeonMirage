@@ -10,6 +10,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Serialization;
+using NetworkManager = Unity.Netcode.NetworkManager;
 using Random = System.Random;
 
 namespace THNeonMirage.Map
