@@ -32,27 +32,23 @@ namespace THNeonMirage.Manager
 
         public string Id;
         public string Password;
+        private bool IsAdministrator;
 
         public DiceType DiceType;
-        public Attribute Attribute;
 
-        private bool IsAdministrator;
-        public GameObject inGamePanel;
-        private ToggleHandler toggle_handler;
         [DisplayOnly]
         public DatabaseManager database;
         public TMP_Text BalanceText { private get; set; }
 
         private void Start()
         {
-            toggle_handler = inGamePanel.GetComponent<ToggleHandler>();
             PlayerData = new PlayerData();
         }
 
         private void Update()
         {
-            // transform.position = GetPlayerPosByIndex(PlayerData.Position);
-            BalanceText.SetText($"月虹币余额：{PlayerData.Balance}");
+            transform.position = GetPlayerPosByIndex(PlayerData.Position);
+            // BalanceText.SetText($"月虹币余额：{PlayerData.Balance}");
             // toggle_handler.SetPrice(
             //     GameMap.Fields[PlayerData.Position].FirstBid,
             //     GameMap.Fields[PlayerData.Position].SecondBid,

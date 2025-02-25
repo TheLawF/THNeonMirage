@@ -1,33 +1,27 @@
 using System;
+using System.Collections.Generic;
 using THNeonMirage.Data;
 using THNeonMirage.Manager;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace THNeonMirage.Map
 {
     [Serializable]
-    public abstract class FieldTile : MonoBehaviour
+    public class FieldTile : MonoBehaviour
     {
         public int id;
-        public string fieldName;
-        public Type fieldType;
+        public int level;
+        public string description;
         public Color backGroundColor;
-        
+
+        public FieldProperty Property;
+        public GameObject textField;
         private GameObject hoverPanel;
         private GameObject hoverText;
 
         private SpriteRenderer spriteRenderer;
         private string tooltipString;
-
-        [DisplayOnly]
-        public int occupiedCount;
-        public int price1;
-        public int price2;
-        public int price3;
-        public int tolls;
 
         private void Start()
         {
@@ -36,14 +30,33 @@ namespace THNeonMirage.Map
             spriteRenderer = GetComponent<SpriteRenderer>();
             backGroundColor = spriteRenderer.color;
 
-            price1 = 10000;
-            price2 = 12000;
-            price3 = 15000;
+            description = $"空地过路费：{Property.Price.Level0}" +
+                          $"一幢房屋：{Property.Price.Level1}" +
+                          $"两幢房屋：{Property.Price.Level2}" +
+                          $"三幢房屋：{Property.Price.Level3}" +
+                          $"每幢房屋建造费用：{Property.Price.Building}";
         }
 
+        public int CurrentTolls()
+        {
+            return level switch
+            {
+                0 => Property.Price.Level0,
+                1 => Property.Price.Level1,
+                2 => Property.Price.Level2,
+                3 => Property.Price.Level3,
+                4 => -2000,
+                5 => -1,
+                _ => throw new IndexOutOfRangeException("等级不能超过3")
+            };
+        }
+
+        // public abstract bool IsStartTile();
+        // public abstract bool HasSpecialEffect();
+        
         private void OnMouseOver()
         {
-            tooltipString = $"编号：{id}\n名称：{fieldName}";
+            tooltipString = $"编号：{id}\n名称：{Property.Name}";
             spriteRenderer.color = new Color(1f, 1f, 1f, 0.8f);
             hoverPanel.transform.position = Input.mousePosition + new Vector3(40f, 40f);
             hoverText.GetComponent<TMP_Text>().text = tooltipString;
@@ -56,7 +69,10 @@ namespace THNeonMirage.Map
             hoverPanel.SetActive(false);
         }
 
-        public abstract void OnPlayerStop(PlayerManager playerManager);
+        public virtual void OnPlayerStop(PlayerManager playerManager)
+        {
+            
+        }
 
         public virtual void OnPlayerPassBy(PlayerManager playerManager)
         {
@@ -65,12 +81,16 @@ namespace THNeonMirage.Map
 
         public enum Type
         {
-            Official,
-            Facility,
-            Bazaar,
-            Stage,
+            DreamWorld,
+            MagicForest,
+            YoukaiMountain,
+            BambooForest,
+            AncientHell,
+            Village,
+            Nether,
+            Fairies,
+            Higan,
             Other
         }
-
     }
 }

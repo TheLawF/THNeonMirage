@@ -133,34 +133,6 @@ namespace THNeonMirage.Data
             return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.SaveSuccess);
         }
 
-        public NeoPlayerData FromJsonQuery(string query)
-        {
-            var pairList = new List<Pair<int, int>>();
-
-            var name = connector.GetAsString(query, "username");
-            int.TryParse(connector.GetAsString(query, "position"), out var position);
-            int.TryParse(connector.GetAsString(query, "balance"), out var balance);
-
-            var jsonInv = connector.GetAsString(query, nameof(inventory));
-            var jsonFields = connector.GetAsString(query, nameof(fields));
-
-            var inv = Utils.CastJsonAsList<int>(jsonInv, "inv");
-            var fieldsToken = Utils.CastJsonAsList<JObject>(jsonFields, "fields");
-
-            fieldsToken?.ForEach(o =>
-            {
-                var id = Utils.CastJsonAsInt(o, "id");
-                var bid = Utils.CastJsonAsInt(o, "bid");
-                var pair = Pair<int, int>.Of(id, bid);
-
-                pairList.Add(pair);
-            });
-
-            // Debug.Log($"Player Data: {{name: {name}, pos: {position} balance: {balance}," +
-            //           $" inventory: {ListString(inv)}, fields: {ListString(pairList)}}}");
-            return new NeoPlayerData(name, position, balance, inv, pairList);
-        }
-
         private static string InvToJson(ICollection inv) => Utils.ListToJsonString("inv", inv);
 
         private static string FieldsToJson(List<Pair<int, int>> list)
@@ -192,7 +164,5 @@ namespace THNeonMirage.Data
         }
 
     }
-    
-
 }
 

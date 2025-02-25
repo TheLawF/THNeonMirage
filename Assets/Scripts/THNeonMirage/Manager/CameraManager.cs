@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace THNeonMirage.Manager
 {
-    public class SceneManager: MonoBehaviour
+    public class CameraManager: MonoBehaviour
     {
         public Camera gameCamera;
         public Camera uiCamera;

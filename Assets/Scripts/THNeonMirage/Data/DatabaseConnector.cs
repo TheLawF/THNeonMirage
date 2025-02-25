@@ -106,7 +106,6 @@ namespace THNeonMirage.Data
             foreach (var kv in kvDict) 
                 command.Parameters.AddWithValue(kv.Key, kv.Value);
             command.ExecuteNonQuery();
-            Debug.Log("Update Success");
         }
 
         /// <summary>

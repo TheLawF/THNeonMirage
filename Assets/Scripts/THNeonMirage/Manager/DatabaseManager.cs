@@ -1,14 +1,17 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
 using THNeonMirage.Data;
+using THNeonMirage.Manager.UI;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 namespace THNeonMirage.Manager
@@ -31,21 +34,23 @@ namespace THNeonMirage.Manager
         public TMP_InputField usernameInput;
         public TMP_InputField passwordInput;
 
-        public GameObject hud;
         public GameObject homePanel;
-        public GameObject mapObject;
-        public GameObject inGamePanel;
         
-        [DisplayOnly]
-        public GameObject playerObj;
+        public static GameObject PlayerInstance;
         public GameObject playerPrefab;
         public GameObject diceObject;
         public GameObject balanceDisplay;
 
+        public GameObject network;
+        public GameObject database;
+
+        private NetworkManager net;
+        private PlayerManager player_manager;
+
         private void Start()
         {
-            // playerPrefab.GetComponent<PlayerManager>().PlayerData.Position = 0;
             dice = diceObject.GetComponent<DiceHandler>();
+            net = network.GetComponent<NetworkManager>();
             connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
             _user = new User(connector);
             Debug.Log("连接数据库成功");
@@ -99,6 +104,7 @@ namespace THNeonMirage.Manager
                 switch (authorization.Status)
                 {
                     case Authorization.ConnectionStatus.LoginSuccess:
+                        EnterLobby();
                         Debug.Log("登录成功");
                         break;
                     case Authorization.ConnectionStatus.UserNonExist:
@@ -120,31 +126,37 @@ namespace THNeonMirage.Manager
                         break;
                 }
             }
+        }
+
+        private void CreatePlayer()
+        {
             usernameInput.text = "";
             passwordInput.text = "";
             
             homePanel.SetActive(false);
-            inGamePanel.SetActive(true);
-            hud.SetActive(true);
 
-            playerObj = Instantiate(playerPrefab);
-            var player = playerObj.GetComponent<PlayerManager>().Init(player_data);
-            var map = mapObject.GetComponent<GameMap>();
-            
-            map.players.Add(player);
-            player.PlayerData.Balance = 600000;
-            player.database = this;
-            player.inGamePanel = inGamePanel;
-            player.BalanceText = balanceDisplay.GetComponent<TMP_Text>();
-            
-            var handler = inGamePanel.GetComponent<ToggleHandler>();
-            handler.player = player;
+            PlayerInstance = Instantiate(playerPrefab);
+            player_manager = PlayerInstance.GetComponent<PlayerManager>().Init(player_data);
 
-            dice.player = player;
-            dice.player.PlayerData.Position = player.PlayerData.Position;
-            dice.pos = player.PlayerData.Position;
-            dice.playerObject = playerObj;
+            // map.players.Add(player);
+            player_manager.PlayerData.Balance = 600000;
+            player_manager.database = this;
+            // player.BalanceText = balanceDisplay.GetComponent<TMP_Text>();
             
+        }
+
+        private void EnterLobby()
+        {
+            CreatePlayer();
+            DontDestroyOnLoad(PlayerInstance);
+            DontDestroyOnLoad(database);
+            DontDestroyOnLoad(network);
+            
+            diceObject.SetActive(true);
+            // net.playerInstance = PlayerInstance;
+            // dice.playerInstance = PlayerInstance;
+            dice.pos = player_manager.PlayerData.Position;
+            network.GetComponent<NetworkManager>().Connect();
         }
 
         public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);

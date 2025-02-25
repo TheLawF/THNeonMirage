@@ -26,7 +26,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Temp\Bin\Debug\Assembly-CSharp\</OutputPath>
-    <DefineConstants>UNITY_2021_3_26;UNITY_2021_3;UNITY_2021;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;PLATFORM_STANDALONE;TEXTCORE_1_0_OR_NEWER;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;UNITY_UGP_API;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_NVIDIA;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;NET_UNITY_4_8;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_IG;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
+    <DefineConstants>UNITY_2021_3_26;UNITY_2021_3;UNITY_2021;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_2017_1_OR_NEWER;UNITY_2017_2_OR_NEWER;UNITY_2017_3_OR_NEWER;UNITY_2017_4_OR_NEWER;UNITY_2018_1_OR_NEWER;UNITY_2018_2_OR_NEWER;UNITY_2018_3_OR_NEWER;UNITY_2018_4_OR_NEWER;UNITY_2019_1_OR_NEWER;UNITY_2019_2_OR_NEWER;UNITY_2019_3_OR_NEWER;UNITY_2019_4_OR_NEWER;UNITY_2020_1_OR_NEWER;UNITY_2020_2_OR_NEWER;UNITY_2020_3_OR_NEWER;UNITY_2021_1_OR_NEWER;UNITY_2021_2_OR_NEWER;UNITY_2021_3_OR_NEWER;PLATFORM_ARCH_64;UNITY_64;UNITY_INCLUDE_TESTS;ENABLE_AR;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_EVENT_QUEUE;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_TEXTURE_STREAMING;ENABLE_VIRTUALTEXTURING;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_UNITYWEBREQUEST;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_COLLAB_SOFTLOCKS;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_SERVICES_USE_WEBREQUEST;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_HUB_LICENSE;ENABLE_WEBSOCKET_CLIENT;ENABLE_DIRECTOR_AUDIO;ENABLE_DIRECTOR_TEXTURE;ENABLE_MANAGED_JOBS;ENABLE_MANAGED_TRANSFORM_JOBS;ENABLE_MANAGED_ANIMATION_JOBS;ENABLE_MANAGED_AUDIO_JOBS;ENABLE_MANAGED_UNITYTLS;INCLUDE_DYNAMIC_GI;ENABLE_SCRIPTING_GC_WBARRIERS;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_VIDEO;ENABLE_ACCELERATOR_CLIENT_DEBUGGING;PLATFORM_STANDALONE;TEXTCORE_1_0_OR_NEWER;PLATFORM_STANDALONE_WIN;UNITY_STANDALONE_WIN;UNITY_STANDALONE;UNITY_UGP_API;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_NVIDIA;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITY_GAME_SERVICES_ANALYTICS_SUPPORT;ENABLE_OUT_OF_PROCESS_CRASH_HANDLER;ENABLE_CLUSTER_SYNC;ENABLE_CLUSTERINPUT;PLATFORM_UPDATES_TIME_OUTSIDE_OF_PLAYER_LOOP;GFXDEVICE_WAITFOREVENT_MESSAGEPUMP;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_4_6;NET_UNITY_4_8;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_IG;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_UNITY_COLLECTIONS_CHECKS;ENABLE_BURST_AOT;UNITY_TEAM_LICENSE;ENABLE_CUSTOM_RENDER_TEXTURE;ENABLE_DIRECTOR;ENABLE_LOCALIZATION;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_TILEMAP;ENABLE_TIMELINE;ENABLE_LEGACY_INPUT_MANAGER;TEXTCORE_FONT_ENGINE_1_5_OR_NEWER;PHOTON_UNITY_NETWORKING;PUN_2_0_OR_NEWER;PUN_2_OR_NEWER;PUN_2_19_OR_NEWER;CSHARP_7_OR_LATER;CSHARP_7_3_OR_NEWER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoWarn>0169,0649</NoWarn>
@@ -43,15 +43,20 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\THNeonMirage\Map\FieldTile.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\User.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Manager\DiceHandler.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\DiceHandler.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\PirateShip.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\AppSettingsExtensions.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChannelSelector.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Event\IGameEventArgs.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\Authorization.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\GameMap.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Event\ValueListener.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\ToggleHandler.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\PlayerData.cs" />
@@ -59,25 +64,27 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Data\GameNetwork.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameManager.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\NetworkManager.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\GameMapEventArgs.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\FerrisWheel.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\ProgressBarControl.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\DatabaseManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Data\NeoPlayerData.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextToggleIsOnTransition.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Manager\SceneManager.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\CameraManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Map\BlankTile.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Utils.cs" />
+     <Compile Include="Assets\Photon\PhotonRealtime\Demos\DemoLoadBalancing\ConnectAndJoinRandomLb.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\PlayerManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
@@ -87,49 +94,65 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\VillageTile.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\EventSystemSpawner.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Util\Field.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Pair.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Data\FieldData.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Data\FieldProperty.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Map\StartTile.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\DreamCastle.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\ScrollViewManager.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Event\GameEventHandler.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\TileManager.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Event\ValueEventArgs.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\DatabaseConnector.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\IgnoreUiRaycastWhenInactive.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Manager\DialogueHandler.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\DialogueHandler.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
      <Compile Include="Assets\Scripts\UnityEngine\DisplayOnly.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
+     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Sprites" />
+     <Folder Include="Assets\Photon\PhotonChat\Demos" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <Folder Include="Assets\TextMesh Pro\Sprites" />
      <Folder Include="Assets\TextMesh Pro\Resources\Sprite Assets" />
      <Folder Include="Assets\Scenes" />
+     <None Include="Assets\Photon\PhotonUnityNetworking\changelog.txt" />
      <Folder Include="Assets\Scripts\THNeonMirage\Data" />
      <Folder Include="Assets\Settings" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
+     <Folder Include="Assets\Photon\PhotonRealtime\Demos\DemoLoadBalancing" />
+     <Folder Include="Assets\Photon\PhotonUnityNetworking" />
      <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
      <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
      <Folder Include="Assets\TextMesh Pro\Resources\Fonts &amp; Materials" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader" />
      <Folder Include="Assets\TextMesh Pro\Resources" />
+     <Folder Include="Assets\Photon\PhotonRealtime\Demos" />
      <Folder Include="Assets\Resources" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
+     <Folder Include="Assets\Photon\PhotonRealtime" />
      <Folder Include="Assets\Settings\Scenes" />
      <None Include="Assets\Resources\Lang\zh_cn.json" />
      <Folder Include="Assets\TextMesh Pro" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Resources" />
      <Folder Include="Assets\Resources\Lang" />
+     <None Include="Assets\Shaders\ButtonShader.shader" />
+     <Folder Include="Assets\Photon\PhotonChat\Demos\DemoChat\Files" />
      <Folder Include="Assets\Scripts\THNeonMirage\Util" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
      <Folder Include="Assets\Resources\Textures" />
@@ -137,32 +160,50 @@
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Materials" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF.shader" />
+     <Folder Include="Assets\Photon\PhotonLibs\Metro" />
+     <Folder Include="Assets\Photon" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
+     <None Include="Assets\Photon\PhotonLibs\changes-library.txt" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts" />
+     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.deps.json" />
+     <Folder Include="Assets\Scripts\THNeonMirage\Manager\UI" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
+     <None Include="Assets\Photon\PhotonUnityNetworking\readme.txt" />
+     <Folder Include="Assets\Scripts\THNeonMirage\Event" />
+     <None Include="Assets\Photon\PhotonChat\Demos\DemoChat\Files\eurof_tt.txt" />
      <Folder Include="Assets\TextMesh Pro\Shaders" />
+     <Folder Include="Assets\Photon\PhotonChat\Demos\Common" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Resources\Sprite Assets" />
      <Folder Include="Assets\Scripts" />
      <Folder Include="Assets\TextMesh Pro\Resources\Style Sheets" />
      <Folder Include="Assets\TextMesh Pro\Fonts" />
      <None Include="Assets\Resources\UI\dice.json" />
+     <Folder Include="Assets\Photon\PhotonChat" />
      <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
      <Folder Include="Assets\Scripts\THNeonMirage" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Prefabs" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Scenes" />
+     <Folder Include="Assets\Photon\PhotonUnityNetworking\Icons" />
+     <Folder Include="Assets\Shaders" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
      <Folder Include="Assets\Scripts\THNeonMirage\Util\Math" />
      <Folder Include="Assets\Scripts\THNeonMirage\Manager" />
+     <None Include="Assets\Photon\PhotonLibs\Photon3Unity3D.xml" />
      <Folder Include="Assets\Resources\UI" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
      <Folder Include="Assets\Prefabs" />
+     <Folder Include="Assets\Photon\PhotonChat\Demos\DemoChat" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Textures" />
      <Folder Include="Assets\TextMesh Pro\Documentation" />
+     <Folder Include="Assets\Photon\PhotonUnityNetworking\Resources" />
+     <Folder Include="Assets\Photon\PhotonLibs\netstandard2.0" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras" />
+     <None Include="Assets\Photon\PhotonUnityNetworking\link.xml" />
+     <Folder Include="Assets\Photon\PhotonLibs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader" />
      <Folder Include="Assets\Scripts\THNeonMirage\Map" />
      <Folder Include="Assets\Scripts\UnityEngine" />
@@ -426,6 +467,12 @@
      </Reference>
      <Reference Include="MySql.Data.Entity">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Assets\Plugins\MySql.Data.Entity.dll</HintPath>
+     </Reference>
+     <Reference Include="websocket-sharp">
+     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Assets\Photon\PhotonLibs\WebSocket\websocket-sharp.dll</HintPath>
+     </Reference>
+     <Reference Include="Photon3Unity3D">
+     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.dll</HintPath>
      </Reference>
      <Reference Include="MySql.Data">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Assets\Plugins\MySql.Data.dll</HintPath>
@@ -868,9 +915,6 @@
      <Reference Include="Unity.2D.Path.Editor">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.2D.Path.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.Netcode.Editor">
-     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Netcode.Editor.dll</HintPath>
-     </Reference>
      <Reference Include="Unity.Networking.Editor">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Networking.Editor.dll</HintPath>
      </Reference>
@@ -883,17 +927,20 @@
      <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
      </Reference>
+     <Reference Include="UnityUIExtensions">
+     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\UnityUIExtensions.dll</HintPath>
+     </Reference>
      <Reference Include="UnityEngine.UI">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\UnityEngine.UI.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Multiplayer.Tools.NetStatsReporting">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Multiplayer.Tools.NetStatsReporting.dll</HintPath>
      </Reference>
+     <Reference Include="Unity.Netcode.Editor">
+     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Netcode.Editor.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Networking.Transport">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Networking.Transport.dll</HintPath>
-     </Reference>
-     <Reference Include="Unity.2D.IK.Runtime">
-     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Multiplayer.Tools.Common">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Multiplayer.Tools.Common.dll</HintPath>
@@ -903,6 +950,9 @@
      </Reference>
      <Reference Include="Unity.Multiplayer.Tools.Initialization">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Multiplayer.Tools.Initialization.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.2D.IK.Runtime">
+     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.2D.IK.Runtime.dll</HintPath>
      </Reference>
      <Reference Include="Unity.Netcode.Components">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Netcode.Components.dll</HintPath>
@@ -991,11 +1041,11 @@
      <Reference Include="Unity.PlasticSCM.Editor">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.PlasticSCM.Editor.dll</HintPath>
      </Reference>
-     <Reference Include="Unity.2D.Tilemap.Extras.Editor">
-     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.2D.Tilemap.Extras.Editor.dll</HintPath>
-     </Reference>
      <Reference Include="Unity.Netcode.Runtime">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Netcode.Runtime.dll</HintPath>
+     </Reference>
+     <Reference Include="Unity.2D.Tilemap.Extras.Editor">
+     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.2D.Tilemap.Extras.Editor.dll</HintPath>
      </Reference>
      <Reference Include="Unity.VisualScripting.Core">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.VisualScripting.Core.dll</HintPath>
@@ -1042,11 +1092,54 @@
      <Reference Include="Unity.VisualScripting.State">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
      </Reference>
+     <Reference Include="UnityUIExtensions.editor">
+     <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\UnityUIExtensions.editor.dll</HintPath>
+     </Reference>
      <Reference Include="Unity.Multiplayer.Tools.MetricEvents">
      <HintPath>E:\Files\TheLawF\ACGN\Codes\CSharp\TouhouDoujinGameSRC\THSereinCards\MonopolyMarket\MonopolyMarket\Library\ScriptAssemblies\Unity.Multiplayer.Tools.MetricEvents.dll</HintPath>
      </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="PhotonChat.csproj">
+      <Project>{79a783b2-6182-ac9e-d997-0c5d93fd8029}</Project>
+      <Name>PhotonChat</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.Editor.csproj">
+      <Project>{ccb9d3a4-e1d8-f87d-3833-81426f2ee9cd}</Project>
+      <Name>PhotonUnityNetworking.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.Utilities.PhotonPlayer.Editor.csproj">
+      <Project>{4bfd77fb-6a3c-c954-cf75-a1775414c4c9}</Project>
+      <Name>PhotonUnityNetworking.Utilities.PhotonPlayer.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PunDemos.DemoHubEditor.csproj">
+      <Project>{4563e208-8bd6-c9df-fbb0-fc3f12402605}</Project>
+      <Name>PunDemos.DemoHubEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.csproj">
+      <Project>{04d369f1-87ae-bebd-1d7e-9f80fb5a1f08}</Project>
+      <Name>PhotonUnityNetworking</Name>
+    </ProjectReference>
+    <ProjectReference Include="PunDemos.DemoSlotcarEditor.csproj">
+      <Project>{fa5bf636-50a0-7b8b-570a-df63ca5985e0}</Project>
+      <Name>PunDemos.DemoSlotcarEditor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.Utilities.Culling.Editor.csproj">
+      <Project>{9800fce6-6ba0-1d4c-d37f-5dde9b7106ef}</Project>
+      <Name>PhotonUnityNetworking.Utilities.Culling.Editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonRealtime.csproj">
+      <Project>{e4e6d9d1-12f5-660e-179c-365450aefec7}</Project>
+      <Name>PhotonRealtime</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.Utilities.csproj">
+      <Project>{90be018d-6b6b-2cdb-0fd9-2827b11fbedf}</Project>
+      <Name>PhotonUnityNetworking.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="PhotonUnityNetworking.Demos.csproj">
+      <Project>{73674029-1e3a-90c0-0c04-afe8f4ba16fe}</Project>
+      <Name>PhotonUnityNetworking.Demos</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

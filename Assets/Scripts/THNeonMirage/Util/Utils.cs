@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace THNeonMirage.Util
 {
@@ -16,6 +17,13 @@ namespace THNeonMirage.Util
 
     public static class Utils
     {
+        public static GameObject FindDontDestroyedObj(string objName)
+        {
+            var ddScene = SceneManager.GetSceneByName("DontDestroyOnLoad");
+            if (!ddScene.IsValid()) return null;
+            var rootObjects = ddScene.GetRootGameObjects();
+            return rootObjects.FirstOrDefault(obj => obj.name.Equals(objName));
+        }
         public static string GetAddr(object o)
         {
             var h = GCHandle.Alloc(o, GCHandleType.WeakTrackResurrection);

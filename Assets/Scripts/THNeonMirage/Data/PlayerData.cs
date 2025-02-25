@@ -15,6 +15,8 @@ namespace THNeonMirage.Data
     {
         private int _position;
         private int _balance;
+        
+        public EventHandler<ValueEventArgs> OnPositionChanged;
         public event ValueChangedHandler PositionChanged;
         public event ValueChangedHandler BalanceChanged;
         public string UserName { get; set; }
@@ -28,6 +30,7 @@ namespace THNeonMirage.Data
                 var oldValue = _position;
                 _position = value;
                 PositionChanged?.Invoke(oldValue, _position);
+                OnPositionChanged?.Invoke(this, new ValueEventArgs(_position));
             }
         }
 
