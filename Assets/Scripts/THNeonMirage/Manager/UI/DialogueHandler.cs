@@ -19,7 +19,7 @@ namespace THNeonMirage.Manager.UI
         private void Start()
         {
             text = description.GetComponent<TMP_Text>();
-            player = DatabaseManager.PlayerInstance.GetComponent<PlayerManager>();
+            player = PlayerManager.Instance.GetComponent<PlayerManager>();
             player.PlayerData.OnPositionChanged += OnPlayerPositionChanged;
         }
 

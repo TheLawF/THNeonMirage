@@ -35,8 +35,6 @@ namespace THNeonMirage.Manager
         public TMP_InputField passwordInput;
 
         public GameObject homePanel;
-        
-        public static GameObject PlayerInstance;
         public GameObject playerPrefab;
         public GameObject diceObject;
         public GameObject balanceDisplay;
@@ -135,8 +133,8 @@ namespace THNeonMirage.Manager
             
             homePanel.SetActive(false);
 
-            PlayerInstance = Instantiate(playerPrefab);
-            player_manager = PlayerInstance.GetComponent<PlayerManager>().Init(player_data);
+            PlayerManager.Instance = Instantiate(playerPrefab);
+            player_manager = PlayerManager.Instance.GetComponent<PlayerManager>().Init(player_data);
 
             // map.players.Add(player);
             player_manager.PlayerData.Balance = 600000;
@@ -148,7 +146,7 @@ namespace THNeonMirage.Manager
         private void EnterLobby()
         {
             CreatePlayer();
-            DontDestroyOnLoad(PlayerInstance);
+            DontDestroyOnLoad(PlayerManager.Instance);
             DontDestroyOnLoad(database);
             DontDestroyOnLoad(network);
             

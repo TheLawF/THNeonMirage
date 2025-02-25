@@ -30,14 +30,13 @@ namespace THNeonMirage.Manager.UI
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
         {
-            player = DatabaseManager.PlayerInstance.GetComponent<PlayerManager>();
+            player = PlayerManager.Instance.GetComponent<PlayerManager>();
             pos = player.PlayerData.Position;
             
             DiceValue = random.Next(1,7);
             pos += DiceValue;
             player.SetPosition(pos);
             player.SaveAll(player.PlayerData);
-            // Debug.Log($"Index = {player.PlayerData.Position}, Pos = {pos}, Dice = {DiceValue}");
             shouldRenderTooltip = true;
         }
 

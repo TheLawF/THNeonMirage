@@ -30,11 +30,16 @@ namespace THNeonMirage.Map
         private static Vector3 startPos = Vector3.right * 5 + Vector3.up * 5;
 
         public static Random Random = new ();
+        private static readonly Price CheapPrice = new (8000, 6000, 500, 4000, 10000, 20000);
+        private static readonly Price NormalPrice = new (10000, 6000, 500, 4000, 10000, 20000);
+        private static readonly Price MediumPrice = new (12000, 6000, 500, 4000, 10000, 20000);
+        private static readonly Price ExpensivePrice = new (15000, 6000, 500, 4000, 10000, 20000);
+        private static readonly Price BankruptPrice = new (20000, 6000, 500, 4000, 10000, 20000);
 
         public static readonly List<FieldProperty> Properties = new()
         {
             new FieldProperty("梦乐园城堡", FieldTile.Type.DreamWorld,     new Price()),  
-            new FieldProperty("寺子屋", FieldTile.Type.Village,           new Price()),
+            new FieldProperty("寺子屋", FieldTile.Type.Village,           CheapPrice),
             new FieldProperty("铃奈庵", FieldTile.Type.Village,           new Price()),          
             new FieldProperty("【信仰】地藏像", FieldTile.Type.Other,      new Price()),
             new FieldProperty("稗田邸", FieldTile.Type.Village,           new Price()),          

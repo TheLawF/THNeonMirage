@@ -29,6 +29,7 @@ namespace THNeonMirage.Manager
         // public int Balance;
 
         public PlayerData PlayerData;
+        public static GameObject Instance;
 
         public string Id;
         public string Password;

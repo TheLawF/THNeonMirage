@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using THNeonMirage.Event;
 using THNeonMirage.Util;
-using UnityEngine;
 using UnityEngine.Rendering;
-using Utils = UnityEngine.Diagnostics.Utils;
 
 namespace THNeonMirage.Data
 {
@@ -15,11 +11,10 @@ namespace THNeonMirage.Data
     {
         private int _position;
         private int _balance;
+        public string UserName { get; set; }
         
         public EventHandler<ValueEventArgs> OnPositionChanged;
-        public event ValueChangedHandler PositionChanged;
-        public event ValueChangedHandler BalanceChanged;
-        public string UserName { get; set; }
+        public EventHandler<ValueEventArgs> OnBalanceChanged;
         
         public int Position
         {
@@ -27,10 +22,8 @@ namespace THNeonMirage.Data
             set
             {
                 if (Equals(_position, value)) return;
-                var oldValue = _position;
                 _position = value;
-                PositionChanged?.Invoke(oldValue, _position);
-                OnPositionChanged?.Invoke(this, new ValueEventArgs(_position));
+                OnPositionChanged?.Invoke(this, new ValueEventArgs(value));
             }
         }
 
@@ -42,7 +35,7 @@ namespace THNeonMirage.Data
                 if (Equals(_balance, value)) return;
                 var oldValue = _balance;
                 _balance = value;
-                BalanceChanged?.Invoke(oldValue, _balance);
+                OnBalanceChanged?.Invoke(this, new ValueEventArgs(value));
             }
         }
         public ObservableList<int> Inventory { get; private set; }
