@@ -126,7 +126,6 @@ namespace THNeonMirage.Manager
                 Debug.Log($"尝试加入房间: {roomName}");
                 
                 inGamePanel.SetActive(true);
-                inGamePanel.GetComponent<DialogueHandler>().playerInstance = Utils.FindDontDestroyedObj("PlayerObject(Clone)");
             }
             else
             {

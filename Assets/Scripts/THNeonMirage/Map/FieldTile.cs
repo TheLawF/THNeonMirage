@@ -30,10 +30,10 @@ namespace THNeonMirage.Map
             spriteRenderer = GetComponent<SpriteRenderer>();
             backGroundColor = spriteRenderer.color;
 
-            description = $"空地过路费：{Property.Price.Level0}" +
-                          $"一幢房屋：{Property.Price.Level1}" +
-                          $"两幢房屋：{Property.Price.Level2}" +
-                          $"三幢房屋：{Property.Price.Level3}" +
+            description = $"空地过路费：{Property.Price.Level0}\n" +
+                          $"一幢房屋：{Property.Price.Level1}\n" +
+                          $"两幢房屋：{Property.Price.Level2}\n" +
+                          $"三幢房屋：{Property.Price.Level3}\n" +
                           $"每幢房屋建造费用：{Property.Price.Building}";
         }
 

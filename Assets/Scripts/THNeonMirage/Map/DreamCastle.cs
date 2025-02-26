@@ -6,20 +6,10 @@ namespace THNeonMirage.Map
 {
     public class DreamCastle : FieldTile
     {
-        public DreamCastle(string 梦乐园城堡, object o, int i, int i1, int i2, int i3, FieldTile.Type type)
-        {
-            throw new NotImplementedException();
-        }
+        private void Start() => description = "经过或停在此处时可以获得10000月虹币\n\n<i><color=#444444>“欢迎来到梦乐园~”</color></i>";
 
-        public override void OnPlayerStop(PlayerManager playerManager)
-        {
-            
-        }
-
-        public override void OnPlayerPassBy(PlayerManager playerManager)
-        {
-            
-        }
+        public override void OnPlayerStop(PlayerManager playerManager) => playerManager.PlayerData.Balance += 10000;
+        public override void OnPlayerPassBy(PlayerManager playerManager) => OnPlayerStop(playerManager);
 
     }
 }

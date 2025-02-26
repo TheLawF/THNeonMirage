@@ -23,7 +23,7 @@ namespace THNeonMirage.Map
         public GameObject tilePrefab;
         
         public List<PlayerManager> players;
-        public List<GameObject> fieldObjects;
+        public static List<GameObject> Fields = new ();
 
         private static Vector3 uUnit = Vector3.right;
         private static Vector3 vUnit = Vector3.up;
@@ -99,11 +99,11 @@ namespace THNeonMirage.Map
 
         private void Start()
         {
-            fieldObjects = new List<GameObject>();
+            Fields = new List<GameObject>();
             // InitField(tilePrefab, 1);
 
-            Utils.ForAddToList(40, fieldObjects, i => InitField(tilePrefab, i));
-            fieldObjects.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
+            Utils.ForAddToList(40, Fields, i => InitField(tilePrefab, i));
+            Fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             
         }
 
@@ -115,7 +115,7 @@ namespace THNeonMirage.Map
             }
         }
 
-        private void ShouldRenderTile(int index, bool shouldRender) => fieldObjects[index].SetActive(shouldRender);
+        private void ShouldRenderTile(int index, bool shouldRender) => Fields[index].SetActive(shouldRender);
 
         /// <summary>
         /// 用代码初始化大富翁地块的位置，这些地块将会围成一个正方形，然后根据索引为不同的地块对象实例动态挂载脚本
