@@ -88,7 +88,7 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\PlayerManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Map\BazaarTile.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\BumperCar.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\ItemManager.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
@@ -120,6 +120,14 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\BeliefTile.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\LuckyTile.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\RollerCoaster.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\MerryGoRound.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\StageTile.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\BigPendulum.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\HotSpring.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Map\ExitTile.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

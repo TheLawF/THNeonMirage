@@ -34,51 +34,52 @@ namespace THNeonMirage.Map
         private static readonly Price NormalPrice = new (10000, 6000, 500, 4000, 10000, 20000);
         private static readonly Price MediumPrice = new (12000, 6000, 500, 4000, 10000, 20000);
         private static readonly Price ExpensivePrice = new (15000, 6000, 500, 4000, 10000, 20000);
+        private static readonly Price UnaffordablePrice = new (18000, 6000, 500, 4000, 10000, 20000);
         private static readonly Price BankruptPrice = new (20000, 6000, 500, 4000, 10000, 20000);
 
         public static readonly List<FieldProperty> Properties = new()
         {
             new FieldProperty("梦乐园城堡", FieldTile.Type.DreamWorld,     new Price()),  
             new FieldProperty("寺子屋", FieldTile.Type.Village,           CheapPrice),
-            new FieldProperty("铃奈庵", FieldTile.Type.Village,           new Price()),          
+            new FieldProperty("铃奈庵", FieldTile.Type.Village,           NormalPrice),          
             new FieldProperty("【信仰】地藏像", FieldTile.Type.Other,      new Price()),
-            new FieldProperty("稗田邸", FieldTile.Type.Village,           new Price()),          
-            new FieldProperty("雾雨魔法店", FieldTile.Type.MagicForest,    new Price()),
-            new FieldProperty("爱丽丝的家", FieldTile.Type.MagicForest,    new Price()),   
+            new FieldProperty("稗田邸", FieldTile.Type.Village,           CheapPrice),          
+            new FieldProperty("雾雨魔法店", FieldTile.Type.MagicForest,    BankruptPrice),
+            new FieldProperty("爱丽丝的家", FieldTile.Type.MagicForest,    UnaffordablePrice),   
             new FieldProperty("村纱的海盗船", FieldTile.Type.DreamWorld,   new Price()),
-            new FieldProperty("火焰猫碰碰车", FieldTile.Type.DreamWorld,   new Price()),  
+            new FieldProperty("火焰猫碰碰车", FieldTile.Type.DreamWorld,   new Price(40000, 10000, 1500, 8000, 15000, 40000)),  
             new FieldProperty("人里工会", FieldTile.Type.Other, new Price()),
             
-            new FieldProperty("守矢神社", FieldTile.Type.YoukaiMountain,  new Price()), 
+            new FieldProperty("守矢神社", FieldTile.Type.YoukaiMountain,  ExpensivePrice), 
             new FieldProperty("【祈福】风神的祝福", FieldTile.Type.Other,   new Price()),
-            new FieldProperty("九天瀑布", FieldTile.Type.YoukaiMountain,  new Price()), 
-            new FieldProperty("玄武之泽", FieldTile.Type.YoukaiMountain,  new Price()),
-            new FieldProperty("天狗村落", FieldTile.Type.YoukaiMountain,  new Price()), 
-            new FieldProperty("妖怪过山车", FieldTile.Type.DreamWorld,    new Price()),
-            new FieldProperty("感情的摩天轮", FieldTile.Type.DreamWorld,   new Price()),  
-            new FieldProperty("转转木马", FieldTile.Type.DreamWorld,      new Price()),
+            new FieldProperty("九天瀑布", FieldTile.Type.YoukaiMountain,  MediumPrice), 
+            new FieldProperty("玄武之泽", FieldTile.Type.YoukaiMountain,  MediumPrice),
+            new FieldProperty("天狗村落", FieldTile.Type.YoukaiMountain,  NormalPrice), 
+            new FieldProperty("妖怪过山车", FieldTile.Type.DreamWorld,    new Price(60000, 6000, 1500, 8000, 15000, 40000)),
+            new FieldProperty("感情的摩天轮", FieldTile.Type.DreamWorld,   new Price(60000, 6000, 1500, 8000, 15000, 40000)),  
+            new FieldProperty("转转木马", FieldTile.Type.DreamWorld,      new Price(40000, 10000, 1500, 8000, 15000, 40000)),
             new FieldProperty("梦乐园舞台", FieldTile.Type.DreamWorld,    new Price()),   
             new FieldProperty("红魔馆大酒店", FieldTile.Type.Other,       new Price()),
             
-            new FieldProperty("云山大摆锤", FieldTile.Type.DreamWorld,    new Price()),   
-            new FieldProperty("妖怪兽道", FieldTile.Type.Fairies,         new Price()),
-            new FieldProperty("废弃的电波塔", FieldTile.Type.Fairies,     new Price()),    
+            new FieldProperty("云山大摆锤", FieldTile.Type.DreamWorld,    new Price(50000, 8000, 1500, 8000, 15000, 40000)),   
+            new FieldProperty("妖怪兽道", FieldTile.Type.Fairies,         CheapPrice),
+            new FieldProperty("废弃的电波塔", FieldTile.Type.Fairies,     NormalPrice),    
             new FieldProperty("【信仰】土著神的信仰", FieldTile.Type.Other, new Price()),
-            new FieldProperty("三妖精的大树", FieldTile.Type.Fairies,      new Price()),    
-            new FieldProperty("三途川", FieldTile.Type.Higan,             new Price()),
-            new FieldProperty("是非曲直厅", FieldTile.Type.Higan,         new Price()),        
-            new FieldProperty("白玉楼", FieldTile.Type.Nether,           new Price()),
-            new FieldProperty("西行妖", FieldTile.Type.Nether,           new Price()),          
+            new FieldProperty("三妖精的大树", FieldTile.Type.Fairies,      MediumPrice),    
+            new FieldProperty("三途川", FieldTile.Type.Higan,             BankruptPrice),
+            new FieldProperty("是非曲直厅", FieldTile.Type.Higan,         UnaffordablePrice),        
+            new FieldProperty("白玉楼", FieldTile.Type.Nether,           UnaffordablePrice),
+            new FieldProperty("西行妖", FieldTile.Type.Nether,           BankruptPrice),          
             new FieldProperty("八云紫的隙间", FieldTile.Type.Other,       new Price()),
             
-            new FieldProperty("妹红小屋", FieldTile.Type.BambooForest,   new Price()),  
-            new FieldProperty("永远亭", FieldTile.Type.BambooForest,     new Price()),
-            new FieldProperty("蓬莱药局", FieldTile.Type.BambooForest,   new Price()),  
+            new FieldProperty("妹红小屋", FieldTile.Type.BambooForest,   ExpensivePrice),  
+            new FieldProperty("永远亭", FieldTile.Type.BambooForest,     NormalPrice),
+            new FieldProperty("蓬莱药局", FieldTile.Type.BambooForest,   BankruptPrice),  
             new FieldProperty("【祈福】龙神像", FieldTile.Type.Other,     new Price()),
-            new FieldProperty("幻想风穴", FieldTile.Type.AncientHell,    new Price()),   
-            new FieldProperty("旧都", FieldTile.Type.AncientHell,       new Price()),
-            new FieldProperty("地灵殿", FieldTile.Type.AncientHell,     new Price()),     
-            new FieldProperty("核融合中心", FieldTile.Type.AncientHell, new Price()),
+            new FieldProperty("幻想风穴", FieldTile.Type.AncientHell,    CheapPrice),   
+            new FieldProperty("旧都", FieldTile.Type.AncientHell,       NormalPrice),
+            new FieldProperty("地灵殿", FieldTile.Type.AncientHell,     NormalPrice),     
+            new FieldProperty("核融合中心", FieldTile.Type.AncientHell, ExpensivePrice),
             new FieldProperty("旧地狱温泉", FieldTile.Type.Other,       new Price()),       
             new FieldProperty("旧地狱水上乐园", FieldTile.Type.Other,    new Price())
         };
@@ -141,11 +142,27 @@ namespace THNeonMirage.Map
             var _ = index switch
             {
                 0 => WithFieldData<DreamCastle>(instance, index, Properties[index]),
-                10 => WithFieldData<FerrisWheel>(instance, index, Properties[index]),
-                20 => WithFieldData<PirateShip>(instance, index, Properties[index]),
-                >= 4 and <= 6 or >= 14 and <= 16 or >= 24 and <= 26 or >= 34 and <= 36 => 
-                    WithFieldData<FieldTile>(instance, index, Properties[index]),
-                _ => WithFieldData<BazaarTile>(instance, index, Properties[index])
+                3 => WithFieldData<BeliefTile>(instance, index, Properties[index]),
+                7 => WithFieldData<PirateShip>(instance, index, Properties[index]),
+                8 => WithFieldData<BumperCar>(instance, index, Properties[index]),
+                
+                9 => WithFieldData<VillageTile>(instance, index, Properties[index]),
+                11 => WithFieldData<LuckyTile>(instance, index, Properties[index]),
+                15 => WithFieldData<RollerCoaster>(instance, index, Properties[index]),
+                16 => WithFieldData<FerrisWheel>(instance, index, Properties[index]),
+                
+                17 => WithFieldData<MerryGoRound>(instance, index, Properties[index]),
+                18 => WithFieldData<StageTile>(instance, index, Properties[index]),
+                19 => WithFieldData<HotelTile>(instance, index, Properties[index]),
+                20 => WithFieldData<BigPendulum>(instance, index, Properties[index]),
+                
+                23 => WithFieldData<BeliefTile>(instance, index, Properties[index]),
+                34 => WithFieldData<LuckyTile>(instance, index, Properties[index]),
+                35 => WithFieldData<BeliefTile>(instance, index, Properties[index]),
+                38 => WithFieldData<HotSpring>(instance, index, Properties[index]),
+                
+                39 => WithFieldData<ExitTile>(instance, index, Properties[index]),
+                _ => WithFieldData<FieldTile>(instance, index, Properties[index])
             };
             // var _ = index switch
             // {
