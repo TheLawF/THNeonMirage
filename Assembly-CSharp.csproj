@@ -128,6 +128,7 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Map\BigPendulum.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\HotSpring.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\ExitTile.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\HudManager.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

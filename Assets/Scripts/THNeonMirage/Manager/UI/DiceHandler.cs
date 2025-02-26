@@ -14,10 +14,10 @@ namespace THNeonMirage.Manager.UI
         public bool canRenderTooltip;
         public GameObject playerInstance;
         
-        private PlayerManager player;
+        private bool shouldRenderTooltip;
         private Random random = new();
         private TMP_Text foreground_text; 
-        private bool shouldRenderTooltip;
+        private PlayerManager player;
 
         private void OnGUI()
         {

@@ -889,6 +889,7 @@ GameObject:
   - component: {fileID: 719447477}
   - component: {fileID: 719447479}
   - component: {fileID: 719447478}
+  - component: {fileID: 719447480}
   m_Layer: 6
   m_Name: Balance
   m_TagString: Untagged
@@ -1013,6 +1014,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 719447476}
   m_CullTransparentMesh: 1
+--- !u!114 &719447480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719447476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c93b36d5b6041a0aff55de57b5d7736, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  balanceLabel: {fileID: 719447476}
 --- !u!1 &749964424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1361,10 +1375,11 @@ MonoBehaviour:
   gameVersion: 1.0
   maxPlayersPerRoom: 4
   rooms: []
-  playerInstance: {fileID: 0}
+  balanceLabel: {fileID: 0}
   buttonPrefab: {fileID: 7085691434504689125, guid: 76be5944a2c12ec4dac7186fbdeb946c, type: 3}
   canvas: {fileID: 0}
   lobbyPanel: {fileID: 749964424}
+  hudPanel: {fileID: 0}
   inGamePanel: {fileID: 0}
   progressPrefab: {fileID: 0}
   content: {fileID: 814679464}
@@ -2494,9 +2509,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: THNeonMirage.Manager.ToggleHandler, Assembly-CSharp
-        m_MethodName: OnPurchase
+      - m_Target: {fileID: 2106838136}
+        m_TargetAssemblyTypeName: THNeonMirage.Manager.UI.DialogueHandler, Assembly-CSharp
+        m_MethodName: OnPlayerPurchase
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

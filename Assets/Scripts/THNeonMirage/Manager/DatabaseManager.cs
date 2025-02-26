@@ -137,9 +137,8 @@ namespace THNeonMirage.Manager
             player_manager = PlayerManager.Instance.GetComponent<PlayerManager>().Init(player_data);
 
             // map.players.Add(player);
-            player_manager.PlayerData.Balance = 600000;
-            player_manager.database = this;
-            // player.BalanceText = balanceDisplay.GetComponent<TMP_Text>();
+            PlayerManager.Instance.GetComponent<PlayerManager>().PlayerData.Balance = 600000;
+            // player.BalanceText = balanceDisplay.GetComponent<TMP_Text>();    
             
         }
 

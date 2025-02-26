@@ -1874,7 +1874,6 @@ MonoBehaviour:
   usernameInput: {fileID: 923687462}
   passwordInput: {fileID: 1246560993}
   homePanel: {fileID: 1377037708}
-  playerObj: {fileID: 0}
   playerPrefab: {fileID: 9110736245687120657, guid: db4c84b7937087a4c96002f6fff8f6fc, type: 3}
   diceObject: {fileID: 1928973135}
   balanceDisplay: {fileID: 1862250446}
@@ -2222,10 +2221,11 @@ MonoBehaviour:
   gameVersion: 1.0
   maxPlayersPerRoom: 4
   rooms: []
-  playerInstance: {fileID: 0}
+  balanceLabel: {fileID: 1862250446}
   buttonPrefab: {fileID: 7085691434504689125, guid: 76be5944a2c12ec4dac7186fbdeb946c, type: 3}
   canvas: {fileID: 1436167396}
   lobbyPanel: {fileID: 667353101}
+  hudPanel: {fileID: 829709780}
   inGamePanel: {fileID: 1305293117}
   progressPrefab: {fileID: 1542931715251280246, guid: 89ba140ad33a3ee40ba7a804b045947b, type: 3}
   content: {fileID: 415004362}
@@ -3269,10 +3269,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c28235f0f50d249b683f3dccbf06ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: {fileID: 1224587804}
-  description: {fileID: 339255519}
-  playerInstance: {fileID: 0}
-  type: 0
+  titleLabel: {fileID: 0}
+  descriptionLabel: {fileID: 0}
+  tollLabel: {fileID: 0}
+  inGamePanel: {fileID: 0}
 --- !u!114 &1305293120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4782,7 +4782,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -77.20593, y: 360.17203}
+  m_AnchoredPosition: {x: 315.44, y: 199.97}
   m_SizeDelta: {x: 237.5154, y: 35.6559}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1862250448
@@ -5072,8 +5072,7 @@ MonoBehaviour:
   DiceValue: 0
   pos: 0
   canRenderTooltip: 1
-  playerObject: {fileID: 0}
-  player: {fileID: 0}
+  playerInstance: {fileID: 0}
 --- !u!114 &1928973138
 MonoBehaviour:
   m_ObjectHideFlags: 0

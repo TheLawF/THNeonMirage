@@ -22,11 +22,12 @@ namespace THNeonMirage.Manager
         public byte maxPlayersPerRoom = 4;
         public List<string> rooms = new ();
 
-        public GameObject playerInstance;
+        public GameObject balanceLabel;
         public GameObject buttonPrefab;
         public GameObject canvas;
         public GameObject lobbyPanel;
 
+        public GameObject hudPanel;
         public GameObject inGamePanel;
         public GameObject progressPrefab;
         public GameObject content;
@@ -126,6 +127,8 @@ namespace THNeonMirage.Manager
                 Debug.Log($"尝试加入房间: {roomName}");
                 
                 inGamePanel.SetActive(true);
+                hudPanel.AddComponent<HudManager>();
+                hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel;
             }
             else
             {

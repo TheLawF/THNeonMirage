@@ -47,6 +47,11 @@ namespace THNeonMirage.Manager.UI
             toll.text = $"当前过路费：{field.CurrentTolls()}";
         }
 
+        public void OnPlayerPurchase()
+        {
+            player.PlayerData.Balance -= field.Property.Price.Purchase;
+        }
+        
 // #if UNITY_EDITOR || UNITY_STANDALONE
         public void OnPointerClick(PointerEventData eventData)
         {

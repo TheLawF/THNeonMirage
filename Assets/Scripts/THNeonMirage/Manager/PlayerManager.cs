@@ -43,7 +43,7 @@ namespace THNeonMirage.Manager
 
         private void Start()
         {
-            PlayerData = new PlayerData();
+            PlayerData = new PlayerData().SetBalance(60000);
         }
 
         private void Update()
