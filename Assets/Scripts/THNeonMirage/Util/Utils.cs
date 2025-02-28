@@ -36,6 +36,12 @@ namespace THNeonMirage.Util
             for (var index = 0; index < count; index++) action.Invoke(index);
         }
 
+        public static T ForFunc<T>(int count, T returnValue, Action<int, T> action)
+        {
+            for (var index = 0; index < count; index++) action.Invoke(index, returnValue);
+            return returnValue;
+        }
+        
         public static object GetFieldValue(object obj, string fieldName)
             => obj.GetType().GetField(fieldName).GetValue(obj);
         
@@ -80,6 +86,9 @@ namespace THNeonMirage.Util
         
         public static void ForAddToList<T>(int count, List<T> listToAdd, Func<int, T> indexToObjFunc)
             => ForAct(count, i => listToAdd.Add(indexToObjFunc.Invoke(i)));
+        
+        public static List<T> ForAddToListAndReturn<T>(int count, List<T> listToAdd, Func<int, T> indexToObjFunc)
+            => ForFunc(count, listToAdd, (i, list) => list.Add(indexToObjFunc.Invoke(i)));
 
         /// <summary>
         /// </summary>

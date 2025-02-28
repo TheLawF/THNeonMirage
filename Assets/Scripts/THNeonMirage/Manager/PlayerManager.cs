@@ -38,7 +38,7 @@ namespace THNeonMirage.Manager
         public DiceType DiceType;
 
         [DisplayOnly]
-        public DatabaseManager database;
+        public GameLauncher database;
         public TMP_Text BalanceText { private get; set; }
 
         private void Start()

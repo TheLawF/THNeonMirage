@@ -17,7 +17,7 @@ using UnityEngine.Serialization;
 
 namespace THNeonMirage.Manager
 {
-    public class DatabaseManager : MonoBehaviour
+    public class GameLauncher : MonoBehaviour
     {
         [NotNull]
         private PlayerData player_data;
@@ -41,7 +41,7 @@ namespace THNeonMirage.Manager
         public GameObject balanceDisplay;
 
         public GameObject network;
-        public GameObject database;
+        public GameObject launcher;
 
         private GameServer net;
         private PlayerManager player_manager;
@@ -152,7 +152,7 @@ namespace THNeonMirage.Manager
         {
             CreatePlayer();
             DontDestroyOnLoad(PlayerManager.Instance);
-            DontDestroyOnLoad(database);
+            DontDestroyOnLoad(launcher);
             DontDestroyOnLoad(network);
             
             diceObject.SetActive(true);

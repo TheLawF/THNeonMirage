@@ -16,7 +16,7 @@ namespace THNeonMirage.Data
         public string Name { get; private set; }
         public int Pos { get; set; }
         public const string inventory = "{\"inventory\":[]}";
-        public const string fields = "{\"occupied_fields\": {[\"field_id\": 1, \"bid\": 1]}}";
+        public const string fields = "{\"occupied\":[{}]}";
 
         public User(DatabaseConnector connector)
         {
@@ -31,8 +31,8 @@ namespace THNeonMirage.Data
             var date = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
             var queryUserCount = $"SELECT COUNT(*) FROM userinfo WHERE username = '{username}'";
             var newUserQuery =
-                $"INSERT INTO userinfo (username, password, createtime, position, {nameof(inventory)}) " +
-                $"VALUES ('{username}', '{password}', '{date}', '{Pos}', '{inventory}')";
+                $"INSERT INTO userinfo (username, password, createtime, position, {nameof(inventory)}, {nameof(fields)}) " +
+                $"VALUES ('{username}', '{password}', '{date}', '{Pos}', '{inventory}', '{fields}')";
 
             // var newUserQuery = 
             //     $"INSERT INTO userinfo (username, password, createtime, position(0), inventory(\"{{}}\"), fields(\"{{}}\")))" +
@@ -53,9 +53,13 @@ namespace THNeonMirage.Data
                     connector.Disconnect();
                     return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.RegisterSuccess);
                 }
+                if (count > 0) {
+                    connector.Disconnect();
+                    return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.DuplicateUser);
+                }
 
                 connector.Disconnect();
-                return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.DuplicateUser);
+                return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.Failed);
             }
             catch (Exception e)
             {
