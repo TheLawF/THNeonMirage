@@ -1,19 +1,12 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
 using THNeonMirage.Data;
 using THNeonMirage.Manager.UI;
-using THNeonMirage.Map;
-using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 
 namespace THNeonMirage.Manager
 {
@@ -39,11 +32,13 @@ namespace THNeonMirage.Manager
         public GameObject playerPrefab;
         public GameObject diceObject;
         public GameObject balanceDisplay;
-
-        public GameObject network;
+        
         public GameObject launcher;
+        public GameObject server;
+        public GameObject client;
 
-        private GameServer net;
+        private GameServer game_server;
+        private GameClient game_client;
         private PlayerManager player_manager;
 
         private static readonly List<string> AdministratorAccounts = new()
@@ -54,7 +49,8 @@ namespace THNeonMirage.Manager
         private void Start()
         {
             dice = diceObject.GetComponent<DiceHandler>();
-            net = network.GetComponent<GameServer>();
+            game_server = server.GetComponent<GameServer>();
+            game_client = client.GetComponent<GameClient>();
             connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
             _user = new User(connector);
             Debug.Log("连接数据库成功");
@@ -153,13 +149,13 @@ namespace THNeonMirage.Manager
             CreatePlayer();
             DontDestroyOnLoad(PlayerManager.Instance);
             DontDestroyOnLoad(launcher);
-            DontDestroyOnLoad(network);
+            DontDestroyOnLoad(server);
             
             diceObject.SetActive(true);
             // net.playerInstance = PlayerInstance;
             // dice.playerInstance = PlayerInstance;
             dice.pos = player_manager.PlayerData.Position;
-            network.GetComponent<GameServer>().Connect();
+            server.GetComponent<GameServer>().Connect();
         }
 
         public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);
