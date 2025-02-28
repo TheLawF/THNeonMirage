@@ -19,10 +19,12 @@ namespace THNeonMirage.Map
     [Serializable]
     public class GameMap : MonoBehaviour
     {
+        [DisplayOnly]
+        public static int Activity;
         public GameObject settingsPanel;
         public GameObject tilePrefab;
         
-        public List<PlayerManager> players;
+        public static List<PlayerManager> players;
         public static List<GameObject> Fields = new ();
 
         private static Vector3 uUnit = Vector3.right;
@@ -109,10 +111,8 @@ namespace THNeonMirage.Map
 
         private void Update()
         {
-            if (Input.GetKey(KeyCode.Escape))
-            {
-                settingsPanel.SetActive(true);
-            }
+            if (Input.GetKey(KeyCode.Escape)) settingsPanel.SetActive(true);
+            if (Activity >= players.Count) Activity = 0;
         }
 
         private void ShouldRenderTile(int index, bool shouldRender) => Fields[index].SetActive(shouldRender);
@@ -155,12 +155,13 @@ namespace THNeonMirage.Map
                 18 => WithFieldData<StageTile>(instance, index, Properties[index]),
                 19 => WithFieldData<HotelTile>(instance, index, Properties[index]),
                 20 => WithFieldData<BigPendulum>(instance, index, Properties[index]),
-                
+
                 23 => WithFieldData<BeliefTile>(instance, index, Properties[index]),
+                29 => WithFieldData<GapTile>(instance, index, Properties[index]),
                 34 => WithFieldData<LuckyTile>(instance, index, Properties[index]),
                 35 => WithFieldData<BeliefTile>(instance, index, Properties[index]),
-                38 => WithFieldData<HotSpring>(instance, index, Properties[index]),
                 
+                38 => WithFieldData<HotSpring>(instance, index, Properties[index]),
                 39 => WithFieldData<ExitTile>(instance, index, Properties[index]),
                 _ => WithFieldData<FieldTile>(instance, index, Properties[index])
             };

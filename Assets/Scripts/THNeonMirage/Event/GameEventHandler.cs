@@ -6,10 +6,9 @@ using UnityEngine.Rendering;
 
 namespace THNeonMirage.Event
 {
-    public delegate void ValueChangedHandler(object oldValue, object newValue);
+    public delegate void ValueChangedHandler(object sender, object oldValue, object newValue);
 
     public abstract class GameEventHandler
     {
-        public event ValueChangedHandler ValueChanged;
     }
 }

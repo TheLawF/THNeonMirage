@@ -15,11 +15,12 @@ using UnityEngine.UI;
 
 namespace THNeonMirage.Manager
 {
-    public class NetworkManager : MonoBehaviourPunCallbacks
+    public class GameServer : MonoBehaviourPunCallbacks
     {
         [Header("连接配置")]
         public string gameVersion = "1.0";
         public byte maxPlayersPerRoom = 4;
+        public readonly bool IsClientSide = false;
         public List<string> rooms = new ();
 
         public GameObject balanceLabel;

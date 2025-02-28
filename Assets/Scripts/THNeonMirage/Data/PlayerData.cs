@@ -15,15 +15,19 @@ namespace THNeonMirage.Data
         
         public EventHandler<ValueEventArgs> OnPositionChanged;
         public EventHandler<ValueEventArgs> OnBalanceChanged;
-        
+        public event ValueChangedHandler OnPassBy;
+
+        public int PauseCount;
         public int Position
         {
             get => _position;
             set
             {
                 if (Equals(_position, value)) return;
+                var prevPos = _position;
                 _position = value;
                 OnPositionChanged?.Invoke(this, new ValueEventArgs(value));
+                OnPassBy?.Invoke(this, prevPos, _position);
             }
         }
 

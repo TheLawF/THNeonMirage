@@ -50,6 +50,7 @@ namespace THNeonMirage.Manager.UI
         public void OnPlayerPurchase()
         {
             player.PlayerData.Balance -= field.Property.Price.Purchase;
+            field.Owner = player.PlayerData;
         }
         
 // #if UNITY_EDITOR || UNITY_STANDALONE

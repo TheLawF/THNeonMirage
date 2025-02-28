@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using Unity.VisualScripting;
 
@@ -15,7 +16,7 @@ namespace THNeonMirage.Map
         {
             stopWatch = new Stopwatch();
         }
-        public override void OnPlayerStop(PlayerManager playerManager)
+        public override void OnPlayerStop(object playerData, ValueEventArgs args)
         {
             stopWatch.Start();
         }

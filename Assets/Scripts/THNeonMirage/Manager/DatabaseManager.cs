@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -42,13 +43,18 @@ namespace THNeonMirage.Manager
         public GameObject network;
         public GameObject database;
 
-        private NetworkManager net;
+        private GameServer net;
         private PlayerManager player_manager;
+
+        private static readonly List<string> AdministratorAccounts = new()
+        {
+            "user", "fictology"
+        };
 
         private void Start()
         {
             dice = diceObject.GetComponent<DiceHandler>();
-            net = network.GetComponent<NetworkManager>();
+            net = network.GetComponent<GameServer>();
             connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
             _user = new User(connector);
             Debug.Log("连接数据库成功");
@@ -153,7 +159,7 @@ namespace THNeonMirage.Manager
             // net.playerInstance = PlayerInstance;
             // dice.playerInstance = PlayerInstance;
             dice.pos = player_manager.PlayerData.Position;
-            network.GetComponent<NetworkManager>().Connect();
+            network.GetComponent<GameServer>().Connect();
         }
 
         public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);

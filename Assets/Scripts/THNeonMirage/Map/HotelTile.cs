@@ -1,14 +1,20 @@
 using THNeonMirage.Data;
+using THNeonMirage.Event;
 using THNeonMirage.Manager;
 
 namespace THNeonMirage.Map
 {
     public class HotelTile: FieldTile
     {
-        private void Start() => description = "红魔";
-        public override void OnPlayerStop(PlayerManager playerManager)
+        private void Start()
         {
-            
+            description = "蕾米莉亚开的酒店，在这里停下需要支付10000月虹币的酒店费用哦";
+            Player.PlayerData.OnPositionChanged += OnPlayerStop;
+        }
+
+        public override void OnPlayerStop(object playerData, ValueEventArgs args)
+        {
+            Player.PlayerData.Balance -= 10000;
         }
 
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using THNeonMirage.Data;
+using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using TMPro;
 using UnityEngine;
@@ -16,10 +17,11 @@ namespace THNeonMirage.Map
         public Color backGroundColor;
 
         public FieldProperty Property;
-        public GameObject textField;
+        public PlayerData Owner;
         private GameObject hoverPanel;
         private GameObject hoverText;
 
+        protected PlayerManager Player;
         private SpriteRenderer spriteRenderer;
         private string tooltipString;
 
@@ -29,7 +31,7 @@ namespace THNeonMirage.Map
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
             spriteRenderer = GetComponent<SpriteRenderer>();
             backGroundColor = spriteRenderer.color;
-
+            
             description = $"土地价格：{Property.Price.Purchase}\n\n" +
                           $"空地过路费：{Property.Price.Level0}\n" +
                           $"一幢房屋：{Property.Price.Level1}\n" +
@@ -73,12 +75,16 @@ namespace THNeonMirage.Map
             hoverPanel.SetActive(false);
         }
 
-        public virtual void OnPlayerStop(PlayerManager playerManager)
+        public bool HasOwner() => Owner == null;
+        
+        public virtual void OnPlayerStop(object playerData, ValueEventArgs playerManager)
         {
-            
+            if (!HasOwner())return;
+            if (Owner.UserName == ((PlayerData)playerData).UserName)return;
+            ((PlayerData)playerData).Balance -= CurrentTolls();
         }
 
-        public virtual void OnPlayerPassBy(PlayerManager playerManager)
+        public virtual void OnPlayerPassBy(object playerData, object prev, object next)
         {
         
         }

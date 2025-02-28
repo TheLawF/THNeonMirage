@@ -4,6 +4,7 @@ using THNeonMirage.Map;
 namespace THNeonMirage.Data
 {
     public record FieldProperty(string Name, FieldTile.Type FieldType, Price Price);
+    
     public struct Price
     {
         public readonly int Purchase, Building, Level0, Level1, Level2, Level3;
