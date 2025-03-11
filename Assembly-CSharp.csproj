@@ -130,9 +130,9 @@
      <Compile Include="Assets\Scripts\UnityEngine\DisplayOnly.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Data\DataSerializer.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Data\DataSerializer.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />

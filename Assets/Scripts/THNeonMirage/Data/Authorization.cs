@@ -29,6 +29,8 @@ namespace THNeonMirage.Data
             Proprietor
         }
 
+        // public string GeneratePhotonToken(string userId){}
+
         public static void ShowConnectionMsg(ConnectionStatus status)
         {
             switch (status)

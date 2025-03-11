@@ -44,3 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95cb9ff324644112bed8d6620801b7ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameVersion: 1.0
+  maxPlayersPerRoom: 4
+  rooms: []
+  canvas: {fileID: 0}
+  hudPanel: {fileID: 0}
+  lobbyPanel: {fileID: 0}
+  inGamePanel: {fileID: 0}
+  balanceLabel: {fileID: 0}
+  buttonPrefab: {fileID: 7085691434504689125, guid: 76be5944a2c12ec4dac7186fbdeb946c, type: 3}
+  progressPrefab: {fileID: 1542931715251280246, guid: 89ba140ad33a3ee40ba7a804b045947b, type: 3}
+  content: {fileID: 0}

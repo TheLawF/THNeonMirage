@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
 using THNeonMirage.Data;
 using THNeonMirage.Manager.UI;
+using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
 
@@ -25,32 +27,42 @@ namespace THNeonMirage.Manager
         private string adminPwd = "123456";		//登录数据库的密码
         private string port = "3306";			//MySQL服务的端口号
 
+        [Header("用户信息")]
+        public GameObject playerPrefab;
         public TMP_InputField usernameInput;
         public TMP_InputField passwordInput;
 
-        public GameObject homePanel;
-        public GameObject playerPrefab;
-        public GameObject diceObject;
-        public GameObject balanceDisplay;
-        
+        [Header("服务端客户端启动器")]
         public GameObject launcher;
         public GameObject server;
         public GameObject client;
 
+        [Header("UI父组件")]
+        public GameObject canvas;
+        public GameObject hudPanel;
+        public GameObject homePanel;
+        public GameObject lobbyPanel;
+        public GameObject inGamePanel;
+        
+        [Header("UI预制体")]
+        public GameObject diceObject;
+        public GameObject balanceLabel;
+        public GameObject buttonPrefab;
+        public GameObject progressPrefab;
+        public GameObject content;
+        
         private GameServer game_server;
         private GameClient game_client;
         private PlayerManager player_manager;
 
-        private static readonly List<string> AdministratorAccounts = new()
+        private static readonly List<string> Administrators = new()
         {
-            "user", "fictology"
+            "user", "admin"
         };
 
         private void Start()
         {
             dice = diceObject.GetComponent<DiceHandler>();
-            game_server = server.GetComponent<GameServer>();
-            game_client = client.GetComponent<GameClient>();
             connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
             _user = new User(connector);
             Debug.Log("连接数据库成功");
@@ -104,7 +116,6 @@ namespace THNeonMirage.Manager
                 switch (authorization.Status)
                 {
                     case Authorization.ConnectionStatus.LoginSuccess:
-                        EnterLobby();
                         Debug.Log("登录成功");
                         break;
                     case Authorization.ConnectionStatus.UserNonExist:
@@ -125,39 +136,58 @@ namespace THNeonMirage.Manager
                         Debug.LogWarning("登录失败");
                         break;
                 }
+
+                if (Administrators.Exists(s => s.Equals(player_data.UserName))) StartServer();
+                else StartClient();
             }
+        }
+        
+        private void StartServer()
+        {
+            Instantiate(server);
+            DontDestroyOnLoad(launcher);
+            DontDestroyOnLoad(server);
+            server.GetComponent<GameServer>().Connect();
+        }
+        
+        private void StartClient()
+        {
+            CreatePlayer();
+            Instantiate(client);
+            DontDestroyOnLoad(PlayerManager.Instance);
+            DontDestroyOnLoad(launcher);
+            DontDestroyOnLoad(client);
+            
+            game_client = client.GetComponent<GameClient>();
+            game_client.canvas = canvas;
+            game_client.hudPanel = hudPanel;
+            game_client.lobbyPanel = lobbyPanel;
+            game_client.inGamePanel = inGamePanel;
+
+            game_client.buttonPrefab = buttonPrefab;
+            game_client.progressPrefab = progressPrefab;
+            game_client.balanceLabel = balanceLabel;
+            game_client.content = content;
+            game_client.Connect();
+            
+            diceObject.SetActive(true);
+            dice.pos = player_manager.PlayerData.Position;
+            
+            
         }
 
         private void CreatePlayer()
         {
             usernameInput.text = "";
             passwordInput.text = "";
-            
             homePanel.SetActive(false);
 
             PlayerManager.Instance = Instantiate(playerPrefab);
             player_manager = PlayerManager.Instance.GetComponent<PlayerManager>().Init(player_data);
-
-            // map.players.Add(player);
             PlayerManager.Instance.GetComponent<PlayerManager>().PlayerData.Balance = 600000;
-            // player.BalanceText = balanceDisplay.GetComponent<TMP_Text>();    
+            GameMap.Players.Add(player_manager);
             
         }
-
-        private void EnterLobby()
-        {
-            CreatePlayer();
-            DontDestroyOnLoad(PlayerManager.Instance);
-            DontDestroyOnLoad(launcher);
-            DontDestroyOnLoad(server);
-            
-            diceObject.SetActive(true);
-            // net.playerInstance = PlayerInstance;
-            // dice.playerInstance = PlayerInstance;
-            dice.pos = player_manager.PlayerData.Position;
-            server.GetComponent<GameServer>().Connect();
-        }
-
         public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);
         public void Save(string username, string columnName, object data) => _user.Save(username, columnName, data);
 

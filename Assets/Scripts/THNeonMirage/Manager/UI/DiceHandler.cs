@@ -35,7 +35,7 @@ namespace THNeonMirage.Manager.UI
             GameMap.Activity++;
             player = PlayerManager.Instance.GetComponent<PlayerManager>();
             // 下面这个判断的作用为是否轮到该玩家掷骰子
-            if (!GameMap.players[GameMap.Activity].PlayerData.UserName.Equals(player.PlayerData.UserName)) 
+            if (!GameMap.Players[GameMap.Activity].PlayerData.UserName.Equals(player.PlayerData.UserName)) 
                 return;
             if (player.PlayerData.PauseCount > 0) 
                 return;

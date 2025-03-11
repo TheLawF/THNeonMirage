@@ -24,9 +24,10 @@ namespace THNeonMirage.Map
         protected PlayerManager Player;
         private SpriteRenderer spriteRenderer;
         private string tooltipString;
-
+        
         private void Start()
         {
+            InitPlayer();
             hoverPanel = GameObject.Find("Canvas/HoverPanel");
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
             spriteRenderer = GetComponent<SpriteRenderer>();
@@ -40,6 +41,8 @@ namespace THNeonMirage.Map
                           $"每幢房屋建造费用：{Property.Price.Building}";
         }
 
+        protected void InitPlayer() => Player = PlayerManager.Instance.GetComponent<PlayerManager>();
+        
         public int CurrentTolls()
         {
             return level switch

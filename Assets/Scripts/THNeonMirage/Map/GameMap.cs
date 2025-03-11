@@ -1,16 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ExitGames.Client.Photon.StructWrapping;
 using THNeonMirage.Data;
 using THNeonMirage.Manager;
 using THNeonMirage.Util;
-using TMPro;
-using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Pool;
-using UnityEngine.Serialization;
 using NetworkManager = Unity.Netcode.NetworkManager;
 using Random = System.Random;
 
@@ -24,7 +18,7 @@ namespace THNeonMirage.Map
         public GameObject settingsPanel;
         public GameObject tilePrefab;
         
-        public static List<PlayerManager> players;
+        public static List<PlayerManager> Players = new ();
         public static List<GameObject> Fields = new ();
 
         private static Vector3 uUnit = Vector3.right;
@@ -112,7 +106,7 @@ namespace THNeonMirage.Map
         private void Update()
         {
             if (Input.GetKey(KeyCode.Escape)) settingsPanel.SetActive(true);
-            if (Activity >= players.Count) Activity = 0;
+            if (Activity >= Players.Count) Activity = 0;
         }
 
         private void ShouldRenderTile(int index, bool shouldRender) => Fields[index].SetActive(shouldRender);
@@ -202,7 +196,7 @@ namespace THNeonMirage.Map
         }
         
         public int GetPlayerCountOn(int fieldId)
-            => players.Count(player => player.GetComponent<PlayerManager>().PlayerData.Position == fieldId);
+            => Players.Count(player => player.GetComponent<PlayerManager>().PlayerData.Position == fieldId);
 
         public int StartServer() => 
             NetworkManager.Singleton.StartServer() ? Utils.Info("服务器启动成功") : Utils.Error("服务器启动失败");

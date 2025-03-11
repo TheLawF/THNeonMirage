@@ -7,6 +7,7 @@ namespace THNeonMirage.Map
     {
         private void Start()
         {
+            InitPlayer();
             description = "被紫妈抓进隙间，停三回合";
             Player.PlayerData.OnPositionChanged += OnPlayerStop;
         }
