@@ -13,7 +13,7 @@ namespace THNeonMirage.Map
             Player.PlayerData.OnPositionChanged += OnPlayerStop;
         }
 
-        public override void OnPlayerStop(object playerData, ValueEventArgs args)
+        public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
             Player.PlayerData.Balance -= 10000;
         }

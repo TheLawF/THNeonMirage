@@ -12,7 +12,7 @@ namespace THNeonMirage.Map
             Player.PlayerData.OnPositionChanged += OnPlayerStop;
         }
 
-        public override void OnPlayerStop(object playerData, ValueEventArgs playerManager)
+        public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
             ((PlayerData)playerData).PauseCount += 3;
         }

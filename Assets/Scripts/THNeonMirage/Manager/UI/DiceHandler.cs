@@ -30,13 +30,13 @@ namespace THNeonMirage.Manager.UI
 
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
-        
         {
             GameMap.Activity++;
             player = PlayerManager.Instance.GetComponent<PlayerManager>();
             // 下面这个判断的作用为是否轮到该玩家掷骰子
             if (!GameMap.Players[GameMap.Activity].PlayerData.UserName.Equals(player.PlayerData.UserName)) 
                 return;
+            // 判断玩家是否被停止行动
             if (player.PlayerData.PauseCount > 0) 
                 return;
             

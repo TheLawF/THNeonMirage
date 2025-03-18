@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using THNeonMirage.Data;
 using THNeonMirage.Manager;
 using THNeonMirage.Util;
 using UnityEngine;
-using NetworkManager = Unity.Netcode.NetworkManager;
 using Random = System.Random;
 
 namespace THNeonMirage.Map
@@ -88,11 +86,6 @@ namespace THNeonMirage.Map
             {30..40, index => startPos - vUnit * 10 + new Vector3(0, index % 10)}
         };
 
-        public static readonly Dictionary<int, Action> TileActions = new()
-        {
-            { 0, () => {} }, { 9, ToggleHandler.DisplayPanel }
-        };
-
         private void Start()
         {
             Fields = new List<GameObject>();
@@ -159,30 +152,10 @@ namespace THNeonMirage.Map
                 39 => WithFieldData<ExitTile>(instance, index, Properties[index]),
                 _ => WithFieldData<FieldTile>(instance, index, Properties[index])
             };
-            // var _ = index switch
-            // {
-            //     0 => WithFieldType<StartTile>(instance, index, "月虹金融中心", FieldTile.Type.DreamWorld),
-            //     10 => WithFieldType<VillageTile>(instance, index, "人里工会", FieldTile.Type.DreamWorld),
-            //     20 => WithFieldType<HotelTile>(instance, index, "红魔酒店", FieldTile.Type.DreamWorld),
-            //     >= 4 and <= 6 or >= 14 and <= 16 or >= 24 and <= 26 or >= 34 and <= 36 => 
-            //         WithFieldType<BazaarTile>(instance, index, "默认摊位", FieldTile.Type.MagicForest),
-            //     _ => WithFieldType<BlankTile>(instance, index, "空白地区", FieldTile.Type.Other)
-            // };
-            // WithFieldData(instance, index, Fields[index], Fields[index].FieldType);
+            
             return instance;
         }
 
-        public int WithFieldType<TTile>(GameObject go, int id, FieldProperty fieldProperty)
-            where TTile: FieldTile
-        {
-            go.AddComponent<TTile>();
-
-            var ft = go.GetComponent<TTile>();
-            ft.id = id == -1 ? ft.id : id;
-
-            return 1;
-        }
-        
         public int WithFieldData<TF>(GameObject go, int id, FieldProperty fieldProperty) where TF: FieldTile
         {
             go.AddComponent<TF>();
@@ -194,20 +167,5 @@ namespace THNeonMirage.Map
             
             return 1;
         }
-        
-        public int GetPlayerCountOn(int fieldId)
-            => Players.Count(player => player.GetComponent<PlayerManager>().PlayerData.Position == fieldId);
-
-        public int StartServer() => 
-            NetworkManager.Singleton.StartServer() ? Utils.Info("服务器启动成功") : Utils.Error("服务器启动失败");
-
-        public int StartClient() =>
-            NetworkManager.Singleton.StartClient() ? Utils.Info("客户端启动成功") : Utils.Error("客户端启动失败");
-
-        public int StartHost()
-        {
-            return NetworkManager.Singleton.StartHost() ? Utils.Info("主机启动成功") : Utils.Error("主机启动失败");
-        }
-        public void ShutDown() => NetworkManager.Singleton.Shutdown();
     }
 }

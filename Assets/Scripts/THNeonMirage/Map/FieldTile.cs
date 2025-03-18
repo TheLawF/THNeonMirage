@@ -80,14 +80,14 @@ namespace THNeonMirage.Map
 
         public bool HasOwner() => Owner == null;
         
-        public virtual void OnPlayerStop(object playerData, ValueEventArgs playerManager)
+        public virtual void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
             if (!HasOwner())return;
             if (Owner.UserName == ((PlayerData)playerData).UserName)return;
             ((PlayerData)playerData).Balance -= CurrentTolls();
         }
 
-        public virtual void OnPlayerPassBy(object playerData, object prev, object next)
+        public virtual void OnPlayerPassBy(object playerData, object prevPosition, object currentPosition)
         {
         
         }

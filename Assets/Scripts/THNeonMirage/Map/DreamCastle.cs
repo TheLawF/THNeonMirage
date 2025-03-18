@@ -14,14 +14,14 @@ namespace THNeonMirage.Map
             Player.PlayerData.OnPassBy += OnPlayerPassBy;
         }
 
-        public override void OnPlayerStop(object playerData, ValueEventArgs args)
+        public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
             => ((PlayerData)playerData).Balance += 10000;
         
 
-        public override void OnPlayerPassBy(object playerData, object prev, object next)
+        public override void OnPlayerPassBy(object playerData, object prevPosition, object currentPosition)
         {
-            var prevPos = (int)prev;
-            var nextPos = (int)next;
+            var prevPos = (int)prevPosition;
+            var nextPos = (int)currentPosition;
             if (prevPos <= 40 && nextPos >= 0) ((PlayerData)playerData).Balance += 10000;
         }
 

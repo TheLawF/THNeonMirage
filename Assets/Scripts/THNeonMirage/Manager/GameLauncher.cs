@@ -172,8 +172,6 @@ namespace THNeonMirage.Manager
             
             diceObject.SetActive(true);
             dice.pos = player_manager.PlayerData.Position;
-            
-            
         }
 
         private void CreatePlayer()
