@@ -26,11 +26,8 @@ namespace THNeonMirage.Manager
     [Serializable]
     public class PlayerManager : MonoBehaviourPun, IPunObservable
     {
-        // public int Position;
-        // public string UserName;
-        // public int Balance;
-
         public PlayerData PlayerData;
+        public int Activity;
         public static GameObject Instance;
         public string Id;
         public string Password;
@@ -49,7 +46,9 @@ namespace THNeonMirage.Manager
             PlayerData = new PlayerData().SetBalance(60000);
             var player = Instance.GetComponent<PlayerManager>().PlayerData;
             player.OnPositionChanged += SetPosition;
+            // GameMap.OnRoundEnd += OnRoundEnd;
         }
+
 
         private void Update()
         {
@@ -75,6 +74,17 @@ namespace THNeonMirage.Manager
             player.transform.position = GetPlayerPosByIndex(PlayerData.Position);
         }
 
+        public void OnRoundStart()
+        {
+            
+        }
+        
+        
+        private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)
+        {
+            
+        }
+        
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
         public void Save(string columnName, object data) => database.Save(PlayerData.UserName, columnName, data);
 

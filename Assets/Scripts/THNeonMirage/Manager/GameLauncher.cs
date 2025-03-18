@@ -181,10 +181,11 @@ namespace THNeonMirage.Manager
             homePanel.SetActive(false);
 
             PlayerManager.Instance = Instantiate(playerPrefab);
-            player_manager = PlayerManager.Instance.GetComponent<PlayerManager>().Init(player_data);
             PlayerManager.Instance.GetComponent<PlayerManager>().PlayerData.Balance = 600000;
+            player_manager = PlayerManager.Instance.GetComponent<PlayerManager>().Init(player_data);
             GameMap.Players.Add(player_manager);
-            
+            player_manager.Activity = GameMap.Players.IndexOf(player_manager);
+
         }
         public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);
         public void Save(string username, string columnName, object data) => _user.Save(username, columnName, data);

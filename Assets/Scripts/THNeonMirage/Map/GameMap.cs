@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using THNeonMirage.Data;
+using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Util;
 using UnityEngine;
@@ -11,14 +13,29 @@ namespace THNeonMirage.Map
     [Serializable]
     public class GameMap : MonoBehaviour
     {
-        [DisplayOnly]
-        public static int Activity;
+        public static ScriptEventHandler<RoundEventArgs> OnRoundEnd;
+        public static Action OnRoundStart;
+        public static int Activity
+        {
+            get => _activity;
+            set
+            {
+                if (Activity > 4) Activity = 0;
+                OnRoundStart?.Invoke();
+                var prevPlayer = Players.First(manager => manager.Activity == _activity);
+                _activity = value;
+                var nextPlayer = Players.First(manager => manager.Activity == _activity);
+                OnRoundEnd?.Invoke(prevPlayer.GetComponent<PlayerManager>(), new RoundEventArgs(prevPlayer, nextPlayer, _activity));
+            }
+        }
+
         public GameObject settingsPanel;
         public GameObject tilePrefab;
         
         public static List<PlayerManager> Players = new ();
         public static List<GameObject> Fields = new ();
 
+        private static int _activity;
         private static Vector3 uUnit = Vector3.right;
         private static Vector3 vUnit = Vector3.up;
         private static Vector3 startPos = Vector3.right * 5 + Vector3.up * 5;
