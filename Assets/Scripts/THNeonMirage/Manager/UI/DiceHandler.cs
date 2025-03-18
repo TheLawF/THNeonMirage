@@ -1,3 +1,4 @@
+using THNeonMirage.Event;
 using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
@@ -44,7 +45,7 @@ namespace THNeonMirage.Manager.UI
             pos = player.PlayerData.Position;
             pos += DiceValue;
             
-            player.SetPosition(pos);
+            player.SetPosition(player, new ValueEventArgs(pos));
             player.SaveAll(player.PlayerData);
             shouldRenderTooltip = true;
         }

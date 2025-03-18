@@ -7,7 +7,6 @@ namespace THNeonMirage.Map
 {
     public class PirateShip : FieldTile
     {
-        private Random random;
 
         private void Start()
         {
@@ -17,9 +16,9 @@ namespace THNeonMirage.Map
         public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
             var data = (PlayerData)playerData;
-            var bonus = random.NextInt(300, 10000);
-            var result = random.NextBool() ? bonus : -bonus;
-            data.Balance += result;
+            var bonus = Random.NextInt(-5, 5);
+            var result = Random.NextBool() ? bonus : -bonus;
+            data.Position += result;
         }
     }
 }

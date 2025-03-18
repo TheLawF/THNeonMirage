@@ -5,6 +5,7 @@ using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using TMPro;
 using UnityEngine;
+using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage.Map
 {
@@ -22,6 +23,7 @@ namespace THNeonMirage.Map
         private GameObject hoverText;
 
         protected PlayerManager Player;
+        protected Random Random = new();
         private SpriteRenderer spriteRenderer;
         private string tooltipString;
         

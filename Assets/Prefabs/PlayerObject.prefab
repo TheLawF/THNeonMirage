@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9110736245687120662}
   - component: {fileID: 9110736245687120661}
-  - component: {fileID: 9110736245687120663}
   - component: {fileID: 9110736245687120660}
   - component: {fileID: 9010060989422911570}
   - component: {fileID: 772805875041474682}
@@ -88,27 +87,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9110736245687120663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9110736245687120657}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 850023539
-  InScenePlacedSourceGlobalObjectIdHash: 2420282285
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!114 &9110736245687120660
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,11 +99,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d602748d2bb554493bab4de8e152b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerData:
+    PauseCount: 0
   Id: 
   Password: 
-  DiceType: 0
-  inGamePanel: {fileID: 0}
   database: {fileID: 0}
+  DiceType: 0
 --- !u!114 &9010060989422911570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +123,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 9110736245687120660}
+  - {fileID: 772805875041474682}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
