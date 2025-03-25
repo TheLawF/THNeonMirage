@@ -48,13 +48,18 @@ namespace THNeonMirage.Manager.UI
             if (player.PlayerData.PauseCount > 0) 
                 return;
             
-            DiceValue = random.Next(1,7);
+            ExtraMove: DiceValue = random.Next(1,7);
             pos = player.PlayerData.Position;
             pos += DiceValue;
             
             player.SetPosition(player, new ValueEventArgs(pos));
             player.SaveAll(player.PlayerData);
             shouldRenderTooltip = true;
+            if (player.PlayerData.PauseCount < 0)
+            {
+                player.PlayerData.PauseCount++;
+                goto ExtraMove;
+            }
         }
 
         public void OnPlayerMove(object sender, ValueEventArgs currentPos)

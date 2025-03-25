@@ -1,12 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
 using THNeonMirage.Manager.UI;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace THNeonMirage.Manager
 {
@@ -16,7 +20,7 @@ namespace THNeonMirage.Manager
         public string gameVersion = "1.0";
         public byte maxPlayersPerRoom = 4;
         public readonly bool IsClientSide = true;
-        public List<string> rooms = new ();
+        public ObservableList<RoomInfo> rooms = new ();
 
         [Header("UI父组件")]
         public GameObject canvas;
@@ -37,7 +41,8 @@ namespace THNeonMirage.Manager
         
         public void Connect()
         {
-            PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5056;
+            PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
+            PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.GameVersion = gameVersion;
             PhotonNetwork.ConnectUsingSettings();
@@ -58,44 +63,39 @@ namespace THNeonMirage.Manager
             
             Destroy(bar_instance);
             lobbyPanel.SetActive(true);
-            AddButtons();
         }
 
         public override void OnJoinedRoom()
         {
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
+            SceneManager.LoadScene("GameMap");
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
-            foreach (var room in roomList.Where(room => !room.IsOpen && !room.RemovedFromList))
-            {
-                rooms.Add(room.Name);
-                Debug.Log($"房间：{room.Name} 已创建");
+            // 添加或更新开放房间
+            foreach (var room in roomList.Where(r => r.IsOpen && !r.RemovedFromList)) {
+                if (!rooms.Contains(room)) 
+                    rooms.Add(room);
+                else {
+                    var index = rooms.IndexOf(room);
+                    rooms[index] = room;
+                }
             }
-            Debug.Log($"当前房间列表: {string.Join(", ", rooms)}");
+
+            // 更新UI
+            UpdateButtons();
         }
 
-        private void AdjustContent(int itemHeight)
+        private void UpdateButtons()
         {
-            var childCount = content.transform.childCount;
-            content.GetComponent<RectTransform>().sizeDelta = new Vector2(0, childCount * itemHeight);
-        }
-
-        private void AddButton(string roomName)
-        {
-            var newButton = Instantiate(buttonPrefab, content.transform);
-            newButton.GetComponent<Button>().onClick.AddListener(() => JoinRoom(roomName));
-            newButton.GetComponentInChildren<TMP_Text>().text = $"房间号：#{roomName}";
-            AdjustContent(10);
-        }
-
-        private void AddButtons()
-        {
-            for (var i = 1; i <= 20; i++)
-            {
-                AddButton($"{i}");
+            foreach (var room in rooms) {
+                var newButton = Instantiate(buttonPrefab, content.transform);
+                newButton.GetComponentInChildren<TMP_Text>().text = 
+                    $"房间名：{room.Name} | 玩家：{room.PlayerCount}/{room.MaxPlayers}";
+                newButton.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Name));
             }
+            AdjustContent(20); // 根据按钮高度调整
         }
         
         public void JoinRoom(string roomName)
@@ -103,18 +103,18 @@ namespace THNeonMirage.Manager
             if (PhotonNetwork.IsConnectedAndReady)
             {
                 PhotonNetwork.JoinRoom(roomName);
-                SceneManager.LoadScene("GameMap");
-                Debug.Log($"尝试加入房间: {roomName}");
-                
                 inGamePanel.SetActive(true);
                 hudPanel.AddComponent<HudManager>();
                 hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel;
             }
-            else
-            {
-                Debug.LogWarning("未连接到 Photon，无法加入房间！");
-            }
+            else Debug.LogWarning("未连接到 Photon，无法加入房间！");
         }
 
+        
+        private void AdjustContent(int itemHeight)
+        {
+            var childCount = content.transform.childCount;
+            content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,  10 + childCount * itemHeight);
+        }
     }
 }

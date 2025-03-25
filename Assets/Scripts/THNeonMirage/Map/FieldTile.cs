@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
+using THNeonMirage.Manager.UI;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage.Map
@@ -19,12 +21,14 @@ namespace THNeonMirage.Map
 
         public FieldProperty Property;
         public PlayerData Owner;
-        private GameObject hoverPanel;
-        private GameObject hoverText;
+        
+        [DisplayOnly] public SpriteRenderer spriteRenderer;
+        [DisplayOnly] public GameObject inGamePanel;
+        [DisplayOnly] public GameObject hoverPanel;
+        [DisplayOnly] public GameObject hoverText;
 
         protected PlayerManager Player;
         protected Random Random = new();
-        private SpriteRenderer spriteRenderer;
         private string tooltipString;
         
         private void Start()
@@ -32,8 +36,7 @@ namespace THNeonMirage.Map
             InitPlayer();
             hoverPanel = GameObject.Find("Canvas/HoverPanel");
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            backGroundColor = spriteRenderer.color;
+            backGroundColor = new Color(1f, 1f, 1f, 0.6f);
             
             description = $"土地价格：{Property.Price.Purchase}\n\n" +
                           $"空地过路费：{Property.Price.Level0}\n" +
@@ -72,12 +75,14 @@ namespace THNeonMirage.Map
             hoverPanel.transform.position = Input.mousePosition + new Vector3(40f, 40f);
             hoverText.GetComponent<TMP_Text>().text = tooltipString;
             hoverPanel.SetActive(true);
+            
+            inGamePanel.GetComponent<DialogueHandler>().OnMouseOver?.Invoke(id);
         }
 
         private void OnMouseExit()
         {
             spriteRenderer.color = backGroundColor;
-            hoverPanel.SetActive(false);
+            // hoverPanel.SetActive(false);
         }
 
         public bool HasOwner() => Owner == null;

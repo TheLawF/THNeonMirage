@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
+using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Manager.UI;
 using THNeonMirage.Map;
@@ -51,7 +52,7 @@ namespace THNeonMirage.Manager
         public GameObject progressPrefab;
         public GameObject content;
         
-        private GameServer game_server;
+        private GameHost _gameHost;
         private GameClient game_client;
         private PlayerManager player_manager;
 
@@ -144,10 +145,14 @@ namespace THNeonMirage.Manager
         
         private void StartServer()
         {
+            CreatePlayer();
             Instantiate(server);
             DontDestroyOnLoad(launcher);
             DontDestroyOnLoad(server);
-            server.GetComponent<GameServer>().Connect();
+            server.GetComponent<GameHost>().Connect();
+            homePanel.SetActive(false);
+            hudPanel.SetActive(false);
+            lobbyPanel.SetActive(true);
         }
         
         private void StartClient()
@@ -180,7 +185,9 @@ namespace THNeonMirage.Manager
             passwordInput.text = "";
             homePanel.SetActive(false);
 
-            PlayerManager.Instance = Instantiate(playerPrefab);
+            // PlayerManager.Instance = PhotonNetwork.Instantiate(playerPrefab);
+            PlayerManager.Instance = PhotonNetwork.Instantiate("playerObject",
+                PlayerManager.GetPlayerPosByIndex(player_data.Position), Quaternion.identity);
             PlayerManager.Instance.GetComponent<PlayerManager>().PlayerData.Balance = 600000;
             player_manager = PlayerManager.Instance.GetComponent<PlayerManager>().Init(player_data);
             GameMap.Players.Add(player_manager);

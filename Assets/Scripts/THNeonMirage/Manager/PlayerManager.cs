@@ -79,7 +79,6 @@ namespace THNeonMirage.Manager
             
         }
         
-        
         private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)
         {
             
@@ -117,7 +116,7 @@ namespace THNeonMirage.Manager
             transform.position =
                 GetPlayerPosByIndex(PlayerData.Position >= 40 ? PlayerData.Position % 40 : PlayerData.Position);
         }
-        public Vector3 GetPlayerPosByIndex(int index) => GameMap.PosInRange.First(pair => 
+        public static Vector3 GetPlayerPosByIndex(int index) => GameMap.PosInRange.First(pair => 
             Utils.IsInRange(pair.Key, index)).Value.Invoke(index);
 
         

@@ -1027,6 +1027,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balanceLabel: {fileID: 719447476}
+  roomNameInput: {fileID: 0}
 --- !u!1 &749964424
 GameObject:
   m_ObjectHideFlags: 0
@@ -1263,6 +1264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settingsPanel: {fileID: 0}
   tilePrefab: {fileID: 3760131361438333896, guid: 75f399b04c8aee54b9762348c8c99f00, type: 3}
+  inGamePanel: {fileID: 2106838132}
 --- !u!114 &872580547
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
@@ -19,6 +20,7 @@ namespace THNeonMirage.Manager.UI
         private FieldTile field;
         private PlayerManager player;
         private RectTransform rect_transform;
+        public Action<int> OnMouseOver;
         
         private TMP_Text toll;
         private TMP_Text title;
@@ -35,6 +37,7 @@ namespace THNeonMirage.Manager.UI
             player.PlayerData.OnPositionChanged += OnPlayerPositionChanged;
 
             SetTexts(player.PlayerData.Position);
+            OnMouseOver += SetTexts;
         }
 
         private void OnPlayerPositionChanged(object sender, ValueEventArgs args) => SetTexts((int)args.Value);

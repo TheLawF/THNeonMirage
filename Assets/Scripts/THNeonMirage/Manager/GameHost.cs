@@ -8,20 +8,23 @@ using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace THNeonMirage.Manager
 {
-    public class GameServer : MonoBehaviourPunCallbacks
+    public class GameHost : MonoBehaviourPunCallbacks
     {
+        public TMP_InputField roomNameInput;
         [Header("连接配置")]
         public string gameVersion = "1.0";
-        public byte maxPlayersPerRoom = 4;
+        public static int MaxPlayersPerRoom = 4;
         public readonly bool IsClientSide = false;
         public List<string> rooms = new ();
 
         public void Connect()
         {
+            PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
             PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.GameVersion = gameVersion;
@@ -37,18 +40,23 @@ namespace THNeonMirage.Manager
         public override void OnJoinedLobby()
         {
             Debug.Log("已加入大厅，等待房间列表更新...");
-            StartCoroutine(CreateRooms());
+            // StartCoroutine(CreateRooms());
         }
         
         private IEnumerator CreateRooms()
         {
-            for (var i = 0; i <= 20; i++)
+            var roomCount = 20;
+            for (var i = 0; i < roomCount; i++)
             {
-                PhotonNetwork.CreateRoom($"{i}", new RoomOptions { MaxPlayers = 4 });
-                yield return new WaitForSeconds(0.5f);
+                PhotonNetwork.CreateRoom($"{i}", 
+                    new RoomOptions
+                    {
+                        MaxPlayers = 4,
+                        EmptyRoomTtl = 100000
+                    });
+                yield return new WaitForSeconds(2f);
             }
             Debug.Log("房间列表更新成功，创建了20个房间");
-            yield return new WaitForSeconds(1f);
         }
 
         public override void OnCreateRoomFailed(short returnCode, string message)

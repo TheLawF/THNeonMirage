@@ -13,6 +13,7 @@ namespace THNeonMirage.Map
             Player.PlayerData.OnPositionChanged += OnPlayerStop;
         }
         
+        // 随机向前或者向后移动0-5格
         public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
             var data = (PlayerData)playerData;

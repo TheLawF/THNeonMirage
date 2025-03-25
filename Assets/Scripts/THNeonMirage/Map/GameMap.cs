@@ -20,25 +20,29 @@ namespace THNeonMirage.Map
             get => _activity;
             set
             {
-                if (Activity > 4) Activity = 0;
+                if (Activity > GameHost.MaxPlayersPerRoom) Activity = 1;
                 OnRoundStart?.Invoke();
-                var prevPlayer = Players.First(manager => manager.Activity == _activity);
                 _activity = value;
-                var nextPlayer = Players.First(manager => manager.Activity == _activity);
-                OnRoundEnd?.Invoke(prevPlayer.GetComponent<PlayerManager>(), new RoundEventArgs(prevPlayer, nextPlayer, _activity));
+                // OnRoundEnd?.Invoke(prevPlayer.GetComponent<PlayerManager>(), new RoundEventArgs(prevPlayer, nextPlayer, _activity));
             }
         }
 
         public GameObject settingsPanel;
         public GameObject tilePrefab;
+        public GameObject inGamePanel;
         
         public static List<PlayerManager> Players = new ();
         public static List<GameObject> Fields = new ();
 
         private static int _activity;
-        private static Vector3 uUnit = Vector3.right;
-        private static Vector3 vUnit = Vector3.up;
-        private static Vector3 startPos = Vector3.right * 5 + Vector3.up * 5;
+        private const float Side = 10;
+        private static Vector3 _uUnit = Vector3.right;
+        private static Vector3 _vUnit = Vector3.up;
+        
+        public static Vector3 StartPos = _uUnit * (Side / 2) + _vUnit * (Side / 2);
+        public static Vector3 LeftUp = StartPos - _uUnit * Side;
+        public static Vector3 LeftDown = StartPos - _uUnit * Side - _vUnit * Side;
+        public static Vector3 RightDown = StartPos - _vUnit * Side;
 
         public static Random Random = new ();
         private static readonly Price CheapPrice = new (8000, 6000, 500, 4000, 10000, 20000);
@@ -97,10 +101,10 @@ namespace THNeonMirage.Map
 
         public static readonly Dictionary<Range, Func<int, Vector3>> PosInRange = new()
         {
-            {..10, index => startPos - new Vector3(index % 10, 0)},
-            {10..20, index => startPos - uUnit * 10 - new Vector3(0, index % 10)},
-            {20..30, index => startPos - uUnit * 10 - vUnit * 10 + new Vector3(index % 10, 0)},
-            {30..40, index => startPos - vUnit * 10 + new Vector3(0, index % 10)}
+            {..10, index => StartPos - new Vector3(index % 10, 0)},
+            {10..20, index => StartPos - _uUnit * 10 - new Vector3(0, index % 10)},
+            {20..30, index => StartPos - _uUnit * 10 - _vUnit * 10 + new Vector3(index % 10, 0)},
+            {30..40, index => StartPos - _vUnit * 10 + new Vector3(0, index % 10)}
         };
 
         private void Start()
@@ -129,19 +133,18 @@ namespace THNeonMirage.Map
         /// <returns>实例化且挂载了 FieldTile 的地块对象</returns>
         private GameObject InitField(GameObject tp, int index)
         {
-            const int side = 10;
-            var uOffset = new Vector3(index % side, 0);
-            var vOffset = new Vector3(0, index % side);
+            var uOffset = new Vector3(index % Side, 0);
+            var vOffset = new Vector3(0, index % Side);
 
             var list = new List<Func<GameObject>>(new Func<GameObject>[]
             {
-                () => Instantiate(tp, startPos - uOffset, Quaternion.identity),
-                () => Instantiate(tp, startPos - uUnit * side - vOffset, Quaternion.identity),
-                () => Instantiate(tp, startPos - uUnit * side - vUnit * side + uOffset, Quaternion.identity),
-                () => Instantiate(tp, startPos - vUnit * side + vOffset, Quaternion.identity),
+                () => Instantiate(tp, StartPos - uOffset, Quaternion.identity),
+                () => Instantiate(tp, LeftUp - vOffset, Quaternion.identity),
+                () => Instantiate(tp, LeftDown + uOffset, Quaternion.identity),
+                () => Instantiate(tp, RightDown + vOffset, Quaternion.identity),
                 () => Instantiate(tp, Vector3.zero, Quaternion.identity)
             });
-            
+
             var instance = Utils.SwitchByMap(list, index);
             var _ = index switch
             {
@@ -181,8 +184,15 @@ namespace THNeonMirage.Map
             ft.level = 0;
             ft.id = id == -1 ? ft.id : id;
             ft.Property = fieldProperty;
+            ft.spriteRenderer = tilePrefab.GetComponent<SpriteRenderer>();
+            ft.inGamePanel = inGamePanel;
             
             return 1;
+        }
+
+        public Vector3 Next(GameObject prefab, Vector3 prevPos, float u, float v)
+        {
+            return prevPos + new Vector3(u, v);
         }
     }
 }
