@@ -45,6 +45,7 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Data\User.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\DiceHandler.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\MerryGoRound.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameBehaviour.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\PirateShip.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\AppSettingsExtensions.cs" />
@@ -52,6 +53,7 @@
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChannelSelector.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Event\IGameEventArgs.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameBehaviourPunCallbacks.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\ExitTile.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\Authorization.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\GameMap.cs" />
@@ -75,6 +77,7 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Map\GapTile.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameBehaviourPun.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\FerrisWheel.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\RollerCoaster.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\ProgressBarControl.cs" />
@@ -207,7 +210,7 @@
      <Folder Include="Assets\Resources\UI" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader" />
-     <Folder Include="Assets\Prefabs" />
+     <Folder Include="Assets\Resources\Prefabs" />
      <Folder Include="Assets\Photon\PhotonChat\Demos\DemoChat" />
      <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />
      <Folder Include="Assets\TextMesh Pro\Examples &amp; Extras\Textures" />

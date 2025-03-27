@@ -1243,6 +1243,9 @@ GameObject:
   - component: {fileID: 872580548}
   - component: {fileID: 872580547}
   - component: {fileID: 872580546}
+  - component: {fileID: 872580551}
+  - component: {fileID: 872580550}
+  - component: {fileID: 872580549}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1265,6 +1268,8 @@ MonoBehaviour:
   settingsPanel: {fileID: 0}
   tilePrefab: {fileID: 3760131361438333896, guid: 75f399b04c8aee54b9762348c8c99f00, type: 3}
   inGamePanel: {fileID: 2106838132}
+  Players: []
+  Fields: []
 --- !u!114 &872580547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1301,6 +1306,45 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &872580549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872580545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4be8f3e3daff4ff49f337418b4b15565, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapObject: {fileID: 872580545}
+--- !u!114 &872580550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872580545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48e61e6189ba407e8fefbc739d234591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapObject: {fileID: 872580545}
+--- !u!114 &872580551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872580545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 217fa6c860984b709ec2c7a5506ca6ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapObject: {fileID: 872580545}
 --- !u!1 &1111677192
 GameObject:
   m_ObjectHideFlags: 0
@@ -3876,6 +3920,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c28235f0f50d249b683f3dccbf06ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapObject: {fileID: 0}
   titleLabel: {fileID: 1183947881}
   descriptionLabel: {fileID: 1238910791}
   tollLabel: {fileID: 1823253469}

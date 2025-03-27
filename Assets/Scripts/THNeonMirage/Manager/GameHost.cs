@@ -13,23 +13,23 @@ using UnityEngine.UI;
 
 namespace THNeonMirage.Manager
 {
-    public class GameHost : MonoBehaviourPunCallbacks
+    public class GameHost : GameClient
     {
         public TMP_InputField roomNameInput;
         [Header("连接配置")]
-        public string gameVersion = "1.0";
+        // public string gameVersion = "1.0";
         public static int MaxPlayersPerRoom = 4;
         public readonly bool IsClientSide = false;
         public List<string> rooms = new ();
 
-        public void Connect()
-        {
-            PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
-            PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
-            PhotonNetwork.AutomaticallySyncScene = true;
-            PhotonNetwork.GameVersion = gameVersion;
-            PhotonNetwork.ConnectUsingSettings();
-        }
+        // public override void Connect()
+        // {
+        //     PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
+        //     PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
+        //     PhotonNetwork.AutomaticallySyncScene = true;
+        //     PhotonNetwork.GameVersion = gameVersion;
+        //     PhotonNetwork.ConnectUsingSettings();
+        // }
 
         public override void OnConnectedToMaster()
         {

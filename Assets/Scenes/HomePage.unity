@@ -3691,6 +3691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c28235f0f50d249b683f3dccbf06ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapObject: {fileID: 0}
   titleLabel: {fileID: 0}
   descriptionLabel: {fileID: 0}
   tollLabel: {fileID: 0}

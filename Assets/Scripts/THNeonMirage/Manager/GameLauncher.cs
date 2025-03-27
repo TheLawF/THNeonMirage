@@ -54,7 +54,7 @@ namespace THNeonMirage.Manager
         
         private GameHost _gameHost;
         private GameClient game_client;
-        private PlayerManager player_manager;
+        private PlayerManager _playerManager;
 
         private static readonly List<string> Administrators = new()
         {
@@ -145,10 +145,12 @@ namespace THNeonMirage.Manager
         
         private void StartServer()
         {
-            CreatePlayer();
+            // CreatePlayer();
             Instantiate(server);
             DontDestroyOnLoad(launcher);
             DontDestroyOnLoad(server);
+            InitClient(_gameHost);
+            
             server.GetComponent<GameHost>().Connect();
             homePanel.SetActive(false);
             hudPanel.SetActive(false);
@@ -157,43 +159,33 @@ namespace THNeonMirage.Manager
         
         private void StartClient()
         {
-            CreatePlayer();
+            // CreatePlayer();
             Instantiate(client);
             DontDestroyOnLoad(PlayerManager.Instance);
             DontDestroyOnLoad(launcher);
             DontDestroyOnLoad(client);
             
-            game_client = client.GetComponent<GameClient>();
-            game_client.canvas = canvas;
-            game_client.hudPanel = hudPanel;
-            game_client.lobbyPanel = lobbyPanel;
-            game_client.inGamePanel = inGamePanel;
+            InitClient(game_client);
+        }
 
-            game_client.buttonPrefab = buttonPrefab;
-            game_client.progressPrefab = progressPrefab;
-            game_client.balanceLabel = balanceLabel;
-            game_client.content = content;
-            game_client.Connect();
+        private void InitClient(GameClient gameClient)
+        {
+            gameClient = gameClient.GetComponent<GameClient>();
+            gameClient.canvas = canvas;
+            gameClient.hudPanel = hudPanel;
+            gameClient.lobbyPanel = lobbyPanel;
+            gameClient.inGamePanel = inGamePanel;
+
+            gameClient.buttonPrefab = buttonPrefab;
+            gameClient.progressPrefab = progressPrefab;
+            gameClient.balanceLabel = balanceLabel;
+            gameClient.content = content;
+            gameClient.Connect();
             
             diceObject.SetActive(true);
-            dice.pos = player_manager.PlayerData.Position;
+            dice.pos = _playerManager.PlayerData.Position;
         }
 
-        private void CreatePlayer()
-        {
-            usernameInput.text = "";
-            passwordInput.text = "";
-            homePanel.SetActive(false);
-
-            // PlayerManager.Instance = PhotonNetwork.Instantiate(playerPrefab);
-            PlayerManager.Instance = PhotonNetwork.Instantiate("playerObject",
-                PlayerManager.GetPlayerPosByIndex(player_data.Position), Quaternion.identity);
-            PlayerManager.Instance.GetComponent<PlayerManager>().PlayerData.Balance = 600000;
-            player_manager = PlayerManager.Instance.GetComponent<PlayerManager>().Init(player_data);
-            GameMap.Players.Add(player_manager);
-            player_manager.Activity = GameMap.Players.IndexOf(player_manager);
-
-        }
         public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);
         public void Save(string username, string columnName, object data) => _user.Save(username, columnName, data);
 

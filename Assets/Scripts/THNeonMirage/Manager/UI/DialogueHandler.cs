@@ -2,6 +2,7 @@ using System;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
+using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -10,18 +11,18 @@ using UnityEngine.UIElements;
 
 namespace THNeonMirage.Manager.UI
 {
-    public class DialogueHandler : MonoBehaviour, IPointerClickHandler
+    public class DialogueHandler : GameBehaviour, IPointerClickHandler
     {
         public GameObject titleLabel;
         public GameObject descriptionLabel;
         public GameObject tollLabel;
         public GameObject inGamePanel;
 
+        public Action<int> OnMouseOver;
         private FieldTile field;
         private PlayerManager player;
         private RectTransform rect_transform;
-        public Action<int> OnMouseOver;
-        
+
         private TMP_Text toll;
         private TMP_Text title;
         private TMP_Text description;
@@ -32,7 +33,8 @@ namespace THNeonMirage.Manager.UI
             title = titleLabel.GetComponent<TMP_Text>();
             toll = tollLabel.GetComponent<TMP_Text>();
             description = descriptionLabel.GetComponent<TMP_Text>();
-            
+
+            GameMap = mapObject.GetComponent<GameMap>();
             player = PlayerManager.Instance.GetComponent<PlayerManager>();
             player.PlayerData.OnPositionChanged += OnPlayerPositionChanged;
 
@@ -44,7 +46,7 @@ namespace THNeonMirage.Manager.UI
         
         private void SetTexts(int positionIndex)
         {
-            field = GameMap.Fields[positionIndex].GetComponent<FieldTile>();
+            field = GameMap.fields[positionIndex].GetComponent<FieldTile>();
             title.text = field.Property.Name;
             description.text = field.description;
             toll.text = $"当前过路费：{field.CurrentTolls()}";
@@ -63,7 +65,6 @@ namespace THNeonMirage.Manager.UI
                 inGamePanel.SetActive(false);
         }
 // #endif
-        
     }
 
     public enum DialogueType

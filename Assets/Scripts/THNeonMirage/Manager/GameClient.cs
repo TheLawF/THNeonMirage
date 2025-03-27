@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
+using THNeonMirage.Data;
 using THNeonMirage.Manager.UI;
+using THNeonMirage.Map;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,8 +16,9 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace THNeonMirage.Manager
 {
-    public class GameClient: MonoBehaviourPunCallbacks
+    public class GameClient: GameBehaviourPunCallbacks
     {
+        [DisplayOnly] public PlayerData PlayerData;
         [Header("连接配置")]
         public string gameVersion = "1.0";
         public byte maxPlayersPerRoom = 4;
@@ -33,13 +36,13 @@ namespace THNeonMirage.Manager
         public GameObject buttonPrefab;
         public GameObject progressPrefab;
         public GameObject content;
-
+        
         private GameObject bar_instance;
         private Coroutine progress_coroutine;
         private RectTransform progress_transform;
         private RectTransform parent_transform;
         
-        public void Connect()
+        public virtual void Connect()
         {
             PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
             PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
@@ -69,6 +72,7 @@ namespace THNeonMirage.Manager
         {
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
             SceneManager.LoadScene("GameMap");
+            CreatePlayer();
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -115,6 +119,17 @@ namespace THNeonMirage.Manager
         {
             var childCount = content.transform.childCount;
             content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,  10 + childCount * itemHeight);
+        }
+        
+        private void CreatePlayer()
+        {
+            PlayerManager.Instance = PhotonNetwork.Instantiate("playerObject",
+                PlayerManager.GetPlayerPosByIndex(PlayerData.Position), Quaternion.identity);
+            PlayerManager.Instance.GetComponent<PlayerManager>().PlayerData.Balance = 600000;
+
+            var playerManager = PlayerManager.Instance.GetComponent<PlayerManager>();
+            GameMap.players.Add(PlayerManager.Instance);
+            playerManager.Activity = GameMap.players.IndexOf(PlayerManager.Instance);
         }
     }
 }

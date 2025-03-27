@@ -1,18 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ExitGames.Client.Photon.StructWrapping;
 using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using TMPro;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UIElements;
-using RpcTarget = Photon.Pun.RpcTarget;
 
 namespace System.Runtime.CompilerServices
 {
@@ -26,17 +21,17 @@ namespace THNeonMirage.Manager
     [Serializable]
     public class PlayerManager : MonoBehaviourPun, IPunObservable
     {
-        public PlayerData PlayerData;
-        public int Activity;
-        public static GameObject Instance;
         public string Id;
+        public int Activity;
         public string Password;
         
-        [DisplayOnly]
-        public GameLauncher database;
-        public TMP_Text BalanceText { private get; set; }
         public DiceType DiceType;
-        
+        public TMP_Text BalanceText { private get; set; }
+        public static GameObject Instance;
+
+        [DisplayOnly] public PlayerData PlayerData;
+        [DisplayOnly] public GameLauncher database;
+
         private bool IsAdministrator;
         private Vector3 networkPosition;
         private Quaternion networkRotation;
