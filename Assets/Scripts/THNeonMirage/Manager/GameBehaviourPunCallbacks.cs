@@ -1,12 +1,12 @@
 using Photon.Pun;
 using THNeonMirage.Map;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace THNeonMirage.Manager
 {
     public class GameBehaviourPunCallbacks : MonoBehaviourPunCallbacks
     {
-        public GameObject mapObject;
-        protected GameMap GameMap;
+        public GameMap gameMap;
     }
 }

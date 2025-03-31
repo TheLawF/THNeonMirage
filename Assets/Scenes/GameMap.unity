@@ -487,7 +487,7 @@ MonoBehaviour:
   DiceValue: 0
   pos: 0
   canRenderTooltip: 0
-  playerInstance: {fileID: 0}
+  client: {fileID: 0}
 --- !u!1 &567977018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,6 +1026,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c93b36d5b6041a0aff55de57b5d7736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: 0}
   balanceLabel: {fileID: 719447476}
   roomNameInput: {fileID: 0}
 --- !u!1 &749964424
@@ -1232,119 +1233,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!1 &872580545
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 872580548}
-  - component: {fileID: 872580547}
-  - component: {fileID: 872580546}
-  - component: {fileID: 872580551}
-  - component: {fileID: 872580550}
-  - component: {fileID: 872580549}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &872580546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872580545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bde4a52b13d249e98023a6b6a98b9e20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settingsPanel: {fileID: 0}
-  tilePrefab: {fileID: 3760131361438333896, guid: 75f399b04c8aee54b9762348c8c99f00, type: 3}
-  inGamePanel: {fileID: 2106838132}
-  Players: []
-  Fields: []
---- !u!114 &872580547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872580545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 204286481
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
---- !u!4 &872580548
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872580545}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.000015258789, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &872580549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872580545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4be8f3e3daff4ff49f337418b4b15565, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapObject: {fileID: 872580545}
---- !u!114 &872580550
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872580545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48e61e6189ba407e8fefbc739d234591, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapObject: {fileID: 872580545}
---- !u!114 &872580551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872580545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 217fa6c860984b709ec2c7a5506ca6ec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mapObject: {fileID: 872580545}
 --- !u!1 &1111677192
 GameObject:
   m_ObjectHideFlags: 0
@@ -3925,3 +3813,4 @@ MonoBehaviour:
   descriptionLabel: {fileID: 1238910791}
   tollLabel: {fileID: 1823253469}
   inGamePanel: {fileID: 2106838132}
+  client: {fileID: 0}

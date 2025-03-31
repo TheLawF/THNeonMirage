@@ -5,8 +5,10 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using THNeonMirage.Data;
 using THNeonMirage.Manager.UI;
+using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace THNeonMirage.Manager
 {
@@ -30,7 +32,8 @@ namespace THNeonMirage.Manager
         public TMP_InputField usernameInput;
         public TMP_InputField passwordInput;
 
-        [Header("服务端客户端启动器")]
+        [Header("服务端客户端启动器")] 
+        public GameObject gameManager;
         public GameObject launcher;
         public GameObject host;
         public GameObject client;
@@ -48,7 +51,8 @@ namespace THNeonMirage.Manager
         public GameObject buttonPrefab;
         public GameObject progressPrefab;
         public GameObject content;
-        
+
+        private GameMap game_map;
         private GameHost game_host;
         private GameClient game_client;
         private PlayerManager _playerManager;
@@ -142,29 +146,32 @@ namespace THNeonMirage.Manager
         
         private void StartHost()
         {
-            game_host = Instantiate(host).GetComponent<GameHost>();
-            DontDestroyOnLoad(launcher);
-            DontDestroyOnLoad(game_host);
+            var hostInst = Instantiate(host);
+            DontDestroyOnLoad(hostInst);
+            game_host = hostInst.GetComponent<GameHost>();
             InitClient(game_host);
-            
-            host.GetComponent<GameHost>().Connect();
-            homePanel.SetActive(false);
-            hudPanel.SetActive(false);
-            lobbyPanel.SetActive(true);
         }
         
         private void StartClient()
         {
-            game_client = Instantiate(client).GetComponent<GameClient>();
-            DontDestroyOnLoad(launcher);
-            DontDestroyOnLoad(game_client);
-            
+            var clientInst = Instantiate(client);
+            DontDestroyOnLoad(clientInst);
+            game_client = clientInst.GetComponent<GameClient>();
             InitClient(game_client);
+            
         }
 
         private void InitClient(GameClient gameClient)
         {
             gameClient = gameClient.GetComponent<GameClient>();
+            DontDestroyOnLoad(gameManager);
+            DontDestroyOnLoad(launcher);
+            
+            game_map = gameManager.GetComponent<GameMap>();
+            game_map.client = client.GetComponent<GameClient>();
+            game_client.gameMap = game_map;
+            game_client.data = player_data;
+
             gameClient.canvas = canvas;
             gameClient.hudPanel = hudPanel;
             gameClient.lobbyPanel = lobbyPanel;
@@ -175,7 +182,10 @@ namespace THNeonMirage.Manager
             gameClient.balanceLabel = balanceLabel;
             gameClient.content = content;
             gameClient.Connect();
-            
+
+            homePanel.SetActive(false);
+            hudPanel.SetActive(false);
+            lobbyPanel.SetActive(true);
             diceObject.SetActive(true);
             dice.pos = _playerManager.PlayerData.Position;
         }

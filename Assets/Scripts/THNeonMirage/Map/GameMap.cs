@@ -109,7 +109,7 @@ namespace THNeonMirage.Map
             {30..40, index => StartPos - _vUnit * 10 + new Vector3(0, index % 10)}
         };
 
-        private void Start()
+        public void CreateMap()
         {
             players = new List<GameObject>();
             fields = new List<GameObject>();

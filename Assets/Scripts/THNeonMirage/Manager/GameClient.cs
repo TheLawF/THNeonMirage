@@ -4,6 +4,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Manager.UI;
+using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -14,7 +15,11 @@ namespace THNeonMirage.Manager
 {
     public class GameClient: GameBehaviourPunCallbacks
     {
+        public GameObject playerPrefab;
+        public PlayerData data;
         [DisplayOnly] public GameObject playerInstance;
+        [DisplayOnly] public GameObject client;
+
         [Header("连接配置")]
         public string gameVersion = "1.0";
         public byte maxPlayersPerRoom = 4;
@@ -32,9 +37,7 @@ namespace THNeonMirage.Manager
         public GameObject progressPrefab;
         public GameObject content;
         
-        private PlayerData data;
         private PlayerManager playerManager;
-        
         private GameObject bar_instance;
         private Coroutine progress_coroutine;
         private RectTransform progress_transform;
@@ -66,11 +69,15 @@ namespace THNeonMirage.Manager
             lobbyPanel.SetActive(true);
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         public override void OnJoinedRoom()
         {
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
-            SceneManager.LoadScene("GameMap");
             CreatePlayer();
+            hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel;
+            hudPanel.GetComponent<HudManager>().player = playerInstance;
+            SceneManager.LoadScene("GameMap");
+            gameMap.CreateMap();
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -106,9 +113,6 @@ namespace THNeonMirage.Manager
             {
                 PhotonNetwork.JoinRoom(roomName);
                 inGamePanel.SetActive(true);
-                hudPanel.AddComponent<HudManager>();
-                hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel;
-                hudPanel.GetComponent<HudManager>().player = playerInstance;
             }
             else Debug.LogWarning("未连接到 Photon，无法加入房间！");
         }
@@ -120,15 +124,16 @@ namespace THNeonMirage.Manager
             content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,  10 + childCount * itemHeight);
         }
         
-        private void CreatePlayer()
+        public void CreatePlayer()
         {
+            // playerInstance = Instantiate(playerPrefab, PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
             playerInstance = PhotonNetwork.Instantiate("playerObject",
                 PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
-            playerInstance.GetComponent<PlayerManager>().PlayerData.Balance = 600000;
-
-            var playerManager = playerInstance.GetComponent<PlayerManager>();
-            GameMap.players.Add(playerInstance);
-            playerManager.Activity = GameMap.players.IndexOf(playerInstance);
+            playerInstance.GetComponent<PlayerManager>().PlayerData = data;
+            playerManager = playerInstance.GetComponent<PlayerManager>();
+            
+            gameMap.players.Add(playerInstance);
+            playerManager.Activity = gameMap.players.IndexOf(playerInstance);
         }
     }
 }
