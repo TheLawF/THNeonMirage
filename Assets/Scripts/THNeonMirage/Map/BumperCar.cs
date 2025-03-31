@@ -9,6 +9,7 @@ namespace THNeonMirage.Map
     {
         private void Start()
         {
+            Init();
             Player.PlayerData.OnPositionChanged += OnPlayerStop;
         }
         public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
