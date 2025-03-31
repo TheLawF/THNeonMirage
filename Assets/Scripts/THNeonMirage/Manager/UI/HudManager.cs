@@ -10,6 +10,7 @@ namespace THNeonMirage.Manager.UI
 {
     public class HudManager: MonoBehaviour
     {
+        public GameObject player;
         public GameObject balanceLabel;
         public TMP_InputField roomNameInput;
         private TMP_Text balanceText;
@@ -17,7 +18,7 @@ namespace THNeonMirage.Manager.UI
         private void Start()
         {
             balanceText = balanceLabel.GetComponent<TMP_Text>();
-            data = PlayerManager.Instance.GetComponent<PlayerManager>().PlayerData;
+            data = player.GetComponent<PlayerManager>().PlayerData;
             data.OnBalanceChanged += OnPlayerBalanceChanged;
         }
 

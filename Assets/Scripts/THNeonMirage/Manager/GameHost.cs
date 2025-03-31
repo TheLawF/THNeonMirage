@@ -19,7 +19,6 @@ namespace THNeonMirage.Manager
         [Header("连接配置")]
         // public string gameVersion = "1.0";
         public static int MaxPlayersPerRoom = 4;
-        public readonly bool IsClientSide = false;
         public List<string> rooms = new ();
 
         // public override void Connect()

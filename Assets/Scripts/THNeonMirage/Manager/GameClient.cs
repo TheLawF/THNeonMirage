@@ -18,11 +18,10 @@ namespace THNeonMirage.Manager
 {
     public class GameClient: GameBehaviourPunCallbacks
     {
-        [DisplayOnly] public PlayerData PlayerData;
+        [DisplayOnly] public GameObject playerInstance;
         [Header("连接配置")]
         public string gameVersion = "1.0";
         public byte maxPlayersPerRoom = 4;
-        public readonly bool IsClientSide = true;
         public ObservableList<RoomInfo> rooms = new ();
 
         [Header("UI父组件")]
@@ -36,6 +35,9 @@ namespace THNeonMirage.Manager
         public GameObject buttonPrefab;
         public GameObject progressPrefab;
         public GameObject content;
+        
+        private PlayerData data;
+        private PlayerManager playerManager;
         
         private GameObject bar_instance;
         private Coroutine progress_coroutine;
@@ -110,6 +112,7 @@ namespace THNeonMirage.Manager
                 inGamePanel.SetActive(true);
                 hudPanel.AddComponent<HudManager>();
                 hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel;
+                hudPanel.GetComponent<HudManager>().player = playerInstance;
             }
             else Debug.LogWarning("未连接到 Photon，无法加入房间！");
         }
@@ -123,13 +126,13 @@ namespace THNeonMirage.Manager
         
         private void CreatePlayer()
         {
-            PlayerManager.Instance = PhotonNetwork.Instantiate("playerObject",
-                PlayerManager.GetPlayerPosByIndex(PlayerData.Position), Quaternion.identity);
-            PlayerManager.Instance.GetComponent<PlayerManager>().PlayerData.Balance = 600000;
+            playerInstance = PhotonNetwork.Instantiate("playerObject",
+                PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
+            playerInstance.GetComponent<PlayerManager>().PlayerData.Balance = 600000;
 
-            var playerManager = PlayerManager.Instance.GetComponent<PlayerManager>();
-            GameMap.players.Add(PlayerManager.Instance);
-            playerManager.Activity = GameMap.players.IndexOf(PlayerManager.Instance);
+            var playerManager = playerInstance.GetComponent<PlayerManager>();
+            GameMap.players.Add(playerInstance);
+            playerManager.Activity = GameMap.players.IndexOf(playerInstance);
         }
     }
 }

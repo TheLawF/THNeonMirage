@@ -27,8 +27,9 @@ namespace THNeonMirage.Manager
         
         public DiceType DiceType;
         public TMP_Text BalanceText { private get; set; }
-        public static GameObject Instance;
-
+        
+        public GameObject playerPrefab;
+        public GameObject Instance;
         [DisplayOnly] public PlayerData PlayerData;
         [DisplayOnly] public GameLauncher database;
 
@@ -49,7 +50,9 @@ namespace THNeonMirage.Manager
         {
 
         }
-        
+
+        public void CreateInstance() => Instance = Instantiate(playerPrefab);
+
         [PunRPC]
         public void SetPosition(object sender, ValueEventArgs currentPos)
         {

@@ -18,6 +18,7 @@ namespace THNeonMirage.Manager.UI
         public GameObject tollLabel;
         public GameObject inGamePanel;
 
+        public GameObject client;
         public Action<int> OnMouseOver;
         private FieldTile field;
         private PlayerManager player;
@@ -35,7 +36,7 @@ namespace THNeonMirage.Manager.UI
             description = descriptionLabel.GetComponent<TMP_Text>();
 
             GameMap = mapObject.GetComponent<GameMap>();
-            player = PlayerManager.Instance.GetComponent<PlayerManager>();
+            player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
             player.PlayerData.OnPositionChanged += OnPlayerPositionChanged;
 
             SetTexts(player.PlayerData.Position);

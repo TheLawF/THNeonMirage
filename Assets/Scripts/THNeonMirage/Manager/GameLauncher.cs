@@ -161,7 +161,7 @@ namespace THNeonMirage.Manager
         {
             // CreatePlayer();
             Instantiate(client);
-            DontDestroyOnLoad(PlayerManager.Instance);
+            // DontDestroyOnLoad(PlayerManager.Instance);
             DontDestroyOnLoad(launcher);
             DontDestroyOnLoad(client);
             

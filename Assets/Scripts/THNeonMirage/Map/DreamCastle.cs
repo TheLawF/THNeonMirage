@@ -9,10 +9,11 @@ namespace THNeonMirage.Map
     {
         private void Start()
         {
+            Init();
             description = "经过或停在此处时可以获得10000月虹币\n\n<i><color=#444444>“欢迎来到梦乐园~”</color></i>";
-            Player = PlayerManager.Instance.GetComponent<PlayerManager>();
             Player.PlayerData.OnPassBy += OnPlayerPassBy;
         }
+
 
         public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
             => ((PlayerData)playerData).Balance += 10000;

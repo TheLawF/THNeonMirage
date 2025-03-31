@@ -6,6 +6,7 @@ using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Util;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using Random = System.Random;
 
@@ -32,8 +33,8 @@ namespace THNeonMirage.Map
         public GameObject tilePrefab;
         public GameObject inGamePanel;
         
-        public List<GameObject> players = new ();
-        public List<GameObject> fields = new ();
+        public List<GameObject> players;
+        public List<GameObject> fields;
 
         private static int _activity;
         private const float Side = 10;
@@ -110,6 +111,7 @@ namespace THNeonMirage.Map
 
         private void Start()
         {
+            players = new List<GameObject>();
             fields = new List<GameObject>();
             // InitField(tilePrefab, 1);
 

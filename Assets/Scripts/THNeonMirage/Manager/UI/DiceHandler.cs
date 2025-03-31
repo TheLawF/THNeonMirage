@@ -15,7 +15,7 @@ namespace THNeonMirage.Manager.UI
         public int DiceValue;
         public int pos;
         public bool canRenderTooltip;
-        public GameObject playerInstance;
+        public GameObject client;
         
         private bool shouldRenderTooltip;
         private Random random = new();
@@ -40,7 +40,7 @@ namespace THNeonMirage.Manager.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             GameMap.Activity++;
-            player = PlayerManager.Instance.GetComponent<PlayerManager>();
+            player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
             // 下面这个判断的作用为是否轮到该玩家掷骰子
             if (GameMap.Activity == player.Activity) 
                 return;

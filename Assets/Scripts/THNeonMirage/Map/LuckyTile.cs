@@ -7,7 +7,8 @@ namespace THNeonMirage.Map
     {
         private void Start()
         {
-            PlayerManager.Instance.GetComponent<PlayerManager>().PlayerData.OnPositionChanged += OnPlayerStop;
+            Init();
+            Player.PlayerData.OnPositionChanged += OnPlayerStop;
             description = "可以抽取一次祈福效果";
         }
     }
