@@ -1,18 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Manager.UI;
-using THNeonMirage.Map;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace THNeonMirage.Manager
 {

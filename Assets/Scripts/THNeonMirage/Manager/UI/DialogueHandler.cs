@@ -1,13 +1,9 @@
 using System;
-using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
-using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
 
 namespace THNeonMirage.Manager.UI
 {
@@ -17,9 +13,9 @@ namespace THNeonMirage.Manager.UI
         public GameObject descriptionLabel;
         public GameObject tollLabel;
         public GameObject inGamePanel;
-
-        public GameObject client;
+        
         public Action<int> OnMouseOver;
+        public GameClient client;
         private FieldTile field;
         private PlayerManager player;
         private RectTransform rect_transform;
@@ -36,7 +32,7 @@ namespace THNeonMirage.Manager.UI
             description = descriptionLabel.GetComponent<TMP_Text>();
 
             GameMap = mapObject.GetComponent<GameMap>();
-            player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
+            player = client.playerInstance.GetComponent<PlayerManager>();
             player.PlayerData.OnPositionChanged += OnPlayerPositionChanged;
 
             SetTexts(player.PlayerData.Position);

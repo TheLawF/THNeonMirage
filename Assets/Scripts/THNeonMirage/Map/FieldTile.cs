@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Manager.UI;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage.Map
@@ -19,7 +17,7 @@ namespace THNeonMirage.Map
         public string description;
         public Color backGroundColor;
         
-        public GameObject client;
+        public GameClient client;
         public FieldProperty Property;
         public PlayerData Owner;
         
@@ -28,19 +26,16 @@ namespace THNeonMirage.Map
         [DisplayOnly] public GameObject hoverPanel;
         [DisplayOnly] public GameObject hoverText;
 
-        protected GameClient GameClient;
         protected PlayerManager Player;
         protected Random Random = new();
         private string tooltipString;
         
         private void Start()
         {
-            InitPlayer();
             hoverPanel = GameObject.Find("Canvas/HoverPanel");
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
             backGroundColor = new Color(1f, 1f, 1f, 0.6f);
-            GameClient = client.GetComponent<GameClient>();
-            
+
             description = $"土地价格：{Property.Price.Purchase}\n\n" +
                           $"空地过路费：{Property.Price.Level0}\n" +
                           $"一幢房屋：{Property.Price.Level1}\n" +
@@ -52,9 +47,10 @@ namespace THNeonMirage.Map
         protected virtual void Init()
         {
             Start();
+            InitPlayer();
         }
 
-        protected void InitPlayer() => Player = GameClient.playerInstance.GetComponent<PlayerManager>();
+        protected void InitPlayer() => Player = client.playerInstance.GetComponent<PlayerManager>();
         
         public int CurrentTolls()
         {

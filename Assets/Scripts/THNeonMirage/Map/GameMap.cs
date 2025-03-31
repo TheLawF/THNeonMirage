@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
+using THNeonMirage.Manager.UI;
 using THNeonMirage.Util;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using Random = System.Random;
 
 namespace THNeonMirage.Map
@@ -29,9 +27,11 @@ namespace THNeonMirage.Map
             }
         }
 
+        public GameClient client;
         public GameObject settingsPanel;
         public GameObject tilePrefab;
         public GameObject inGamePanel;
+        public GameObject hudPanel;
         
         public List<GameObject> players;
         public List<GameObject> fields;
@@ -117,7 +117,8 @@ namespace THNeonMirage.Map
 
             Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
             fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
-            
+            hudPanel.GetComponent<DiceHandler>().client = client;
+            inGamePanel.GetComponent<DialogueHandler>().client = client;
         }
 
         private void Update()
@@ -189,6 +190,7 @@ namespace THNeonMirage.Map
             ft.Property = fieldProperty;
             ft.spriteRenderer = tilePrefab.GetComponent<SpriteRenderer>();
             ft.inGamePanel = inGamePanel;
+            ft.client = client;
             
             return 1;
         }

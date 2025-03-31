@@ -1,13 +1,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
-using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Manager.UI;
-using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
 
@@ -35,7 +32,7 @@ namespace THNeonMirage.Manager
 
         [Header("服务端客户端启动器")]
         public GameObject launcher;
-        public GameObject server;
+        public GameObject host;
         public GameObject client;
 
         [Header("UI父组件")]
@@ -52,7 +49,7 @@ namespace THNeonMirage.Manager
         public GameObject progressPrefab;
         public GameObject content;
         
-        private GameHost _gameHost;
+        private GameHost game_host;
         private GameClient game_client;
         private PlayerManager _playerManager;
 
@@ -138,20 +135,19 @@ namespace THNeonMirage.Manager
                         break;
                 }
 
-                if (Administrators.Exists(s => s.Equals(player_data.UserName))) StartServer();
+                if (Administrators.Exists(s => s.Equals(player_data.UserName))) StartHost();
                 else StartClient();
             }
         }
         
-        private void StartServer()
+        private void StartHost()
         {
-            // CreatePlayer();
-            Instantiate(server);
+            game_host = Instantiate(host).GetComponent<GameHost>();
             DontDestroyOnLoad(launcher);
-            DontDestroyOnLoad(server);
-            InitClient(_gameHost);
+            DontDestroyOnLoad(game_host);
+            InitClient(game_host);
             
-            server.GetComponent<GameHost>().Connect();
+            host.GetComponent<GameHost>().Connect();
             homePanel.SetActive(false);
             hudPanel.SetActive(false);
             lobbyPanel.SetActive(true);
@@ -159,11 +155,9 @@ namespace THNeonMirage.Manager
         
         private void StartClient()
         {
-            // CreatePlayer();
-            Instantiate(client);
-            // DontDestroyOnLoad(PlayerManager.Instance);
+            game_client = Instantiate(client).GetComponent<GameClient>();
             DontDestroyOnLoad(launcher);
-            DontDestroyOnLoad(client);
+            DontDestroyOnLoad(game_client);
             
             InitClient(game_client);
         }

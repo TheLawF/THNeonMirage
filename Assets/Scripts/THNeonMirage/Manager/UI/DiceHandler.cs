@@ -1,10 +1,8 @@
-using System;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using Random = System.Random;
 
 namespace THNeonMirage.Manager.UI
@@ -15,7 +13,7 @@ namespace THNeonMirage.Manager.UI
         public int DiceValue;
         public int pos;
         public bool canRenderTooltip;
-        public GameObject client;
+        public GameClient client;
         
         private bool shouldRenderTooltip;
         private Random random = new();
