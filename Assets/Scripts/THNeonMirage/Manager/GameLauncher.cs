@@ -31,8 +31,6 @@ namespace THNeonMirage.Manager
         private string adminName = "root";		//登录数据库的用户名
         private string adminPwd = "123456";		//登录数据库的密码
         private string port = "3306";			//MySQL服务的端口号
-
-        
         
         [Header("用户信息")]
         public GameObject playerPrefab;
@@ -65,11 +63,6 @@ namespace THNeonMirage.Manager
         private GameClient game_client;
         private PlayerManager _playerManager;
 
-        private static readonly List<string> Administrators = new()
-        {
-            "user", "admin"
-        };
-
         private void Start()
         {
             dice = diceObject.GetComponent<DiceHandler>();
@@ -77,6 +70,7 @@ namespace THNeonMirage.Manager
             _user = new User(connector);
             Debug.Log("连接数据库成功");
         }
+
 
         private void Awake()
         {

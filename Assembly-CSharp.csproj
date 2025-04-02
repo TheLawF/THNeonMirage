@@ -49,6 +49,8 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Map\PirateShip.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\AppSettingsExtensions.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Util\ActionTree.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Util\TreeNode.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChannelSelector.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
@@ -137,6 +139,9 @@
      <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\DialogueHandler.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\GameProcess.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Registry.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Util\ProcessActions.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
@@ -170,7 +175,6 @@
      <Folder Include="Assets\Resources\Lang" />
      <None Include="Assets\Shaders\ButtonShader.shader" />
      <Folder Include="Assets\Photon\PhotonChat\Demos\DemoChat\Files" />
-     <Folder Include="Assets\Scripts\THNeonMirage\Util" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
      <Folder Include="Assets\Resources\Textures" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
