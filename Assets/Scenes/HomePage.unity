@@ -2134,7 +2134,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c93b36d5b6041a0aff55de57b5d7736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   balanceLabel: {fileID: 1862250446}
   roomNameInput: {fileID: 1437742294}
 --- !u!1 &897889064
@@ -2184,7 +2183,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 9110736245687120657, guid: db4c84b7937087a4c96002f6fff8f6fc, type: 3}
   usernameInput: {fileID: 923687462}
   passwordInput: {fileID: 1246560993}
-  gameManager: {fileID: 1240687984}
+  gameManager: {fileID: 0}
   launcher: {fileID: 897889064}
   host: {fileID: 6731911776157743711, guid: c6dc62aa85d6a7245b0bb71c48402139, type: 3}
   client: {fileID: 6696573588815281738, guid: f6ef1cf5c13aef44c9d0bd49c56e23fd, type: 3}
@@ -3358,7 +3357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4be8f3e3daff4ff49f337418b4b15565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapObject: {fileID: 1240687984}
+  gameMap: {fileID: 1240687988}
 --- !u!114 &1240687986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3769,7 +3768,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1305293118
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3793,8 +3792,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0049743652, y: -0.0007171631}
-  m_SizeDelta: {x: 0.01001, y: 0.0006}
+  m_AnchoredPosition: {x: -0.0012512, y: -0.00022888}
+  m_SizeDelta: {x: -526.9224, y: -68.4649}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1305293119
 MonoBehaviour:

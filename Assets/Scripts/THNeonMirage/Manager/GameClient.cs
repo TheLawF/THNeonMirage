@@ -73,11 +73,13 @@ namespace THNeonMirage.Manager
         public override void OnJoinedRoom()
         {
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
+            //SceneManager.LoadScene("GameMap");
             CreatePlayer();
+            inGamePanel.SetActive(true);
             hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel;
-            hudPanel.GetComponent<HudManager>().player = playerInstance;
-            SceneManager.LoadScene("GameMap");
+            // hudPanel.GetComponent<HudManager>().player = playerInstance;
             gameMap.CreateMap();
+            gameMap.client = client.GetComponent<GameClient>();
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)

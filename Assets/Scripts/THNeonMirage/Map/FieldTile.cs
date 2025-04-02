@@ -76,9 +76,10 @@ namespace THNeonMirage.Map
         {
             tooltipString = $"编号：{id}\n名称：{Property.Name}";
             spriteRenderer.color = new Color(1f, 1f, 1f, 0.8f);
-            hoverPanel.transform.position = Input.mousePosition + new Vector3(40f, 40f);
-            hoverText.GetComponent<TMP_Text>().text = tooltipString;
-            hoverPanel.SetActive(true);
+            
+            // hoverPanel.transform.position = Input.mousePosition + new Vector3(40f, 40f);
+            // hoverText.GetComponent<TMP_Text>().text = tooltipString;
+            // hoverPanel.SetActive(true);
             
             inGamePanel.GetComponent<DialogueHandler>().OnMouseOver?.Invoke(id);
         }

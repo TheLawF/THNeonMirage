@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
@@ -27,12 +28,14 @@ namespace THNeonMirage.Manager
         private string adminPwd = "123456";		//登录数据库的密码
         private string port = "3306";			//MySQL服务的端口号
 
+        
+        
         [Header("用户信息")]
         public GameObject playerPrefab;
         public TMP_InputField usernameInput;
         public TMP_InputField passwordInput;
 
-        [Header("服务端客户端启动器")] 
+        [Header("服务端客户端启动器")]
         public GameObject gameManager;
         public GameObject launcher;
         public GameObject host;
@@ -68,6 +71,11 @@ namespace THNeonMirage.Manager
             connector = new DatabaseConnector(serverName, dbName, adminName, adminPwd);
             _user = new User(connector);
             Debug.Log("连接数据库成功");
+        }
+
+        private void Awake()
+        {
+            gameManager = GameObject.Find("GameManager");
         }
 
         // 注册
@@ -164,9 +172,6 @@ namespace THNeonMirage.Manager
         private void InitClient(GameClient gameClient)
         {
             gameClient = gameClient.GetComponent<GameClient>();
-            DontDestroyOnLoad(gameManager);
-            DontDestroyOnLoad(launcher);
-            
             game_map = gameManager.GetComponent<GameMap>();
             game_map.client = client.GetComponent<GameClient>();
             game_client.gameMap = game_map;
@@ -184,7 +189,6 @@ namespace THNeonMirage.Manager
             gameClient.Connect();
 
             homePanel.SetActive(false);
-            hudPanel.SetActive(false);
             lobbyPanel.SetActive(true);
             diceObject.SetActive(true);
             dice.pos = _playerManager.PlayerData.Position;
