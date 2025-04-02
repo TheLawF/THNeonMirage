@@ -1,74 +1,37 @@
 using System;
-using THNeonMirage.Event;
-using THNeonMirage.Map;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 
 namespace THNeonMirage.Manager.UI
 {
-    public class DialogueHandler : GameBehaviour, IPointerClickHandler
+    public class DialogueHandler: MonoBehaviour
     {
-        public GameObject titleLabel;
-        public GameObject descriptionLabel;
-        public GameObject tollLabel;
-        public GameObject inGamePanel;
-        
-        public Action<int> OnMouseOver;
-        public GameClient client;
-        private FieldTile field;
-        private PlayerManager player;
-        private RectTransform rect_transform;
+        public GameObject dialogueUI;
+        public GameObject textInput;
 
-        private TMP_Text toll;
-        private TMP_Text title;
-        private TMP_Text description;
+        public GameObject confirm;
+        private Button confirmButton;
         
         private void Start()
         {
-            rect_transform = GetComponent<RectTransform>();
-            title = titleLabel.GetComponent<TMP_Text>();
-            toll = tollLabel.GetComponent<TMP_Text>();
-            description = descriptionLabel.GetComponent<TMP_Text>();
-
-            GameMap = mapObject.GetComponent<GameMap>();
-            player = client.playerInstance.GetComponent<PlayerManager>();
-            player.PlayerData.OnPositionChanged += OnPlayerPositionChanged;
-
-            SetTexts(player.PlayerData.Position);
-            OnMouseOver += SetTexts;
+            confirmButton.text = "加入房间";
         }
 
-        private void OnPlayerPositionChanged(object sender, ValueEventArgs args) => SetTexts((int)args.Value);
-        
-        private void SetTexts(int positionIndex)
+        public void CloseWindow() => dialogueUI.SetActive(false);
+
+        public void OnCanceled()
         {
-            field = GameMap.fields[positionIndex].GetComponent<FieldTile>();
-            title.text = field.Property.Name;
-            description.text = field.description;
-            toll.text = $"当前过路费：{field.CurrentTolls()}";
+            CloseWindow();
         }
 
-        public void OnPlayerPurchase()
+        public void OnJoinRoomConfirmed()
         {
-            player.PlayerData.Balance -= field.Property.Price.Purchase;
-            field.Owner = player.PlayerData;
+            var roomName = textInput.GetComponent<TMP_Text>().text;
+            if (roomName == null ) return;
+            PhotonNetwork.JoinRoom(roomName);
         }
-        
-// #if UNITY_EDITOR || UNITY_STANDALONE
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            if (!RectTransformUtility.RectangleContainsScreenPoint(rect_transform, eventData.position))
-                inGamePanel.SetActive(false);
-        }
-// #endif
-    }
-
-    public enum DialogueType
-    {
-        Info,
-        Warn,
-        Error,
-        Fatal
     }
 }

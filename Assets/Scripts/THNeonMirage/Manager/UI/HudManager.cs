@@ -24,13 +24,5 @@ namespace THNeonMirage.Manager.UI
 
         private void OnPlayerBalanceChanged(object sender, ValueEventArgs args) 
             => balanceText.text = $"月虹币余额：{data.Balance}";
-        
-        public void CreateRoom()
-        {
-            if (roomNameInput.text == null) return;
-            PhotonNetwork.CreateRoom(roomNameInput.text, new RoomOptions { MaxPlayers = 4 });
-        }
-
-        public static void ExitRoom() => PhotonNetwork.LeaveRoom();
     }
 }

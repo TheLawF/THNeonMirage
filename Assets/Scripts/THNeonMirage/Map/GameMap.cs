@@ -118,7 +118,7 @@ namespace THNeonMirage.Map
             Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
             fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             hudPanel.GetComponent<DiceHandler>().client = client;
-            inGamePanel.GetComponent<DialogueHandler>().client = client;
+            inGamePanel.GetComponent<InGamePanelHandler>().client = client;
         }
 
         private void Update()

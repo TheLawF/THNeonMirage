@@ -44,9 +44,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95cb9ff324644112bed8d6620801b7ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameMap: {fileID: 0}
+  playerPrefab: {fileID: 9110736245687120657, guid: db4c84b7937087a4c96002f6fff8f6fc, type: 3}
+  data:
+    PauseCount: 0
+  playerInstance: {fileID: 0}
+  client: {fileID: 0}
   gameVersion: 1.0
   maxPlayersPerRoom: 4
-  rooms: []
   canvas: {fileID: 0}
   hudPanel: {fileID: 0}
   lobbyPanel: {fileID: 0}

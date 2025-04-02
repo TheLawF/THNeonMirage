@@ -8,6 +8,7 @@ using System.Text;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 namespace THNeonMirage.Util
 {
@@ -174,6 +175,22 @@ namespace THNeonMirage.Util
         public static int Warn(string warn) => OfWarn(warn).Invoke(warn);
         public static int Error(string error) => OfError(error).Invoke(error);
         public static int Act<T>(Action<T> action, T parameter) => OfAction(action, parameter).Invoke(action);
+        
+        public static Stack<int> UniqueShuffle(int min, int max, int count) {
+            if (count <= 0 || max <= min || count > max - min + 1)
+                throw new ArgumentException("参数无效。");
+
+            var range = Enumerable.Range(min, max - min + 1).ToList();
+            var rng = new Random();
+    
+            // Fisher-Yates洗牌
+            for (var i = range.Count - 1; i > 0; i--) {
+                var j = rng.Next(i + 1);
+                (range[j], range[i]) = (range[i], range[j]);
+            }
+    
+            return new Stack<int>(range.Take(count).ToList());
+        }
     }
     
 }

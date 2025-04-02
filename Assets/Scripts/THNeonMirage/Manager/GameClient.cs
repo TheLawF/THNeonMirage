@@ -75,6 +75,7 @@ namespace THNeonMirage.Manager
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
             //SceneManager.LoadScene("GameMap");
             CreatePlayer();
+            lobbyPanel.SetActive(false);
             inGamePanel.SetActive(true);
             hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel;
             // hudPanel.GetComponent<HudManager>().player = playerInstance;
@@ -128,11 +129,12 @@ namespace THNeonMirage.Manager
         
         public void CreatePlayer()
         {
-            // playerInstance = Instantiate(playerPrefab, PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
-            playerInstance = PhotonNetwork.Instantiate("playerObject",
-                PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
+            playerInstance = Instantiate(playerPrefab, PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
+            // playerInstance = PhotonNetwork.Instantiate("playerObject",
+            //     PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
             playerInstance.GetComponent<PlayerManager>().PlayerData = data;
             playerManager = playerInstance.GetComponent<PlayerManager>();
+            playerManager.Instance = playerInstance;
             
             gameMap.players.Add(playerInstance);
             playerManager.Activity = gameMap.players.IndexOf(playerInstance);

@@ -4,10 +4,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security.Cryptography;
 using System.Text;
 using MySql.Data.MySqlClient;
+using Photon.Pun;
+using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Manager.UI;
 using THNeonMirage.Map;
+using THNeonMirage.Util;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -35,11 +39,12 @@ namespace THNeonMirage.Manager
         public TMP_InputField usernameInput;
         public TMP_InputField passwordInput;
 
-        [Header("服务端客户端启动器")]
+        [Header("主机和客户端")]
         public GameObject gameManager;
-        public GameObject launcher;
         public GameObject host;
         public GameObject client;
+        public GameObject hostUI;
+        public GameObject roomNameLabel;
 
         [Header("UI父组件")]
         public GameObject canvas;
@@ -147,56 +152,64 @@ namespace THNeonMirage.Manager
                         break;
                 }
 
-                if (Administrators.Exists(s => s.Equals(player_data.UserName))) StartHost();
-                else StartClient();
+                StartClient();
+                // if (Administrators.Exists(s => s.Equals(player_data.UserName))) StartHost();
+                // else StartClient();
             }
         }
         
         private void StartHost()
         {
             var hostInst = Instantiate(host);
-            DontDestroyOnLoad(hostInst);
             game_host = hostInst.GetComponent<GameHost>();
-            InitClient(game_host);
+            InitClient();
+            hostUI.SetActive(true);
         }
         
         private void StartClient()
         {
             var clientInst = Instantiate(client);
-            DontDestroyOnLoad(clientInst);
             game_client = clientInst.GetComponent<GameClient>();
-            InitClient(game_client);
-            
+            InitClient();
         }
 
-        private void InitClient(GameClient gameClient)
+        private void InitClient()
         {
-            gameClient = gameClient.GetComponent<GameClient>();
+            game_client = game_client.GetComponent<GameClient>();
             game_map = gameManager.GetComponent<GameMap>();
-            game_map.client = client.GetComponent<GameClient>();
+            game_map.client = game_client.GetComponent<GameClient>();
             game_client.gameMap = game_map;
             game_client.data = player_data;
 
-            gameClient.canvas = canvas;
-            gameClient.hudPanel = hudPanel;
-            gameClient.lobbyPanel = lobbyPanel;
-            gameClient.inGamePanel = inGamePanel;
+            game_client.canvas = canvas;
+            game_client.hudPanel = hudPanel;
+            game_client.lobbyPanel = lobbyPanel;
+            game_client.inGamePanel = inGamePanel;
 
-            gameClient.buttonPrefab = buttonPrefab;
-            gameClient.progressPrefab = progressPrefab;
-            gameClient.balanceLabel = balanceLabel;
-            gameClient.content = content;
-            gameClient.Connect();
+            game_client.buttonPrefab = buttonPrefab;
+            game_client.progressPrefab = progressPrefab;
+            game_client.balanceLabel = balanceLabel;
+            game_client.content = content;
+            game_client.Connect();
 
             homePanel.SetActive(false);
-            lobbyPanel.SetActive(true);
             diceObject.SetActive(true);
             dice.pos = _playerManager.PlayerData.Position;
         }
 
         public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);
         public void Save(string username, string columnName, object data) => _user.Save(username, columnName, data);
+        
+        public void AddAndJoinRoom()
+        {
+            var randomRoomId = $"{Utils.UniqueShuffle(1000, 9999, 25).Pop()}";
+            PhotonNetwork.CreateRoom(randomRoomId, new RoomOptions { MaxPlayers = 4 });
+        }
 
+        public void ExitRoom() => PhotonNetwork.LeaveRoom();
+        public void CopyRoomId() => GUIUtility.systemCopyBuffer = roomNameLabel.GetComponent<TMP_Text>().text;
+        
+        
         public static string EncryptPassword(string password)
         {
             var crypt = new SHA256Managed();
