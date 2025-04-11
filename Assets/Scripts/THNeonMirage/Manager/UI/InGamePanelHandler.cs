@@ -16,8 +16,9 @@ namespace THNeonMirage.Manager.UI
         
         public Action<int> OnMouseOver;
         public GameClient client;
+        public PlayerManager player;
+        
         private FieldTile field;
-        private PlayerManager player;
         private RectTransform rect_transform;
 
         private TMP_Text toll;
@@ -33,21 +34,22 @@ namespace THNeonMirage.Manager.UI
 
             GameMap = mapObject.GetComponent<GameMap>();
             player = client.playerInstance.GetComponent<PlayerManager>();
-            player.PlayerData.OnPositionChanged += OnPlayerPositionChanged;
 
             SetTexts(player.PlayerData.Position);
             OnMouseOver += SetTexts;
         }
 
-        private void OnPlayerPositionChanged(object sender, ValueEventArgs args) => SetTexts((int)args.Value);
+        public void OnPlayerPositionChanged(object sender, ValueEventArgs args) => SetTexts((int)args.Value);
         
-        private void SetTexts(int positionIndex)
+        public void SetTexts(int positionIndex)
         {
             field = GameMap.fields[positionIndex].GetComponent<FieldTile>();
             title.text = field.Property.Name;
             description.text = field.description;
             toll.text = $"当前过路费：{field.CurrentTolls()}";
         }
+        
+        public void SetTexts(object playerData, ValueEventArgs args) => SetTexts((int)args.Value);
 
         public void OnPlayerPurchase()
         {

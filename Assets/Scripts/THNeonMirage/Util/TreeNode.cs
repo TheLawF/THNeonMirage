@@ -58,8 +58,8 @@ namespace THNeonMirage.Util
             if (path.Length == 0)
                 return Root;
 
-            string[] segments = path.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
-            TreeNode<TValue> current = Root;
+            var segments = path.Split(new[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
+            var current = Root;
 
             foreach (var segment in segments)
             {
@@ -70,4 +70,5 @@ namespace THNeonMirage.Util
             return current;
         }
     }
+
 }

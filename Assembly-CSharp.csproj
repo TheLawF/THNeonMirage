@@ -46,11 +46,10 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\DiceHandler.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\MerryGoRound.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameBehaviour.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Registry.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\PirateShip.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\AppSettingsExtensions.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Util\ActionTree.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Util\TreeNode.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChannelSelector.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
@@ -71,6 +70,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Util\ActionTree.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameHost.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\BeliefTile.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs" />
@@ -80,6 +80,7 @@
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameBehaviourPun.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Util\TreeNode.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\FerrisWheel.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\RollerCoaster.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\ProgressBarControl.cs" />
@@ -97,6 +98,7 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Utils.cs" />
      <Compile Include="Assets\Photon\PhotonRealtime\Demos\DemoLoadBalancing\ConnectAndJoinRandomLb.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\PlayerManager.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\GameProcess.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\BumperCar.cs" />
@@ -111,6 +113,7 @@
      <Compile Include="Assets\Photon\PhotonChat\Demos\Common\EventSystemSpawner.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\HotSpring.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Util\ProcessActions.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Pair.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\FieldProperty.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
@@ -134,14 +137,11 @@
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
      <Compile Include="Assets\Scripts\UnityEngine\DisplayOnly.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\DialogueHandler.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Data\DataSerializer.cs" />
      <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\DialogueHandler.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\GameProcess.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Registry.cs" />
-     <Compile Include="Assets\Scripts\THNeonMirage\Util\ProcessActions.cs" />
      <Folder Include="Assets" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
@@ -175,6 +175,7 @@
      <Folder Include="Assets\Resources\Lang" />
      <None Include="Assets\Shaders\ButtonShader.shader" />
      <Folder Include="Assets\Photon\PhotonChat\Demos\DemoChat\Files" />
+     <Folder Include="Assets\Scripts\THNeonMirage\Util" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader" />
      <Folder Include="Assets\Resources\Textures" />
      <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />

@@ -164,6 +164,7 @@ namespace THNeonMirage.Manager
         {
             var clientInst = Instantiate(client);
             game_client = clientInst.GetComponent<GameClient>();
+            dice.client = game_client;
             InitClient();
         }
 

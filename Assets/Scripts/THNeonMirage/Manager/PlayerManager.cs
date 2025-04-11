@@ -40,24 +40,19 @@ namespace THNeonMirage.Manager
         private void Start()
         {
             PlayerData = new PlayerData().SetBalance(60000);
-            var player = Instance.GetComponent<PlayerManager>().PlayerData;
-            player.OnPositionChanged += SetPosition;
+            PlayerData.OnPositionChanged += SetPosition;
             // GameMap.OnRoundEnd += OnRoundEnd;
         }
-
 
         private void Update()
         {
 
         }
-
-        public void CreateInstance() => Instance = Instantiate(playerPrefab);
-
+        
         [PunRPC]
-        public void SetPosition(object sender, ValueEventArgs currentPos)
+        private void SetPosition(object sender, ValueEventArgs currentPos)
         {
-            var player = (PlayerManager)sender;
-            var data = player.PlayerData;
+            var data = (PlayerData)sender;
             var position = (int) currentPos.Value;
             if (data.Position + position is < 0 and >= -40)
             {
@@ -69,7 +64,7 @@ namespace THNeonMirage.Manager
                 >= 40 => position % 40,
                 _ => position
             };
-            player.transform.position = GetPlayerPosByIndex(PlayerData.Position);
+            Instance.transform.position = GetPlayerPosByIndex(data.Position);
         }
 
         public void OnRoundStart()

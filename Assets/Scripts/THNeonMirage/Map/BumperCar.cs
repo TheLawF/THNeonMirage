@@ -7,6 +7,7 @@ namespace THNeonMirage.Map
 {
     public class BumperCar : FieldTile
     {
+        private System.Random Random;
         private void Start()
         {
             Init();
@@ -15,7 +16,7 @@ namespace THNeonMirage.Map
         public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
             var data = (PlayerData)playerData;
-            data.PauseCount = Random.NextBool() ? Random.NextInt(-2, 0) : Random.NextInt(1, 3);
+            data.PauseCount = NextBool() ? NextInt(-2, 0) : NextInt(1, 3);
         }
     }
 }

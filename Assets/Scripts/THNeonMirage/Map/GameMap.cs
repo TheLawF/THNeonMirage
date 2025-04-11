@@ -119,6 +119,7 @@ namespace THNeonMirage.Map
             fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             hudPanel.GetComponent<DiceHandler>().client = client;
             inGamePanel.GetComponent<InGamePanelHandler>().client = client;
+            
         }
 
         private void Update()
@@ -191,6 +192,7 @@ namespace THNeonMirage.Map
             ft.spriteRenderer = tilePrefab.GetComponent<SpriteRenderer>();
             ft.inGamePanel = inGamePanel;
             ft.client = client;
+            ft.Init();
             
             return 1;
         }

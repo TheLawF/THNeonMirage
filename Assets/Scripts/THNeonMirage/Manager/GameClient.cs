@@ -74,15 +74,21 @@ namespace THNeonMirage.Manager
         public override void OnJoinedRoom()
         {
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
-            //SceneManager.LoadScene("GameMap");
+            var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
             CreatePlayer();
             lobbyPanel.SetActive(false);
             inGamePanel.SetActive(true);
-            hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel;
-            // hudPanel.GetComponent<HudManager>().player = playerInstance;
+            
+            hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel; 
+            inGame.player = playerManager;
+            inGame.OnMouseOver += inGame.SetTexts;
+            playerManager.PlayerData.OnPositionChanged += inGame.OnPlayerPositionChanged;
+            
             gameMap.CreateMap();
-            gameMap.client = client.GetComponent<GameClient>();
+            gameMap.client = this;
         }
+        
+        
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
@@ -130,9 +136,10 @@ namespace THNeonMirage.Manager
         
         public void CreatePlayer()
         {
-            playerInstance = Instantiate(playerPrefab, PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
-            // playerInstance = PhotonNetwork.Instantiate("playerObject",
-            //     PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
+            // playerInstance = Instantiate(playerPrefab, PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
+            playerInstance = PhotonNetwork.Instantiate("playerObject",
+                PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
+            
             playerInstance.GetComponent<PlayerManager>().PlayerData = data;
             playerManager = playerInstance.GetComponent<PlayerManager>();
             playerManager.Instance = playerInstance;

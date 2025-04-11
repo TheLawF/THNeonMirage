@@ -44,14 +44,13 @@ namespace THNeonMirage.Map
                           $"每幢房屋建造费用：{Property.Price.Building}";
         }
 
-        protected virtual void Init()
+        public virtual void Init()
         {
             Start();
             InitPlayer();
         }
 
-        protected void InitPlayer() => 
-            Player = client.playerInstance.GetComponent<PlayerManager>();
+        protected void InitPlayer() => Player = client.playerInstance.GetComponent<PlayerManager>();
         
         public int CurrentTolls()
         {
@@ -104,6 +103,9 @@ namespace THNeonMirage.Map
         {
         
         }
+
+        protected bool NextBool() => new System.Random().Next(1) == 0;
+        protected int NextInt(int min, int max) => new System.Random().Next(min, max);
 
         public enum Type
         {

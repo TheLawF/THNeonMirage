@@ -50,7 +50,8 @@ namespace THNeonMirage.Manager.UI
             pos = player.PlayerData.Position;
             pos += DiceValue;
             
-            player.SetPosition(player, new ValueEventArgs(pos));
+            player.PlayerData.OnPositionChanged?.Invoke(player.PlayerData, new ValueEventArgs(pos));
+            // player.SetPosition(player.PlayerData, new ValueEventArgs(pos));
             player.SaveAll(player.PlayerData);
             shouldRenderTooltip = true;
             if (player.PlayerData.PauseCount < 0)
