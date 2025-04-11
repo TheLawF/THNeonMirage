@@ -105,6 +105,9 @@ MonoBehaviour:
   DiceType: 0
   playerPrefab: {fileID: 0}
   Instance: {fileID: 0}
+  onPlayerStop:
+    m_PersistentCalls:
+      m_Calls: []
   PlayerData:
     PauseCount: 0
   database: {fileID: 0}

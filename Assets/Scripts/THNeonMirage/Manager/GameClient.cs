@@ -81,8 +81,7 @@ namespace THNeonMirage.Manager
             
             hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel; 
             inGame.player = playerManager;
-            inGame.OnMouseOver += inGame.SetTexts;
-            playerManager.PlayerData.OnPositionChanged += inGame.OnPlayerPositionChanged;
+            // inGame.player.onPlayerStop.AddListener(inGame.SetTexts);
             
             gameMap.CreateMap();
             gameMap.client = this;

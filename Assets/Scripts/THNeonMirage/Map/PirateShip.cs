@@ -19,10 +19,11 @@ namespace THNeonMirage.Map
         // 随机向前或者向后移动0-5格
         public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
+            if ((int)currentPos.Value != id) return;
             var data = (PlayerData)playerData;
             var bonus = random.Next(5);
             var result = random.Next(1) == 0 ? bonus : -bonus;
-            Player.PlayerData.Position = result;
+            Player.SetPosition(playerData, new ValueEventArgs(result));
         }
     }
 }

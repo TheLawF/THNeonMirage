@@ -8,6 +8,7 @@ using THNeonMirage.Map;
 using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace System.Runtime.CompilerServices
 {
@@ -30,6 +31,8 @@ namespace THNeonMirage.Manager
         
         public GameObject playerPrefab;
         public GameObject Instance;
+        public UnityEvent<int> onPlayerStop;
+        
         [DisplayOnly] public PlayerData PlayerData;
         [DisplayOnly] public GameLauncher database;
 
@@ -40,7 +43,6 @@ namespace THNeonMirage.Manager
         private void Start()
         {
             PlayerData = new PlayerData().SetBalance(60000);
-            PlayerData.OnPositionChanged += SetPosition;
             // GameMap.OnRoundEnd += OnRoundEnd;
         }
 
@@ -49,22 +51,9 @@ namespace THNeonMirage.Manager
 
         }
         
-        [PunRPC]
-        private void SetPosition(object sender, ValueEventArgs currentPos)
+        public void SetPosition(object sender, ValueEventArgs currentPos)
         {
-            var data = (PlayerData)sender;
-            var position = (int) currentPos.Value;
-            if (data.Position + position is < 0 and >= -40)
-            {
-                data.Position = -position;
-            }
-            data.Position = position switch
-            {
-                <= -40 => -position % 40,
-                >= 40 => position % 40,
-                _ => position
-            };
-            Instance.transform.position = GetPlayerPosByIndex(data.Position);
+            SetPosition((int)currentPos.Value);
         }
 
         public void OnRoundStart()
@@ -87,7 +76,7 @@ namespace THNeonMirage.Manager
             return this;
         }
 
-        public PlayerManager SetPosition(int position)
+        private PlayerManager SetPosition(int position)
         {
             if (PlayerData.Position + position is < 0 and >= -40)
             {

@@ -2,8 +2,10 @@ using THNeonMirage.Event;
 using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 using UnityEngine.EventSystems;
 using Random = System.Random;
+using Utils = THNeonMirage.Util.Utils;
 
 namespace THNeonMirage.Manager.UI
 {
@@ -14,6 +16,7 @@ namespace THNeonMirage.Manager.UI
         public int pos;
         public bool canRenderTooltip;
         public GameClient client;
+        public GameObject inGamePanel;
         
         private bool shouldRenderTooltip;
         private Random random = new();
@@ -40,25 +43,25 @@ namespace THNeonMirage.Manager.UI
             GameMap.Activity++;
             player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
             // 下面这个判断的作用为是否轮到该玩家掷骰子
+            Utils.Info($"{GameMap.Activity}");
             if (GameMap.Activity == player.Activity) 
                 return;
             // 判断玩家是否被停止行动
             if (player.PlayerData.PauseCount > 0) 
                 return;
             
-            ExtraMove: DiceValue = random.Next(1,7);
+            DiceValue = random.Next(1,7);
             pos = player.PlayerData.Position;
             pos += DiceValue;
-            
-            player.PlayerData.OnPositionChanged?.Invoke(player.PlayerData, new ValueEventArgs(pos));
-            // player.SetPosition(player.PlayerData, new ValueEventArgs(pos));
-            player.SaveAll(player.PlayerData);
+
+            player.SetPosition(player.PlayerData, new ValueEventArgs(pos));
+            inGamePanel.GetComponent<InGamePanelHandler>().SetTexts(player.PlayerData.Position);
             shouldRenderTooltip = true;
-            if (player.PlayerData.PauseCount < 0)
-            {
-                player.PlayerData.PauseCount++;
-                goto ExtraMove;
-            }
+            // if (player.PlayerData.PauseCount < 0)
+            // {
+            //     player.PlayerData.PauseCount++;
+            //     goto ExtraMove;
+            // }
         }
 
         public void OnPlayerMove(object sender, ValueEventArgs currentPos)

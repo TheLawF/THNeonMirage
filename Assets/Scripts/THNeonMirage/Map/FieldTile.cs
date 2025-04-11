@@ -3,8 +3,10 @@ using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Manager.UI;
+using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage.Map
@@ -34,7 +36,7 @@ namespace THNeonMirage.Map
         {
             hoverPanel = GameObject.Find("Canvas/HoverPanel");
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
-            backGroundColor = new Color(1f, 1f, 1f, 0.6f);
+            backGroundColor = new Color(1f, 1f, 1f, 0.5f);
 
             description = $"土地价格：{Property.Price.Purchase}\n\n" +
                           $"空地过路费：{Property.Price.Level0}\n" +
@@ -81,7 +83,7 @@ namespace THNeonMirage.Map
             // hoverText.GetComponent<TMP_Text>().text = tooltipString;
             // hoverPanel.SetActive(true);
             
-            inGamePanel.GetComponent<InGamePanelHandler>().OnMouseOver?.Invoke(id);
+            inGamePanel.GetComponent<InGamePanelHandler>().OnPlayerPositionChanged(Owner, new ValueEventArgs(id));
         }
 
         private void OnMouseExit()
@@ -95,6 +97,7 @@ namespace THNeonMirage.Map
         public virtual void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
             if (!HasOwner())return;
+            if (((PlayerData)playerData).UserName == null) return;
             if (Owner.UserName == ((PlayerData)playerData).UserName)return;
             ((PlayerData)playerData).Balance -= CurrentTolls();
         }
