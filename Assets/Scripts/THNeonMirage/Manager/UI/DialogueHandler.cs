@@ -35,7 +35,7 @@ namespace THNeonMirage.Manager.UI
         public void OnJoinRoomConfirmed()
         {
             var roomName = textInput.GetComponent<TMP_Text>().text;
-            if (roomName == null ) return;
+            if (roomName == null) return;
             PhotonNetwork.JoinRoom(roomName);
         }
     }

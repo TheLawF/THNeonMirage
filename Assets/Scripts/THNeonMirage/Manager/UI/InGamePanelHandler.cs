@@ -40,7 +40,7 @@ namespace THNeonMirage.Manager.UI
 
         public void OnPlayerPositionChanged(object sender, ValueEventArgs args)
         {
-            field = GameMap.fields[(int)args.Value].GetComponent<FieldTile>();
+            field = GameMap.Fields[(int)args.Value].GetComponent<FieldTile>();
             title.text = field.Property.Name;
             description.text = field.description;
             toll.text = $"当前过路费：{field.CurrentTolls()}";
@@ -48,7 +48,7 @@ namespace THNeonMirage.Manager.UI
 
         public void SetTexts(int positionIndex)
         {
-            field = GameMap.fields[positionIndex].GetComponent<FieldTile>();
+            field = GameMap.Fields[positionIndex].GetComponent<FieldTile>();
             title.text = field.Property.Name;
             description.text = field.description;
             toll.text = $"当前过路费：{field.CurrentTolls()}";

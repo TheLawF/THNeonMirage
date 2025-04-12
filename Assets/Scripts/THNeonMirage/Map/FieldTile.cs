@@ -96,6 +96,7 @@ namespace THNeonMirage.Map
         
         public virtual void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
+            Utils.Info($"玩家位置：{(int)currentPos.Value}，土地编号：{id}");
             if (!HasOwner())return;
             if (((PlayerData)playerData).UserName == null) return;
             if (Owner.UserName == ((PlayerData)playerData).UserName)return;
@@ -107,8 +108,10 @@ namespace THNeonMirage.Map
         
         }
 
-        protected bool NextBool() => new System.Random().Next(1) == 0;
+        protected bool NextBool() => new System.Random().Next(1, 2) == 1;
         protected int NextInt(int min, int max) => new System.Random().Next(min, max);
+
+        public bool IsTileValid(ValueEventArgs args) => (int)args.Value == id;
 
         public enum Type
         {
@@ -123,5 +126,6 @@ namespace THNeonMirage.Map
             Higan,
             Other
         }
+        
     }
 }

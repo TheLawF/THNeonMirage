@@ -33,8 +33,8 @@ namespace THNeonMirage.Map
         public GameObject inGamePanel;
         public GameObject hudPanel;
         
-        public List<GameObject> players;
-        public List<GameObject> fields;
+        public static List<GameObject> Players = new ();
+        public static List<GameObject> Fields = new ();
 
         private static int _activity;
         private const float Side = 10;
@@ -111,12 +111,12 @@ namespace THNeonMirage.Map
 
         public void CreateMap()
         {
-            players = new List<GameObject>();
-            fields = new List<GameObject>();
+            Players = new List<GameObject>();
+            Fields = new List<GameObject>();
             // InitField(tilePrefab, 1);
 
-            Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
-            fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
+            Utils.ForAddToList(40, Fields, i => InitField(tilePrefab, i));
+            Fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             hudPanel.GetComponent<DiceHandler>().client = client;
             inGamePanel.GetComponent<InGamePanelHandler>().client = client;
             
@@ -125,10 +125,10 @@ namespace THNeonMirage.Map
         private void Update()
         {
             if (Input.GetKey(KeyCode.Escape)) settingsPanel.SetActive(true);
-            if (Activity >= players.Count) Activity = 0;
+            if (Activity >= Players.Count) Activity = 0;
         }
 
-        private void ShouldRenderTile(int index, bool shouldRender) => fields[index].SetActive(shouldRender);
+        private void ShouldRenderTile(int index, bool shouldRender) => Fields[index].SetActive(shouldRender);
 
         /// <summary>
         /// 用代码初始化大富翁地块的位置，这些地块将会围成一个正方形，然后根据索引为不同的地块对象实例动态挂载脚本

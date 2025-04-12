@@ -1,12 +1,15 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -36,7 +39,8 @@ namespace THNeonMirage.Manager
         [DisplayOnly] public PlayerData PlayerData;
         [DisplayOnly] public GameLauncher database;
 
-        private bool IsAdministrator;
+        private Vector3 prev_pos;
+        private Vector3 next_pos;
         private Vector3 networkPosition;
         private Quaternion networkRotation;
         
@@ -48,7 +52,7 @@ namespace THNeonMirage.Manager
 
         private void Update()
         {
-
+            
         }
         
         public void SetPosition(object sender, ValueEventArgs currentPos)
@@ -78,6 +82,7 @@ namespace THNeonMirage.Manager
 
         private PlayerManager SetPosition(int position)
         {
+            prev_pos = GetPlayerPosByIndex(PlayerData.Position);
             if (PlayerData.Position + position is < 0 and >= -40)
             {
                 PlayerData.Position = -position;
@@ -88,16 +93,21 @@ namespace THNeonMirage.Manager
                 >= 40 => position % 40,
                 _ => position
             };
-            transform.position = GetPlayerPosByIndex(PlayerData.Position);
+            next_pos = GetPlayerPosByIndex(PlayerData.Position);
+            StartCoroutine(Move(prev_pos, next_pos));
             return this;
         }
 
-        public void Move(int steps)
+        public IEnumerator Move(Vector3 prevPos, Vector3 nextPos)
         {
-            PlayerData.Position += steps;
-            transform.position =
-                GetPlayerPosByIndex(PlayerData.Position >= 40 ? PlayerData.Position % 40 : PlayerData.Position);
+            for (var i = 0f; i < 1; i += 0.02f)
+            {
+                transform.position = Vector3.Lerp(prevPos, nextPos, i);
+                yield return new WaitForSeconds(0.02f);
+            }
+            
         }
+
         public static Vector3 GetPlayerPosByIndex(int index) => GameMap.PosInRange.First(pair => 
             Utils.IsInRange(pair.Key, index)).Value.Invoke(index);
 

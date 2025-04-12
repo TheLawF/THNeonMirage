@@ -1,5 +1,6 @@
 using THNeonMirage.Data;
 using THNeonMirage.Event;
+using THNeonMirage.Util;
 
 namespace THNeonMirage.Map
 {
@@ -14,7 +15,9 @@ namespace THNeonMirage.Map
 
         public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
-            ((PlayerData)playerData).PauseCount += 3;
+            base.OnPlayerStop(playerData, currentPos);
+            if (!IsTileValid(currentPos))return;
+            ((PlayerData)playerData).PauseCount = 3;
         }
     }
 }

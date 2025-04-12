@@ -143,8 +143,8 @@ namespace THNeonMirage.Manager
             playerManager = playerInstance.GetComponent<PlayerManager>();
             playerManager.Instance = playerInstance;
             
-            gameMap.players.Add(playerInstance);
-            playerManager.Activity = gameMap.players.IndexOf(playerInstance);
+            GameMap.Players.Add(playerInstance);
+            playerManager.Activity = GameMap.Players.IndexOf(playerInstance);
         }
     }
 }
