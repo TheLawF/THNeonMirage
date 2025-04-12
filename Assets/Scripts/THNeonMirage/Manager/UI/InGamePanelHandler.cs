@@ -40,7 +40,6 @@ namespace THNeonMirage.Manager.UI
 
         public void OnPlayerPositionChanged(object sender, ValueEventArgs args)
         {
-            Utils.Info("Mouse Over Set text");
             field = GameMap.fields[(int)args.Value].GetComponent<FieldTile>();
             title.text = field.Property.Name;
             description.text = field.description;

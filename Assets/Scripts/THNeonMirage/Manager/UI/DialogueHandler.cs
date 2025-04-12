@@ -13,11 +13,16 @@ namespace THNeonMirage.Manager.UI
         public GameObject textInput;
 
         public GameObject confirm;
+        public GameObject cancel;
+        public GameObject close;
+        
         private Button confirmButton;
+        private Button cancelButton;
         
         private void Start()
         {
             confirmButton.text = "加入房间";
+            cancelButton.text = "取消并退出";
         }
 
         public void CloseWindow() => dialogueUI.SetActive(false);

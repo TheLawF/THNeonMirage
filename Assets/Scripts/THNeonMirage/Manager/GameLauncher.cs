@@ -38,11 +38,12 @@ namespace THNeonMirage.Manager
         public TMP_InputField passwordInput;
 
         [Header("主机和客户端")]
-        public GameObject gameManager;
         public GameObject host;
         public GameObject client;
         public GameObject hostUI;
+        public GameObject joinRoomPanel;
         public GameObject roomNameLabel;
+        public GameObject gameManager;
 
         [Header("UI父组件")]
         public GameObject canvas;
@@ -201,11 +202,11 @@ namespace THNeonMirage.Manager
             var randomRoomId = $"{Utils.UniqueShuffle(1000, 9999, 25).Pop()}";
             PhotonNetwork.CreateRoom(randomRoomId, new RoomOptions { MaxPlayers = 4 });
         }
-
+        
         public void ExitRoom() => PhotonNetwork.LeaveRoom();
         public void CopyRoomId() => GUIUtility.systemCopyBuffer = roomNameLabel.GetComponent<TMP_Text>().text;
-        
-        
+        public void ShowInputRoomIdPanel() => joinRoomPanel.SetActive(true);
+
         public static string EncryptPassword(string password)
         {
             var crypt = new SHA256Managed();
