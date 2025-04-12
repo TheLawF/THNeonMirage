@@ -38,20 +38,18 @@ namespace THNeonMirage.Manager.UI
             SetTexts(player.PlayerData.Position);
         }
 
-        public void SetInfoWhenStop(object sender, ValueEventArgs args)
+        public void SetField(int posIndex)
         {
-            field = GameMap.Fields[(int)args.Value].GetComponent<FieldTile>();
-            title.text = field.Property.Name;
-            description.text = field.description;
-            toll.text = $"当前过路费：{field.CurrentTolls()}";
+            field = GameMap.Fields[posIndex].GetComponent<FieldTile>();
+            SetTexts(posIndex);
         }
-
+        
         public void SetTexts(int positionIndex)
         {
-            field = GameMap.Fields[positionIndex].GetComponent<FieldTile>();
-            title.text = field.Property.Name;
-            description.text = field.description;
-            toll.text = $"当前过路费：{field.CurrentTolls()}";
+            var f = GameMap.Fields[positionIndex].GetComponent<FieldTile>();
+            title.text = f.Property.Name;
+            description.text = f.description;
+            toll.text = $"当前过路费：{f.CurrentTolls()}";
         }
         
         public void SetTexts(object playerData, ValueEventArgs args) => SetTexts((int)args.Value);

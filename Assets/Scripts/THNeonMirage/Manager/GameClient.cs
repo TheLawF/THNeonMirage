@@ -78,12 +78,11 @@ namespace THNeonMirage.Manager
         {
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
             hudPanel.SetActive(true);
-            var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
-            var hud = hudPanel.GetComponent<HudManager>();
             CreatePlayer();
             lobbyPanel.SetActive(false);
             inGamePanel.SetActive(true);
-
+            
+            var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
             inGame.player = playerManager;
             inGame.client = this;
             

@@ -47,7 +47,7 @@ namespace THNeonMirage.Manager
         private void Start()
         {
             PlayerData = new PlayerData().SetBalance(60000);
-            // GameMap.OnRoundEnd += OnRoundEnd;
+            PlayerData.OnBalanceChanged += GameOver;
         }
 
         private void Update()
@@ -68,6 +68,11 @@ namespace THNeonMirage.Manager
         private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)
         {
             
+        }
+        
+        public void GameOver(object playerData, ValueEventArgs balanceArg)
+        {
+            if (PlayerData.Balance <= 0) PhotonNetwork.Destroy(Instance);
         }
         
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);

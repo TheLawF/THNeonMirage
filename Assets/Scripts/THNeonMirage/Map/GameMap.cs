@@ -108,6 +108,7 @@ namespace THNeonMirage.Map
             {20..30, index => StartPos - _uUnit * 10 - _vUnit * 10 + new Vector3(index % 10, 0)},
             {30..40, index => StartPos - _vUnit * 10 + new Vector3(0, index % 10)}
         };
+        
 
         public void CreateMap()
         {
@@ -118,7 +119,6 @@ namespace THNeonMirage.Map
             Utils.ForAddToList(40, Fields, i => InitField(tilePrefab, i));
             Fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             inGamePanel.GetComponent<InGamePanelHandler>().client = client;
-            
         }
 
         private void Update()
