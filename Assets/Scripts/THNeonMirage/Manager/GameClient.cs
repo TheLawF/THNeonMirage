@@ -4,6 +4,7 @@ using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
 using THNeonMirage.Data;
+using THNeonMirage.Event;
 using THNeonMirage.Manager.UI;
 using THNeonMirage.Map;
 using TMPro;
@@ -37,10 +38,12 @@ namespace THNeonMirage.Manager
         public GameObject buttonPrefab;
         public GameObject progressPrefab;
         public GameObject content;
-        
-        private PlayerManager playerManager;
+
+        [DisplayOnly] public DiceHandler dice;
+        [DisplayOnly] public PlayerManager playerManager;
+        private TMP_Text balance_text;
         private GameObject bar_instance;
-        private Coroutine progress_coroutine;
+        
         private RectTransform progress_transform;
         private RectTransform parent_transform;
         
@@ -74,19 +77,26 @@ namespace THNeonMirage.Manager
         public override void OnJoinedRoom()
         {
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
+            hudPanel.SetActive(true);
             var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
+            var hud = hudPanel.GetComponent<HudManager>();
             CreatePlayer();
             lobbyPanel.SetActive(false);
             inGamePanel.SetActive(true);
-            
-            hudPanel.GetComponent<HudManager>().balanceLabel = balanceLabel; 
+
             inGame.player = playerManager;
-            // inGame.player.onPlayerStop.AddListener(inGame.SetTexts);
+            inGame.client = this;
             
+            balance_text = balanceLabel.GetComponent<TMP_Text>();
+            playerManager.PlayerData.OnBalanceChanged += SetLabelWhenBalanceChanged; // subscription
+            playerManager.PlayerData.Balance += 60_000; // trigger
+
             gameMap.CreateMap();
             gameMap.client = this;
         }
         
+        public void SetLabelWhenBalanceChanged(object sender, ValueEventArgs args)
+            => balance_text.text = $"月虹币余额：{(int)args.Value}";
         
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)

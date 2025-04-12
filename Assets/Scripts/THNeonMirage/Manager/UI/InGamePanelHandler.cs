@@ -38,7 +38,7 @@ namespace THNeonMirage.Manager.UI
             SetTexts(player.PlayerData.Position);
         }
 
-        public void OnPlayerPositionChanged(object sender, ValueEventArgs args)
+        public void SetInfoWhenStop(object sender, ValueEventArgs args)
         {
             field = GameMap.Fields[(int)args.Value].GetComponent<FieldTile>();
             title.text = field.Property.Name;
@@ -59,7 +59,14 @@ namespace THNeonMirage.Manager.UI
         public void OnPlayerPurchase()
         {
             player.PlayerData.Balance -= field.Property.Price.Purchase;
+            client.SetLabelWhenBalanceChanged(player.PlayerData, new ValueEventArgs(player.PlayerData.Balance));
             field.Owner = player.PlayerData;
+        }
+
+        public void OnPlayerBuild()
+        {
+            player.PlayerData.Balance -= field.Property.Price.Building;
+            field.level++;
         }
         
 // #if UNITY_EDITOR || UNITY_STANDALONE

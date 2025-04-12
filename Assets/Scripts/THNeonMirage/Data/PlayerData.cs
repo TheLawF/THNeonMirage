@@ -26,7 +26,7 @@ namespace THNeonMirage.Data
                 if (Equals(_position, value)) return;
                 var prevPos = _position;
                 _position = value;
-                OnPositionChanged?.Invoke(this, new ValueEventArgs(value));
+                OnPositionChanged?.Invoke(this, new ValueEventArgs(_position));
                 OnPassBy?.Invoke(this, prevPos, _position);
             }
         }
@@ -36,10 +36,9 @@ namespace THNeonMirage.Data
             get => _balance;
             set
             {
-                if (Equals(_balance, value)) return;
                 var oldValue = _balance;
                 _balance = value;
-                OnBalanceChanged?.Invoke(this, new ValueEventArgs(value));
+                OnBalanceChanged?.Invoke(this, new ValueEventArgs(_balance));
             }
         }
         public ObservableList<int> Inventory { get; private set; }

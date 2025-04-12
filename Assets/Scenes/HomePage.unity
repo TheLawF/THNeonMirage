@@ -969,7 +969,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &339255522
@@ -1905,7 +1905,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &829709781
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1979,8 +1979,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c93b36d5b6041a0aff55de57b5d7736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  balanceLabel: {fileID: 1862250446}
-  roomNameInput: {fileID: 0}
+  data:
+    PauseCount: 0
+  balanceText: {fileID: 1862250448}
 --- !u!1 &884717131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2843,7 +2844,7 @@ GameObject:
   - component: {fileID: 1108162332}
   - component: {fileID: 1108162331}
   m_Layer: 5
-  m_Name: Pay
+  m_Name: Build
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3330,8 +3331,6 @@ MonoBehaviour:
   tilePrefab: {fileID: 3760131361438333896, guid: 75f399b04c8aee54b9762348c8c99f00, type: 3}
   inGamePanel: {fileID: 1305293117}
   hudPanel: {fileID: 829709780}
-  players: []
-  fields: []
 --- !u!114 &1240687989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3865,9 +3864,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: THNeonMirage.Manager.ToggleHandler, Assembly-CSharp
-        m_MethodName: OnPurchase
+      - m_Target: {fileID: 1305293119}
+        m_TargetAssemblyTypeName: THNeonMirage.Manager.UI.InGamePanelHandler, Assembly-CSharp
+        m_MethodName: OnPlayerPurchase
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5340,8 +5339,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 829709784}
-        m_TargetAssemblyTypeName: THNeonMirage.Manager.UI.HudManager, Assembly-CSharp
+      - m_Target: {fileID: 897889066}
+        m_TargetAssemblyTypeName: THNeonMirage.Manager.GameLauncher, Assembly-CSharp
         m_MethodName: ExitRoom
         m_Mode: 1
         m_Arguments:
@@ -6103,8 +6102,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.0000076293945, y: 0}
+  m_SizeDelta: {x: 94.2844, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1889186991
 MonoBehaviour:
@@ -6126,7 +6125,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: "\u5EFA\u9020\u623F\u5C4B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

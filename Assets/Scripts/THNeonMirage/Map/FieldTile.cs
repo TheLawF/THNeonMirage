@@ -49,10 +49,9 @@ namespace THNeonMirage.Map
         public virtual void Init()
         {
             Start();
-            InitPlayer();
+            Player = client.playerManager;
         }
 
-        protected void InitPlayer() => Player = client.playerInstance.GetComponent<PlayerManager>();
         
         public int CurrentTolls()
         {
@@ -83,7 +82,7 @@ namespace THNeonMirage.Map
             // hoverText.GetComponent<TMP_Text>().text = tooltipString;
             // hoverPanel.SetActive(true);
             
-            inGamePanel.GetComponent<InGamePanelHandler>().OnPlayerPositionChanged(Owner, new ValueEventArgs(id));
+            inGamePanel.GetComponent<InGamePanelHandler>().SetInfoWhenStop(Owner, new ValueEventArgs(id));
         }
 
         private void OnMouseExit()
