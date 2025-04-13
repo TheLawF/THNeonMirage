@@ -6,24 +6,25 @@ using THNeonMirage.Manager;
 using THNeonMirage.Manager.UI;
 using THNeonMirage.Util;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = System.Random;
 
 namespace THNeonMirage.Map
 {
     [Serializable]
-    public class GameMap : MonoBehaviour
+    public class GameMap : GameBehaviour
     {
-        public static ScriptEventHandler<RoundEventArgs> OnRoundEnd;
-        public static Action OnRoundStart;
-        public static int Activity
+        public event ScriptEventHandler<ValueEventArgs> OnRoundEnd;
+        public event ScriptEventHandler<ValueEventArgs> OnRoundStart;
+        public int TurnIndex
         {
-            get => _activity;
+            get => _turnIndex;
             set
             {
-                if (Activity > GameHost.MaxPlayersPerRoom) Activity = 1;
-                OnRoundStart?.Invoke();
-                _activity = value;
-                // OnRoundEnd?.Invoke(prevPlayer.GetComponent<PlayerManager>(), new RoundEventArgs(prevPlayer, nextPlayer, _activity));
+                if (TurnIndex > players.Count - 1) return;
+                OnRoundStart?.Invoke(this, new ValueEventArgs(_turnIndex));
+                _turnIndex = value;
+                OnRoundEnd?.Invoke(this, new ValueEventArgs(value));
             }
         }
 
@@ -33,10 +34,10 @@ namespace THNeonMirage.Map
         public GameObject inGamePanel;
         public GameObject hudPanel;
         
-        public static List<GameObject> Players = new ();
-        public static List<GameObject> Fields = new ();
+        public List<GameObject> players = new ();
+        public List<GameObject> fields = new ();
 
-        private static int _activity;
+        private int _turnIndex;
         private const float Side = 10;
         private static Vector3 _uUnit = Vector3.right;
         private static Vector3 _vUnit = Vector3.up;
@@ -108,26 +109,31 @@ namespace THNeonMirage.Map
             {20..30, index => StartPos - _uUnit * 10 - _vUnit * 10 + new Vector3(index % 10, 0)},
             {30..40, index => StartPos - _vUnit * 10 + new Vector3(0, index % 10)}
         };
-        
+
+        private void Start()
+        {
+            OnInstantiate += Initialize;
+            TurnIndex = 0;
+        }
 
         public void CreateMap()
         {
-            Players = new List<GameObject>();
-            Fields = new List<GameObject>();
+            players = new List<GameObject>();
+            fields = new List<GameObject>();
             // InitField(tilePrefab, 1);
 
-            Utils.ForAddToList(40, Fields, i => InitField(tilePrefab, i));
-            Fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
+            Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
+            fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             inGamePanel.GetComponent<InGamePanelHandler>().client = client;
         }
 
         private void Update()
         {
             if (Input.GetKey(KeyCode.Escape)) settingsPanel.SetActive(true);
-            if (Activity >= Players.Count) Activity = 0;
+            if (TurnIndex >= players.Count) TurnIndex = 0;
         }
 
-        private void ShouldRenderTile(int index, bool shouldRender) => Fields[index].SetActive(shouldRender);
+        private void ShouldRenderTile(int index, bool shouldRender) => fields[index].SetActive(shouldRender);
 
         /// <summary>
         /// 用代码初始化大富翁地块的位置，这些地块将会围成一个正方形，然后根据索引为不同的地块对象实例动态挂载脚本
@@ -195,6 +201,7 @@ namespace THNeonMirage.Map
             
             return 1;
         }
+        
 
         public Vector3 Next(GameObject prefab, Vector3 prevPos, float u, float v)
         {

@@ -15,6 +15,7 @@ namespace THNeonMirage.Event
 
     public delegate void GameEventHandler<in TArgs>(GameObject gameObject, TArgs args) where TArgs : IGameEventArgs;
 
+    public delegate void ComponentEventHandler<in TArgs>(GameObject gameObject, MonoBehaviour script, TArgs args) where TArgs : IGameEventArgs;
     public delegate void ScriptEventHandler<in TArgs>(MonoBehaviour script, TArgs args) where TArgs : IGameEventArgs;
     public class RoundEventArgs : IGameEventArgs
     {
@@ -28,6 +29,16 @@ namespace THNeonMirage.Event
             PrevPlayer = prevPlayer;
             NextPlayer = nextPlayer;
             round_activity = roundActivity;
+        }
+    }
+
+    public class ScriptComponentEventArgs : IGameEventArgs
+    {
+        public GameObject GameObject;
+
+        public ScriptComponentEventArgs(GameObject gameObject)
+        {
+            GameObject = gameObject;
         }
     }
 }

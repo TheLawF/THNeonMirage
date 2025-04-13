@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
@@ -6,11 +5,9 @@ using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager.UI;
-using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace THNeonMirage.Manager
@@ -46,7 +43,36 @@ namespace THNeonMirage.Manager
         
         private RectTransform progress_transform;
         private RectTransform parent_transform;
-        
+
+        private void Start()
+        {
+            OnInstantiate += Initialize;
+        }
+
+        protected override GameObject Initialize<TArgs>(string prefabName, Vector3 pos, Quaternion rotation, TArgs arg5)
+        {
+            playerInstance = PhotonNetwork.Instantiate(prefabName, pos, rotation);
+            if (arg5 is not PlayerEventArgs args) return playerInstance;
+            lobbyPanel.SetActive(false);
+            inGamePanel.SetActive(true);
+            
+            var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
+            inGame.player = playerManager;
+            inGame.client = this;
+            
+            balance_text = balanceLabel.GetComponent<TMP_Text>();
+            playerManager = playerInstance.GetComponent<PlayerManager>();
+
+            playerManager.gameMap = gameMap;
+            playerManager.PlayerData = data;
+            playerManager.Instance = playerInstance;
+            
+            playerManager.PlayerData.OnBalanceChanged += SetLabelWhenBalanceChanged;
+            playerManager.PlayerData.Balance += 60_000;
+
+            return playerInstance;
+        }
+
         public virtual void Connect()
         {
             PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
@@ -79,18 +105,9 @@ namespace THNeonMirage.Manager
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
             hudPanel.SetActive(true);
             CreatePlayer();
-            lobbyPanel.SetActive(false);
-            inGamePanel.SetActive(true);
-            
-            var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
-            inGame.player = playerManager;
-            inGame.client = this;
-            
-            balance_text = balanceLabel.GetComponent<TMP_Text>();
-            playerManager.PlayerData.OnBalanceChanged += SetLabelWhenBalanceChanged; // subscription
-            playerManager.PlayerData.Balance += 60_000; // trigger
 
             gameMap.CreateMap();
+            gameMap.players.Add(playerInstance);
             gameMap.client = this;
         }
         
@@ -144,16 +161,23 @@ namespace THNeonMirage.Manager
         
         public void CreatePlayer()
         {
-            // playerInstance = Instantiate(playerPrefab, PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
-            playerInstance = PhotonNetwork.Instantiate("playerObject",
-                PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
+            Initialize("playerObject", PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity, new PlayerEventArgs(0));
             
-            playerInstance.GetComponent<PlayerManager>().PlayerData = data;
-            playerManager = playerInstance.GetComponent<PlayerManager>();
-            playerManager.Instance = playerInstance;
-            
-            GameMap.Players.Add(playerInstance);
-            playerManager.Activity = GameMap.Players.IndexOf(playerInstance);
+            // playerInstance = PhotonNetwork.Instantiate("playerObject",
+            //     PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
+
+            gameMap.players.Add(playerInstance);
+            playerManager.Round = gameMap.players.IndexOf(playerInstance);
+        }
+    }
+
+    public class PlayerEventArgs : IGameEventArgs
+    {
+        public int Round;
+
+        public PlayerEventArgs(int round)
+        {
+            Round = round;
         }
     }
 }

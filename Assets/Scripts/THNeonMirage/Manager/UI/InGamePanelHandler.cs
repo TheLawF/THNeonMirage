@@ -35,18 +35,17 @@ namespace THNeonMirage.Manager.UI
             description = descriptionLabel.GetComponent<TMP_Text>();
 
             GameMap = mapObject.GetComponent<GameMap>();
-            SetTexts(player.PlayerData.Position);
         }
 
         public void SetField(int posIndex)
         {
-            field = GameMap.Fields[posIndex].GetComponent<FieldTile>();
+            field = GameMap.fields[posIndex].GetComponent<FieldTile>();
             SetTexts(posIndex);
         }
         
         public void SetTexts(int positionIndex)
         {
-            var f = GameMap.Fields[positionIndex].GetComponent<FieldTile>();
+            var f = GameMap.fields[positionIndex].GetComponent<FieldTile>();
             title.text = f.Property.Name;
             description.text = f.description;
             toll.text = $"当前过路费：{f.CurrentTolls()}";

@@ -1,5 +1,6 @@
 using System;
 using THNeonMirage.Event;
+using THNeonMirage.Map;
 using THNeonMirage.Util;
 using UnityEngine.Rendering;
 

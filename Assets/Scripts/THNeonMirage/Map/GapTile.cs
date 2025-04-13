@@ -15,7 +15,7 @@ namespace THNeonMirage.Map
 
         public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
-            base.OnPlayerStop(playerData, currentPos);
+            // base.OnPlayerStop(playerData, currentPos);
             if (!IsTileValid(currentPos))return;
             ((PlayerData)playerData).PauseCount = 3;
         }

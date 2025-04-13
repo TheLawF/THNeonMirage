@@ -167,7 +167,6 @@ namespace THNeonMirage.Manager
             game_client = clientInst.GetComponent<GameClient>();
             dice.client = game_client;
             dice.inGamePanel = inGamePanel;
-            
             InitClient();
         }
 
@@ -176,6 +175,8 @@ namespace THNeonMirage.Manager
             game_client = game_client.GetComponent<GameClient>();
             game_map = gameManager.GetComponent<GameMap>();
             game_map.client = game_client.GetComponent<GameClient>();
+            
+            dice.gameMap = game_map;
             
             game_client.dice = dice;
             game_client.gameMap = game_map;
@@ -191,7 +192,7 @@ namespace THNeonMirage.Manager
             game_client.balanceLabel = balanceLabel;
             game_client.content = content;
             game_client.Connect();
-
+            
             homePanel.SetActive(false);
             diceObject.SetActive(true);
         }

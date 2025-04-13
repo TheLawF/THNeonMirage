@@ -1,3 +1,4 @@
+using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
@@ -10,12 +11,14 @@ using Utils = THNeonMirage.Util.Utils;
 
 namespace THNeonMirage.Manager.UI
 {
-    public class DiceHandler: MonoBehaviour, IPointerClickHandler
+    public class DiceHandler: MonoBehaviourPun, IPointerClickHandler
     {
         [DisplayOnly] 
         public int DiceValue;
         public int pos;
         public bool canRenderTooltip;
+
+        public GameMap gameMap;
         public GameClient client;
         public GameObject inGamePanel;
         
@@ -41,19 +44,11 @@ namespace THNeonMirage.Manager.UI
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
         {
-            GameMap.Activity++;
             player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
-            OnRoundStart(player.PlayerData, new ValueEventArgs(pos));
+            Utils.Info($"Player Round = {player.Round}, Game Turn = {gameMap.TurnIndex}");
+            // 下面这个判断的作用为是否轮到该玩家掷骰子，不管玩家是否是玩家回合或者被暂停回合或者
+            if (!player.IsMyTurn() || !player.CanMove()) return;
             
-            // 下面这个判断的作用为是否轮到该玩家掷骰子
-            Utils.Info($"Game Activity = {GameMap.Activity}, Your Activity = {player.Activity}");
-            if (GameMap.Activity == player.Activity) 
-                return;
-            
-            // 判断玩家是否被停止行动
-            Utils.Info($"Pause = {player.PlayerData.PauseCount}");
-            if (player.PlayerData.PauseCount > 0) 
-                return;
             DiceValue = random.Next(1,7);
             pos = player.PlayerData.Position;
             pos += DiceValue;
@@ -61,18 +56,13 @@ namespace THNeonMirage.Manager.UI
             player.SetPosition(player.PlayerData, new ValueEventArgs(pos));
             inGamePanel.GetComponent<InGamePanelHandler>().SetField(player.PlayerData.Position);
             shouldRenderTooltip = true;
+            gameMap.TurnIndex++;
+
             // if (player.PlayerData.PauseCount < 0)
             // {
             //     player.PlayerData.PauseCount++;
             //     goto ExtraMove;
             // }
-        }
-
-        public void OnRoundStart(object sender, ValueEventArgs currentPos)
-        {
-            var data = (PlayerData)sender;
-            data.PauseCount = data.PauseCount <= 0 ? 0 : data.PauseCount - 1;
-            GameMap.Activity++;
         }
 
         public void OnRoundSkip(MonoBehaviour script, ValueEventArgs args)

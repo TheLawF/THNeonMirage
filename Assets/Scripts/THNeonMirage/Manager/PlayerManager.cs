@@ -2,16 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace System.Runtime.CompilerServices
 {
@@ -23,18 +21,17 @@ namespace System.Runtime.CompilerServices
 namespace THNeonMirage.Manager
 {
     [Serializable]
-    public class PlayerManager : MonoBehaviourPun, IPunObservable
+    public class PlayerManager : GameBehaviourPun, IPunObservable
     {
+        public int Round;
         public string Id;
-        public int Activity;
         public string Password;
         
         public DiceType DiceType;
         public TMP_Text BalanceText { private get; set; }
         
-        public GameObject playerPrefab;
         public GameObject Instance;
-        public UnityEvent<int> onPlayerStop;
+        public GameMap gameMap;
         
         [DisplayOnly] public PlayerData PlayerData;
         [DisplayOnly] public GameLauncher database;
@@ -43,28 +40,19 @@ namespace THNeonMirage.Manager
         private Vector3 next_pos;
         private Vector3 networkPosition;
         private Quaternion networkRotation;
-        
-        private void Start()
+
+        private void Awake()
         {
             PlayerData = new PlayerData().SetBalance(60000);
             PlayerData.OnBalanceChanged += GameOver;
+            OnInstantiate += Initialize;
         }
 
-        private void Update()
-        {
-            
-        }
-        
         public void SetPosition(object sender, ValueEventArgs currentPos)
         {
             SetPosition((int)currentPos.Value);
         }
 
-        public void OnRoundStart()
-        {
-            
-        }
-        
         private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)
         {
             
@@ -74,7 +62,10 @@ namespace THNeonMirage.Manager
         {
             if (PlayerData.Balance <= 0) PhotonNetwork.Destroy(Instance);
         }
-        
+
+        public bool CanMove() => PlayerData.PauseCount <= 0;
+        public bool IsMyTurn() => Round == gameMap.TurnIndex;
+
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
         public void Save(string columnName, object data) => database.Save(PlayerData.UserName, columnName, data);
 

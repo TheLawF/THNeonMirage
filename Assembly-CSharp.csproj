@@ -82,6 +82,7 @@
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameBehaviourPun.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Util\TreeNode.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\FerrisWheel.cs" />
+     <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\CameraController.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\RollerCoaster.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\ProgressBarControl.cs" />
      <Compile Include="Assets\Scripts\THNeonMirage\Map\LuckyTile.cs" />
