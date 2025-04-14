@@ -9,20 +9,17 @@ namespace THNeonMirage.Manager.UI
 {
     public class DialogueHandler: MonoBehaviour
     {
+        public GameObject inGamePanel;
         public GameObject dialogueUI;
-        public GameObject textInput;
-
-        public GameObject confirm;
-        public GameObject cancel;
-        public GameObject close;
         
-        private Button confirmButton;
-        private Button cancelButton;
+        public TMP_Text textInput;
+        public TMP_Text confirmText;
+        public TMP_Text cancelText;
         
         private void Start()
         {
-            confirmButton.text = "加入房间";
-            cancelButton.text = "取消并退出";
+            confirmText.text = "加入房间";
+            cancelText.text = "取消并退出";
         }
 
         public void CloseWindow() => dialogueUI.SetActive(false);
@@ -34,9 +31,14 @@ namespace THNeonMirage.Manager.UI
 
         public void OnJoinRoomConfirmed()
         {
-            var roomName = textInput.GetComponent<TMP_Text>().text;
+            var roomName = textInput.text;
             if (roomName == null) return;
-            PhotonNetwork.JoinRoom(roomName);
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                PhotonNetwork.JoinRoom(roomName);
+                inGamePanel.SetActive(true);
+            }
+            else Debug.LogWarning("未连接到 Photon，无法加入房间！");
         }
     }
 }

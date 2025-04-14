@@ -45,7 +45,7 @@ namespace THNeonMirage.Manager.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
-            Utils.Info($"Player Round = {player.Round}, Game Turn = {gameMap.TurnIndex}");
+            Utils.Info($"Player Round = {player.Round}");
             // 下面这个判断的作用为是否轮到该玩家掷骰子，不管玩家是否是玩家回合或者被暂停回合或者
             if (!player.IsMyTurn() || !player.CanMove()) return;
             
@@ -56,7 +56,7 @@ namespace THNeonMirage.Manager.UI
             player.SetPosition(player.PlayerData, new ValueEventArgs(pos));
             inGamePanel.GetComponent<InGamePanelHandler>().SetField(player.PlayerData.Position);
             shouldRenderTooltip = true;
-            gameMap.TurnIndex++;
+            gameMap.NextTurn(1);
 
             // if (player.PlayerData.PauseCount < 0)
             // {

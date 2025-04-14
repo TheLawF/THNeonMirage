@@ -5,6 +5,7 @@ using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager.UI;
+using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -107,7 +108,8 @@ namespace THNeonMirage.Manager
             CreatePlayer();
 
             gameMap.CreateMap();
-            gameMap.players.Add(playerInstance);
+            GameMap.Players.Add(playerInstance);
+            playerManager.Round = PhotonNetwork.CurrentRoom.Players.Keys.Count;
             gameMap.client = this;
         }
         
@@ -136,7 +138,7 @@ namespace THNeonMirage.Manager
             foreach (var room in rooms) {
                 var newButton = Instantiate(buttonPrefab, content.transform);
                 newButton.GetComponentInChildren<TMP_Text>().text = 
-                    $"房间名：{room.Name} | 玩家：{room.PlayerCount}/{room.MaxPlayers}";
+                    $"房间名：{room.Name}  玩家：{room.PlayerCount}/{room.MaxPlayers}";
                 newButton.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Name));
             }
             AdjustContent(20); // 根据按钮高度调整
@@ -165,9 +167,13 @@ namespace THNeonMirage.Manager
             
             // playerInstance = PhotonNetwork.Instantiate("playerObject",
             //     PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
+        }
 
-            gameMap.players.Add(playerInstance);
-            playerManager.Round = gameMap.players.IndexOf(playerInstance);
+        public override void OnPlayerEnteredRoom(Player newPlayer)
+        {
+            if (!newPlayer.IsLocal) return;
+            GameMap.Players.Add(playerInstance);
+            playerManager.Round = PhotonNetwork.CurrentRoom.Players.Keys.Count - 1;
         }
     }
 

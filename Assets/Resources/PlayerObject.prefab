@@ -99,15 +99,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d602748d2bb554493bab4de8e152b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mapObject: {fileID: 0}
+  Round: 0
   Id: 
-  Activity: 0
   Password: 
   DiceType: 0
-  playerPrefab: {fileID: 0}
   Instance: {fileID: 0}
-  onPlayerStop:
-    m_PersistentCalls:
-      m_Calls: []
+  gameMap: {fileID: 0}
   PlayerData:
     PauseCount: 0
   database: {fileID: 0}

@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Manager.UI;
 using THNeonMirage.Util;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using Random = System.Random;
 
@@ -21,7 +23,13 @@ namespace THNeonMirage.Map
             get => _turnIndex;
             set
             {
-                if (TurnIndex > players.Count - 1) return;
+                if (_turnIndex > Players.Count)
+                {
+                    OnRoundStart?.Invoke(this, new ValueEventArgs(1));
+                    _turnIndex = 1;
+                    OnRoundEnd?.Invoke(this, new ValueEventArgs(value));
+                    return;
+                }
                 OnRoundStart?.Invoke(this, new ValueEventArgs(_turnIndex));
                 _turnIndex = value;
                 OnRoundEnd?.Invoke(this, new ValueEventArgs(value));
@@ -34,11 +42,12 @@ namespace THNeonMirage.Map
         public GameObject inGamePanel;
         public GameObject hudPanel;
         
-        public List<GameObject> players = new ();
+        public static ObservableList<GameObject> Players = new ();
         public List<GameObject> fields = new ();
 
         private int _turnIndex;
         private const float Side = 10;
+        private PhotonView photonView;
         private static Vector3 _uUnit = Vector3.right;
         private static Vector3 _vUnit = Vector3.up;
         
@@ -112,25 +121,36 @@ namespace THNeonMirage.Map
 
         private void Start()
         {
+            Players = new ObservableList<GameObject>();
+            fields = new List<GameObject>();
+            photonView = GetComponent<PhotonView>();
+            
+            TurnIndex = 1;
             OnInstantiate += Initialize;
-            TurnIndex = 0;
+            OnRoundStart += OnRoundStarted;
+            OnRoundEnd += OnRoundEnded;
         }
 
         public void CreateMap()
         {
-            players = new List<GameObject>();
-            fields = new List<GameObject>();
-            // InitField(tilePrefab, 1);
-
             Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
             fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             inGamePanel.GetComponent<InGamePanelHandler>().client = client;
         }
 
+        public void OnRoundStarted(MonoBehaviour script, ValueEventArgs args)
+        {
+            Utils.Info($"Game Turn starts at {(int)args.Value}");
+        }
+        
+        public void OnRoundEnded(MonoBehaviour script, ValueEventArgs args)
+        {
+            Utils.Info($"Game Turn ends at {(int)args.Value}");
+        }
+
         private void Update()
         {
             if (Input.GetKey(KeyCode.Escape)) settingsPanel.SetActive(true);
-            if (TurnIndex >= players.Count) TurnIndex = 0;
         }
 
         private void ShouldRenderTile(int index, bool shouldRender) => fields[index].SetActive(shouldRender);
@@ -201,11 +221,16 @@ namespace THNeonMirage.Map
             
             return 1;
         }
-        
 
-        public Vector3 Next(GameObject prefab, Vector3 prevPos, float u, float v)
+        public void NextTurn(int turn)
         {
-            return prevPos + new Vector3(u, v);
+            if (!photonView.IsMine) return;
+            TurnIndex += turn;
+            photonView.RPC("SyncData", RpcTarget.AllBuffered, TurnIndex);
         }
+
+        [PunRPC]
+        public void SyncData(int turn) => TurnIndex = turn;
+
     }
 }
