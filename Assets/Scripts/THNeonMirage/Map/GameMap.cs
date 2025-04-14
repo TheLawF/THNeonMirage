@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Photon.Pun;
+using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
@@ -16,23 +17,14 @@ namespace THNeonMirage.Map
     [Serializable]
     public class GameMap : GameBehaviour
     {
-        public event ScriptEventHandler<ValueEventArgs> OnRoundEnd;
-        public event ScriptEventHandler<ValueEventArgs> OnRoundStart;
+        public event ScriptEventHandler<ValueEventArgs> RoundEnd;
+        public event ScriptEventHandler<ValueEventArgs> RoundStart;
         public int TurnIndex
         {
             get => _turnIndex;
             set
             {
-                if (_turnIndex > Players.Count)
-                {
-                    OnRoundStart?.Invoke(this, new ValueEventArgs(1));
-                    _turnIndex = 1;
-                    OnRoundEnd?.Invoke(this, new ValueEventArgs(value));
-                    return;
-                }
-                OnRoundStart?.Invoke(this, new ValueEventArgs(_turnIndex));
-                _turnIndex = value;
-                OnRoundEnd?.Invoke(this, new ValueEventArgs(value));
+                _turnIndex = value > Players.Count ? 1 : value;
             }
         }
 
@@ -42,11 +34,12 @@ namespace THNeonMirage.Map
         public GameObject inGamePanel;
         public GameObject hudPanel;
         
-        public static ObservableList<GameObject> Players = new ();
+        public static ObservableList<Player> Players = new ();
         public List<GameObject> fields = new ();
-
-        private int _turnIndex;
+        public static string CurrentPlayerId;
+        
         private const float Side = 10;
+        private int _turnIndex;
         private PhotonView photonView;
         private static Vector3 _uUnit = Vector3.right;
         private static Vector3 _vUnit = Vector3.up;
@@ -119,16 +112,15 @@ namespace THNeonMirage.Map
             {30..40, index => StartPos - _vUnit * 10 + new Vector3(0, index % 10)}
         };
 
+
         private void Start()
         {
-            Players = new ObservableList<GameObject>();
+            Players = new ObservableList<Player>();
             fields = new List<GameObject>();
             photonView = GetComponent<PhotonView>();
             
             TurnIndex = 1;
             OnInstantiate += Initialize;
-            OnRoundStart += OnRoundStarted;
-            OnRoundEnd += OnRoundEnded;
         }
 
         public void CreateMap()
@@ -136,16 +128,6 @@ namespace THNeonMirage.Map
             Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
             fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             inGamePanel.GetComponent<InGamePanelHandler>().client = client;
-        }
-
-        public void OnRoundStarted(MonoBehaviour script, ValueEventArgs args)
-        {
-            Utils.Info($"Game Turn starts at {(int)args.Value}");
-        }
-        
-        public void OnRoundEnded(MonoBehaviour script, ValueEventArgs args)
-        {
-            Utils.Info($"Game Turn ends at {(int)args.Value}");
         }
 
         private void Update()
@@ -222,15 +204,24 @@ namespace THNeonMirage.Map
             return 1;
         }
 
-        public void NextTurn(int turn)
+        public void StartTurn()
         {
-            if (!photonView.IsMine) return;
-            TurnIndex += turn;
-            photonView.RPC("SyncData", RpcTarget.AllBuffered, TurnIndex);
+            CurrentPlayerId = Players[TurnIndex - 1].UserId;
+            RoundStart?.Invoke(this, new ValueEventArgs(TurnIndex));
+        }
+        
+        public void EndTurn()
+        {
+            if (!PhotonNetwork.IsMasterClient) return;
+            TurnIndex++;
+            photonView.RPC("SyncData", RpcTarget.AllBuffered, _turnIndex);
         }
 
         [PunRPC]
-        public void SyncData(int turn) => TurnIndex = turn;
-
+        public void SyncData(int turn)
+        {
+            TurnIndex = turn;
+            StartTurn();
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace THNeonMirage.Data
         private int _position;
         private int _balance;
         public string UserName { get; set; }
+        public string PlayerUid { get; set; }
         
         public EventHandler<ValueEventArgs> OnPositionChanged;
         public EventHandler<ValueEventArgs> OnBalanceChanged;
@@ -66,6 +67,12 @@ namespace THNeonMirage.Data
         public PlayerData Pos(int pos)
         {
             Position = pos;
+            return this;
+        }
+
+        public PlayerData Uid(string uid)
+        {
+            PlayerUid = uid;
             return this;
         }
 

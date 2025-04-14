@@ -5,6 +5,7 @@ using System.Linq;
 using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
+using THNeonMirage.Manager.UI;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using TMPro;
@@ -23,13 +24,14 @@ namespace THNeonMirage.Manager
     [Serializable]
     public class PlayerManager : GameBehaviourPun, IPunObservable
     {
-        public int Round;
+        [FormerlySerializedAs("Round")] public int PlayerIndex;
         public string Id;
         public string Password;
         
         public DiceType DiceType;
         public TMP_Text BalanceText { private get; set; }
-        
+
+        public DiceHandler dice;
         public GameObject Instance;
         public GameMap gameMap;
         
@@ -46,6 +48,7 @@ namespace THNeonMirage.Manager
             PlayerData = new PlayerData().SetBalance(60000);
             PlayerData.OnBalanceChanged += GameOver;
             OnInstantiate += Initialize;
+            // gameMap.RoundEnd += OnRoundEnd;
         }
 
         public void SetPosition(object sender, ValueEventArgs currentPos)
@@ -55,7 +58,7 @@ namespace THNeonMirage.Manager
 
         private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)
         {
-            
+            PlayerData.PauseCount--;
         }
         
         public void GameOver(object playerData, ValueEventArgs balanceArg)
@@ -64,8 +67,8 @@ namespace THNeonMirage.Manager
         }
 
         public bool CanMove() => PlayerData.PauseCount <= 0;
-        public bool IsMyTurn() => Round == gameMap.TurnIndex;
-
+        public bool IsMyTurn() => PlayerIndex == gameMap.TurnIndex;
+        
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
         public void Save(string columnName, object data) => database.Save(PlayerData.UserName, columnName, data);
 
@@ -132,41 +135,6 @@ namespace THNeonMirage.Manager
     [Serializable]
     public record Attribute(int Health, int AttackDamage);
 
-    // [Serializable]
-    // public class Inventory
-    // {
-    //     public static readonly int MAX_COUNT = 10;
-    //     public readonly List<ItemStack> Slots = new(10);
-// 
-    //     public void AddItemToInventory(int index, ItemStack item)
-    //     {
-    //         if (Slots.Count < index) Slots[index] = item;
-    //         else Slots.Add(item);
-    //     }
-// 
-    //     public void TransferItem(int prevSlot, int targetSlot)
-    //     {
-    //         if (Slots[targetSlot] != null) return;
-    //         Slots[targetSlot] = Slots[prevSlot];
-    //         Slots[prevSlot] = null;
-    //     }
-    // }
-
-    public class Inventory
-    {
-        public List<int> Inv;
-
-        public Inventory(List<int> inventory)
-        {
-            this.Inv = inventory;
-        }
-    }
-    
-    public class OccupiedFields
-    {
-        
-            
-    }
 
     [Serializable]
     public record ItemStack(string Name, int Count);

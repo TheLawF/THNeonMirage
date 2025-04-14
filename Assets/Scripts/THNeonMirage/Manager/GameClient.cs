@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Pun.Demo.SlotRacer;
 using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
@@ -108,9 +110,15 @@ namespace THNeonMirage.Manager
             CreatePlayer();
 
             gameMap.CreateMap();
-            GameMap.Players.Add(playerInstance);
-            playerManager.Round = PhotonNetwork.CurrentRoom.Players.Keys.Count;
             gameMap.client = this;
+            playerManager.PlayerIndex = PhotonNetwork.CurrentRoom.Players.Keys.Count;
+            playerManager.PlayerData.Uid(PhotonNetwork.LocalPlayer.UserId);
+            playerManager.dice = dice;
+            playerManager.PlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber;
+            
+            GameMap.Players.Add(PhotonNetwork.LocalPlayer);
+            GameMap.CurrentPlayerId = playerManager.PlayerData.PlayerUid;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "can_interact", "true" } });
         }
         
         public void SetLabelWhenBalanceChanged(object sender, ValueEventArgs args)
@@ -164,16 +172,15 @@ namespace THNeonMirage.Manager
         public void CreatePlayer()
         {
             Initialize("playerObject", PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity, new PlayerEventArgs(0));
-            
             // playerInstance = PhotonNetwork.Instantiate("playerObject",
             //     PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
         }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            if (!newPlayer.IsLocal) return;
-            GameMap.Players.Add(playerInstance);
-            playerManager.Round = PhotonNetwork.CurrentRoom.Players.Keys.Count - 1;
+            newPlayer.SetCustomProperties(new Hashtable { { "can_interact", "true" } });
+            GameMap.Players.Add(newPlayer);
+            playerManager.PlayerIndex = newPlayer.ActorNumber;
         }
     }
 

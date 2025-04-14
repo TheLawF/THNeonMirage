@@ -100,10 +100,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mapObject: {fileID: 0}
-  Round: 0
+  PlayerIndex: 0
   Id: 
   Password: 
   DiceType: 0
+  dice: {fileID: 0}
   Instance: {fileID: 0}
   gameMap: {fileID: 0}
   PlayerData:
