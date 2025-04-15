@@ -19,13 +19,10 @@ namespace THNeonMirage.Map
     {
         public event ScriptEventHandler<ValueEventArgs> RoundEnd;
         public event ScriptEventHandler<ValueEventArgs> RoundStart;
-        public int TurnIndex
+        public int ActorOrder
         {
-            get => _turnIndex;
-            set
-            {
-                _turnIndex = value > Players.Count ? 1 : value;
-            }
+            get => _actorOrder;
+            set => _actorOrder = value > PlayerOrder.Count ? 1 : value;
         }
 
         public GameClient client;
@@ -35,11 +32,12 @@ namespace THNeonMirage.Map
         public GameObject hudPanel;
         
         public static ObservableList<Player> Players = new ();
+        public List<int> PlayerOrder;
         public List<GameObject> fields = new ();
         public static string CurrentPlayerId;
         
         private const float Side = 10;
-        private int _turnIndex;
+        private int _actorOrder;
         private PhotonView photonView;
         private static Vector3 _uUnit = Vector3.right;
         private static Vector3 _vUnit = Vector3.up;
@@ -116,10 +114,11 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Players = new ObservableList<Player>();
+            PlayerOrder = new List<int>();
             fields = new List<GameObject>();
             photonView = GetComponent<PhotonView>();
             
-            TurnIndex = 1;
+            ActorOrder = 1;
             OnInstantiate += Initialize;
         }
 
@@ -206,21 +205,20 @@ namespace THNeonMirage.Map
 
         public void StartTurn()
         {
-            CurrentPlayerId = Players[TurnIndex - 1].UserId;
-            RoundStart?.Invoke(this, new ValueEventArgs(TurnIndex));
+            RoundStart?.Invoke(this, new ValueEventArgs(ActorOrder));
         }
         
-        public void EndTurn()
+        public void NextTurn()
         {
-            if (!PhotonNetwork.IsMasterClient) return;
-            TurnIndex++;
-            photonView.RPC("SyncData", RpcTarget.AllBuffered, _turnIndex);
+            ActorOrder++;
+            Utils.Info($"Current Order = {ActorOrder}");
+            photonView.RPC("SyncData", RpcTarget.AllBuffered, _actorOrder);
         }
 
         [PunRPC]
         public void SyncData(int turn)
         {
-            TurnIndex = turn;
+            ActorOrder = turn;
             StartTurn();
         }
     }

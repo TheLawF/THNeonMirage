@@ -24,7 +24,7 @@ namespace THNeonMirage.Manager
     [Serializable]
     public class PlayerManager : GameBehaviourPun, IPunObservable
     {
-        [FormerlySerializedAs("Round")] public int PlayerIndex;
+        public int PlayerIndex;
         public string Id;
         public string Password;
         
@@ -67,7 +67,7 @@ namespace THNeonMirage.Manager
         }
 
         public bool CanMove() => PlayerData.PauseCount <= 0;
-        public bool IsMyTurn() => PlayerIndex == gameMap.TurnIndex;
+        public bool IsMyTurn() => PlayerIndex == gameMap.ActorOrder;
         
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
         public void Save(string columnName, object data) => database.Save(PlayerData.UserName, columnName, data);

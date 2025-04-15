@@ -44,7 +44,7 @@ namespace THNeonMirage.Manager.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
-            if (GameMap.CurrentPlayerId != player.PlayerData.PlayerUid) return;
+            if (PhotonNetwork.LocalPlayer.ActorNumber != gameMap.PlayerOrder[gameMap.ActorOrder - 1]) return;
             DiceValue = random.Next(1,7);
             pos = player.PlayerData.Position;
             pos += DiceValue;
@@ -52,7 +52,7 @@ namespace THNeonMirage.Manager.UI
             player.SetPosition(player.PlayerData, new ValueEventArgs(pos));
             inGamePanel.GetComponent<InGamePanelHandler>().SetField(player.PlayerData.Position);
             shouldRenderTooltip = true;
-            gameMap.EndTurn();
+            gameMap.NextTurn();
         }
 
         private new string ToString() => string.Concat(DiceValue);

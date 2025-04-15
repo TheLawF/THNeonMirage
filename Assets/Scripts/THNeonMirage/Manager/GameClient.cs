@@ -8,7 +8,9 @@ using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager.UI;
 using THNeonMirage.Map;
+using THNeonMirage.Util;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -117,7 +119,7 @@ namespace THNeonMirage.Manager
             playerManager.PlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber;
             
             GameMap.Players.Add(PhotonNetwork.LocalPlayer);
-            GameMap.CurrentPlayerId = playerManager.PlayerData.PlayerUid;
+            gameMap.PlayerOrder.AddRange(PhotonNetwork.PlayerList.Select(player => player.ActorNumber).ToList());
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "can_interact", "true" } });
         }
         
@@ -178,9 +180,7 @@ namespace THNeonMirage.Manager
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            newPlayer.SetCustomProperties(new Hashtable { { "can_interact", "true" } });
-            GameMap.Players.Add(newPlayer);
-            playerManager.PlayerIndex = newPlayer.ActorNumber;
+            gameMap.PlayerOrder.Add(newPlayer.ActorNumber);
         }
     }
 
