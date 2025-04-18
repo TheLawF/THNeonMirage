@@ -1,4 +1,5 @@
 using System;
+using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
@@ -35,6 +36,13 @@ namespace THNeonMirage.Manager.UI
             description = descriptionLabel.GetComponent<TMP_Text>();
 
             GameMap = mapObject.GetComponent<GameMap>();
+            player.PlayerData.OnPositionChanged += ShowPanel;
+        }
+
+        private void ShowPanel(object playerData, ValueEventArgs args)
+        {
+            inGamePanel.SetActive(true);
+            SetTexts((int)args.Value);
         }
 
         public void SetField(int posIndex)
@@ -65,6 +73,12 @@ namespace THNeonMirage.Manager.UI
             player.PlayerData.Balance -= field.Property.Price.Building;
             field.level++;
         }
+        
+        public void OnCanceled()
+        {
+            inGamePanel.SetActive(false);
+        }
+
         
 // #if UNITY_EDITOR || UNITY_STANDALONE
         public void OnPointerClick(PointerEventData eventData)

@@ -118,7 +118,7 @@ namespace THNeonMirage.Manager
             playerManager.dice = dice;
             playerManager.PlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber;
             
-            GameMap.Players.Add(PhotonNetwork.LocalPlayer);
+            gameMap.Players.Add(PhotonNetwork.LocalPlayer);
             gameMap.PlayerOrder.AddRange(PhotonNetwork.PlayerList.Select(player => player.ActorNumber).ToList());
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "can_interact", "true" } });
         }

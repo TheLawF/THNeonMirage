@@ -29,9 +29,9 @@ namespace THNeonMirage.Map
         public GameObject settingsPanel;
         public GameObject tilePrefab;
         public GameObject inGamePanel;
-        public GameObject hudPanel;
+        public SpriteRenderer sprite;
         
-        public static ObservableList<Player> Players = new ();
+        public ObservableList<Player> Players = new ();
         public List<int> PlayerOrder;
         public List<GameObject> fields = new ();
         public static string CurrentPlayerId;
@@ -195,10 +195,11 @@ namespace THNeonMirage.Map
             ft.level = 0;
             ft.id = id == -1 ? ft.id : id;
             ft.Property = fieldProperty;
-            ft.spriteRenderer = tilePrefab.GetComponent<SpriteRenderer>();
+            
+            ft.spriteRenderer = go.GetComponent<SpriteRenderer>();
+            ft.spriteRenderer.color = ft.backGroundColor;
             ft.inGamePanel = inGamePanel;
             ft.client = client;
-            ft.Init();
             
             return 1;
         }

@@ -23,7 +23,7 @@ namespace THNeonMirage.Map
         public FieldProperty Property;
         public PlayerData Owner;
         
-        [DisplayOnly] public SpriteRenderer spriteRenderer;
+        public SpriteRenderer spriteRenderer;
         [DisplayOnly] public GameObject inGamePanel;
         [DisplayOnly] public GameObject hoverPanel;
         [DisplayOnly] public GameObject hoverText;
@@ -36,7 +36,8 @@ namespace THNeonMirage.Map
         {
             hoverPanel = GameObject.Find("Canvas/HoverPanel");
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
-            backGroundColor = new Color(1f, 1f, 1f, 0.5f);
+            backGroundColor = new Color(1f,1f, 1f, 0.6f);
+            spriteRenderer.color = backGroundColor;
 
             description = $"土地价格：{Property.Price.Purchase}\n\n" +
                           $"空地过路费：{Property.Price.Level0}\n" +
@@ -52,7 +53,6 @@ namespace THNeonMirage.Map
             Player = client.playerManager;
         }
 
-        
         public int CurrentTolls()
         {
             return level switch
@@ -75,22 +75,21 @@ namespace THNeonMirage.Map
         
         private void OnMouseOver()
         {
+            inGamePanel.SetActive(true);
             tooltipString = $"编号：{id}\n名称：{Property.Name}";
-            spriteRenderer.color = new Color(1f, 1f, 1f, 0.8f);
+            spriteRenderer.color = new Color(backGroundColor.r, backGroundColor.g, backGroundColor.b, 0.85f);
             inGamePanel.GetComponent<InGamePanelHandler>().SetTexts(Owner, new ValueEventArgs(id));
         }
 
         private void OnMouseExit()
         {
             spriteRenderer.color = backGroundColor;
-            // hoverPanel.SetActive(false);
         }
 
         public bool HasOwner() => Owner == null;
         
         public virtual void OnPlayerStop(object playerData, ValueEventArgs currentPos)
         {
-            Utils.Info($"玩家位置：{(int)currentPos.Value}，土地编号：{id}");
             if (!HasOwner())return;
             if (((PlayerData)playerData).UserName == null) return;
             if (Owner.UserName == ((PlayerData)playerData).UserName)return;

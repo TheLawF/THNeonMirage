@@ -44,7 +44,7 @@ namespace THNeonMirage.Data
             }
         }
         public ObservableList<int> Inventory { get; private set; }
-        public ObservableList<Pair<int, int>> Fields { get; private set; }
+        public ObservableList<int> Fields { get; private set; }
 
         public PlayerData(string userName, int position) : this()
         {
@@ -55,7 +55,7 @@ namespace THNeonMirage.Data
         public PlayerData()
         {
             Inventory = new ObservableList<int>();
-            Fields = new ObservableList<Pair<int, int>>();
+            Fields = new ObservableList<int>();
         }
         
         public PlayerData Name(string name)
@@ -100,20 +100,20 @@ namespace THNeonMirage.Data
             return this;
         }
         
-        private PlayerData SetFields(ObservableList<Pair<int, int>> fields)
+        private PlayerData SetFields(ObservableList<int> fields)
         {
             Fields = fields;
             return this;
         }
 
-        public PlayerData AddField(int fieldId, int bidId)
+        public PlayerData AddField(int fieldId)
         {
-            Fields.Add(new Pair<int, int>(fieldId, bidId));
+            Fields.Add(fieldId);
             return this;
         }
 
         public ObservableList<int> CopyInv() => new (Inventory);
-        public ObservableList<Pair<int, int>> CopyFields() => new (Fields);
+        public ObservableList<int> CopyFields() => new (Fields);
 
         // public override string ToString()
         //     => $@"Player: {{ UserName: {UserName}, Pos: {Position}, Balance: {Balance},
