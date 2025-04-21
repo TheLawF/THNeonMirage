@@ -28,7 +28,6 @@ namespace THNeonMirage.Manager
         public string Id;
         public string Password;
         
-        public DiceType DiceType;
         public TMP_Text BalanceText { private get; set; }
 
         public DiceHandler dice;
@@ -38,6 +37,7 @@ namespace THNeonMirage.Manager
         [DisplayOnly] public PlayerData PlayerData;
         [DisplayOnly] public GameLauncher database;
 
+        private PhotonView photonView;
         private Vector3 prev_pos;
         private Vector3 next_pos;
         private Vector3 networkPosition;
@@ -47,8 +47,9 @@ namespace THNeonMirage.Manager
         {
             PlayerData = new PlayerData().SetBalance(60000);
             PlayerData.OnBalanceChanged += GameOver;
+            photonView = Instance.GetComponent<PhotonView>();
+            photonView.ObservedComponents.Add(this);
             OnInstantiate += Initialize;
-            // gameMap.RoundEnd += OnRoundEnd;
         }
 
         public void SetPosition(object sender, ValueEventArgs currentPos)
@@ -104,7 +105,6 @@ namespace THNeonMirage.Manager
                 transform.position = Vector3.Lerp(prevPos, nextPos, i);
                 yield return new WaitForSeconds(0.02f);
             }
-            
         }
 
         public static Vector3 GetPlayerPosByIndex(int index) => GameMap.PosInRange.First(pair => 
@@ -116,27 +116,13 @@ namespace THNeonMirage.Manager
             if (stream.IsWriting) {
                 stream.SendNext(transform.position);
                 stream.SendNext(transform.rotation);
+                stream.SendNext(PlayerData.Balance);
             } else {
                 networkPosition = (Vector3)stream.ReceiveNext();
                 networkRotation = (Quaternion)stream.ReceiveNext();
+                PlayerData.Balance = (int)stream.ReceiveNext();
             }
         }
     }
-
-    [Serializable]
-    public enum DiceType
-    {
-        Default,
-        Cirno,
-        Flandre,
-        Koishi
-    }
-
-    [Serializable]
-    public record Attribute(int Health, int AttackDamage);
-
-
-    [Serializable]
-    public record ItemStack(string Name, int Count);
 }
 

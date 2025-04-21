@@ -195,6 +195,7 @@ namespace THNeonMirage.Map
             ft.level = 0;
             ft.id = id == -1 ? ft.id : id;
             ft.Property = fieldProperty;
+            ft.photonView = photonView;
             
             ft.spriteRenderer = go.GetComponent<SpriteRenderer>();
             ft.spriteRenderer.color = ft.backGroundColor;
@@ -213,7 +214,7 @@ namespace THNeonMirage.Map
         {
             ActorOrder++;
             Utils.Info($"Current Order = {ActorOrder}");
-            photonView.RPC("SyncData", RpcTarget.AllBuffered, _actorOrder);
+            photonView.RPC(nameof(SyncData), RpcTarget.AllBuffered, _actorOrder);
         }
 
         [PunRPC]

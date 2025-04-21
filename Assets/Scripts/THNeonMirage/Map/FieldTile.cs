@@ -1,4 +1,5 @@
 using System;
+using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
@@ -23,6 +24,7 @@ namespace THNeonMirage.Map
         public FieldProperty Property;
         public PlayerData Owner;
         
+        public PhotonView photonView;
         public SpriteRenderer spriteRenderer;
         [DisplayOnly] public GameObject inGamePanel;
         [DisplayOnly] public GameObject hoverPanel;
@@ -78,7 +80,20 @@ namespace THNeonMirage.Map
             inGamePanel.SetActive(true);
             tooltipString = $"编号：{id}\n名称：{Property.Name}";
             spriteRenderer.color = new Color(backGroundColor.r, backGroundColor.g, backGroundColor.b, 0.85f);
-            inGamePanel.GetComponent<InGamePanelHandler>().SetTexts(Owner, new ValueEventArgs(id));
+            
+            var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
+            inGame.SetTexts(Owner, new ValueEventArgs(id));
+            if (CurrentTolls() <= 0)
+            {
+                inGame.purchase.SetActive(false);
+                inGame.cancel.SetActive(false);
+            }
+            else
+            {
+                inGame.purchase.SetActive(true);
+                inGame.cancel.SetActive(true);
+            }
+            
         }
 
         private void OnMouseExit()
@@ -94,11 +109,19 @@ namespace THNeonMirage.Map
             if (((PlayerData)playerData).UserName == null) return;
             if (Owner.UserName == ((PlayerData)playerData).UserName)return;
             ((PlayerData)playerData).Balance -= CurrentTolls();
+            Owner.Balance += CurrentTolls();
+            photonView.RPC(nameof(SyncFieldData), RpcTarget.AllBuffered, Owner);
         }
 
         public virtual void OnPlayerPassBy(object playerData, object prevPosition, object currentPosition)
         {
         
+        }
+
+        [PunRPC]
+        public void SyncFieldData(PlayerData owner)
+        {
+            Owner = owner;
         }
 
         protected bool NextBool() => new System.Random().Next(1, 2) == 1;
@@ -119,6 +142,6 @@ namespace THNeonMirage.Map
             Higan,
             Other
         }
-        
+
     }
 }
