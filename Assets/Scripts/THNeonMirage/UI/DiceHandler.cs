@@ -1,15 +1,13 @@
 using Photon.Pun;
-using THNeonMirage.Data;
 using THNeonMirage.Event;
+using THNeonMirage.Manager;
 using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 using UnityEngine.EventSystems;
 using Random = System.Random;
-using Utils = THNeonMirage.Util.Utils;
 
-namespace THNeonMirage.Manager.UI
+namespace THNeonMirage.UI
 {
     public class DiceHandler: MonoBehaviourPun, IPointerClickHandler
     { 

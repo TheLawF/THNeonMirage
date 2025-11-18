@@ -1,11 +1,8 @@
-using System;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
-using UnityEngine.UIElements;
 
-namespace THNeonMirage.Manager.UI
+namespace THNeonMirage.UI
 {
     public class DialogueHandler: MonoBehaviour
     {

@@ -1,12 +1,11 @@
-using System;
 using System.Collections.Generic;
+using THNeonMirage.Manager;
 using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-namespace THNeonMirage.Manager.UI
+namespace THNeonMirage.UI
 {
     public class ToggleHandler : MonoBehaviour
     {

@@ -43,10 +43,9 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\THNeonMirage\Map\FieldTile.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Data\User.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\DiceHandler.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\DiceHandler.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\MerryGoRound.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameBehaviour.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Registry.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\PirateShip.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\AppSettingsExtensions.cs" />
@@ -62,7 +61,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Event\ValueListener.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\ToggleHandler.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\ToggleHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Data\PlayerData.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\HotelTile.cs" />
@@ -82,9 +81,9 @@
     <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameBehaviourPun.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Util\TreeNode.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\FerrisWheel.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\CameraController.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\CameraController.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\RollerCoaster.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\ProgressBarControl.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\ProgressBarControl.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\LuckyTile.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameLauncher.cs" />
@@ -104,7 +103,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\BumperCar.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\BigPendulum.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\HudManager.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\HudManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\VillageTile.cs" />
@@ -120,7 +119,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\DreamCastle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\ScrollViewManager.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\ScrollViewManager.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Event\GameEventHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Event\RandomEvents.cs" />
@@ -132,15 +131,23 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\IgnoreUiRaycastWhenInactive.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\StageTile.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\InGamePanelHandler.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\InGamePanelHandler.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
     <Compile Include="Assets\Scripts\UnityEngine\DisplayOnly.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Manager\UI\DialogueHandler.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\DialogueHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Data\DataSerializer.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\TileRegistry.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\Registries.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\GamePanel.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\RegistryEntry.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\UIRegistry.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\RegistryKey.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\ComponentRegistry.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\GameButton.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />

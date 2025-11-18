@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using UnityEngine;
 
-namespace THNeonMirage.Manager.UI
+namespace THNeonMirage.UI
 {
     public class ProgressBarControl : MonoBehaviour
     {

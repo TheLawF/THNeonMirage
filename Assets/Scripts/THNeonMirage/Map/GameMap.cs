@@ -5,7 +5,7 @@ using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
-using THNeonMirage.Manager.UI;
+using THNeonMirage.UI;
 using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;

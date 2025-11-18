@@ -3,7 +3,8 @@ using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
-using THNeonMirage.Manager.UI;
+using THNeonMirage.Registry;
+using THNeonMirage.UI;
 using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
@@ -13,7 +14,7 @@ using Random = Unity.Mathematics.Random;
 namespace THNeonMirage.Map
 {
     [Serializable]
-    public class FieldTile : MonoBehaviour
+    public class FieldTile : RegistryEntry
     {
         public int id;
         public int level;
@@ -143,5 +144,6 @@ namespace THNeonMirage.Map
             Other
         }
 
+        // public abstract string GetRegistryName();
     }
 }

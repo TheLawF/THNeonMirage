@@ -1,16 +1,13 @@
-using System;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
+using THNeonMirage.Manager;
 using THNeonMirage.Map;
-using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
-namespace THNeonMirage.Manager.UI
+namespace THNeonMirage.UI
 {
     public class InGamePanelHandler : GameBehaviour, IPointerClickHandler
     {

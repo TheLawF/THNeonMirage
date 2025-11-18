@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
-using THNeonMirage.Manager.UI;
 using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;

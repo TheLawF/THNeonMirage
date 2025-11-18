@@ -1,12 +1,8 @@
-using System;
-using Photon.Pun;
-using Photon.Realtime;
 using THNeonMirage.Data;
-using THNeonMirage.Event;
 using TMPro;
 using UnityEngine;
 
-namespace THNeonMirage.Manager.UI
+namespace THNeonMirage.UI
 {
     public class HudManager: MonoBehaviour
     {
