@@ -29,13 +29,29 @@ namespace THNeonMirage.Manager
         public string Password;
         
         public TMP_Text BalanceText { private get; set; }
-
+        public TMP_Text countdownText;
+        public TMP_Text infoText;
+        
         public DiceHandler dice;
         public GameObject Instance;
         public GameMap gameMap;
-        
-        [DisplayOnly] public PlayerData PlayerData;
+
+        public ScriptEventHandler<ValueEventArgs> OnDataChanged;
+        public PlayerData PlayerData
+        {
+            get => _playerData;
+            set
+            {
+                if (Equals(_playerData.Position, value.Position)) return;
+                var prevPos = _playerData.Position;
+                _playerData = value;
+                OnDataChanged?.Invoke(this, new ValueEventArgs(_playerData));
+            }
+        }
+
         [DisplayOnly] public GameLauncher database;
+
+        private PlayerData _playerData;
 
         private PhotonView photonView;
         private Vector3 prev_pos;

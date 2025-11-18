@@ -7,6 +7,7 @@ using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Manager.UI;
 using THNeonMirage.Util;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
@@ -30,8 +31,13 @@ namespace THNeonMirage.Map
         public GameObject tilePrefab;
         public GameObject inGamePanel;
         public SpriteRenderer sprite;
+
+        public int countdownSeconds = 30;
+        public TMP_Text countdownText;
+        public TMP_Text infoText;
         
         public ObservableList<Player> Players = new ();
+        public ObservableList<GameObject> PlayerInstances = new ();
         public List<int> PlayerOrder;
         public List<GameObject> fields = new ();
         public static string CurrentPlayerId;
@@ -109,17 +115,17 @@ namespace THNeonMirage.Map
             {20..30, index => StartPos - _uUnit * 10 - _vUnit * 10 + new Vector3(index % 10, 0)},
             {30..40, index => StartPos - _vUnit * 10 + new Vector3(0, index % 10)}
         };
-
-
+        
         private void Start()
         {
             Players = new ObservableList<Player>();
             PlayerOrder = new List<int>();
             fields = new List<GameObject>();
             photonView = GetComponent<PhotonView>();
-            
+
             ActorOrder = 1;
             OnInstantiate += Initialize;
+            PlayerInstances.ItemAdded += AddListener;
         }
 
         public void CreateMap()
@@ -132,6 +138,16 @@ namespace THNeonMirage.Map
         private void Update()
         {
             if (Input.GetKey(KeyCode.Escape)) settingsPanel.SetActive(true);
+        }
+
+        private void AddListener(ObservableList<GameObject> sender, ListChangedEventArgs<GameObject> args) =>
+            sender[args.index].GetComponent<PlayerManager>().OnDataChanged += StartCountdown;
+
+        private void StartCountdown(MonoBehaviour monoBehaviour, ValueEventArgs args)
+        {
+            if(monoBehaviour is not PlayerManager playerManager) return;
+            if(args.Value is not PlayerData playerData) return;
+            playerManager.PlayerData = playerData;
         }
 
         private void ShouldRenderTile(int index, bool shouldRender) => fields[index].SetActive(shouldRender);

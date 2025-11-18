@@ -40,5 +40,15 @@ namespace THNeonMirage.Event
         {
             GameObject = gameObject;
         }
+        
+    }
+    public class ScriptEventArgs : IGameEventArgs
+    {
+        public MonoBehaviour Behaviour;
+
+        public ScriptEventArgs(MonoBehaviour behaviour)
+        {
+            Behaviour = behaviour;
+        }
     }
 }

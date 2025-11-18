@@ -103,12 +103,11 @@ MonoBehaviour:
   PlayerIndex: 0
   Id: 
   Password: 
-  DiceType: 0
+  countdownText: {fileID: 0}
+  infoText: {fileID: 0}
   dice: {fileID: 0}
   Instance: {fileID: 0}
   gameMap: {fileID: 0}
-  PlayerData:
-    PauseCount: 0
   database: {fileID: 0}
 --- !u!114 &9010060989422911570
 MonoBehaviour:

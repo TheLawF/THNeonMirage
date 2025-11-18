@@ -27,8 +27,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor", "A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotonWebSocket", "PhotonWebSocket.csproj", "{6d166f34-c746-566b-0699-6603be794eea}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{22102fdd-0a12-3ad3-b7cf-18ac6bb23ec9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,8 +58,6 @@ Global
 		{6fa17a25-9039-ad59-0498-bf8bd2b1413f}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6d166f34-c746-566b-0699-6603be794eea}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6d166f34-c746-566b-0699-6603be794eea}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{22102fdd-0a12-3ad3-b7cf-18ac6bb23ec9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{22102fdd-0a12-3ad3-b7cf-18ac6bb23ec9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
