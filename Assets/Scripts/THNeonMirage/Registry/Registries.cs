@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FlyRabbit.EventCenter;
 using THNeonMirage.Map;
 using THNeonMirage.UI;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -30,6 +32,16 @@ namespace THNeonMirage.Registry
         public static RegistryEntry GetRegistry(RegistryKey registryKey)
         {
             return RegistryKeys.GetValueOrDefault(registryKey);
+        }
+        
+        public static TEntry Get<TEntry>(RegistryKey registryKey) where TEntry : RegistryEntry
+        {
+            return (TEntry)RegistryKeys.GetValueOrDefault(registryKey);
+        }
+
+        public static TComponent GetComponent<TEntry, TComponent>(RegistryKey registryKey) where TEntry : RegistryEntry where TComponent : Component
+        {
+            return ((TEntry)RegistryKeys.GetValueOrDefault(registryKey)).GameObject().GetComponent<TComponent>();
         }
     }
 }

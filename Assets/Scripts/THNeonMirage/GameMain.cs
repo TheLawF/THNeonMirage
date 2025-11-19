@@ -3,24 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using ExitGames.Client.Photon.StructWrapping;
+using FlyRabbit.EventCenter;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using UnityEngine.UI;
 using KeyValuePair = System.Collections.Generic.KeyValuePair;
 
 namespace THNeonMirage
 {
     public class GameMain : MonoBehaviour
     {
-        
+        public Button startButton;
+        public Button aboutButton;
         /// <summary>
         /// GameStart Clicked -> Disable Home Panel -> Enable Background -> Create Map -> Game Loop
         /// </summary>
         private void Start()
         {
             RegisterWhenSceneStart();
+            InitAllFields();
+            RegisterUIListeners();
+            CreateEventListeningChain();
         }
 
         private void Update()
@@ -44,12 +51,40 @@ namespace THNeonMirage
                 UIRegistry.RegisterButtons(keyValuePair.Key, keyValuePair.Value);
             }
         }
+
+        private void InitAllFields()
+        {
+            startButton = Registries.GetComponent<GameButton, Button>(UIRegistry.StartButton);
+            aboutButton = Registries.GetComponent<GameButton, Button>(UIRegistry.AboutButton);
+        }
+
+        private void RegisterUIListeners()
+        {
+            startButton.onClick.AddListener(OnGameStartClicked);
+        }
+        
+        
+        public void CreateEventListeningChain()
+        {
+            EventCenter.AddListener(EventName.OnBalanceChanged, SetBalanceDisplay);
+            EventCenter.AddListener(EventName.OnPositionChanged, TriggerTileEvent);
+        }
         
         public void OnGameStartClicked()
         {
         }
 
         public void WaitForOtherPlayer()
+        {
+            
+        }
+
+        public void SetBalanceDisplay()
+        {
+            
+        }
+
+        public void TriggerTileEvent()
         {
             
         }
