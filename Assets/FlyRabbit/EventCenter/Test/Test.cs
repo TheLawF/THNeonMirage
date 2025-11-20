@@ -1,4 +1,5 @@
 ﻿using System;
+using FlyRabbit.EventCenter.Core;
 using UnityEngine;
 using UnityEngine.UI;
 namespace FlyRabbit.EventCenter
@@ -14,6 +15,7 @@ namespace FlyRabbit.EventCenter
         public InputField Test2Param2;
         public Button Test2Button;
 
+        /*
         private void Awake()
         {
             Test1Button.onClick.AddListener(OnTest1ButtonClick);
@@ -79,5 +81,6 @@ namespace FlyRabbit.EventCenter
         {
             OutputText.text += $"Listener4接收到了:{a}和{b},进行相乘，等于:{a * b}\n";
         }
+        */
     }
 }

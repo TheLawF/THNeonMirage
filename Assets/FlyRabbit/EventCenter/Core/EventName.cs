@@ -4,7 +4,7 @@
  * 注明每个参数是什么类型的，有什么意义，如果没有参数则留空。
  * 这样将鼠标放在事件名上就可以得知每个参数的详细信息，防止出错。
  */
-namespace FlyRabbit.EventCenter
+namespace FlyRabbit.EventCenter.Core
 {
     /// <summary>
     /// 事件中心系统中的事件名

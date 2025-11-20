@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using ExitGames.Client.Photon.StructWrapping;
 using FlyRabbit.EventCenter;
+using FlyRabbit.EventCenter.Core;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using Unity.VisualScripting;
@@ -62,7 +63,6 @@ namespace THNeonMirage
         {
             startButton.onClick.AddListener(OnGameStartClicked);
         }
-        
         
         public void CreateEventListeningChain()
         {

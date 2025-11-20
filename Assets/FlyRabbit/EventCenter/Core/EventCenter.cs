@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using FlyRabbit.EventCenter.Core;
+
 namespace FlyRabbit.EventCenter
 {
     public delegate void Listener();

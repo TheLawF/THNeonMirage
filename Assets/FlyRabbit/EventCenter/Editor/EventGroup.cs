@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace FlyRabbit.EventCenter
+namespace FlyRabbit.EventCenter.Editor
 {
     public class EventGroup
     {

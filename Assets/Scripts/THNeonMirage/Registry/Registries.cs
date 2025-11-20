@@ -31,17 +31,17 @@ namespace THNeonMirage.Registry
 
         public static RegistryEntry GetRegistry(RegistryKey registryKey)
         {
-            return RegistryKeys.GetValueOrDefault(registryKey);
+            return RegistryKeys[registryKey];
         }
         
         public static TEntry Get<TEntry>(RegistryKey registryKey) where TEntry : RegistryEntry
         {
-            return (TEntry)RegistryKeys.GetValueOrDefault(registryKey);
+            return (TEntry)RegistryKeys[registryKey];
         }
 
         public static TComponent GetComponent<TEntry, TComponent>(RegistryKey registryKey) where TEntry : RegistryEntry where TComponent : Component
         {
-            return ((TEntry)RegistryKeys.GetValueOrDefault(registryKey)).GameObject().GetComponent<TComponent>();
+            return ((TEntry)RegistryKeys[registryKey]).GameObject().GetComponent<TComponent>();
         }
     }
 }

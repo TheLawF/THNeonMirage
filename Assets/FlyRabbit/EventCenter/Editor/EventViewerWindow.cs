@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using FlyRabbit.EventCenter.Editor;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,7 +12,7 @@ namespace FlyRabbit.EventCenter
 {
     public class EventViewerWindow : EditorWindow
     {
-        [MenuItem("FlyRabbit/Event Center/事件查看器")]
+        [MenuItem("Fictology/EventCenter/事件查看器")]
         private static void Open()
         {
             EditorWindow.GetWindow<EventViewerWindow>("事件查看器");
@@ -26,8 +29,7 @@ namespace FlyRabbit.EventCenter
         /// 提示文本-中文
         /// </summary>
         private static string m_NotesText = "事件查看器使用正则表达式搜索项目中的以下方法的调用来工作：\nEventCenter.AddListener\nEventCenter.RemoveListener\nEventCenter.TriggerEvent\n如果你的项目中有其他的\"EventCenter\"类，并且也拥有这些方法，那么事件查看器可能无法正常工作。\n此外，事件查看器会忽略Editor文件夹。";
-
-
+        
         private static readonly Regex m_AddRegex = new Regex(@"(?<!""[^\s]*)EventCenter\s*\.\s*AddListener\s*(?:<\s*(?<Types>[^>]+)\s*>)?\s*\(\s*EventName\s*\.\s*(?<Name>\w+)", RegexOptions.Compiled | RegexOptions.Singleline);
         private static readonly Regex m_RemoveRegex = new Regex(@"(?<!""[^\s]*)EventCenter\s*\.\s*RemoveListener\s*(?:<\s*(?<Types>[^>]+)\s*>)?\s*\(\s*EventName\s*\.\s*(?<Name>\w+)", RegexOptions.Compiled | RegexOptions.Singleline);
         private static readonly Regex m_TriggerRegex = new Regex(@"(?<!""[^\s]*)EventCenter\s*\.\s*TriggerEvent\s*(?:<\s*(?<Types>[^>]+)\s*>)?\s*\(\s*EventName\s*\.\s*(?<Name>\w+)", RegexOptions.Compiled | RegexOptions.Singleline);
@@ -281,33 +283,21 @@ namespace FlyRabbit.EventCenter
         /// </summary>
         private static void CheckError()
         {
-            foreach (EventGroup eventGroup in m_Events.Values)
+            foreach (var eventGroup in m_Events.Values)
             {
-                string trueSignature = eventGroup.Signature;
-                foreach (EventUsageInfo add in eventGroup.Adds)
+                var trueSignature = eventGroup.Signature;
+                foreach (var add in eventGroup.Adds.Where(add => add.Signature != trueSignature))
                 {
-                    if (add.Signature == trueSignature)
-                    {
-                        continue;
-                    }
                     eventGroup.HasError = true;
                     add.IsError = true;
                 }
-                foreach (EventUsageInfo remove in eventGroup.Removes)
+                foreach (var remove in eventGroup.Removes.Where(remove => remove.Signature != trueSignature))
                 {
-                    if (remove.Signature == trueSignature)
-                    {
-                        continue;
-                    }
                     eventGroup.HasError = true;
                     remove.IsError = true;
                 }
-                foreach (EventUsageInfo trigger in eventGroup.Triggers)
+                foreach (var trigger in eventGroup.Triggers.Where(trigger => trigger.Signature != trueSignature))
                 {
-                    if (trigger.Signature == trueSignature)
-                    {
-                        continue;
-                    }
                     eventGroup.HasError = true;
                     trigger.IsError = true;
                 }
@@ -321,10 +311,10 @@ namespace FlyRabbit.EventCenter
             m_Events.Clear();
 
             //获取所有Assets目录下的脚本的GUID
-            string[] ScriptGuids = AssetDatabase.FindAssets("t:Scripts", new string[] { "Assets" });
+            var scriptGuids = AssetDatabase.FindAssets("t:Script", new [] { "Assets" });
             
             //GUID转为路径，并排除Editor文件夹下的脚本，存储至m_ScriptPaths
-            foreach (var item in ScriptGuids)
+            foreach (var item in scriptGuids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(item);
                 if (path.Contains("/Editor/"))
@@ -358,7 +348,7 @@ namespace FlyRabbit.EventCenter
         private static void OnLocationButtonClick(string assetPath)
         {
             MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
-            if (script == null)
+            if (script is null)
             {
                 EditorUtility.DisplayDialog("出错了！", $"未能找到脚本。\n路径：{assetPath}。", "确认");
                 return;
@@ -371,7 +361,7 @@ namespace FlyRabbit.EventCenter
         private static void OnOpenButtonClick(EventUsageInfo usageInfo)
         {
             MonoScript script = AssetDatabase.LoadAssetAtPath<MonoScript>(usageInfo.AssetPath);
-            if (script == null)
+            if (script is null)
             {
                 EditorUtility.DisplayDialog("出错了！", $"未能找到脚本。\n路径：{usageInfo.AssetPath}。", "确认");
             }
