@@ -44,8 +44,8 @@ namespace THNeonMirage
                 .Select(obj => new { Object = obj, Entry = obj.GetComponent<RegistryEntry>() })
                 .Where(objAndEntry => objAndEntry.Entry != null && Registries.RegistryTypes.Contains(objAndEntry.Entry.GetType()))
                 .ToDictionary(objAndEntry => objAndEntry.Entry, objAndEntry => objAndEntry.Object);
-            
-            Registries.Entry2ObjMap.AddRange(validEntries);
+
+            Registries.RegisterAll(validEntries);
             foreach (var keyValuePair in Registries.Entry2ObjMap)
             {
                 UIRegistry.RegisterPanels(keyValuePair.Key, keyValuePair.Value);
@@ -55,8 +55,8 @@ namespace THNeonMirage
 
         private void InitAllFields()
         {
-            startButton = Registries.GetComponent<GameButton, Button>(UIRegistry.StartButton);
-            aboutButton = Registries.GetComponent<GameButton, Button>(UIRegistry.AboutButton);
+            startButton = Registries.GetComponent<Button>(UIRegistry.StartButton);
+            aboutButton = Registries.GetComponent<Button>(UIRegistry.AboutButton);
         }
 
         private void RegisterUIListeners()
@@ -66,7 +66,7 @@ namespace THNeonMirage
         
         public void CreateEventListeningChain()
         {
-            EventCenter.AddListener(EventName.OnBalanceChanged, SetBalanceDisplay);
+            EventCenter.AddListener<int, int>(EventName.OnBalanceChanged, SetBalanceDisplay);
             EventCenter.AddListener(EventName.OnPositionChanged, TriggerTileEvent);
         }
         
@@ -79,7 +79,7 @@ namespace THNeonMirage
             
         }
 
-        public void SetBalanceDisplay()
+        public void SetBalanceDisplay(int before, int after)
         {
             
         }

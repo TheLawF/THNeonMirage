@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon;
+using Fictology.UnityEngine;
 using Photon.Pun;
 using Photon.Pun.Demo.SlotRacer;
 using Photon.Realtime;

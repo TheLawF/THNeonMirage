@@ -24,25 +24,6 @@ namespace FlyRabbit.EventCenter.Core
         /// </list>
         /// </remarks>
         Example,
-        /// <summary>
-        /// 测试用的只有一个参数的事件，实际使用时请删除它。
-        /// </summary>
-        /// <remarks>
-        /// <list type="bullet">
-        /// <item><description>参数1：string→没有意义</description></item>
-        /// </list>
-        /// </remarks>
-        Test1,
-        /// <summary>
-        /// 测试用的有两个参数的事件，实际使用时请删除它。
-        /// </summary>
-        /// <remarks>
-        /// <list type="bullet">
-        /// <item><description>参数1：int→没有意义</description></item>
-        /// <item><description>参数2：int→没有意义</description></item>
-        /// </list>
-        /// </remarks>
-        Test2,
         OnGameStartClicked,
         OnAboutButtonClicked,
         OnDiceClicked,
@@ -51,6 +32,15 @@ namespace FlyRabbit.EventCenter.Core
         OnBackToHomeClicked,
         OnBackToGameClicked,
         OnQuitGameClicked,
+        /// <summary>
+        /// 只是一个例子，没有任何实际作用。
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        /// <item><description>参数1：int→变更前的余额</description></item>
+        /// <item><description>参数1：int→变更后的余额</description></item>
+        /// </list>
+        /// </remarks>
         OnBalanceChanged,
         OnPositionChanged,
         OnPurchaseClicked,

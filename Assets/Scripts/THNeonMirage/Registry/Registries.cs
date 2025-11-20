@@ -14,7 +14,8 @@ namespace THNeonMirage.Registry
     {
         public static readonly List<Type> RegistryTypes = new();
         public static readonly Dictionary<string, List<RegistryKey>> RootKeys = new();
-        public static readonly Dictionary<RegistryKey, RegistryEntry> RegistryKeys = new();
+        private static readonly Dictionary<string, GameObject> Key2ObjectMap = new();
+        private static readonly Dictionary<string, RegistryEntry> Key2EntryMap = new();
         public static readonly Dictionary<RegistryEntry, GameObject> Entry2ObjMap = new();
 
         public static readonly Dictionary<GamePanel, GameObject> Panels = new();
@@ -22,26 +23,46 @@ namespace THNeonMirage.Registry
         
         public static readonly Dictionary<FieldTile, GameObject> Tiles = new();
 
-        public static RegistryKey Register(string rootName, string registryName)
+        public static RegistryKey CreateKey(string rootName, string registryName)
         {
             var key = RegistryKey.Create(rootName, registryName);
             RootKeys.GetValueOrDefault(rootName, new List<RegistryKey>()).Add(key);
             return key;
         }
 
-        public static RegistryEntry GetRegistry(RegistryKey registryKey)
+        public static void Register<TEntry>(RegistryKey key, TEntry entry) where TEntry : RegistryEntry
         {
-            return RegistryKeys[registryKey];
-        }
-        
-        public static TEntry Get<TEntry>(RegistryKey registryKey) where TEntry : RegistryEntry
-        {
-            return (TEntry)RegistryKeys[registryKey];
+            if (!RootKeys.ContainsKey(key.rootName)) return;
+            Key2EntryMap.TryAdd(key.ToString(), entry);
         }
 
-        public static TComponent GetComponent<TEntry, TComponent>(RegistryKey registryKey) where TEntry : RegistryEntry where TComponent : Component
+        public static void RegisterObject(RegistryKey key, GameObject gameObject)
         {
-            return ((TEntry)RegistryKeys[registryKey]).GameObject().GetComponent<TComponent>();
+            if (!RootKeys.ContainsKey(key.rootName)) return;
+            Key2ObjectMap.TryAdd(key.ToString(), gameObject);
+        }
+
+        public static void RegisterAll(Dictionary<RegistryEntry, GameObject> dictionary)
+        {
+            Entry2ObjMap.AddRange(dictionary);
+            Key2ObjectMap.AddRange(dictionary
+                .Select(pair => new {Key = pair.Key.registryKey.ToString(), Obj = pair.Value})
+                .ToDictionary(pair => pair.Key, pair => pair.Obj));
+        }
+
+        public static TEntry Get<TEntry>(RegistryKey registryKey) where TEntry : RegistryEntry
+        {
+            return (TEntry)Key2EntryMap[registryKey.ToString()];
+        }
+
+        public static GameObject GetObject(RegistryKey registryKey)
+        {
+            return Key2ObjectMap[registryKey.ToString()];
+        }
+
+        public static TComponent GetComponent<TComponent>(RegistryKey registryKey) where TComponent : Component
+        {
+            return Key2ObjectMap[registryKey.ToString()].GetComponent<TComponent>();
         }
     }
 }

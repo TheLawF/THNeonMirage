@@ -146,7 +146,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\InGamePanelHandler.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
-    <Compile Include="Assets\Scripts\UnityEngine\DisplayOnly.cs" />
+    <Compile Include="Assets\Scripts\Fictology\UnityEngine\DisplayOnly.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\DialogueHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
@@ -154,8 +154,8 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventName.cs" />
-    <Compile Include="Assets\Scripts\UnityEditor\EventSubscriberWindow.cs" />
-    <Compile Include="Assets\Scripts\UnityEditor\EventReference.cs" />
+    <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventSubscriberWindow.cs" />
+    <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventReference.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />

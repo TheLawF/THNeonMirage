@@ -4,9 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using FlyRabbit.EventCenter.Core;
+using UnityEditor;
 using UnityEngine;
 
-namespace UnityEditor
+namespace Fictology.UnityEditor
 {
     public class EventSubscriberWindow: EditorWindow
     {

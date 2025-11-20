@@ -1,7 +1,7 @@
-using System;
 using UnityEditor;
+using UnityEngine;
 
-namespace UnityEngine
+namespace Fictology.UnityEngine
 {
     public class DisplayOnly: PropertyAttribute
     {

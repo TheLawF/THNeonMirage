@@ -1,6 +1,6 @@
 using FlyRabbit.EventCenter.Core;
 
-namespace UnityEditor
+namespace Fictology.UnityEditor
 {
     [System.Serializable]
     public class EventReference

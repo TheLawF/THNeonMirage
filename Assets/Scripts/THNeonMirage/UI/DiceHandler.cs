@@ -1,3 +1,4 @@
+using Fictology.UnityEngine;
 using Photon.Pun;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;

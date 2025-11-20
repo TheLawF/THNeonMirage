@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Fictology.UnityEngine;
 using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
