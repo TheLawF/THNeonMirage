@@ -72,6 +72,8 @@ namespace THNeonMirage
         
         public void OnGameStartClicked()
         {
+            Registries.GetObject(UIRegistry.HomePage).SetActive(false);
+            Registries.Tiles.Values.ToList().ForEach(go => go.SetActive(true));
         }
 
         public void WaitForOtherPlayer()

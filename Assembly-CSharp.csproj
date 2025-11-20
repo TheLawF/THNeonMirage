@@ -70,6 +70,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\UI\ToggleHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Data\PlayerData.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\PrefabKey.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\HotelTile.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameBehaviourPun.cs" />
+    <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventReference.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Util\TreeNode.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\FerrisWheel.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\CameraController.cs" />
@@ -151,11 +153,11 @@
     <Compile Include="Assets\Scripts\THNeonMirage\UI\DialogueHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Data\DataSerializer.cs" />
+    <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventSubscriberWindow.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventName.cs" />
-    <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventSubscriberWindow.cs" />
-    <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventReference.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Map\GameTile.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />

@@ -10,6 +10,11 @@ using UnityEngine.UI.Extensions;
 
 namespace THNeonMirage.Registry
 {
+    /// <summary>
+    /// 使用单例模式管理所有游戏物体，别问我为什么，问就是写MC模组写的<br></br>
+    /// 对于唯一的游戏物体，例如已经添加在Hierarchy面板上的游戏物体，采取直接注册的方式
+    /// 对于预制体和使用脚本创建和实例化的游戏物体，采取
+    /// </summary>
     public static class Registries
     {
         public static readonly List<Type> RegistryTypes = new();
