@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FlyRabbit.EventCenter;
 using THNeonMirage.Map;
 using THNeonMirage.UI;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI.Extensions;
 
-namespace THNeonMirage.Registry
+namespace Fictology.Registry
 {
     /// <summary>
     /// 使用单例模式管理所有游戏物体，别问我为什么，问就是写MC模组写的<br></br>

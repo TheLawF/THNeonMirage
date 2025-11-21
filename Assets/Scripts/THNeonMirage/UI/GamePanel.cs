@@ -1,3 +1,4 @@
+using Fictology.Registry;
 using THNeonMirage.Registry;
 
 namespace THNeonMirage.UI

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Fictology.Registry;
 using THNeonMirage.UI;
 using THNeonMirage.Registry;
 using UnityEngine;

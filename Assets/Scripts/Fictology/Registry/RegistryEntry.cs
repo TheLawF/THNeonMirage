@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace THNeonMirage.Registry
+namespace Fictology.Registry
 {
     public class RegistryEntry : MonoBehaviour
     {

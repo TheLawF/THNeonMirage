@@ -1,4 +1,5 @@
 using System;
+using Fictology.Registry;
 using Fictology.UnityEngine;
 using Photon.Pun;
 using THNeonMirage.Data;

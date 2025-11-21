@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
-using UnityEngine;
 
-namespace THNeonMirage.Registry
+namespace Fictology.Registry
 {
     [Serializable]
     public class RegistryKey: IEquatable<RegistryKey>

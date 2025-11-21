@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using ExitGames.Client.Photon.StructWrapping;
+using Fictology.Registry;
 using FlyRabbit.EventCenter;
 using FlyRabbit.EventCenter.Core;
 using THNeonMirage.Registry;
