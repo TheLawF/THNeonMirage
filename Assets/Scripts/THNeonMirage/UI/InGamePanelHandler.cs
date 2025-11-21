@@ -1,7 +1,9 @@
+using Fictology.Registry;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
+using THNeonMirage.Registry;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -38,14 +40,15 @@ namespace THNeonMirage.UI
             toll = tollLabel.GetComponent<TMP_Text>();
             description = descriptionLabel.GetComponent<TMP_Text>();
 
-            GameMap = mapObject.GetComponent<GameMap>();
+            Level = mapObject.GetComponent<Level>();
+            purchase = Registries.GetObject(UIRegistry.PurchaseButton);
             player.PlayerData.OnPositionChanged += UpdateUI;
         }
 
         private void UpdateUI(object playerData, ValueEventArgs args)
         {
             var data = (PlayerData)playerData;
-            field = GameMap.fields[(int)args.Value].GetComponent<FieldTile>();
+            field = Level.fields[(int)args.Value].GetComponent<FieldTile>();
             inGamePanel.SetActive(true);
             SetTexts((int)args.Value);
 
@@ -75,13 +78,13 @@ namespace THNeonMirage.UI
 
         public void SetField(int posIndex)
         {
-            field = GameMap.fields[posIndex].GetComponent<FieldTile>();
+            field = Level.fields[posIndex].GetComponent<FieldTile>();
             SetTexts(posIndex);
         }
         
         public void SetTexts(int positionIndex)
         {
-            field = GameMap.fields[positionIndex].GetComponent<FieldTile>();
+            field = Level.fields[positionIndex].GetComponent<FieldTile>();
             title.text = field.Property.Name;
             description.text = field.description;
             toll.text = $"当前过路费：{field.CurrentTolls()}";

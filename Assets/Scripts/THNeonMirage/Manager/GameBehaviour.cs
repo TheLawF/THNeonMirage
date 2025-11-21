@@ -9,7 +9,7 @@ namespace THNeonMirage.Manager
     public class GameBehaviour: MonoBehaviour
     {
         public GameObject mapObject;
-        protected GameMap GameMap;
+        protected Level Level;
         public event Func<GameObject, Vector3, Quaternion, GameObject> OnInstantiate;
 
         public GameObject Initialize(GameObject obj, Vector3 pos, Quaternion rotation)

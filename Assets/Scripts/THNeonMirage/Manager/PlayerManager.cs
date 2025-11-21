@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Fictology.Registry;
 using Fictology.UnityEngine;
 using Photon.Pun;
 using THNeonMirage.Data;
@@ -23,7 +24,7 @@ namespace System.Runtime.CompilerServices
 namespace THNeonMirage.Manager
 {
     [Serializable]
-    public class PlayerManager : GameBehaviourPun, IPunObservable
+    public class PlayerManager : RegistryEntry
     {
         public int PlayerIndex;
         public string Id;
@@ -35,7 +36,7 @@ namespace THNeonMirage.Manager
         
         public DiceHandler dice;
         public GameObject Instance;
-        public GameMap gameMap;
+        [FormerlySerializedAs("levelManager")] [FormerlySerializedAs("gameMap")] public Level level;
 
         public ScriptEventHandler<ValueEventArgs> OnDataChanged;
         public PlayerData PlayerData
@@ -54,7 +55,6 @@ namespace THNeonMirage.Manager
 
         private PlayerData _playerData;
 
-        private PhotonView photonView;
         private Vector3 prev_pos;
         private Vector3 next_pos;
         private Vector3 networkPosition;
@@ -64,9 +64,6 @@ namespace THNeonMirage.Manager
         {
             PlayerData = new PlayerData().SetBalance(60000);
             PlayerData.OnBalanceChanged += GameOver;
-            photonView = Instance.GetComponent<PhotonView>();
-            photonView.ObservedComponents.Add(this);
-            OnInstantiate += Initialize;
         }
 
         public void SetPosition(object sender, ValueEventArgs currentPos)
@@ -81,11 +78,14 @@ namespace THNeonMirage.Manager
         
         public void GameOver(object playerData, ValueEventArgs balanceArg)
         {
-            if (PlayerData.Balance <= 0) PhotonNetwork.Destroy(Instance);
+            if (PlayerData.Balance <= 0)
+            {
+                
+            }
         }
 
         public bool CanMove() => PlayerData.PauseCount <= 0;
-        public bool IsMyTurn() => PlayerIndex == gameMap.ActorOrder;
+        public bool IsMyTurn() => PlayerIndex == level.ActorOrder;
         
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
         public void Save(string columnName, object data) => database.Save(PlayerData.UserName, columnName, data);
@@ -124,22 +124,8 @@ namespace THNeonMirage.Manager
             }
         }
 
-        public static Vector3 GetPlayerPosByIndex(int index) => GameMap.PosInRange.First(pair => 
+        public static Vector3 GetPlayerPosByIndex(int index) => Level.PosInRange.First(pair => 
             Utils.IsInRange(pair.Key, index)).Value.Invoke(index);
-
-        
-        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-        {
-            if (stream.IsWriting) {
-                stream.SendNext(transform.position);
-                stream.SendNext(transform.rotation);
-                stream.SendNext(PlayerData.Balance);
-            } else {
-                networkPosition = (Vector3)stream.ReceiveNext();
-                networkRotation = (Quaternion)stream.ReceiveNext();
-                PlayerData.Balance = (int)stream.ReceiveNext();
-            }
-        }
     }
 }
 

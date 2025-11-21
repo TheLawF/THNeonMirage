@@ -12,7 +12,13 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey Level = RegistryKey.Create(LevelRootKey, "MainLevel");
         public static readonly PrefabType<FieldTile, MonoBehaviour> Tile = PrefabType<FieldTile, MonoBehaviour>.Of("Prefabs/TilePrefab");
 
-        public static void RegisterLevel(RegistryKey key, LevelManager level)
+        public static void RegisterTypes()
+        {
+            Registries.RegistryTypes.Add(typeof(Level));
+            Registries.RegistryTypes.Add(typeof(FieldTile));
+        }
+        
+        public static void RegisterLevel(RegistryKey key, Level level)
         {
             Registries.Register(key, level);
         }

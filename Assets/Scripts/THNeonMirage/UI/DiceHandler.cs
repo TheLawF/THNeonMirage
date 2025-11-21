@@ -6,6 +6,7 @@ using THNeonMirage.Map;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 using Random = System.Random;
 
 namespace THNeonMirage.UI
@@ -17,7 +18,7 @@ namespace THNeonMirage.UI
         public bool canInteract;
         public bool canRenderTooltip;
 
-        public GameMap gameMap;
+        [FormerlySerializedAs("levelManager")] [FormerlySerializedAs("gameMap")] public Level level;
         public GameClient client;
         public GameObject inGamePanel;
 
@@ -43,7 +44,7 @@ namespace THNeonMirage.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
-            if (PhotonNetwork.LocalPlayer.ActorNumber != gameMap.PlayerOrder[gameMap.ActorOrder - 1]) return;
+            if (PhotonNetwork.LocalPlayer.ActorNumber != level.PlayerOrder[level.ActorOrder - 1]) return;
             DiceValue = random.Next(1,7);
             pos = player.PlayerData.Position;
             pos += DiceValue;
@@ -51,7 +52,7 @@ namespace THNeonMirage.UI
             player.SetPosition(player.PlayerData, new ValueEventArgs(pos));
             inGamePanel.GetComponent<InGamePanelHandler>().SetField(player.PlayerData.Position);
             shouldRenderTooltip = true;
-            gameMap.NextTurn();
+            level.NextTurn();
         }
 
         private new string ToString() => string.Concat(DiceValue);

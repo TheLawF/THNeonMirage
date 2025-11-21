@@ -18,6 +18,8 @@ namespace THNeonMirage.Registry
         
         public static readonly RegistryKey StartButton = Registries.CreateKey(ButtonRootKey, "StartGame");
         public static readonly RegistryKey AboutButton = Registries.CreateKey(ButtonRootKey, "About");
+        public static readonly RegistryKey PurchaseButton = Registries.CreateKey(ButtonRootKey, "Purchase");
+
         public static void RegisterTypes()
         {
             Registries.RegistryTypes.Add(typeof(GamePanel));

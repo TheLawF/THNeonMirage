@@ -59,7 +59,7 @@ namespace THNeonMirage.Manager
         public GameObject progressPrefab;
         public GameObject content;
 
-        private GameMap game_map;
+        private Level game_map;
         private GameHost game_host;
         private GameClient game_client;
         private PlayerManager _playerManager;
@@ -173,13 +173,13 @@ namespace THNeonMirage.Manager
         private void InitClient()
         {
             game_client = game_client.GetComponent<GameClient>();
-            game_map = gameManager.GetComponent<GameMap>();
+            game_map = gameManager.GetComponent<Level>();
             game_map.client = game_client.GetComponent<GameClient>();
             
-            dice.gameMap = game_map;
+            dice.level = game_map;
             
             game_client.dice = dice;
-            game_client.gameMap = game_map;
+            game_client.level = game_map;
             game_client.data = player_data;
 
             game_client.canvas = canvas;

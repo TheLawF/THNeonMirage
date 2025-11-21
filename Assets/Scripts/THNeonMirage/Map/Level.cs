@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Fictology.Registry;
 using Photon.Pun;
 using Photon.Realtime;
 using THNeonMirage.Data;
@@ -16,7 +17,7 @@ using Random = System.Random;
 namespace THNeonMirage.Map
 {
     [Serializable]
-    public class GameMap : GameBehaviour
+    public class Level : RegistryEntry
     {
         public event ScriptEventHandler<ValueEventArgs> RoundEnd;
         public event ScriptEventHandler<ValueEventArgs> RoundStart;
@@ -44,7 +45,6 @@ namespace THNeonMirage.Map
         
         private const float Side = 10;
         private int _actorOrder;
-        private PhotonView photonView;
         private static Vector3 _uUnit = Vector3.right;
         private static Vector3 _vUnit = Vector3.up;
         
@@ -121,14 +121,12 @@ namespace THNeonMirage.Map
             Players = new ObservableList<Player>();
             PlayerOrder = new List<int>();
             fields = new List<GameObject>();
-            photonView = GetComponent<PhotonView>();
-
             ActorOrder = 1;
-            OnInstantiate += Initialize;
+            
             PlayerInstances.ItemAdded += AddListener;
         }
 
-        public void CreateMap()
+        public void CreateLevel()
         {
             Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
             fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
@@ -211,7 +209,6 @@ namespace THNeonMirage.Map
             ft.level = 0;
             ft.id = id == -1 ? ft.id : id;
             ft.Property = fieldProperty;
-            ft.photonView = photonView;
             
             ft.spriteRenderer = go.GetComponent<SpriteRenderer>();
             ft.spriteRenderer.color = ft.backGroundColor;
@@ -230,14 +227,6 @@ namespace THNeonMirage.Map
         {
             ActorOrder++;
             Utils.Info($"Current Order = {ActorOrder}");
-            photonView.RPC(nameof(SyncData), RpcTarget.AllBuffered, _actorOrder);
-        }
-
-        [PunRPC]
-        public void SyncData(int turn)
-        {
-            ActorOrder = turn;
-            StartTurn();
         }
     }
 }

@@ -27,7 +27,6 @@ namespace THNeonMirage.Map
         public FieldProperty Property;
         public PlayerData Owner;
         
-        public PhotonView photonView;
         public SpriteRenderer spriteRenderer;
         [DisplayOnly] public GameObject inGamePanel;
         [DisplayOnly] public GameObject hoverPanel;
@@ -113,7 +112,6 @@ namespace THNeonMirage.Map
             if (Owner.UserName == ((PlayerData)playerData).UserName)return;
             ((PlayerData)playerData).Balance -= CurrentTolls();
             Owner.Balance += CurrentTolls();
-            photonView.RPC(nameof(SyncFieldData), RpcTarget.AllBuffered, Owner);
         }
 
         public virtual void OnPlayerPassBy(object playerData, object prevPosition, object currentPosition)

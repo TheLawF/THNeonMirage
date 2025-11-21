@@ -69,9 +69,9 @@ namespace THNeonMirage.Manager
             balance_text = balanceLabel.GetComponent<TMP_Text>();
             playerManager = playerInstance.GetComponent<PlayerManager>();
 
-            playerManager.gameMap = gameMap;
+            playerManager.level = level;
             playerManager.PlayerData = data;
-            playerManager.Instance = playerInstance;
+            // playerManager.Instance = playerInstance;
             
             playerManager.PlayerData.OnBalanceChanged += SetLabelWhenBalanceChanged;
             playerManager.PlayerData.Balance += 60_000;
@@ -112,16 +112,16 @@ namespace THNeonMirage.Manager
             hudPanel.SetActive(true);
             CreatePlayer();
 
-            gameMap.CreateMap();
-            gameMap.client = this;
+            level.CreateLevel();
+            level.client = this;
             playerManager.PlayerIndex = PhotonNetwork.CurrentRoom.Players.Keys.Count;
             playerManager.PlayerData.Uid(PhotonNetwork.LocalPlayer.UserId);
             playerManager.dice = dice;
             playerManager.PlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber;
             
-            gameMap.Players.Add(PhotonNetwork.LocalPlayer);
-            gameMap.PlayerInstances.Add(playerInstance);
-            gameMap.PlayerOrder.AddRange(PhotonNetwork.PlayerList.Select(player => player.ActorNumber).ToList());
+            level.Players.Add(PhotonNetwork.LocalPlayer);
+            level.PlayerInstances.Add(playerInstance);
+            level.PlayerOrder.AddRange(PhotonNetwork.PlayerList.Select(player => player.ActorNumber).ToList());
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "can_interact", "true" } });
         }
         
@@ -182,8 +182,8 @@ namespace THNeonMirage.Manager
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            gameMap.PlayerOrder.Add(newPlayer.ActorNumber);
-            gameMap.PlayerInstances.Add(playerInstance);
+            level.PlayerOrder.Add(newPlayer.ActorNumber);
+            level.PlayerInstances.Add(playerInstance);
         }
     }
 

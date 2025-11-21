@@ -6,6 +6,8 @@ using ExitGames.Client.Photon.StructWrapping;
 using Fictology.Registry;
 using FlyRabbit.EventCenter;
 using FlyRabbit.EventCenter.Core;
+using THNeonMirage.Manager;
+using THNeonMirage.Map;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using Unity.VisualScripting;
@@ -21,6 +23,8 @@ namespace THNeonMirage
     {
         public Button startButton;
         public Button aboutButton;
+        public Level level;
+        
         /// <summary>
         /// GameStart Clicked -> Disable Home Panel -> Enable Background -> Create Map -> Game Loop
         /// </summary>
@@ -40,6 +44,7 @@ namespace THNeonMirage
         private void RegisterWhenSceneStart()
         {
             UIRegistry.RegisterTypes();
+            LevelRegistry.RegisterTypes();
             
             var validEntries = GetAllSceneObjects()
                 .Select(obj => new { Object = obj, Entry = obj.GetComponent<RegistryEntry>() })
@@ -47,17 +52,13 @@ namespace THNeonMirage
                 .ToDictionary(objAndEntry => objAndEntry.Entry, objAndEntry => objAndEntry.Object);
 
             Registries.RegisterAll(validEntries);
-            foreach (var keyValuePair in Registries.Entry2ObjMap)
-            {
-                UIRegistry.RegisterPanels(keyValuePair.Key, keyValuePair.Value);
-                UIRegistry.RegisterButtons(keyValuePair.Key, keyValuePair.Value);
-            }
         }
 
         private void InitAllFields()
         {
             startButton = Registries.GetComponent<Button>(UIRegistry.StartButton);
             aboutButton = Registries.GetComponent<Button>(UIRegistry.AboutButton);
+            level = Registries.GetComponent<Level>(LevelRegistry.Level);
         }
 
         private void RegisterUIListeners()
@@ -75,6 +76,7 @@ namespace THNeonMirage
         {
             Registries.GetObject(UIRegistry.HomePage).SetActive(false);
             Registries.Tiles.Values.ToList().ForEach(go => go.SetActive(true));
+            level.CreateLevel();
         }
 
         public void WaitForOtherPlayer()

@@ -8,7 +8,7 @@ namespace THNeonMirage.Manager
     public class GameBehaviourPun : MonoBehaviourPun
     {
         public GameObject mapObject;
-        protected GameMap GameMap;
+        protected Level Level;
         
         public event Func<string, Vector3, Quaternion, GameObject> OnInstantiate;
 

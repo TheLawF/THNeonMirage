@@ -50,7 +50,10 @@ namespace Fictology.Registry
             Entry2ObjMap.AddRange(dictionary);
             Key2ObjectMap.AddRange(dictionary
                 .Select(pair => new {Key = pair.Key.registryKey.ToString(), Obj = pair.Value})
-                .ToDictionary(pair => pair.Key, pair => pair.Obj));
+                .ToDictionary(keyAndObj => keyAndObj.Key, keyAndObj => keyAndObj.Obj));
+            Key2EntryMap.AddRange(dictionary
+                .Select(pair => new {Key = pair.Key.registryKey.ToString(), Entry = pair.Key})
+                .ToDictionary(keyAndEntry => keyAndEntry.Key, keyAndEntry => keyAndEntry.Entry));
         }
 
         public static TEntry Get<TEntry>(RegistryKey registryKey) where TEntry : RegistryEntry
