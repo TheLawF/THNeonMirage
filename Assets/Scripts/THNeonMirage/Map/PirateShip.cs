@@ -23,7 +23,7 @@ namespace THNeonMirage.Map
             var data = (PlayerData)playerData;
             var bonus = random.Next(5);
             var result = random.Next(1) == 0 ? bonus : -bonus;
-            Player.SetPosition(playerData, new ValueEventArgs(result));
+            Player.SetPosIndex(playerData, new ValueEventArgs(result));
         }
     }
 }

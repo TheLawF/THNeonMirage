@@ -21,54 +21,54 @@ namespace FlyRabbit.EventCenter
 
         #region 使用EventKey作为EventName替代方案
 
-        public static void AddListener(EventKey eventName, Listener listener)
+        public static void AddListener(EventKey eventKey, Listener listener)
         {
-            AddListenerByKey(eventName, listener);
+            AddListenerByKey(eventKey, listener);
         }
-        public static void AddListener<T>(EventKey eventName, Listener<T> listener)
+        public static void AddListener<T>(EventKey eventKey, Listener<T> listener)
         {
-            AddListenerByKey(eventName, listener);
+            AddListenerByKey(eventKey, listener);
         }
-        public static void AddListener<T1, T2>(EventKey eventName, Listener<T1, T2> listener)
+        public static void AddListener<T1, T2>(EventKey eventKey, Listener<T1, T2> listener)
         {
-            AddListenerByKey(eventName, listener);
+            AddListenerByKey(eventKey, listener);
         }
-        public static void AddListener<T1, T2, T3>(EventKey eventName, Listener<T1, T2, T3> listener)
+        public static void AddListener<T1, T2, T3>(EventKey eventKey, Listener<T1, T2, T3> listener)
         {
-            AddListenerByKey(eventName, listener);
+            AddListenerByKey(eventKey, listener);
         }
-        public static void AddListener<T1, T2, T3, T4>(EventKey eventName, Listener<T1, T2, T3, T4> listener)
+        public static void AddListener<T1, T2, T3, T4>(EventKey eventKey, Listener<T1, T2, T3, T4> listener)
         {
-            AddListenerByKey(eventName, listener);
+            AddListenerByKey(eventKey, listener);
         }
-        public static void AddListener<T1, T2, T3, T4, T5>(EventKey eventName, Listener<T1, T2, T3, T4, T5> listener)
+        public static void AddListener<T1, T2, T3, T4, T5>(EventKey eventKey, Listener<T1, T2, T3, T4, T5> listener)
         {
-            AddListenerByKey(eventName, listener);
+            AddListenerByKey(eventKey, listener);
         }
         
-        public static void RemoveListener(EventKey eventName, Listener listener)
+        public static void RemoveListener(EventKey eventKey, Listener listener)
         {
-            RemoveListenerByKey(eventName, listener);
+            RemoveListenerByKey(eventKey, listener);
         }
-        public static void RemoveListener<T>(EventKey eventName, Listener<T> listener)
+        public static void RemoveListener<T>(EventKey eventKey, Listener<T> listener)
         {
-            RemoveListenerByKey(eventName, listener);
+            RemoveListenerByKey(eventKey, listener);
         }
-        public static void RemoveListener<T1, T2>(EventKey eventName, Listener<T1, T2> listener)
+        public static void RemoveListener<T1, T2>(EventKey eventKey, Listener<T1, T2> listener)
         {
-            RemoveListenerByKey(eventName, listener);
+            RemoveListenerByKey(eventKey, listener);
         }
-        public static void RemoveListener<T1, T2, T3>(EventKey eventName, Listener<T1, T2, T3> listener)
+        public static void RemoveListener<T1, T2, T3>(EventKey eventKey, Listener<T1, T2, T3> listener)
         {
-            RemoveListenerByKey(eventName, listener);
+            RemoveListenerByKey(eventKey, listener);
         }
-        public static void RemoveListener<T1, T2, T3, T4>(EventKey eventName, Listener<T1, T2, T3, T4> listener)
+        public static void RemoveListener<T1, T2, T3, T4>(EventKey eventKey, Listener<T1, T2, T3, T4> listener)
         {
-            RemoveListenerByKey(eventName, listener);
+            RemoveListenerByKey(eventKey, listener);
         }
-        public static void RemoveListener<T1, T2, T3, T4, T5>(EventKey eventName, Listener<T1, T2, T3, T4, T5> listener)
+        public static void RemoveListener<T1, T2, T3, T4, T5>(EventKey eventKey, Listener<T1, T2, T3, T4, T5> listener)
         {
-            RemoveListenerByKey(eventName, listener);
+            RemoveListenerByKey(eventKey, listener);
         }
         
         public static void TriggerEvent(EventKey eventKey)

@@ -2,12 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Fictology.Event;
 using Fictology.Registry;
 using Fictology.UnityEngine;
+using FlyRabbit.EventCenter;
 using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
+using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using THNeonMirage.Util;
 using TMPro;
@@ -66,8 +69,9 @@ namespace THNeonMirage.Manager
             PlayerData.OnBalanceChanged += GameOver;
         }
 
-        public void SetPosition(object sender, ValueEventArgs currentPos)
+        public void SetPosIndex(object sender, ValueEventArgs currentPos)
         {
+            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, PlayerData.Position, currentPos.Value);
             SetPosition((int)currentPos.Value);
         }
 

@@ -69,7 +69,7 @@ namespace THNeonMirage
         public void CreateEventListeningChain()
         {
             EventCenter.AddListener<int, int>(EventRegistry.OnBalanceChanged, SetBalanceDisplay);
-            EventCenter.AddListener(EventName.OnPositionChanged, TriggerTileEvent);
+            EventCenter.AddListener<int, int>(EventRegistry.OnPositionChanged, TriggerTileEvent);
         }
         
         public void OnGameStartClicked()
@@ -89,7 +89,7 @@ namespace THNeonMirage
             
         }
 
-        public void TriggerTileEvent()
+        public void TriggerTileEvent(int oldPos, int newPos)
         {
             
         }

@@ -133,10 +133,10 @@ namespace Fictology.UnityEditor
             var triggerCount = references.Count(r => r.type == EventReferenceType.TriggerEvent);
 
             // 显示事件键的实际值（通过反射获取）
-            string displayName = GetEventKeyDisplayName(eventKey);
+            var displayName = GetEventKeyDisplayName(eventKey);
             
-            bool isExpanded = selectedEventKey == eventKey;
-            bool newExpanded = EditorGUILayout.Foldout(isExpanded, 
+            var isExpanded = selectedEventKey == eventKey;
+            var newExpanded = EditorGUILayout.Foldout(isExpanded, 
                 $"{displayName} (监听: {listenerCount}, 触发: {triggerCount})", true);
             
             if (newExpanded != isExpanded)

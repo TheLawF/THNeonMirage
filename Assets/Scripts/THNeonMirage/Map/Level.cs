@@ -6,12 +6,14 @@ using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
+using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = System.Random;
 
 namespace THNeonMirage.Map
@@ -21,6 +23,7 @@ namespace THNeonMirage.Map
     {
         public event ScriptEventHandler<ValueEventArgs> RoundEnd;
         public event ScriptEventHandler<ValueEventArgs> RoundStart;
+        public GameObject dice;
         public int ActorOrder
         {
             get => _actorOrder;
@@ -138,6 +141,11 @@ namespace THNeonMirage.Map
             if (Input.GetKey(KeyCode.Escape)) settingsPanel.SetActive(true);
         }
 
+        private void MovePlayerOnDiceClick()
+        {
+            
+        }
+        
         private void AddListener(ObservableList<GameObject> sender, ListChangedEventArgs<GameObject> args) =>
             sender[args.index].GetComponent<PlayerManager>().OnDataChanged += StartCountdown;
 

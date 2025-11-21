@@ -49,7 +49,7 @@ namespace THNeonMirage.UI
             pos = player.PlayerData.Position;
             pos += DiceValue;
 
-            player.SetPosition(player.PlayerData, new ValueEventArgs(pos));
+            player.SetPosIndex(player.PlayerData, new ValueEventArgs(pos));
             inGamePanel.GetComponent<InGamePanelHandler>().SetField(player.PlayerData.Position);
             shouldRenderTooltip = true;
             level.NextTurn();
