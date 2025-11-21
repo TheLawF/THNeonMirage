@@ -6,7 +6,7 @@ namespace Fictology.UnityEditor
     public class EventReference
     {
         public EventReferenceType type;
-        public EventName eventName;
+        public string eventKey;
         public string filePath;
         public int lineNumber;
         public string genericTypes;

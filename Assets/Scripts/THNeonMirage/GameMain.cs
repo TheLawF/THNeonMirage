@@ -68,7 +68,7 @@ namespace THNeonMirage
         
         public void CreateEventListeningChain()
         {
-            EventCenter.AddListener<int, int>(EventName.OnBalanceChanged, SetBalanceDisplay);
+            EventCenter.AddListener<int, int>(EventRegistry.OnBalanceChanged, SetBalanceDisplay);
             EventCenter.AddListener(EventName.OnPositionChanged, TriggerTileEvent);
         }
         

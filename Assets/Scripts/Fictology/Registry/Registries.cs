@@ -70,5 +70,16 @@ namespace Fictology.Registry
         {
             return Key2ObjectMap[registryKey.ToString()].GetComponent<TComponent>();
         }
+
+        public static bool IsSameRegistryType(RegistryEntry left, RegistryEntry right)
+        {
+            return left.registryKey == right.registryKey;
+        }
+        public static bool IsSameRegistryType(GameObject left, GameObject right)
+        {
+            return left.GetComponent<RegistryEntry>() != null && 
+                   right.GetComponent<RegistryEntry>() != null && 
+                   left.GetComponent<RegistryEntry>().registryKey == right.GetComponent<RegistryEntry>().registryKey;
+        }
     }
 }

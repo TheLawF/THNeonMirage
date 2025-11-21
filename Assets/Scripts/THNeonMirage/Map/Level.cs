@@ -148,6 +148,9 @@ namespace THNeonMirage.Map
             playerManager.PlayerData = playerData;
         }
 
+        public GameObject GetTileObject(int index) => fields[index];
+        public FieldTile GetTileComponent(int index) => fields[index].GetComponent<FieldTile>();
+
         private void ShouldRenderTile(int index, bool shouldRender) => fields[index].SetActive(shouldRender);
 
         /// <summary>

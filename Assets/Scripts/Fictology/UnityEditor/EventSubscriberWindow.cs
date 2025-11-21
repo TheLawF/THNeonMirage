@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Fictology.Event;
 using FlyRabbit.EventCenter.Core;
+using THNeonMirage.Registry;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,9 +19,10 @@ namespace Fictology.UnityEditor
             GetWindow<EventSubscriberWindow>("事件调用查看器");
         }
         
-        private Dictionary<EventName, List<EventReference>> eventReferences = new();
+        private Dictionary<string, List<EventReference>> eventReferences = new();
         private Vector2 scrollPosition;
-        private EventName? selectedEvent;
+        
+        private string selectedEventKey;
         private bool showListeners = true;
         private bool showTriggers = true;
         private string searchFilter = "";
@@ -30,9 +33,9 @@ namespace Fictology.UnityEditor
         private static List<string> m_ScriptPaths = new ();
         private static string m_NotesText = "事件查看器使用正则表达式搜索项目中的以下方法的调用来工作：\nEventCenter.AddListener\nEventCenter.RemoveListener\nEventCenter.TriggerEvent\n如果你的项目中有其他的\"EventCenter\"类，并且也拥有这些方法，那么事件查看器可能无法正常工作。\n此外，事件查看器会忽略Editor文件夹。";
         
-        private static readonly Regex m_AddRegex = new Regex(@"(?<!""[^\s]*)EventCenter\s*\.\s*AddListener\s*(?:<\s*(?<Types>[^>]+)\s*>)?\s*\(\s*EventName\s*\.\s*(?<Name>\w+)", RegexOptions.Compiled | RegexOptions.Singleline);
-        private static readonly Regex m_RemoveRegex = new Regex(@"(?<!""[^\s]*)EventCenter\s*\.\s*RemoveListener\s*(?:<\s*(?<Types>[^>]+)\s*>)?\s*\(\s*EventName\s*\.\s*(?<Name>\w+)", RegexOptions.Compiled | RegexOptions.Singleline);
-        private static readonly Regex m_TriggerRegex = new Regex(@"(?<!""[^\s]*)EventCenter\s*\.\s*TriggerEvent\s*(?:<\s*(?<Types>[^>]+)\s*>)?\s*\(\s*EventName\s*\.\s*(?<Name>\w+)", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex m_AddRegex = new Regex(@"(?<!""[^\s]*)EventCenter\s*\.\s*AddListener\s*(?:<\s*(?<Types>[^>]+)\s*>)?\s*\(\s*EventRegistry\s*\.\s*(?<Name>\w+)", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex m_RemoveRegex = new Regex(@"(?<!""[^\s]*)EventCenter\s*\.\s*RemoveListener\s*(?:<\s*(?<Types>[^>]+)\s*>)?\s*\(\s*EventRegistry\s*\.\s*(?<Name>\w+)", RegexOptions.Compiled | RegexOptions.Singleline);
+        private static readonly Regex m_TriggerRegex = new Regex(@"(?<!""[^\s]*)EventCenter\s*\.\s*TriggerEvent\s*(?:<\s*(?<Types>[^>]+)\s*>)?\s*\(\s*EventRegistry\s*\.\s*(?<Name>\w+)", RegexOptions.Compiled | RegexOptions.Singleline);
 
         /// <summary>
         /// key为事件名，value为对应的group
@@ -67,7 +70,26 @@ namespace Fictology.UnityEditor
                 
                 GUILayout.FlexibleSpace();
                 GUILayout.Label("搜索:", GUILayout.ExpandWidth(false));
-                searchFilter = GUILayout.TextField(searchFilter, EditorStyles.toolbarSearchField, GUILayout.Width(200));
+                GUILayout.BeginHorizontal(GUILayout.Width(200));
+                {
+                    var newSearchFilter = GUILayout.TextField(searchFilter, EditorStyles.toolbarSearchField);
+                    if (newSearchFilter != searchFilter)
+                    {
+                        searchFilter = newSearchFilter;
+                        Repaint();
+                    }
+                    
+                    if (!string.IsNullOrEmpty(searchFilter))
+                    {
+                        if (GUILayout.Button("×", EditorStyles.toolbarButton, GUILayout.Width(20)))
+                        {
+                            searchFilter = "";
+                            GUI.FocusControl(null);
+                            Repaint();
+                        }
+                    }
+                }
+                GUILayout.EndHorizontal();
             }
             GUILayout.EndHorizontal();
         }
@@ -91,33 +113,35 @@ namespace Fictology.UnityEditor
             EditorGUILayout.EndScrollView();
         }
 
-        private IEnumerable<EventName> GetFilteredEvents()
+        private IEnumerable<string> GetFilteredEvents()
         {
-            var events = eventReferences.Keys.OrderBy(x => x.ToString());
+            var events = eventReferences.Keys.OrderBy(x => x);
             
             if (!string.IsNullOrEmpty(searchFilter))
             {
-                events = events.Where(x => x.ToString().Contains(searchFilter, StringComparison.OrdinalIgnoreCase))
-                              .OrderBy(x => x.ToString());
+                events = events.Where(x => x.Contains(searchFilter, StringComparison.OrdinalIgnoreCase))
+                    .OrderBy(x => x);
             }
             
             return events;
         }
 
-        private void DrawEventSection(EventName eventName)
+        private void DrawEventSection(string eventKey)
         {
-            var references = eventReferences[eventName];
+            var references = eventReferences[eventKey];
             var listenerCount = references.Count(r => r.type == EventReferenceType.AddListener || r.type == EventReferenceType.RemoveListener);
             var triggerCount = references.Count(r => r.type == EventReferenceType.TriggerEvent);
 
-            // 事件标题
-            bool isExpanded = selectedEvent == eventName;
+            // 显示事件键的实际值（通过反射获取）
+            string displayName = GetEventKeyDisplayName(eventKey);
+            
+            bool isExpanded = selectedEventKey == eventKey;
             bool newExpanded = EditorGUILayout.Foldout(isExpanded, 
-                $"{eventName} (监听: {listenerCount}, 触发: {triggerCount})", true);
+                $"{displayName} (监听: {listenerCount}, 触发: {triggerCount})", true);
             
             if (newExpanded != isExpanded)
             {
-                selectedEvent = newExpanded ? eventName : null;
+                selectedEventKey = newExpanded ? eventKey : null;
             }
 
             if (newExpanded)
@@ -128,6 +152,32 @@ namespace Fictology.UnityEditor
             }
             
             EditorGUILayout.Space();
+        }
+        
+        private string GetEventKeyDisplayName(string eventKey)
+        {
+            // 通过反射获取 EventKey 的实际键值
+            try
+            {
+                var eventKeysType = typeof(EventRegistry);
+                var field = eventKeysType.GetField(eventKey, 
+                    System.Reflection.BindingFlags.Public | 
+                    System.Reflection.BindingFlags.Static);
+                
+                if (field != null && field.GetValue(null) is EventKey eventKeyInstance)
+                {
+                    string typeInfo = eventKeyInstance.ParameterTypes.Length > 0 
+                        ? $"<{string.Join(", ", eventKeyInstance.ParameterTypes.Select(t => t.Name))}>" 
+                        : "";
+                    return $"{eventKeyInstance.registryName}{typeInfo}";
+                }
+            }
+            catch
+            {
+                // 忽略反射错误
+            }
+            
+            return eventKey;
         }
 
         private void DrawEventReferences(List<EventReference> references)
@@ -268,30 +318,30 @@ namespace Fictology.UnityEditor
             var matches = regex.Matches(content);
             foreach (Match match in matches)
             {
-                if (!match.Groups["Name"].Success) continue;
-                var eventNameStr = match.Groups["Name"].Value;
-                
-                if (!Enum.TryParse<EventName>(eventNameStr, out EventName eventName)) continue;
-                var genericTypes = match.Groups["Types"].Success ? match.Groups["Types"].Value : "";
-                        
-                // 计算行号
-                var lineNumber = GetLineNumber(content, match.Index, lines) + 1;
-                var reference = new EventReference
+                if (match.Groups["Name"].Success)
                 {
-                    type = referenceType,
-                    eventName = eventName,
-                    filePath = filePath,
-                    lineNumber = lineNumber,
-                    genericTypes = genericTypes
-                };
+                    string eventKeyName = match.Groups["Name"].Value;
+                    string genericTypes = match.Groups["Types"].Success ? match.Groups["Types"].Value : "";
+                    
+                    // 计算行号
+                    int lineNumber = GetLineNumber(content, match.Index, lines) + 1;
 
-                Debug.Log(string.Join(';', eventReferences));
-                if (!eventReferences.ContainsKey(eventName))
-                {
-                    eventReferences[eventName] = new List<EventReference>();
+                    var reference = new EventReference
+                    {
+                        type = referenceType,
+                        eventKey = eventKeyName,
+                        filePath = filePath,
+                        lineNumber = lineNumber,
+                        genericTypes = genericTypes
+                    };
+
+                    if (!eventReferences.ContainsKey(eventKeyName))
+                    {
+                        eventReferences[eventKeyName] = new List<EventReference>();
+                    }
+
+                    eventReferences[eventKeyName].Add(reference);
                 }
-
-                eventReferences[eventName].Add(reference);
             }
         }
 

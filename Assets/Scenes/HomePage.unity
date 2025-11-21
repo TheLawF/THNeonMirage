@@ -1540,6 +1540,7 @@ GameObject:
   - component: {fileID: 339255520}
   - component: {fileID: 339255522}
   - component: {fileID: 339255521}
+  - component: {fileID: 339255523}
   m_Layer: 5
   m_Name: Description
   m_TagString: Untagged
@@ -1664,6 +1665,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 339255519}
   m_CullTransparentMesh: 1
+--- !u!114 &339255523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 339255519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a8c06320924b6fb3c6e047fb9635a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Label
+    registryName: DescriptionText
 --- !u!1 &344970211
 GameObject:
   m_ObjectHideFlags: 0
@@ -1675,6 +1691,7 @@ GameObject:
   - component: {fileID: 344970212}
   - component: {fileID: 344970214}
   - component: {fileID: 344970213}
+  - component: {fileID: 344970215}
   m_Layer: 6
   m_Name: Countdown
   m_TagString: Untagged
@@ -1799,6 +1816,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 344970211}
   m_CullTransparentMesh: 1
+--- !u!114 &344970215
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 344970211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a8c06320924b6fb3c6e047fb9635a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Label
+    registryName: CountdownText
 --- !u!1 &368568767
 GameObject:
   m_ObjectHideFlags: 0
@@ -3091,6 +3123,7 @@ GameObject:
   - component: {fileID: 829709782}
   - component: {fileID: 829709784}
   - component: {fileID: 829709785}
+  - component: {fileID: 829709786}
   m_Layer: 6
   m_Name: HUDPanel
   m_TagString: Untagged
@@ -3191,6 +3224,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   componentType: {fileID: 0}
+--- !u!114 &829709786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829709780}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f45cff9946461f8ac9f0074e28078b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Panel
+    registryName: HUD
 --- !u!1 &884717131
 GameObject:
   m_ObjectHideFlags: 0
@@ -3921,6 +3969,7 @@ GameObject:
   - component: {fileID: 986600834}
   - component: {fileID: 986600836}
   - component: {fileID: 986600835}
+  - component: {fileID: 986600837}
   m_Layer: 5
   m_Name: Toll
   m_TagString: Untagged
@@ -4045,6 +4094,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 986600833}
   m_CullTransparentMesh: 1
+--- !u!114 &986600837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 986600833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a8c06320924b6fb3c6e047fb9635a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Label
+    registryName: TollText
 --- !u!1 &987762718
 GameObject:
   m_ObjectHideFlags: 0
@@ -5063,6 +5127,7 @@ GameObject:
   - component: {fileID: 1224587805}
   - component: {fileID: 1224587807}
   - component: {fileID: 1224587806}
+  - component: {fileID: 1224587808}
   m_Layer: 5
   m_Name: TileName
   m_TagString: Untagged
@@ -5187,6 +5252,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224587804}
   m_CullTransparentMesh: 1
+--- !u!114 &1224587808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1224587804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a8c06320924b6fb3c6e047fb9635a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Label
+    registryName: TileName
 --- !u!1 &1240687984
 GameObject:
   m_ObjectHideFlags: 0
@@ -5685,6 +5765,7 @@ GameObject:
   - component: {fileID: 1305293121}
   - component: {fileID: 1305293120}
   - component: {fileID: 1305293119}
+  - component: {fileID: 1305293122}
   m_Layer: 5
   m_Name: InGamePanel
   m_TagString: Untagged
@@ -5780,6 +5861,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1305293117}
   m_CullTransparentMesh: 1
+--- !u!114 &1305293122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305293117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f45cff9946461f8ac9f0074e28078b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Panel
+    registryName: InGame
 --- !u!1 &1313435545
 GameObject:
   m_ObjectHideFlags: 0
@@ -5792,6 +5888,7 @@ GameObject:
   - component: {fileID: 1313435549}
   - component: {fileID: 1313435548}
   - component: {fileID: 1313435547}
+  - component: {fileID: 1313435550}
   m_Layer: 5
   m_Name: Purchase
   m_TagString: Untagged
@@ -5914,6 +6011,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1313435545}
   m_CullTransparentMesh: 1
+--- !u!114 &1313435550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1313435545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ffea57cc474f369898c9a72716c8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Button
+    registryName: Purchase
 --- !u!1 &1322536509
 GameObject:
   m_ObjectHideFlags: 0
@@ -8772,6 +8884,7 @@ GameObject:
   - component: {fileID: 1862250447}
   - component: {fileID: 1862250449}
   - component: {fileID: 1862250448}
+  - component: {fileID: 1862250450}
   m_Layer: 5
   m_Name: Balance
   m_TagString: Untagged
@@ -8896,6 +9009,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1862250446}
   m_CullTransparentMesh: 1
+--- !u!114 &1862250450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862250446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55a8c06320924b6fb3c6e047fb9635a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Label
+    registryName: BalanceText
 --- !u!1001 &1862530995
 PrefabInstance:
   m_ObjectHideFlags: 0

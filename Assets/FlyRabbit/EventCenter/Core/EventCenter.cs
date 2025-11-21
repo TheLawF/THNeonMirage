@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fictology.Event;
 using FlyRabbit.EventCenter.Core;
 
 namespace FlyRabbit.EventCenter
@@ -15,7 +16,146 @@ namespace FlyRabbit.EventCenter
         /// <summary>
         /// 存储了所有事件的监听
         /// </summary>
-        private static readonly Dictionary<EventName, Delegate> m_EventTable = new Dictionary<EventName, Delegate>();
+        private static readonly Dictionary<EventKey, Delegate> m_Events = new();
+        private static readonly Dictionary<EventName, Delegate> m_EventTable = new();
+
+        #region 使用EventKey作为EventName替代方案
+
+        public static void AddListener(EventKey eventName, Listener listener)
+        {
+            AddListenerByKey(eventName, listener);
+        }
+        public static void AddListener<T>(EventKey eventName, Listener<T> listener)
+        {
+            AddListenerByKey(eventName, listener);
+        }
+        public static void AddListener<T1, T2>(EventKey eventName, Listener<T1, T2> listener)
+        {
+            AddListenerByKey(eventName, listener);
+        }
+        public static void AddListener<T1, T2, T3>(EventKey eventName, Listener<T1, T2, T3> listener)
+        {
+            AddListenerByKey(eventName, listener);
+        }
+        public static void AddListener<T1, T2, T3, T4>(EventKey eventName, Listener<T1, T2, T3, T4> listener)
+        {
+            AddListenerByKey(eventName, listener);
+        }
+        public static void AddListener<T1, T2, T3, T4, T5>(EventKey eventName, Listener<T1, T2, T3, T4, T5> listener)
+        {
+            AddListenerByKey(eventName, listener);
+        }
+        
+        public static void RemoveListener(EventKey eventName, Listener listener)
+        {
+            RemoveListenerByKey(eventName, listener);
+        }
+        public static void RemoveListener<T>(EventKey eventName, Listener<T> listener)
+        {
+            RemoveListenerByKey(eventName, listener);
+        }
+        public static void RemoveListener<T1, T2>(EventKey eventName, Listener<T1, T2> listener)
+        {
+            RemoveListenerByKey(eventName, listener);
+        }
+        public static void RemoveListener<T1, T2, T3>(EventKey eventName, Listener<T1, T2, T3> listener)
+        {
+            RemoveListenerByKey(eventName, listener);
+        }
+        public static void RemoveListener<T1, T2, T3, T4>(EventKey eventName, Listener<T1, T2, T3, T4> listener)
+        {
+            RemoveListenerByKey(eventName, listener);
+        }
+        public static void RemoveListener<T1, T2, T3, T4, T5>(EventKey eventName, Listener<T1, T2, T3, T4, T5> listener)
+        {
+            RemoveListenerByKey(eventName, listener);
+        }
+        
+        public static void TriggerEvent(EventKey eventKey)
+        {
+            if (IsNotRegisteredOrEmpty(eventKey))
+            {
+                return;
+            }
+            if (m_Events[eventKey] is not Listener listener)
+            {
+                ReportError($"[触发事件错误]，类型不匹配,\n事件名{eventKey},事件类型:{m_Events[eventKey].GetType()},监听类型：{typeof(Listener)}");
+                return;
+            }
+            listener.Invoke();
+        }
+        
+        public static void TriggerEvent<T>(EventKey eventKey, T parameter)
+        {
+            if (IsNotRegisteredOrEmpty(eventKey))
+            {
+                return;
+            }
+            if (m_Events[eventKey] is not Listener<T> listener)
+            {
+                ReportError($"[触发事件错误]，类型不匹配,\n事件名{eventKey},事件类型:{m_Events[eventKey].GetType()},监听类型：{typeof(Listener)}");
+                return;
+            }
+            listener.Invoke(parameter);
+        }
+        
+        public static void TriggerEvent<T1, T2>(EventKey eventKey, T1 parameter1, T2 parameter2)
+        {
+            if (IsNotRegisteredOrEmpty(eventKey))
+            {
+                return;
+            }
+            if (m_Events[eventKey] is not Listener<T1, T2> listener)
+            {
+                ReportError($"[触发事件错误]，类型不匹配,\n事件名{eventKey},事件类型:{m_Events[eventKey].GetType()},监听类型：{typeof(Listener)}");
+                return;
+            }
+            listener.Invoke(parameter1, parameter2);
+        }
+        
+        public static void TriggerEvent<T1, T2, T3>(EventKey eventKey, T1 parameter1, T2 parameter2, T3 parameter3)
+        {
+            if (IsNotRegisteredOrEmpty(eventKey))
+            {
+                return;
+            }
+            if (m_Events[eventKey] is not Listener<T1, T2, T3> listener)
+            {
+                ReportError($"[触发事件错误]，类型不匹配,\n事件名{eventKey},事件类型:{m_Events[eventKey].GetType()},监听类型：{typeof(Listener)}");
+                return;
+            }
+            listener.Invoke(parameter1, parameter2, parameter3);
+        }
+        
+        public static void TriggerEvent<T1, T2, T3, T4>(EventKey eventKey, T1 parameter1, T2 parameter2, T3 parameter3, T4 parameter4)
+        {
+            if (IsNotRegisteredOrEmpty(eventKey))
+            {
+                return;
+            }
+            if (m_Events[eventKey] is not Listener<T1, T2, T3, T4> listener)
+            {
+                ReportError($"[触发事件错误]，类型不匹配,\n事件名{eventKey},事件类型:{m_Events[eventKey].GetType()},监听类型：{typeof(Listener)}");
+                return;
+            }
+            listener.Invoke(parameter1, parameter2, parameter3, parameter4);
+        }
+        
+        public static void TriggerEvent<T1, T2, T3, T4, T5>(EventKey eventKey, T1 parameter1, T2 parameter2, T3 parameter3, T4 parameter4, T5 parameter5)
+        {
+            if (IsNotRegisteredOrEmpty(eventKey))
+            {
+                return;
+            }
+            if (m_Events[eventKey] is not Listener<T1, T2, T3, T4, T5> listener)
+            {
+                ReportError($"[触发事件错误]，类型不匹配,\n事件名{eventKey},事件类型:{m_Events[eventKey].GetType()},监听类型：{typeof(Listener)}");
+                return;
+            }
+            listener.Invoke(parameter1, parameter2, parameter3, parameter4, parameter5);
+        }
+
+        #endregion
 
         #region 添加监听
         /// <summary>
@@ -312,6 +452,18 @@ namespace FlyRabbit.EventCenter
             }
             return false;
         }
+        public static bool IsNotRegisteredOrEmpty(EventKey eventKey)
+        {
+            if (m_Events.ContainsKey(eventKey) == false)
+            {
+                return true;
+            }
+            if (m_Events[eventKey] == null)
+            {
+                return true;
+            }
+            return false;
+        }
         /// <summary>
         /// 清除所有监听为空的事件。
         /// </summary>
@@ -360,6 +512,25 @@ namespace FlyRabbit.EventCenter
             }
             m_EventTable[eventName] = Delegate.Combine(m_EventTable[eventName], listener);
         }
+        private static void AddListenerByKey(EventKey eventName, Delegate listener)
+        {
+            if (listener == null)
+            {
+                ReportError("[添加监听错误]：监听不能为空。");
+                return;
+            }
+            if (IsNotRegisteredOrEmpty(eventName))
+            {
+                m_Events[eventName] = listener;
+                return;
+            }
+            if (m_Events[eventName].GetType() != listener.GetType())
+            {
+                ReportError($"[添加监听错误]：类型不匹配，\n事件名：{eventName},事件类型：{m_Events[eventName].GetType()},监听类型：{listener.GetType()}");
+                return;
+            }
+            m_Events[eventName] = Delegate.Combine(m_Events[eventName], listener);
+        }
         /// <summary>
         /// 移除监听的内部方法
         /// </summary>
@@ -383,6 +554,25 @@ namespace FlyRabbit.EventCenter
                 return;
             }
             m_EventTable[eventName] = Delegate.Remove(m_EventTable[eventName], listener);
+        }
+        private static void RemoveListenerByKey(EventKey eventKey, Delegate listener)
+        {
+            if (listener == null)
+            {
+                ReportError("[移除监听错误]：监听不能为空。");
+                return;
+            }
+            //这种情况要不要报错呢?
+            if (IsNotRegisteredOrEmpty(eventKey))
+            {
+                return;
+            }
+            if (m_Events[eventKey].GetType() != listener.GetType())
+            {
+                ReportError($"[移除监听错误]：类型不匹配，\n事件名：{eventKey},事件类型：{m_Events[eventKey].GetType()},监听类型：{listener.GetType()}");
+                return;
+            }
+            m_Events[eventKey] = Delegate.Remove(m_Events[eventKey], listener);
         }
         /// <summary>
         /// 报错
