@@ -37,10 +37,6 @@ namespace THNeonMirage
             CreateEventListeningChain();
         }
 
-        private void Update()
-        {
-            WaitForOtherPlayer();
-        }
 
         private void RegisterWhenSceneStart()
         {
@@ -79,9 +75,9 @@ namespace THNeonMirage
             level.CreateLevel();
         }
 
-        public void WaitForOtherPlayer()
+        public void CreatePlayer(bool isBot)
         {
-            
+            LevelRegistry.Player.Instantiate();
         }
 
         public void SetBalanceDisplay(int before, int after)

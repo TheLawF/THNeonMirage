@@ -12,7 +12,7 @@ namespace FlyRabbit.EventCenter
 {
     public class EventViewerWindow : EditorWindow
     {
-        [MenuItem("Fictology/EventCenter/事件查看器")]
+        // [MenuItem("Fictology/EventCenter/事件查看器")]
         private static void Open()
         {
             EditorWindow.GetWindow<EventViewerWindow>("事件查看器");

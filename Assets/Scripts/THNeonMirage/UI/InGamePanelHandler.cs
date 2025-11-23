@@ -40,9 +40,8 @@ namespace THNeonMirage.UI
             toll = tollLabel.GetComponent<TMP_Text>();
             description = descriptionLabel.GetComponent<TMP_Text>();
 
-            Level = mapObject.GetComponent<Level>();
+            Level = Registries.GetComponent<Level>(LevelRegistry.Level);
             purchase = Registries.GetObject(UIRegistry.PurchaseButton);
-            player.PlayerData.OnPositionChanged += UpdateUI;
         }
 
         private void UpdateUI(object playerData, ValueEventArgs args)
@@ -96,15 +95,15 @@ namespace THNeonMirage.UI
 
         public void OnPlayerPurchase()
         {
-            player.PlayerData.Balance -= field.Property.Price.Purchase;
-            client.SetLabelWhenBalanceChanged(player.PlayerData, new ValueEventArgs(player.PlayerData.Balance));
-            field.Owner = player.PlayerData;
-            player.PlayerData.AddField(field.id);
+            player.playerData.Balance -= field.Property.Price.Purchase;
+            client.SetLabelWhenBalanceChanged(player.playerData, new ValueEventArgs(player.playerData.Balance));
+            field.Owner = player.playerData;
+            player.playerData.AddField(field.id);
         }
 
         public void OnPlayerBuild()
         {
-            player.PlayerData.Balance -= field.Property.Price.Building;
+            player.playerData.Balance -= field.Property.Price.Building;
             field.level++;
         }
         

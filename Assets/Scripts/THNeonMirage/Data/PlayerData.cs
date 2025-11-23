@@ -12,8 +12,10 @@ namespace THNeonMirage.Data
     {
         private int _position;
         private int _balance;
+        public int RoundIndex;
         public string UserName { get; set; }
         public string PlayerUid { get; set; }
+        public string Password { get; set; }
         
         public event ValueChangedHandler OnPassBy;
 
@@ -26,7 +28,6 @@ namespace THNeonMirage.Data
                 if (Equals(_position, value)) return;
                 var prevPos = _position;
                 _position = value;
-                OnPassBy?.Invoke(this, prevPos, _position);
             }
         }
 

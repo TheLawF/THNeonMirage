@@ -52,8 +52,6 @@ namespace THNeonMirage.Map
                           $"两幢房屋：{Property.Price.Level2}\n" +
                           $"三幢房屋：{Property.Price.Level3}\n" +
                           $"每幢房屋建造费用：{Property.Price.Building}";
-            
-            
         }
 
         public virtual void Init()
@@ -63,7 +61,7 @@ namespace THNeonMirage.Map
             gameManagerObejct = Registries.GetObject(LevelRegistry.Level);
             
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerPassBy);
-            Player = client.playerManager;
+            Player = client.player;
         }
 
         public int CurrentTolls()
@@ -117,9 +115,9 @@ namespace THNeonMirage.Map
         public virtual void OnPlayerStop(PlayerManager player, int currentPos)
         {
             if (!HasOwner())return;
-            if (player.PlayerData.UserName == null) return;
-            if (Owner.UserName == player.PlayerData.UserName)return;
-            player.PlayerData.Balance -= CurrentTolls();
+            if (player.playerData.UserName == null) return;
+            if (Owner.UserName == player.playerData.UserName)return;
+            player.playerData.Balance -= CurrentTolls();
             Owner.Balance += CurrentTolls();
         }
 

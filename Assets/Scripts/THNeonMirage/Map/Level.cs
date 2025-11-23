@@ -24,10 +24,10 @@ namespace THNeonMirage.Map
         public event ScriptEventHandler<ValueEventArgs> RoundEnd;
         public event ScriptEventHandler<ValueEventArgs> RoundStart;
         public GameObject dice;
-        public int ActorOrder
+        public int PlayerRound
         {
-            get => _actorOrder;
-            set => _actorOrder = value > PlayerOrder.Count ? 1 : value;
+            get => _playerRound;
+            set => _playerRound = value > PlayerOrder.Count ? 1 : value;
         }
 
         public GameClient client;
@@ -47,7 +47,7 @@ namespace THNeonMirage.Map
         public static string CurrentPlayerId;
         
         private const float Side = 10;
-        private int _actorOrder;
+        private int _playerRound;
         private static Vector3 _uUnit = Vector3.right;
         private static Vector3 _vUnit = Vector3.up;
         
@@ -124,9 +124,7 @@ namespace THNeonMirage.Map
             Players = new ObservableList<Player>();
             PlayerOrder = new List<int>();
             fields = new List<GameObject>();
-            ActorOrder = 1;
-            
-            PlayerInstances.ItemAdded += AddListener;
+            PlayerRound = 1;
         }
 
         public void CreateLevel()
@@ -146,14 +144,12 @@ namespace THNeonMirage.Map
             
         }
         
-        private void AddListener(ObservableList<GameObject> sender, ListChangedEventArgs<GameObject> args) =>
-            sender[args.index].GetComponent<PlayerManager>().OnDataChanged += StartCountdown;
 
         private void StartCountdown(MonoBehaviour monoBehaviour, ValueEventArgs args)
         {
             if(monoBehaviour is not PlayerManager playerManager) return;
             if(args.Value is not PlayerData playerData) return;
-            playerManager.PlayerData = playerData;
+            playerManager.playerData = playerData;
         }
 
         public GameObject GetTileObject(int index) => fields[index];
@@ -231,13 +227,13 @@ namespace THNeonMirage.Map
 
         public void StartTurn()
         {
-            RoundStart?.Invoke(this, new ValueEventArgs(ActorOrder));
+            RoundStart?.Invoke(this, new ValueEventArgs(PlayerRound));
         }
         
         public void NextTurn()
         {
-            ActorOrder++;
-            Utils.Info($"Current Order = {ActorOrder}");
+            PlayerRound++;
+            Utils.Info($"Current Order = {PlayerRound}");
         }
     }
 }

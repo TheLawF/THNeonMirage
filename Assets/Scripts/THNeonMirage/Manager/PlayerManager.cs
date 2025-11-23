@@ -29,34 +29,11 @@ namespace THNeonMirage.Manager
     [Serializable]
     public class PlayerManager : RegistryEntry
     {
-        public int PlayerIndex;
-        public string Id;
-        public string Password;
-        
-        public TMP_Text BalanceText { private get; set; }
-        public TMP_Text countdownText;
-        public TMP_Text infoText;
-        
-        public DiceHandler dice;
-        public GameObject Instance;
-        [FormerlySerializedAs("levelManager")] [FormerlySerializedAs("gameMap")] public Level level;
-
-        public ScriptEventHandler<ValueEventArgs> OnDataChanged;
-        public PlayerData PlayerData
-        {
-            get => _playerData;
-            set
-            {
-                if (Equals(_playerData.Position, value.Position)) return;
-                var prevPos = _playerData.Position;
-                _playerData = value;
-                OnDataChanged?.Invoke(this, new ValueEventArgs(_playerData));
-            }
-        }
+        public GameObject diceObj;
+        public Level level;
+        public PlayerData playerData;
 
         [DisplayOnly] public GameLauncher database;
-
-        private PlayerData _playerData;
 
         private Vector3 prev_pos;
         private Vector3 next_pos;
@@ -65,55 +42,55 @@ namespace THNeonMirage.Manager
 
         private void Awake()
         {
-            PlayerData = new PlayerData().SetBalance(60000);
+            playerData = new PlayerData().SetBalance(60000);
         }
 
         public void SetPosIndex(object sender, int currentPos)
         {
-            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, PlayerData.Position, currentPos);
+            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, playerData.Position, currentPos);
             SetPosition(currentPos);
         }
 
         private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)
         {
-            PlayerData.PauseCount--;
+            playerData.PauseCount--;
         }
         
         public void GameOver(object playerData, ValueEventArgs balanceArg)
         {
-            if (PlayerData.Balance <= 0)
+            if (this.playerData.Balance <= 0)
             {
                 
             }
         }
 
-        public bool CanMove() => PlayerData.PauseCount <= 0;
-        public bool IsMyTurn() => PlayerIndex == level.ActorOrder;
+        public bool CanMove() => playerData.PauseCount <= 0;
+        public bool IsMyTurn() => playerData.RoundIndex == level.PlayerRound;
         
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
-        public void Save(string columnName, object data) => database.Save(PlayerData.UserName, columnName, data);
+        public void Save(string columnName, object data) => database.Save(playerData.UserName, columnName, data);
 
         public PlayerManager Init(PlayerData playerData)
         {
-            PlayerData = playerData;
+            this.playerData = playerData;
             SetPosition(playerData.Position);
             return this;
         }
 
         private PlayerManager SetPosition(int position)
         {
-            prev_pos = GetPlayerPosByIndex(PlayerData.Position);
-            if (PlayerData.Position + position is < 0 and >= -40)
+            prev_pos = GetPlayerPosByIndex(playerData.Position);
+            if (playerData.Position + position is < 0 and >= -40)
             {
-                PlayerData.Position = -position;
+                playerData.Position = -position;
             }
-            PlayerData.Position = position switch
+            playerData.Position = position switch
             {
                 <= -40 => -position % 40,
                 >= 40 => position % 40,
                 _ => position
             };
-            next_pos = GetPlayerPosByIndex(PlayerData.Position);
+            next_pos = GetPlayerPosByIndex(playerData.Position);
             StartCoroutine(Move(prev_pos, next_pos));
             return this;
         }

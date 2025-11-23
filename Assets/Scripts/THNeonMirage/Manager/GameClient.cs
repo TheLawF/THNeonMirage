@@ -14,6 +14,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace THNeonMirage.Manager
@@ -43,7 +44,7 @@ namespace THNeonMirage.Manager
         public GameObject content;
 
         [DisplayOnly] public DiceHandler dice;
-        [DisplayOnly] public PlayerManager playerManager;
+        [FormerlySerializedAs("playerManager")] [DisplayOnly] public PlayerManager player;
         private TMP_Text balance_text;
         private GameObject bar_instance;
         
@@ -63,18 +64,17 @@ namespace THNeonMirage.Manager
             inGamePanel.SetActive(true);
             
             var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
-            inGame.player = playerManager;
+            inGame.player = player;
             inGame.client = this;
             
             balance_text = balanceLabel.GetComponent<TMP_Text>();
-            playerManager = playerInstance.GetComponent<PlayerManager>();
+            player = playerInstance.GetComponent<PlayerManager>();
 
-            playerManager.level = level;
-            playerManager.PlayerData = data;
+            player.level = level;
+            player.playerData = data;
             // playerManager.Instance = playerInstance;
             
-            playerManager.PlayerData.OnBalanceChanged += SetLabelWhenBalanceChanged;
-            playerManager.PlayerData.Balance += 60_000;
+            player.playerData.Balance += 60_000;
 
             return playerInstance;
         }
@@ -114,10 +114,9 @@ namespace THNeonMirage.Manager
 
             level.CreateLevel();
             level.client = this;
-            playerManager.PlayerIndex = PhotonNetwork.CurrentRoom.Players.Keys.Count;
-            playerManager.PlayerData.Uid(PhotonNetwork.LocalPlayer.UserId);
-            playerManager.dice = dice;
-            playerManager.PlayerIndex = PhotonNetwork.LocalPlayer.ActorNumber;
+            player.playerData.RoundIndex = PhotonNetwork.CurrentRoom.Players.Keys.Count;
+            player.playerData.Uid(PhotonNetwork.LocalPlayer.UserId);
+            player.playerData.RoundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
             
             level.Players.Add(PhotonNetwork.LocalPlayer);
             level.PlayerInstances.Add(playerInstance);

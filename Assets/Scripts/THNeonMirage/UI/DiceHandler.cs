@@ -44,13 +44,13 @@ namespace THNeonMirage.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
-            if (PhotonNetwork.LocalPlayer.ActorNumber != level.PlayerOrder[level.ActorOrder - 1]) return;
+            if (PhotonNetwork.LocalPlayer.ActorNumber != level.PlayerOrder[level.PlayerRound - 1]) return;
             DiceValue = random.Next(1,7);
-            pos = player.PlayerData.Position;
+            pos = player.playerData.Position;
             pos += DiceValue;
 
-            player.SetPosIndex(player.PlayerData, new ValueEventArgs(pos));
-            inGamePanel.GetComponent<InGamePanelHandler>().SetField(player.PlayerData.Position);
+            player.SetPosIndex(player.playerData, pos);
+            inGamePanel.GetComponent<InGamePanelHandler>().SetField(player.playerData.Position);
             shouldRenderTooltip = true;
             level.NextTurn();
         }

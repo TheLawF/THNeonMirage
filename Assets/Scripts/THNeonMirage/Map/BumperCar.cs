@@ -18,7 +18,7 @@ namespace THNeonMirage.Map
         {
             base.OnPlayerStop(player, currentPos);
             if (!IsTileValid(currentPos))return;
-            player.PlayerData.PauseCount = IsTileValid(currentPos) && NextBool() ? NextInt(-2, 0) : NextInt(1, 3);
+            player.playerData.PauseCount = IsTileValid(currentPos) && NextBool() ? NextInt(-2, 0) : NextInt(1, 3);
         }
     }
 }
