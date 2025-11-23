@@ -73,6 +73,11 @@ namespace THNeonMirage
             Registries.GetObject(UIRegistry.HomePage).SetActive(false);
             Registries.Tiles.Values.ToList().ForEach(go => go.SetActive(true));
             level.CreateLevel();
+            
+            CreatePlayer(false);
+            CreatePlayer(true);
+            CreatePlayer(true);
+            CreatePlayer(true);
         }
 
         public void CreatePlayer(bool isBot)

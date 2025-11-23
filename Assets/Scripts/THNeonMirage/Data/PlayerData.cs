@@ -1,8 +1,10 @@
 using System;
+using System.Xml;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
 using UnityEngine.Rendering;
+using UnityEngine.Serialization;
 
 namespace THNeonMirage.Data
 {
@@ -10,43 +12,22 @@ namespace THNeonMirage.Data
     [Serializable]
     public class PlayerData
     {
-        private int _position;
-        private int _balance;
-        public int RoundIndex;
-        public string UserName { get; set; }
-        public string PlayerUid { get; set; }
-        public string Password { get; set; }
+        public int roundIndex;
+        public string userName;
+        public bool isBot;
+
+        public int pauseCount;
+        public int position;
+        public int balance;
         
-        public event ValueChangedHandler OnPassBy;
-
-        public int PauseCount;
-        public int Position
-        {
-            get => _position;
-            set
-            {
-                if (Equals(_position, value)) return;
-                var prevPos = _position;
-                _position = value;
-            }
-        }
-
-        public int Balance
-        {
-            get => _balance;
-            set
-            {
-                var oldValue = _balance;
-                _balance = value;
-            }
-        }
+        public UniqueId UniqueId;
         public ObservableList<int> Inventory { get; private set; }
         public ObservableList<int> Fields { get; private set; }
 
         public PlayerData(string userName, int position) : this()
         {
-            UserName = userName;
-            Position = position;
+            this.userName = userName;
+            this.position = position;
         }
         
         public PlayerData()
@@ -57,25 +38,25 @@ namespace THNeonMirage.Data
         
         public PlayerData Name(string name)
         {
-            UserName = name;
+            userName = name;
             return this;
         }
 
         public PlayerData Pos(int pos)
         {
-            Position = pos;
+            position = pos;
             return this;
         }
 
-        public PlayerData Uid(string uid)
+        public PlayerData Uid(UniqueId uid)
         {
-            PlayerUid = uid;
+            UniqueId = uid;
             return this;
         }
 
         public PlayerData SetBalance(int balance)
         {
-            Balance = balance;
+            this.balance = balance;
             return this;
         }
 
@@ -117,7 +98,7 @@ namespace THNeonMirage.Data
         //              Inventory: {Util.Utils.ListToString(Inventory)}, 
         //              Fields: {Util.Utils.ListToString(Fields)}}}";
 
-        public PlayerData Copy() => new PlayerData().Name(UserName).Pos(Position).SetBalance(Balance)
+        public PlayerData Copy() => new PlayerData().Name(userName).Pos(position).SetBalance(balance)
             .SetInv(Inventory).SetFields(Fields);
     }
 }

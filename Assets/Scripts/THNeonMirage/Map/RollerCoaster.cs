@@ -16,7 +16,7 @@ namespace THNeonMirage.Map
         {
             var bonus = Random.NextInt(300, 10000);
             var result = Random.NextBool() ? bonus : -bonus;
-            player.playerData.Balance += result;
+            player.playerData.balance += result;
         }
     }
 }

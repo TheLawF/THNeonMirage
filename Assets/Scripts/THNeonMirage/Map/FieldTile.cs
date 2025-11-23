@@ -115,10 +115,10 @@ namespace THNeonMirage.Map
         public virtual void OnPlayerStop(PlayerManager player, int currentPos)
         {
             if (!HasOwner())return;
-            if (player.playerData.UserName == null) return;
-            if (Owner.UserName == player.playerData.UserName)return;
-            player.playerData.Balance -= CurrentTolls();
-            Owner.Balance += CurrentTolls();
+            if (player.playerData.userName == null) return;
+            if (Owner.userName == player.playerData.userName)return;
+            player.playerData.balance -= CurrentTolls();
+            Owner.balance += CurrentTolls();
         }
 
         public virtual void OnPlayerPassBy(PlayerManager player, int prevPosition, int currentPosition)

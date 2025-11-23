@@ -30,7 +30,7 @@ namespace THNeonMirage.UI
 
         public void OnAdd()
         {
-            if (player.playerData.Position != currentField.id) return;
+            if (player.playerData.position != currentField.id) return;
             var i = int.Parse(countLabel.text);
             if (i > currentField.level) return;
             countLabel.text = $"{i + 1}";
@@ -39,7 +39,7 @@ namespace THNeonMirage.UI
         
         public void OnSub()
         {
-            if (player.playerData.Position != currentField.id) return;
+            if (player.playerData.position != currentField.id) return;
             var i = int.Parse(countLabel.text);
             if (i <= 0) return;
             countLabel.text = $"{i - 1}";
@@ -63,7 +63,7 @@ namespace THNeonMirage.UI
 
         public void OnDoubleConfirmSale()
         {
-            player.playerData.Balance += int.Parse(countLabel.text) * currentField.Property.Price.Building +
+            player.playerData.balance += int.Parse(countLabel.text) * currentField.Property.Price.Building +
                                          (landToggle.isOn ? currentField.Property.Price.Purchase : 0);
             screen.SetActive(false);
         }

@@ -47,50 +47,50 @@ namespace THNeonMirage.Manager
 
         public void SetPosIndex(object sender, int currentPos)
         {
-            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, playerData.Position, currentPos);
+            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, playerData.position, currentPos);
             SetPosition(currentPos);
         }
 
         private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)
         {
-            playerData.PauseCount--;
+            playerData.pauseCount--;
         }
         
         public void GameOver(object playerData, ValueEventArgs balanceArg)
         {
-            if (this.playerData.Balance <= 0)
+            if (this.playerData.balance <= 0)
             {
                 
             }
         }
 
-        public bool CanMove() => playerData.PauseCount <= 0;
-        public bool IsMyTurn() => playerData.RoundIndex == level.PlayerRound;
+        public bool CanMove() => playerData.pauseCount <= 0;
+        public bool IsMyTurn() => playerData.roundIndex == level.PlayerRound;
         
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
-        public void Save(string columnName, object data) => database.Save(playerData.UserName, columnName, data);
+        public void Save(string columnName, object data) => database.Save(playerData.userName, columnName, data);
 
         public PlayerManager Init(PlayerData playerData)
         {
             this.playerData = playerData;
-            SetPosition(playerData.Position);
+            SetPosition(playerData.position);
             return this;
         }
 
         private PlayerManager SetPosition(int position)
         {
-            prev_pos = GetPlayerPosByIndex(playerData.Position);
-            if (playerData.Position + position is < 0 and >= -40)
+            prev_pos = GetPlayerPosByIndex(playerData.position);
+            if (playerData.position + position is < 0 and >= -40)
             {
-                playerData.Position = -position;
+                playerData.position = -position;
             }
-            playerData.Position = position switch
+            playerData.position = position switch
             {
                 <= -40 => -position % 40,
                 >= 40 => position % 40,
                 _ => position
             };
-            next_pos = GetPlayerPosByIndex(playerData.Position);
+            next_pos = GetPlayerPosByIndex(playerData.position);
             StartCoroutine(Move(prev_pos, next_pos));
             return this;
         }

@@ -74,7 +74,7 @@ namespace THNeonMirage.Manager
             player.playerData = data;
             // playerManager.Instance = playerInstance;
             
-            player.playerData.Balance += 60_000;
+            player.playerData.balance += 60_000;
 
             return playerInstance;
         }
@@ -114,9 +114,9 @@ namespace THNeonMirage.Manager
 
             level.CreateLevel();
             level.client = this;
-            player.playerData.RoundIndex = PhotonNetwork.CurrentRoom.Players.Keys.Count;
-            player.playerData.Uid(PhotonNetwork.LocalPlayer.UserId);
-            player.playerData.RoundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
+            player.playerData.roundIndex = PhotonNetwork.CurrentRoom.Players.Keys.Count;
+            // player.playerData.Uid(PhotonNetwork.LocalPlayer.UserId);
+            player.playerData.roundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
             
             level.Players.Add(PhotonNetwork.LocalPlayer);
             level.PlayerInstances.Add(playerInstance);
@@ -174,7 +174,7 @@ namespace THNeonMirage.Manager
         
         public void CreatePlayer()
         {
-            Initialize("playerObject", PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity, new PlayerEventArgs(0));
+            Initialize("playerObject", PlayerManager.GetPlayerPosByIndex(data.position), Quaternion.identity, new PlayerEventArgs(0));
             // playerInstance = PhotonNetwork.Instantiate("playerObject",
             //     PlayerManager.GetPlayerPosByIndex(data.Position), Quaternion.identity);
         }

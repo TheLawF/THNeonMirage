@@ -109,8 +109,8 @@ namespace THNeonMirage.Data
             }
             connector.ExecuteByParams(savePosQuery, new Dictionary<string, object>
             {
-                {"@pos", playerData.Position},
-                {"@name", playerData.UserName}
+                {"@pos", playerData.position},
+                {"@name", playerData.userName}
             });
             return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.SaveSuccess);
         }
@@ -128,9 +128,9 @@ namespace THNeonMirage.Data
         public Authorization SaveAll(PlayerData playerData)
         {
             var savePosQuery = $@"UPDATE userinfo 
-                SET position = {playerData.Position},
-                    balance = {playerData.Balance} 
-                WHERE username = '{playerData.UserName}'";
+                SET position = {playerData.position},
+                    balance = {playerData.balance} 
+                WHERE username = '{playerData.userName}'";
             if (!connector.Connect())
                 return new Authorization(Authorization.Role.User, Authorization.ConnectionStatus.ConnectionError);
             connector.ExecuteNonQuery(savePosQuery);

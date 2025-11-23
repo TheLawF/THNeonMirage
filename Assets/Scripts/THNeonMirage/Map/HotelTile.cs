@@ -15,7 +15,7 @@ namespace THNeonMirage.Map
         public override void OnPlayerStop(PlayerManager player, int currentPos)
         {
             if (!IsTileValid(currentPos))return;
-            Player.playerData.Balance -= 10000;
+            Player.playerData.balance -= 10000;
         }
 
     }
