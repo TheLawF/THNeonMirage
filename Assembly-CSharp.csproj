@@ -51,7 +51,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatAppIdCheckerUI.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\AppSettingsExtensions.cs" />
     <Compile Include="Assets\Scripts\Fictology\Registry\RegistryEntry.cs" />
-    <Compile Include="Assets\Scripts\Fictology\Registry\Registries.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\Registries.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\GameButton.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Registry\EventRegistry.cs" />
@@ -116,6 +116,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\Map\BigPendulum.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\HudManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\TextLabel.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\VillageTile.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Manager\GameClient.cs" />
@@ -156,7 +157,8 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventName.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\UI\TextLabel.cs" />
+    <Compile Include="Assets\Scripts\Fictology\Event\EventHelper.cs" />
+    <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventEditorIntegration.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />

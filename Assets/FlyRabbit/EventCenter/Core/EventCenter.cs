@@ -16,8 +16,16 @@ namespace FlyRabbit.EventCenter
         /// <summary>
         /// 存储了所有事件的监听
         /// </summary>
+        public static readonly List<EventKey> EventKeys = new();
         private static readonly Dictionary<EventKey, Delegate> m_Events = new();
         private static readonly Dictionary<EventName, Delegate> m_EventTable = new();
+
+        public static EventKey Register(string eventName, params Type[] types)
+        {
+            var eventKey = new EventKey(eventName, types);
+            EventKeys.Add(eventKey);
+            return eventKey;
+        }
 
         #region 使用EventKey作为EventName替代方案
 

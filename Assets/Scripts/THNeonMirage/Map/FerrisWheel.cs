@@ -16,7 +16,7 @@ namespace THNeonMirage.Map
             Init();
             stopWatch = new Stopwatch();
         }
-        public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
+        public override void OnPlayerStop(PlayerManager player, int currentPos)
         {
             stopWatch.Start();
         }

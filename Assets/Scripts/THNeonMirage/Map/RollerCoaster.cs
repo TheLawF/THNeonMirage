@@ -1,5 +1,6 @@
 using THNeonMirage.Data;
 using THNeonMirage.Event;
+using THNeonMirage.Manager;
 using Unity.VisualScripting;
 
 namespace THNeonMirage.Map
@@ -11,12 +12,11 @@ namespace THNeonMirage.Map
             Init();
         }
 
-        public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
+        public override void OnPlayerStop(PlayerManager player, int currentPos)
         {
-            var data = (PlayerData)playerData;
             var bonus = Random.NextInt(300, 10000);
             var result = Random.NextBool() ? bonus : -bonus;
-            data.Balance += result;
+            player.PlayerData.Balance += result;
         }
     }
 }

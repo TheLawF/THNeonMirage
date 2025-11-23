@@ -15,8 +15,6 @@ namespace THNeonMirage.Data
         public string UserName { get; set; }
         public string PlayerUid { get; set; }
         
-        public EventHandler<ValueEventArgs> OnPositionChanged;
-        public EventHandler<ValueEventArgs> OnBalanceChanged;
         public event ValueChangedHandler OnPassBy;
 
         public int PauseCount;
@@ -28,7 +26,6 @@ namespace THNeonMirage.Data
                 if (Equals(_position, value)) return;
                 var prevPos = _position;
                 _position = value;
-                OnPositionChanged?.Invoke(this, new ValueEventArgs(_position));
                 OnPassBy?.Invoke(this, prevPos, _position);
             }
         }
@@ -40,7 +37,6 @@ namespace THNeonMirage.Data
             {
                 var oldValue = _balance;
                 _balance = value;
-                OnBalanceChanged?.Invoke(this, new ValueEventArgs(_balance));
             }
         }
         public ObservableList<int> Inventory { get; private set; }

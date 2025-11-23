@@ -14,12 +14,11 @@ namespace THNeonMirage.Map
             Init();
             // Player.PlayerData.OnPositionChanged += OnPlayerStop;
         }
-        public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
+        public override void OnPlayerStop(PlayerManager player, int currentPos)
         {
-            base.OnPlayerStop(playerData, currentPos);
+            base.OnPlayerStop(player, currentPos);
             if (!IsTileValid(currentPos))return;
-            var data = (PlayerData)playerData;
-            data.PauseCount = IsTileValid(currentPos) && NextBool() ? NextInt(-2, 0) : NextInt(1, 3);
+            player.PlayerData.PauseCount = IsTileValid(currentPos) && NextBool() ? NextInt(-2, 0) : NextInt(1, 3);
         }
     }
 }

@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fictology.Registry;
 using THNeonMirage.Map;
 using THNeonMirage.UI;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Fictology.Registry
+namespace THNeonMirage.Registry
 {
     /// <summary>
     /// 使用单例模式管理所有游戏物体，别问我为什么，问就是写MC模组写的<br></br>
@@ -19,7 +20,7 @@ namespace Fictology.Registry
         public static readonly Dictionary<string, List<RegistryKey>> RootKeys = new();
         private static readonly Dictionary<string, GameObject> Key2ObjectMap = new();
         private static readonly Dictionary<string, RegistryEntry> Key2EntryMap = new();
-        public static readonly Dictionary<RegistryEntry, GameObject> Entry2ObjMap = new();
+        public static readonly Dictionary<PrefabType, List<GameObject>> Prefab2InstancesMap = new();
 
         public static readonly Dictionary<GamePanel, GameObject> Panels = new();
         public static readonly Dictionary<GameButton, GameObject> Buttons = new();
@@ -33,21 +34,26 @@ namespace Fictology.Registry
             return key;
         }
 
+        public static PrefabType CreateType(string prefabPath)
+        {
+            var prefabType = PrefabType.Of(prefabPath);
+            Prefab2InstancesMap.TryAdd(prefabType, new List<GameObject>());
+            return prefabType;
+        }
+
         public static void Register<TEntry>(RegistryKey key, TEntry entry) where TEntry : RegistryEntry
         {
             if (!RootKeys.ContainsKey(key.rootName)) return;
             Key2EntryMap.TryAdd(key.ToString(), entry);
         }
 
-        public static void RegisterObject(RegistryKey key, GameObject gameObject)
+        public static void RegisterPrefabInstance(PrefabType prefabType, GameObject gameObject)
         {
-            if (!RootKeys.ContainsKey(key.rootName)) return;
-            Key2ObjectMap.TryAdd(key.ToString(), gameObject);
+            Prefab2InstancesMap[prefabType].Add(gameObject);
         }
-
+        
         public static void RegisterAll(Dictionary<RegistryEntry, GameObject> dictionary)
         {
-            Entry2ObjMap.AddRange(dictionary);
             Key2ObjectMap.AddRange(dictionary
                 .Select(pair => new {Key = pair.Key.registryKey.ToString(), Obj = pair.Value})
                 .ToDictionary(keyAndObj => keyAndObj.Key, keyAndObj => keyAndObj.Obj));
@@ -56,16 +62,33 @@ namespace Fictology.Registry
                 .ToDictionary(keyAndEntry => keyAndEntry.Key, keyAndEntry => keyAndEntry.Entry));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registryKey">RegistryEntry 组件注册名</param>
+        /// <typeparam name="TEntry">RegistryEntry 组件类型</typeparam>
+        /// <returns>挂载的 RegistryEntry 组件实例</returns>
         public static TEntry Get<TEntry>(RegistryKey registryKey) where TEntry : RegistryEntry
         {
             return (TEntry)Key2EntryMap[registryKey.ToString()];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registryKey">注册名</param>
+        /// <returns>挂载了 RegistryEntry 组件实例的游戏物体</returns>
         public static GameObject GetObject(RegistryKey registryKey)
         {
             return Key2ObjectMap[registryKey.ToString()];
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registryKey"></param>
+        /// <typeparam name="TComponent"></typeparam>
+        /// <returns>挂载了 RegistryEntry 组件实例的游戏物体上的其它脚本组件</returns>
         public static TComponent GetComponent<TComponent>(RegistryKey registryKey) where TComponent : Component
         {
             return Key2ObjectMap[registryKey.ToString()].GetComponent<TComponent>();

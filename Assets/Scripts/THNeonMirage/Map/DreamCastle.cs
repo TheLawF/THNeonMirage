@@ -11,22 +11,20 @@ namespace THNeonMirage.Map
         {
             Init();
             description = "经过或停在此处时可以获得10000月虹币\n\n<i><color=#444444>“欢迎来到梦乐园~”</color></i>";
-            Player.PlayerData.OnPassBy += OnPlayerPassBy;
         }
 
-
-        public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
+        public override void OnPlayerStop(PlayerManager player, int currentPos)
         {
             if (!IsTileValid(currentPos))return;
-            ((PlayerData)playerData).Balance += 10000;
+            player.PlayerData.Balance += 10000;
         }
 
 
-        public override void OnPlayerPassBy(object playerData, object prevPosition, object currentPosition)
+        public override void OnPlayerPassBy(PlayerManager player, int prevPosition, int currentPosition)
         {
-            var prevPos = (int)prevPosition;
-            var nextPos = (int)currentPosition;
-            // if (prevPos <= 40 && nextPos >= 0) ((PlayerData)playerData).Balance += 10000;
+            var prevPos = prevPosition;
+            var nextPos = currentPosition;
+            if (prevPos <= 40 && nextPos >= 0) player.PlayerData.Balance += 10000;
         }
 
     }

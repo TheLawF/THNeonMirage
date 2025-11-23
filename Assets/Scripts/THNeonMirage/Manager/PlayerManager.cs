@@ -66,13 +66,12 @@ namespace THNeonMirage.Manager
         private void Awake()
         {
             PlayerData = new PlayerData().SetBalance(60000);
-            PlayerData.OnBalanceChanged += GameOver;
         }
 
-        public void SetPosIndex(object sender, ValueEventArgs currentPos)
+        public void SetPosIndex(object sender, int currentPos)
         {
-            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, PlayerData.Position, currentPos.Value);
-            SetPosition((int)currentPos.Value);
+            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, PlayerData.Position, currentPos);
+            SetPosition(currentPos);
         }
 
         private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)

@@ -13,17 +13,15 @@ namespace THNeonMirage.Map
         {
             Init();
             Random = new Random();
-            Player.PlayerData.OnPositionChanged += OnPlayerStop;
         }
         
         // 随机向前或者向后移动0-5格
-        public override void OnPlayerStop(object playerData, ValueEventArgs currentPos)
+        public override void OnPlayerStop(PlayerManager player, int currentPos)
         {
-            if ((int)currentPos.Value != id) return;
-            var data = (PlayerData)playerData;
+            if (currentPos != id) return;
             var bonus = random.Next(5);
             var result = random.Next(1) == 0 ? bonus : -bonus;
-            Player.SetPosIndex(playerData, new ValueEventArgs(result));
+            Player.SetPosIndex(player, currentPos);
         }
     }
 }

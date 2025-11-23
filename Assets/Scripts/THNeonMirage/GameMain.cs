@@ -24,7 +24,8 @@ namespace THNeonMirage
         public Button startButton;
         public Button aboutButton;
         public Level level;
-        
+        public List<PlayerManager> players;
+
         /// <summary>
         /// GameStart Clicked -> Disable Home Panel -> Enable Background -> Create Map -> Game Loop
         /// </summary>
@@ -69,7 +70,6 @@ namespace THNeonMirage
         public void CreateEventListeningChain()
         {
             EventCenter.AddListener<int, int>(EventRegistry.OnBalanceChanged, SetBalanceDisplay);
-            EventCenter.AddListener<int, int>(EventRegistry.OnPositionChanged, TriggerTileEvent);
         }
         
         public void OnGameStartClicked()
@@ -91,7 +91,7 @@ namespace THNeonMirage
 
         public void TriggerTileEvent(int oldPos, int newPos)
         {
-            
+            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, oldPos, newPos);
         }
 
         public static List<GameObject> GetAllSceneObjects(bool includeInactive = true)
