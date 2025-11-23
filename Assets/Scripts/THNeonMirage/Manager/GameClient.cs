@@ -96,6 +96,11 @@ namespace THNeonMirage.Manager
             
         }
 
+        public void CreatePlayerIf()
+        {
+            PhotonView view;
+        }
+        
         public override void OnConnectedToMaster()
         {
             Debug.Log("客户端连接成功，进入大厅...");
@@ -120,7 +125,7 @@ namespace THNeonMirage.Manager
             
             level.Players.Add(PhotonNetwork.LocalPlayer);
             level.PlayerInstances.Add(playerInstance);
-            level.PlayerOrder.AddRange(PhotonNetwork.PlayerList.Select(player => player.ActorNumber).ToList());
+            // level.PlayerOrder.AddRange(PhotonNetwork.PlayerList.Select(player => player.ActorNumber).ToList());
             PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "can_interact", "true" } });
         }
         
@@ -181,7 +186,7 @@ namespace THNeonMirage.Manager
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            level.PlayerOrder.Add(newPlayer.ActorNumber);
+            // level.PlayerOrder.Add(newPlayer.ActorNumber);
             level.PlayerInstances.Add(playerInstance);
         }
     }

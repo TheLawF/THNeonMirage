@@ -35,7 +35,6 @@ namespace THNeonMirage.Map
         [DisplayOnly] public GameObject hoverText;
 
         public GameObject gameManagerObejct;
-        protected PlayerManager Player;
         protected Random Random = new();
         private string tooltipString;
         
@@ -61,12 +60,11 @@ namespace THNeonMirage.Map
             gameManagerObejct = Registries.GetObject(LevelRegistry.Level);
             
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerPassBy);
-            Player = client.player;
         }
 
         public int CurrentTolls()
         {
-            return level switch
+            var tolls = level switch
             {
                 0 => Property.Price.Level0,
                 1 => Property.Price.Level1,
@@ -76,6 +74,7 @@ namespace THNeonMirage.Map
                 5 => -1,
                 _ => throw new IndexOutOfRangeException("等级不能超过3")
             };
+            return HasOwner() ? tolls : id == 0 ? 0 : tolls;
         }
 
         public int GetPurchasePrice() => Property.Price.Purchase;
@@ -83,8 +82,8 @@ namespace THNeonMirage.Map
 
         // public abstract bool IsStartTile();
         // public abstract bool HasSpecialEffect();
-        
-        private void OnMouseOver()
+
+        private void OnMouseUpAsButton()
         {
             inGamePanel.SetActive(true);
             tooltipString = $"编号：{id}\n名称：{Property.Name}";
@@ -102,7 +101,6 @@ namespace THNeonMirage.Map
                 inGame.purchase.SetActive(true);
                 inGame.cancel.SetActive(true);
             }
-            
         }
 
         private void OnMouseExit()

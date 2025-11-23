@@ -18,14 +18,14 @@ namespace THNeonMirage.UI
         public bool canInteract;
         public bool canRenderTooltip;
 
-        [FormerlySerializedAs("levelManager")] [FormerlySerializedAs("gameMap")] public Level level;
+        public Level level;
         public GameClient client;
         public GameObject inGamePanel;
 
         private bool shouldRenderTooltip;
         private Random random = new();
         private TMP_Text foreground_text; 
-        private PlayerManager player;
+        public PlayerManager player;
 
         private void Start()
         {
@@ -43,18 +43,19 @@ namespace THNeonMirage.UI
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
         {
-            player = client.GetComponent<GameClient>().playerInstance.GetComponent<PlayerManager>();
-            if (PhotonNetwork.LocalPlayer.ActorNumber != level.PlayerOrder[level.PlayerRound - 1]) return;
+            if (player.playerData.roundIndex != level.PlayerRound) return;
             DiceValue = random.Next(1,7);
             pos = player.playerData.position;
             pos += DiceValue;
 
-            player.SetPosIndex(player.playerData, pos);
+            player.SetPosIndex(pos);
             inGamePanel.GetComponent<InGamePanelHandler>().SetField(player.playerData.position);
             shouldRenderTooltip = true;
             level.NextTurn();
         }
 
+        
+        
         private new string ToString() => string.Concat(DiceValue);
     }
 }

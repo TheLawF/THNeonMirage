@@ -6,10 +6,12 @@ using ExitGames.Client.Photon.StructWrapping;
 using Fictology.Registry;
 using FlyRabbit.EventCenter;
 using FlyRabbit.EventCenter.Core;
+using Photon.Pun;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
+using THNeonMirage.Util.Math;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,8 +25,14 @@ namespace THNeonMirage
     {
         public Button startButton;
         public Button aboutButton;
+        
         public Level level;
-        public List<PlayerManager> players;
+        public List<GameObject> players;
+        public GameObject inGamePanelObj;
+        public InGamePanelHandler inGamePanel;
+        
+        public GameObject diceObj;
+        public DiceHandler dice;
 
         /// <summary>
         /// GameStart Clicked -> Disable Home Panel -> Enable Background -> Create Map -> Game Loop
@@ -65,7 +73,6 @@ namespace THNeonMirage
         
         public void CreateEventListeningChain()
         {
-            EventCenter.AddListener<int, int>(EventRegistry.OnBalanceChanged, SetBalanceDisplay);
         }
         
         public void OnGameStartClicked()
@@ -73,32 +80,51 @@ namespace THNeonMirage
             Registries.GetObject(UIRegistry.HomePage).SetActive(false);
             Registries.Tiles.Values.ToList().ForEach(go => go.SetActive(true));
             level.CreateLevel();
+
+            var client = GetComponent<GameClient>();
             
             CreatePlayer(false);
             CreatePlayer(true);
             CreatePlayer(true);
             CreatePlayer(true);
+            
+            level.players.AddRange(players.Where(obj => obj.GetComponent<PlayerManager>()));
         }
 
         public void CreatePlayer(bool isBot)
         {
-            LevelRegistry.Player.Instantiate();
-        }
-
-        public void SetBalanceDisplay(int before, int after)
-        {
+            var playerObject = LevelRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
+            var player = playerObject.GetComponent<PlayerManager>();
+            players.Add(playerObject);
             
+            player.playerData.isBot = isBot;
+            player.playerData.roundIndex = players.IndexOf(playerObject);
+
+            if (!isBot) return;
+            inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
+            inGamePanel = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
+            inGamePanel.player = player;
+            
+            diceObj = Registries.GetObject(UIRegistry.DiceButton);
+            diceObj.SetActive(true);
+            dice = diceObj.GetComponent<DiceHandler>();
+            dice.player = player;
+
         }
 
-        public void TriggerTileEvent(int oldPos, int newPos)
+        private void OnMouseUpAsButton()
         {
-            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, oldPos, newPos);
+            if (inGamePanelObj == null) return;
+            if(RayHelper.CheckMouseClickHit(Camera.main, out var hit))
+            {
+                inGamePanelObj.SetActive(false);
+            }
         }
 
         public static List<GameObject> GetAllSceneObjects(bool includeInactive = true)
         {
-            List<GameObject> allObjects = new List<GameObject>();
-            GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
+            var allObjects = new List<GameObject>();
+            var rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
     
             foreach (var root in rootObjects)
             {

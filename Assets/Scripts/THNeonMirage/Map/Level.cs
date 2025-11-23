@@ -27,7 +27,7 @@ namespace THNeonMirage.Map
         public int PlayerRound
         {
             get => _playerRound;
-            set => _playerRound = value > PlayerOrder.Count ? 1 : value;
+            set => _playerRound = value > players.Count - 1 ? 0 : value;
         }
 
         public GameClient client;
@@ -42,8 +42,8 @@ namespace THNeonMirage.Map
         
         public ObservableList<Player> Players = new ();
         public ObservableList<GameObject> PlayerInstances = new ();
-        public List<int> PlayerOrder;
         public List<GameObject> fields = new ();
+        public List<PlayerManager> players = new ();
         public static string CurrentPlayerId;
         
         private const float Side = 10;
@@ -122,7 +122,6 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Players = new ObservableList<Player>();
-            PlayerOrder = new List<int>();
             fields = new List<GameObject>();
             PlayerRound = 1;
         }
@@ -233,6 +232,11 @@ namespace THNeonMirage.Map
         public void NextTurn()
         {
             PlayerRound++;
+            var currentRoundPlayer = players[PlayerRound];
+            if (currentRoundPlayer.playerData.isBot)
+            {
+                StartCoroutine(currentRoundPlayer.ExecuteAITask());
+            }
             Utils.Info($"Current Order = {PlayerRound}");
         }
     }

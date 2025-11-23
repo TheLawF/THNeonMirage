@@ -27,9 +27,15 @@ namespace Fictology.Registry
             return instance;
         }
         
-        public GameObject Instantiate(Vector3 position, Quaternion rotation, Transform parent)
+        public GameObject Instantiate(Vector3 position, Quaternion rotation)
         {
-            var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath), position, rotation, parent);
+            var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath), position, rotation);
+            return instance;
+        }
+        
+        public GameObject Instantiate(Vector3 position, Quaternion rotation, Transform transform)
+        {
+            var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath), position, rotation);
             return instance;
         }
 

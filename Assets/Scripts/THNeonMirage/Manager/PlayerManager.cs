@@ -16,6 +16,7 @@ using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = System.Random;
 
 namespace System.Runtime.CompilerServices
 {
@@ -45,9 +46,20 @@ namespace THNeonMirage.Manager
             playerData = new PlayerData().SetBalance(60000);
         }
 
-        public void SetPosIndex(object sender, int currentPos)
+        public IEnumerator ExecuteAITask()
         {
-            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, playerData.position, currentPos);
+            AIStartTurn();
+            AITossDice();
+            AIPurchaseField();
+            AIBuildHouse();
+            AIEndTurn();
+            
+            yield return new WaitForSeconds(1F);
+        }
+        
+        public void SetPosIndex(int currentPos)
+        {
+            EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, this, playerData.position, currentPos);
             SetPosition(currentPos);
         }
 
@@ -104,6 +116,34 @@ namespace THNeonMirage.Manager
             }
         }
 
+        public void AIStartTurn()
+        {
+            
+        }
+        
+        public void AITossDice()
+        {
+            if (playerData.roundIndex != level.PlayerRound) return;
+            var random = new Random();
+            var diceValue = random.Next(1, 7); 
+            SetPosIndex(playerData.position + diceValue);
+        }
+
+        public void AIPurchaseField()
+        {
+            
+        }
+
+        public void AIBuildHouse()
+        {
+            
+        }
+
+        public void AIEndTurn()
+        {
+            level.NextTurn();
+        }
+        
         public static Vector3 GetPlayerPosByIndex(int index) => Level.PosInRange.First(pair => 
             Utils.IsInRange(pair.Key, index)).Value.Invoke(index);
     }

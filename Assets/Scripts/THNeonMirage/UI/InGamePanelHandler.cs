@@ -88,7 +88,9 @@ namespace THNeonMirage.UI
             description.text = field.description;
             toll.text = $"当前过路费：{field.CurrentTolls()}";
 
+            Debug.Log("???");
             purchase.GetComponent<TMP_Text>().text = $"购买<size=12>(-{field.Property.Price.Purchase})";
+            
         }
         
         public void SetTexts(object playerData, ValueEventArgs args) => SetTexts((int)args.Value);

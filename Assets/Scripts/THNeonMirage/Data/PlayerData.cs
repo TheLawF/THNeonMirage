@@ -28,12 +28,14 @@ namespace THNeonMirage.Data
         {
             this.userName = userName;
             this.position = position;
+            UniqueId = new UniqueId();
         }
         
         public PlayerData()
         {
             Inventory = new ObservableList<int>();
             Fields = new ObservableList<int>();
+            UniqueId = new UniqueId();
         }
         
         public PlayerData Name(string name)

@@ -21,7 +21,7 @@ namespace THNeonMirage.Map
             if (currentPos != id) return;
             var bonus = random.Next(5);
             var result = random.Next(1) == 0 ? bonus : -bonus;
-            Player.SetPosIndex(player, currentPos);
+            player.SetPosIndex(currentPos);
         }
     }
 }
