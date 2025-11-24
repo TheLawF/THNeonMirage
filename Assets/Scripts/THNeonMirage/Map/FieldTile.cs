@@ -27,7 +27,7 @@ namespace THNeonMirage.Map
         
         public GameClient client;
         public FieldProperty Property;
-        public PlayerData Owner;
+        public PlayerManager Owner;
         
         public SpriteRenderer spriteRenderer;
         [DisplayOnly] public GameObject inGamePanel;
@@ -115,9 +115,9 @@ namespace THNeonMirage.Map
         {
             if (!HasOwner())return;
             if (player.playerData.userName == null) return;
-            if (Owner.userName == player.playerData.userName)return;
-            player.playerData.balance -= CurrentTolls();
-            Owner.balance += CurrentTolls();
+            if (Owner.playerData.userName == player.playerData.userName)return;
+            player.SetBalance(player.playerData.balance - CurrentTolls());
+            Owner.SetBalance(Owner.playerData.balance + CurrentTolls());
         }
 
         public virtual void OnPlayerPassBy(PlayerManager player, int prevPosition, int currentPosition)
@@ -125,11 +125,6 @@ namespace THNeonMirage.Map
             
         }
 
-        [PunRPC]
-        public void SyncFieldData(PlayerData owner)
-        {
-            Owner = owner;
-        }
 
         protected bool NextBool() => new System.Random().Next(1, 2) == 1;
         protected int NextInt(int min, int max) => new System.Random().Next(min, max);

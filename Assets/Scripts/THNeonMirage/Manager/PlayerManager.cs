@@ -57,7 +57,6 @@ namespace THNeonMirage.Manager
         {
             AIStartTurn();
             AITossDice();
-            AIPurchaseField();
             AIBuildHouse();
             AIEndTurn();
             
@@ -141,9 +140,8 @@ namespace THNeonMirage.Manager
             SetPosIndex(playerData.position + diceValue);
         }
 
-        public void AIPurchaseField()
+        public void AIPurchaseField(int fieldIndex)
         {
-            
         }
 
         public void AIBuildHouse()
@@ -154,6 +152,16 @@ namespace THNeonMirage.Manager
         public void AIEndTurn()
         {
             level.NextTurn();
+        }
+
+        public void EvaluateRisks()
+        {
+            
+        }
+
+        public void EvaluateEarnings()
+        {
+            
         }
         
         public static Vector3 GetPlayerPosByIndex(int index) => Level.PosInRange.First(pair => 

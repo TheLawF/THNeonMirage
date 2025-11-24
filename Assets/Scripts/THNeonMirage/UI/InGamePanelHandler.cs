@@ -52,7 +52,7 @@ namespace THNeonMirage.UI
             SetTexts((int)args.Value);
 
             if (field.HasOwner()) purchase.GetComponent<Button>().SetEnabled(false);
-            if (field.Owner.userName.Equals(data.userName))
+            if (field.Owner.playerData.userName.Equals(data.userName))
             {
                 purchase.SetActive(false);
                 cancel.SetActive(false);
@@ -88,7 +88,6 @@ namespace THNeonMirage.UI
             description.text = field.description;
             toll.text = $"当前过路费：{field.CurrentTolls()}";
 
-            Debug.Log("???");
             purchase.GetComponent<TMP_Text>().text = $"购买<size=12>(-{field.Property.Price.Purchase})";
             
         }
@@ -99,7 +98,7 @@ namespace THNeonMirage.UI
         {
             player.playerData.balance -= field.Property.Price.Purchase;
             client.SetLabelWhenBalanceChanged(player.playerData, new ValueEventArgs(player.playerData.balance));
-            field.Owner = player.playerData;
+            field.Owner = player;
             player.playerData.AddField(field.id);
         }
 
@@ -122,7 +121,7 @@ namespace THNeonMirage.UI
         public void OnFieldSold()
         {
             field.level = 0;
-            field.Owner.balance += field.level * field.Property.Price.Building + field.Property.Price.Purchase;
+            field.Owner.SetBalance(field.level * field.Property.Price.Building + field.Property.Price.Purchase);
             field.Owner = null;
         }
         
