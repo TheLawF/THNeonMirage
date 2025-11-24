@@ -13,7 +13,7 @@ namespace THNeonMirage.Map
             description = "被紫妈抓进隙间，停三回合";
         }
 
-        public override void OnPlayerStop(PlayerManager player, int currentPos)
+        public override void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
         {
             // base.OnPlayerStop(playerData, currentPos);
             if (!IsTileValid(currentPos))return;

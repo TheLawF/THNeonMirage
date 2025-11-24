@@ -15,7 +15,7 @@ namespace THNeonMirage.Registry
         
         public static readonly EventKey OnDestroyGameObject = new EventKey("OnDestroyGameObject");
         public static readonly EventKey OnBalanceChanged = new EventKey("OnBalanceChanged", 
-            typeof(int), typeof(int));
+             typeof(PlayerManager),typeof(int), typeof(int));
 
         public static readonly EventKey OnPositionChanged = new EventKey("OnPositionChanged",
             typeof(PlayerManager), typeof(int), typeof(int));

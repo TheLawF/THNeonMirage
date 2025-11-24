@@ -1,23 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using ExitGames.Client.Photon.StructWrapping;
 using Fictology.Registry;
 using FlyRabbit.EventCenter;
-using FlyRabbit.EventCenter.Core;
-using Photon.Pun;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using THNeonMirage.Util.Math;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
-using KeyValuePair = System.Collections.Generic.KeyValuePair;
 
 namespace THNeonMirage
 {
@@ -25,14 +19,15 @@ namespace THNeonMirage
     {
         public Button startButton;
         public Button aboutButton;
+        public TMP_Text balanceLabel;
         
         public Level level;
         public List<GameObject> players;
-        public GameObject inGamePanelObj;
-        public InGamePanelHandler inGamePanel;
         
         public GameObject diceObj;
+        public GameObject inGamePanelObj;
         public DiceHandler dice;
+        public InGamePanelHandler inGamePanel;
 
         /// <summary>
         /// GameStart Clicked -> Disable Home Panel -> Enable Background -> Create Map -> Game Loop
@@ -42,7 +37,6 @@ namespace THNeonMirage
             RegisterWhenSceneStart();
             InitAllFields();
             RegisterUIListeners();
-            CreateEventListeningChain();
         }
 
 
@@ -71,10 +65,6 @@ namespace THNeonMirage
             startButton.onClick.AddListener(OnGameStartClicked);
         }
         
-        public void CreateEventListeningChain()
-        {
-        }
-        
         public void OnGameStartClicked()
         {
             Registries.GetObject(UIRegistry.HomePage).SetActive(false);
@@ -88,6 +78,7 @@ namespace THNeonMirage
             CreatePlayer(true);
             CreatePlayer(true);
             
+            CreateEventListeningChain();
             level.players.AddRange(players.Where(obj => obj.GetComponent<PlayerManager>()));
         }
 
@@ -109,8 +100,15 @@ namespace THNeonMirage
             diceObj.SetActive(true);
             dice = diceObj.GetComponent<DiceHandler>();
             dice.player = player;
-
         }
+        
+        
+        public void CreateEventListeningChain()
+        {
+            EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnBalanceChanged, SetBalanceText);
+            EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnBalanceChanged, CheckBalance);
+        }
+
 
         private void OnMouseUpAsButton()
         {
@@ -119,6 +117,27 @@ namespace THNeonMirage
             {
                 inGamePanelObj.SetActive(false);
             }
+        }
+
+        private void SetBalanceText(PlayerManager player, int prevBalance, int currentBalance)
+        {
+            if (player.playerData.isBot) return;
+            // if(!PhotonView.IsMine) return;
+            balanceLabel.SetText(currentBalance.ToString());
+        }
+
+        private void CheckBalance(PlayerManager player, int prevBalance, int currentBalance)
+        {
+            var anyPropertyLeft = player.playerData.Fields.Count > 0;
+            var affordableTolls = currentBalance >= 0;
+            if (affordableTolls) return;
+            if (!anyPropertyLeft) GameOver(player);
+            
+        }
+
+        public void GameOver(PlayerManager player)
+        {
+            
         }
 
         public static List<GameObject> GetAllSceneObjects(bool includeInactive = true)

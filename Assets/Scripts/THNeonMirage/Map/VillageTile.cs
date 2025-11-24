@@ -12,7 +12,7 @@ namespace THNeonMirage.Map
             description = "玩家停在此处时可以领取任务获得金币";
         }
 
-        public override void OnPlayerStop(PlayerManager player, int currentPos)
+        public override void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
         {
             
         }

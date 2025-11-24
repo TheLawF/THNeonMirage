@@ -12,7 +12,7 @@ namespace THNeonMirage.Map
             Init();
         }
 
-        public override void OnPlayerStop(PlayerManager player, int currentPos)
+        public override void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
         {
             var bonus = Random.NextInt(300, 10000);
             var result = Random.NextBool() ? bonus : -bonus;

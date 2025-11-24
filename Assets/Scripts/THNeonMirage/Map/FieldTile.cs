@@ -60,6 +60,7 @@ namespace THNeonMirage.Map
             gameManagerObejct = Registries.GetObject(LevelRegistry.Level);
             
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerPassBy);
+            EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerStop);
         }
 
         public int CurrentTolls()
@@ -110,7 +111,7 @@ namespace THNeonMirage.Map
 
         public bool HasOwner() => Owner == null;
         
-        public virtual void OnPlayerStop(PlayerManager player, int currentPos)
+        public virtual void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
         {
             if (!HasOwner())return;
             if (player.playerData.userName == null) return;

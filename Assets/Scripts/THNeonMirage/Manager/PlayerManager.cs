@@ -32,6 +32,7 @@ namespace THNeonMirage.Manager
     {
         public GameObject diceObj;
         public Level level;
+        public GameMain game;
         public PlayerData playerData;
 
         [DisplayOnly] public GameLauncher database;
@@ -44,6 +45,12 @@ namespace THNeonMirage.Manager
         private void Awake()
         {
             playerData = new PlayerData().SetBalance(60000);
+        }
+
+        private void Start()
+        {
+            level = Registries.Get<Level>(LevelRegistry.Level);
+            game = Registries.GetComponent<GameMain>(LevelRegistry.Level);
         }
 
         public IEnumerator ExecuteAITask()
@@ -61,6 +68,12 @@ namespace THNeonMirage.Manager
         {
             EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, this, playerData.position, currentPos);
             SetPosition(currentPos);
+        }
+
+        public void SetBalance(int currentBalance)
+        {
+            EventCenter.TriggerEvent(EventRegistry.OnBalanceChanged, this, playerData.balance, currentBalance);
+            playerData.balance = currentBalance;
         }
 
         private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)
@@ -118,7 +131,6 @@ namespace THNeonMirage.Manager
 
         public void AIStartTurn()
         {
-            
         }
         
         public void AITossDice()
