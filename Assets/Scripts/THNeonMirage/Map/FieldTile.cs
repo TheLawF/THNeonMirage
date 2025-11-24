@@ -34,7 +34,7 @@ namespace THNeonMirage.Map
         [DisplayOnly] public GameObject hoverPanel;
         [DisplayOnly] public GameObject hoverText;
 
-        public GameObject gameManagerObejct;
+        public Level gameLevel;
         protected Random Random = new();
         private string tooltipString;
         
@@ -56,9 +56,11 @@ namespace THNeonMirage.Map
         public virtual void Init()
         {
             Start();
-            inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
-            gameManagerObejct = Registries.GetObject(LevelRegistry.Level);
             
+            Random = new Random((uint)DateTime.Now.Millisecond);
+            inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
+            gameLevel = Registries.Get<Level>(LevelRegistry.Level);
+
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerPassBy);
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerStop);
         }
@@ -91,7 +93,7 @@ namespace THNeonMirage.Map
             spriteRenderer.color = new Color(backGroundColor.r, backGroundColor.g, backGroundColor.b, 0.85f);
             
             var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
-            inGame.SetTexts(Owner, new ValueEventArgs(id));
+            inGame.SetTexts(gameLevel, id);
             if (CurrentTolls() <= 0)
             {
                 inGame.purchase.SetActive(false);

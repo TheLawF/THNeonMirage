@@ -224,6 +224,11 @@ namespace THNeonMirage.Map
             return 1;
         }
 
+        public TTile GetTile<TTile>(int index) where TTile : FieldTile
+        {
+            return fields[index].GetComponent<TTile>();
+        }
+        
         public void StartTurn()
         {
             RoundStart?.Invoke(this, new ValueEventArgs(PlayerRound));

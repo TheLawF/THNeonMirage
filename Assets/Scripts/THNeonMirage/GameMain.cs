@@ -57,6 +57,7 @@ namespace THNeonMirage
         {
             startButton = Registries.GetComponent<Button>(UIRegistry.StartButton);
             aboutButton = Registries.GetComponent<Button>(UIRegistry.AboutButton);
+            balanceLabel = Registries.GetComponent<TMP_Text>(UIRegistry.BalanceText);
             level = Registries.GetComponent<Level>(LevelRegistry.Level);
         }
 
@@ -79,7 +80,7 @@ namespace THNeonMirage
             CreatePlayer(true);
             
             CreateEventListeningChain();
-            level.players.AddRange(players.Where(obj => obj.GetComponent<PlayerManager>()));
+            level.players.AddRange(players.Select(obj => obj.GetComponent<PlayerManager>()));
         }
 
         public void CreatePlayer(bool isBot)
@@ -91,7 +92,7 @@ namespace THNeonMirage
             player.playerData.isBot = isBot;
             player.playerData.roundIndex = players.IndexOf(playerObject);
 
-            if (!isBot) return;
+            if (isBot) return;
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
             inGamePanel = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
             inGamePanel.player = player;

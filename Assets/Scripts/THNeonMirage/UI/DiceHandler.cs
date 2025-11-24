@@ -3,6 +3,7 @@ using Photon.Pun;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
+using THNeonMirage.Registry;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -30,6 +31,8 @@ namespace THNeonMirage.UI
         private void Start()
         {
             canInteract = true;
+            inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
+            level = Registries.Get<Level>(LevelRegistry.Level);
         }
 
         private void OnGUI()
@@ -43,13 +46,16 @@ namespace THNeonMirage.UI
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
         {
-            if (player.playerData.roundIndex != level.PlayerRound) return;
+            Debug.Log("???");
+            if (player.IsBot()) return;
+            if (!player.IsMyTurn()) return;
+            
             DiceValue = random.Next(1,7);
             pos = player.playerData.position;
             pos += DiceValue;
 
             player.SetPosIndex(pos);
-            inGamePanel.GetComponent<InGamePanelHandler>().SetField(player.playerData.position);
+            inGamePanel.GetComponent<InGamePanelHandler>().SetTile(level, player.playerData.position);
             shouldRenderTooltip = true;
             level.NextTurn();
         }

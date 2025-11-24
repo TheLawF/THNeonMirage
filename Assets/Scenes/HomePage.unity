@@ -3209,7 +3209,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    PauseCount: 0
+    roundIndex: 0
+    userName: 
+    isBot: 0
+    pauseCount: 0
+    position: 0
+    balance: 0
   balanceText: {fileID: 1862250448}
 --- !u!114 &829709785
 MonoBehaviour:
@@ -3223,7 +3228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 674655b33eca456a935ee829a4cc16dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  componentType: {fileID: 0}
 --- !u!114 &829709786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5310,8 +5314,8 @@ MonoBehaviour:
   countdownSeconds: 30
   countdownText: {fileID: 0}
   infoText: {fileID: 0}
-  PlayerOrder: 
   fields: []
+  players: []
 --- !u!114 &1240687989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5362,7 +5366,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startButton: {fileID: 0}
   aboutButton: {fileID: 0}
+  balanceLabel: {fileID: 0}
   level: {fileID: 0}
+  players: []
+  diceObj: {fileID: 0}
+  inGamePanelObj: {fileID: 0}
+  dice: {fileID: 0}
+  inGamePanel: {fileID: 0}
 --- !u!1 &1245591093
 GameObject:
   m_ObjectHideFlags: 0
@@ -6395,7 +6405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0018920898, y: 0}
+  m_AnchoredPosition: {x: 0.001953125, y: 0}
   m_SizeDelta: {x: 0.0038, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1377037710
@@ -9806,6 +9816,7 @@ MonoBehaviour:
   level: {fileID: 0}
   client: {fileID: 0}
   inGamePanel: {fileID: 0}
+  player: {fileID: 0}
 --- !u!114 &1928973138
 MonoBehaviour:
   m_ObjectHideFlags: 0

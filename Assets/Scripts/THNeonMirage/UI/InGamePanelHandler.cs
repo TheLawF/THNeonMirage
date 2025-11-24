@@ -40,7 +40,9 @@ namespace THNeonMirage.UI
             toll = tollLabel.GetComponent<TMP_Text>();
             description = descriptionLabel.GetComponent<TMP_Text>();
 
-            Level = Registries.GetComponent<Level>(LevelRegistry.Level);
+            title = Registries.GetComponent<TMP_Text>(UIRegistry.TileName);
+            description = Registries.GetComponent<TMP_Text>(UIRegistry.DescriptionText);
+            toll = Registries.GetComponent<TMP_Text>(UIRegistry.TollText);
             purchase = Registries.GetObject(UIRegistry.PurchaseButton);
         }
 
@@ -49,7 +51,6 @@ namespace THNeonMirage.UI
             var data = (PlayerData)playerData;
             field = Level.fields[(int)args.Value].GetComponent<FieldTile>();
             inGamePanel.SetActive(true);
-            SetTexts((int)args.Value);
 
             if (field.HasOwner()) purchase.GetComponent<Button>().SetEnabled(false);
             if (field.Owner.playerData.userName.Equals(data.userName))
@@ -75,15 +76,15 @@ namespace THNeonMirage.UI
             }
         }
 
-        public void SetField(int posIndex)
+        public void SetTile(Level level, int posIndex)
         {
-            field = Level.fields[posIndex].GetComponent<FieldTile>();
-            SetTexts(posIndex);
+            field = level.fields[posIndex].GetComponent<FieldTile>();
+            SetTexts(level, posIndex);
         }
         
-        public void SetTexts(int positionIndex)
+        public void SetTexts(Level level, int positionIndex)
         {
-            field = Level.fields[positionIndex].GetComponent<FieldTile>();
+            field = level.fields[positionIndex].GetComponent<FieldTile>();
             title.text = field.Property.Name;
             description.text = field.description;
             toll.text = $"当前过路费：{field.CurrentTolls()}";
@@ -91,8 +92,6 @@ namespace THNeonMirage.UI
             purchase.GetComponent<TMP_Text>().text = $"购买<size=12>(-{field.Property.Price.Purchase})";
             
         }
-        
-        public void SetTexts(object playerData, ValueEventArgs args) => SetTexts((int)args.Value);
 
         public void OnPlayerPurchase()
         {

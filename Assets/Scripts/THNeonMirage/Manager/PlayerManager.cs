@@ -90,7 +90,7 @@ namespace THNeonMirage.Manager
 
         public bool CanMove() => playerData.pauseCount <= 0;
         public bool IsMyTurn() => playerData.roundIndex == level.PlayerRound;
-        
+        public bool IsBot() => playerData.isBot;
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
         public void Save(string columnName, object data) => database.Save(playerData.userName, columnName, data);
 
