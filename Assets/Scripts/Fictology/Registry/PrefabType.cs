@@ -24,18 +24,21 @@ namespace Fictology.Registry
         public GameObject Instantiate()
         {
             var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath));
+            Registries.RegisterPrefabInstance(this, instance);
             return instance;
         }
         
         public GameObject Instantiate(Vector3 position, Quaternion rotation)
         {
             var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath), position, rotation);
+            Registries.RegisterPrefabInstance(this, instance);
             return instance;
         }
         
         public GameObject Instantiate(Vector3 position, Quaternion rotation, Transform transform)
         {
             var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath), position, rotation, transform);
+            Registries.RegisterPrefabInstance(this, instance);
             return instance;
         }
 
@@ -52,6 +55,7 @@ namespace Fictology.Registry
             var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath), parent);
             instance.AddComponent<RegistryEntry>();
             instance.GetComponent<RegistryEntry>().registryKey = prefabEntry.registryKey;
+            Registries.RegisterPrefabInstance(this, instance);
             return instance;
         }
 
@@ -60,6 +64,7 @@ namespace Fictology.Registry
             var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath), position, rotation);
             instance.AddComponent<RegistryEntry>();
             instance.GetComponent<RegistryEntry>().registryKey = prefabEntry.registryKey;
+            Registries.RegisterPrefabInstance(this, instance);
             return instance;
         }
     }

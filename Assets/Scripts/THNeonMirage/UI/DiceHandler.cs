@@ -49,7 +49,12 @@ namespace THNeonMirage.UI
         {
             if (player.IsBot()) return;
             if (!player.IsMyTurn()) return;
-            
+            if (!player.CanMove())
+            {
+                level.NextTurn();
+                return;
+            }
+
             DiceValue = random.Next(1,7);
             pos = player.playerData.position;
             pos += DiceValue;

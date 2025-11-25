@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fictology.Event;
 using Fictology.Registry;
 using FlyRabbit.EventCenter;
 using THNeonMirage.Manager;
@@ -64,6 +65,7 @@ namespace THNeonMirage
             level = Registries.GetComponent<Level>(LevelRegistry.Level);
             
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
+            inGamePanel = inGamePanelObj.GetComponent<InGamePanelHandler>();
             random = new Random((uint)DateTime.Now.Millisecond);
         }
 
@@ -80,14 +82,13 @@ namespace THNeonMirage
             level.CreateLevel();
             inGamePanelObj.SetActive(true);
 
-            var client = GetComponent<GameClient>();
+            CreateEventListeningChain();
             
             CreatePlayer(false);
             CreatePlayer(true);
             CreatePlayer(true);
             CreatePlayer(true);
             
-            CreateEventListeningChain();
             level.players.AddRange(players.Select(obj => obj.GetComponent<PlayerManager>()));
         }
 
@@ -102,8 +103,8 @@ namespace THNeonMirage
             player.playerData.roundIndex = players.IndexOf(playerObject);
             sprite.color = new Color(random.NextFloat(0, 1), random.NextFloat(0, 1), random.NextFloat(0, 1));
 
-
             if (isBot) return;
+            EventCenter.TriggerEvent(EventRegistry.OnBalanceChanged, player, player.playerData.balance, player.playerData.balance);
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
             inGamePanel = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
             inGamePanel.player = player;
@@ -135,7 +136,7 @@ namespace THNeonMirage
         {
             if (player.playerData.isBot) return;
             // if(!PhotonView.IsMine) return;
-            balanceLabel.SetText(currentBalance.ToString());
+            balanceLabel.SetText("月虹币余额：" + currentBalance);
         }
 
         private void CheckBalance(PlayerManager player, int prevBalance, int currentBalance)

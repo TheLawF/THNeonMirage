@@ -30,12 +30,12 @@ namespace THNeonMirage.Map
         [DisplayOnly] public GameObject hoverPanel;
         [DisplayOnly] public GameObject hoverText;
 
-        public Level gameLevel;
         protected Random Random = new();
         private string tooltipString;
         
         private void Start()
         {
+            canPurchased = true;
             hoverPanel = GameObject.Find("Canvas/HoverPanel");
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
             backGroundColor = new Color(1f,1f, 1f, 0.6f);
@@ -53,10 +53,8 @@ namespace THNeonMirage.Map
         {
             Start();
             
-            canPurchased = true;
             Random = new Random((uint)DateTime.Now.Millisecond);
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
-            gameLevel = Registries.Get<Level>(LevelRegistry.Level);
 
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerPassBy);
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerStop);
@@ -90,17 +88,9 @@ namespace THNeonMirage.Map
             // spriteRenderer.color = new Color(backGroundColor.r, backGroundColor.g, backGroundColor.b, 0.85f);
             
             var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
+            var gameLevel = Registries.Get<Level>(LevelRegistry.Level);
             inGame.TrySetTexts(gameLevel, index);
-            if (CurrentTolls() <= 0)
-            {
-                inGame.purchase.enabled = false;
-                inGame.cancel.SetActive(false);
-            }
-            else
-            {
-                inGame.purchase.enabled = true;
-                inGame.cancel.SetActive(true);
-            }
+            inGame.UpdateUI(gameLevel, index);
         }
 
         private void OnMouseExit()
@@ -114,6 +104,7 @@ namespace THNeonMirage.Map
             if (!IsTileValid(currentPos)) return;
             if (!HasOwner())return;
             if (player.playerData.userName == null) return;
+            if (Owner == null) return;
             if (Owner.playerData.userName == player.playerData.userName)return;
             
             player.SetBalance(player.playerData.balance - CurrentTolls());

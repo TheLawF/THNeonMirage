@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Fictology.Registry;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
@@ -38,32 +39,30 @@ namespace THNeonMirage.UI
             description = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.DescriptionText);
         }
 
-        private void UpdateUI(object playerData, ValueEventArgs args)
+        public void UpdateUI(Level level, int posIndex)
         {
-            var data = (PlayerData)playerData;
-            field = Level.fields[(int)args.Value].GetComponent<FieldTile>();
+            field = level.GetTile<FieldTile>(posIndex);
             inGamePanel.SetActive(true);
 
-            if (field.HasOwner()) purchase.GetComponent<Button>().SetEnabled(false);
-            if (field.Owner.playerData.userName.Equals(data.userName))
+            if (field.HasOwner()) Registries.GetObject(UIRegistry.PurchaseButton).SetActive(false);
+            else if (field.Owner.playerData.userName.Equals(player.playerData.userName))
             {
-                purchase.enabled = false;
+                Registries.GetObject(UIRegistry.PurchaseButton).SetActive(false);
                 cancel.SetActive(false);
                 build.SetActive(true);
                 mortgage.SetActive(true);
-
                 build.GetComponent<TMP_Text>().text = $"建造房屋<size=12>(-{field.Property.Price.Building})";
                 
             }
             
             if (field.CurrentTolls() <= 0)
             {
-                purchase.enabled = false;
+                Registries.GetObject(UIRegistry.PurchaseButton).SetActive(false);
                 cancel.SetActive(false);
             }
             else
             {
-                purchase.enabled = false;
+                Registries.GetObject(UIRegistry.PurchaseButton).SetActive(true);
                 cancel.SetActive(true);
             }
         }
@@ -95,6 +94,12 @@ namespace THNeonMirage.UI
             // client.SetLabelWhenBalanceChanged(player.playerData, new ValueEventArgs(player.playerData.balance));
             field.Owner = player;
             player.playerData.AddField(field.index);
+            var sprite = field.GetComponent<SpriteRenderer>();
+            var color = Registries.GetPrefabInstances(LevelRegistry.Player).First(p =>
+                    p.GetComponent<PlayerManager>().playerData.roundIndex == player.playerData.roundIndex)
+                .GetComponent<SpriteRenderer>().color;
+
+            sprite.color = color;
         }
 
         public void OnPlayerBuild()
