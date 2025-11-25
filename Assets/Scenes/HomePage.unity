@@ -4722,6 +4722,7 @@ GameObject:
   - component: {fileID: 1108162333}
   - component: {fileID: 1108162332}
   - component: {fileID: 1108162331}
+  - component: {fileID: 1108162334}
   m_Layer: 5
   m_Name: Build
   m_TagString: Untagged
@@ -4832,6 +4833,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1108162329}
   m_CullTransparentMesh: 1
+--- !u!114 &1108162334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108162329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ffea57cc474f369898c9a72716c8b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Button
+    registryName: Building
 --- !u!1 &1113949284
 GameObject:
   m_ObjectHideFlags: 0
@@ -5367,6 +5383,8 @@ MonoBehaviour:
   startButton: {fileID: 0}
   aboutButton: {fileID: 0}
   balanceLabel: {fileID: 0}
+  random:
+    state: 0
   level: {fileID: 0}
   players: []
   diceObj: {fileID: 0}

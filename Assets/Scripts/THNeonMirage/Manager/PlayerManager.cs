@@ -65,7 +65,7 @@ namespace THNeonMirage.Manager
         public IEnumerator ExecuteAITask()
         {
             yield return new WaitForSeconds(1F);
-            if (playerData.pauseCount > 0) yield return new WaitForSeconds(1F);
+            if (playerData.pauseCount > 0) yield break;
             AIStartTurn();
             AITossDice();
             AIBuildHouse();
@@ -155,7 +155,9 @@ namespace THNeonMirage.Manager
         {
             var random = new Random();
             var diceValue = random.Next(1, 7); 
-            SetPosIndex(playerData.position + diceValue);
+            SetPosIndex(playerData.position);
+            var level = Registries.Get<Level>(LevelRegistry.Level);
+            level.GetTile<FieldTile>(playerData.position).OnPlayerStop(this, playerData.position, playerData.position);
         }
 
         public void AIPurchaseField(int fieldIndex)

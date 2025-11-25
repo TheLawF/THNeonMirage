@@ -56,7 +56,7 @@ namespace THNeonMirage.Registry
         {
             return Prefab2InstancesMap[prefabType];
         }
-        
+
         public static void RegisterAll(Dictionary<RegistryEntry, GameObject> dictionary)
         {
             Key2ObjectMap.AddRange(dictionary

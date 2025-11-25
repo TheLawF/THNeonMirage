@@ -97,14 +97,13 @@ namespace THNeonMirage.Map
         {
         }
 
-        public bool HasOwner() => Owner == null;
+        public bool HasOwner() => Owner is not null;
         
         public virtual void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
         {
             if (!IsTileValid(currentPos)) return;
             if (!HasOwner())return;
             if (player.playerData.userName == null) return;
-            if (Owner == null) return;
             if (Owner.playerData.userName == player.playerData.userName)return;
             
             player.SetBalance(player.playerData.balance - CurrentTolls());
