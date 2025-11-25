@@ -30,15 +30,15 @@ namespace THNeonMirage.Manager
     [Serializable]
     public class PlayerManager : RegistryEntry
     {
-        public GameObject diceObj;
         public Level level;
-        public GameMain game;
+        public GameObject indexLabel;
         public PlayerData playerData;
 
         [DisplayOnly] public GameLauncher database;
 
         private Vector3 prev_pos;
         private Vector3 next_pos;
+        private SpriteRenderer sprite;
         private Vector3 networkPosition;
         private Quaternion networkRotation;
 
@@ -50,11 +50,15 @@ namespace THNeonMirage.Manager
         private void Start()
         {
             level = Registries.Get<Level>(LevelRegistry.Level);
-            game = Registries.GetComponent<GameMain>(LevelRegistry.Level);
+            sprite = GetComponent<SpriteRenderer>();
+
+            var random = new Random();
         }
 
         public IEnumerator ExecuteAITask()
         {
+            yield return new WaitForSeconds(1F);
+            if (playerData.pauseCount > 0) yield return new WaitForSeconds(1F);
             AIStartTurn();
             AITossDice();
             AIBuildHouse();
@@ -101,7 +105,7 @@ namespace THNeonMirage.Manager
             return this;
         }
 
-        private PlayerManager SetPosition(int position)
+        public PlayerManager SetPosition(int position)
         {
             prev_pos = GetPlayerPosByIndex(playerData.position);
             if (playerData.position + position is < 0 and >= -40)
@@ -130,11 +134,11 @@ namespace THNeonMirage.Manager
 
         public void AIStartTurn()
         {
+            if (playerData.roundIndex != level.PlayerRound) return;
         }
         
         public void AITossDice()
         {
-            if (playerData.roundIndex != level.PlayerRound) return;
             var random = new Random();
             var diceValue = random.Next(1, 7); 
             SetPosIndex(playerData.position + diceValue);
@@ -151,6 +155,7 @@ namespace THNeonMirage.Manager
 
         public void AIEndTurn()
         {
+            playerData.pauseCount--;
             level.NextTurn();
         }
 

@@ -1,3 +1,4 @@
+using System;
 using Fictology.Registry;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
@@ -13,12 +14,7 @@ namespace THNeonMirage.UI
 {
     public class InGamePanelHandler : GameBehaviour, IPointerClickHandler
     {
-        public GameObject titleLabel;
-        public GameObject descriptionLabel;
-        public GameObject tollLabel;
         public GameObject inGamePanel;
-
-        public GameObject purchase;
         public GameObject cancel;
         public GameObject build;
         public GameObject mortgage;
@@ -29,21 +25,17 @@ namespace THNeonMirage.UI
         private FieldTile field;
         private RectTransform rect_transform;
 
-        private TMP_Text toll;
-        private TMP_Text title;
-        private TMP_Text description;
+        public TextMeshProUGUI toll;
+        public TextMeshProUGUI title;
+        public TextMeshProUGUI description;
+        public TextMeshProUGUI purchase;
         
         private void Start()
         {
-            rect_transform = GetComponent<RectTransform>();
-            title = titleLabel.GetComponent<TMP_Text>();
-            toll = tollLabel.GetComponent<TMP_Text>();
-            description = descriptionLabel.GetComponent<TMP_Text>();
-
-            title = Registries.GetComponent<TMP_Text>(UIRegistry.TileName);
-            description = Registries.GetComponent<TMP_Text>(UIRegistry.DescriptionText);
-            toll = Registries.GetComponent<TMP_Text>(UIRegistry.TollText);
-            purchase = Registries.GetObject(UIRegistry.PurchaseButton);
+            title = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.TileName);
+            description = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.DescriptionText);
+            toll = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.TollText);
+            purchase = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.PurchaseText);
         }
 
         private void UpdateUI(object playerData, ValueEventArgs args)
@@ -55,7 +47,7 @@ namespace THNeonMirage.UI
             if (field.HasOwner()) purchase.GetComponent<Button>().SetEnabled(false);
             if (field.Owner.playerData.userName.Equals(data.userName))
             {
-                purchase.SetActive(false);
+                purchase.enabled = false;
                 cancel.SetActive(false);
                 build.SetActive(true);
                 mortgage.SetActive(true);
@@ -66,39 +58,42 @@ namespace THNeonMirage.UI
             
             if (field.CurrentTolls() <= 0)
             {
-                purchase.SetActive(false);
+                purchase.enabled = false;
                 cancel.SetActive(false);
             }
             else
             {
-                purchase.SetActive(true);
+                purchase.enabled = false;
                 cancel.SetActive(true);
             }
         }
 
         public void SetTile(Level level, int posIndex)
         {
-            field = level.fields[posIndex].GetComponent<FieldTile>();
-            SetTexts(level, posIndex);
+            field = level.GetTile<FieldTile>(posIndex);
+            TrySetTexts(level, posIndex);
         }
         
-        public void SetTexts(Level level, int positionIndex)
+        public void TrySetTexts(Level level, int positionIndex)
         {
-            field = level.fields[positionIndex].GetComponent<FieldTile>();
+            if (!Registries.GetObject(UIRegistry.InGamePanel).activeInHierarchy) return;
+            field = level.GetTile<FieldTile>(positionIndex);
             title.text = field.Property.Name;
             description.text = field.description;
             toll.text = $"当前过路费：{field.CurrentTolls()}";
 
-            purchase.GetComponent<TMP_Text>().text = $"购买<size=12>(-{field.Property.Price.Purchase})";
+            purchase.text = $"购买<size=12>(-{field.Property.Price.Purchase})";
             
         }
 
         public void OnPlayerPurchase()
         {
-            player.playerData.balance -= field.Property.Price.Purchase;
-            client.SetLabelWhenBalanceChanged(player.playerData, new ValueEventArgs(player.playerData.balance));
+            if (!field.canPurchased)return;
+            player.SetBalance(player.playerData.balance - field.Property.Price.Purchase);
+            // player.playerData.balance -= field.Property.Price.Purchase;
+            // client.SetLabelWhenBalanceChanged(player.playerData, new ValueEventArgs(player.playerData.balance));
             field.Owner = player;
-            player.playerData.AddField(field.id);
+            player.playerData.AddField(field.index);
         }
 
         public void OnPlayerBuild()

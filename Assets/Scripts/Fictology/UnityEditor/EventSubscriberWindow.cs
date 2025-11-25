@@ -15,10 +15,10 @@ namespace Fictology.UnityEditor
 {
     public class EventSubscriberWindow: EditorWindow
     {
-        [MenuItem("Fictology/Event Center/事件调用查看器")]
+        [MenuItem("Fictology/Event Center/事件查看器")]
         public static void CreateWindow()
         {
-            GetWindow<EventSubscriberWindow>("事件调用查看器");
+            GetWindow<EventSubscriberWindow>("事件查看器");
         }
 
         // 存储分析结果：EventKey -> 引用列表

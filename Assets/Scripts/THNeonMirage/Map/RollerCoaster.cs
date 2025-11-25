@@ -11,10 +11,12 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Init();
+            canPurchased = false;
         }
 
         public override void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
         {
+            if (!IsTileValid(currentPos))return;
             var bonus = Random.NextInt(300, 10000);
             var result = Random.NextBool() ? bonus : -bonus;
             player.SetBalance(player.playerData.balance + result);

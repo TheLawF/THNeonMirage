@@ -213,7 +213,7 @@ namespace THNeonMirage.Map
             var ft = go.GetComponent<FieldTile>();
             
             ft.level = 0;
-            ft.id = id == -1 ? ft.id : id;
+            ft.index = id == -1 ? ft.index : id;
             ft.Property = fieldProperty;
             
             ft.spriteRenderer = go.GetComponent<SpriteRenderer>();
@@ -242,7 +242,15 @@ namespace THNeonMirage.Map
             {
                 StartCoroutine(currentRoundPlayer.ExecuteAITask());
             }
-            Utils.Info($"Current Order = {PlayerRound}");
+
+            if (currentRoundPlayer.playerData.pauseCount > 0)
+            {
+                currentRoundPlayer.playerData.pauseCount--;
+            }
+            // if(photonView.IsMine)
+            // {
+            //     WaitForOtherPlayer();
+            // }
         }
     }
 }

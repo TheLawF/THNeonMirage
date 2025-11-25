@@ -41,7 +41,6 @@ namespace Fictology.UnityEditor
             RefreshEventKeyCache();
         }
 
-        [MenuItem("Fictology/Event Center/刷新缓存")]
         public static void RefreshEventKeyCache()
         {
             EventHelper.RefreshCache();

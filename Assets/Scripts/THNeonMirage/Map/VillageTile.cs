@@ -9,6 +9,7 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Init();
+            canPurchased = false;
             description = "玩家停在此处时可以领取任务获得金币";
         }
 

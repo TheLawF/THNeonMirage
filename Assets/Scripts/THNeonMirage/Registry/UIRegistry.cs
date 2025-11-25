@@ -19,6 +19,7 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey CountdownText = Registries.CreateKey(LabelRootKey, "CountdownText");
 
         public static readonly RegistryKey DescriptionText = Registries.CreateKey(LabelRootKey, "DescriptionText");
+        public static readonly RegistryKey PurchaseText = Registries.CreateKey(LabelRootKey, nameof(PurchaseText));
         public static readonly RegistryKey TollText = Registries.CreateKey(LabelRootKey, "TollText");
         
         public static readonly RegistryKey HomePage = Registries.CreateKey(PanelRootKey, "HomePage");

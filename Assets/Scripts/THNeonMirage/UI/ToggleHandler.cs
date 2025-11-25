@@ -30,7 +30,7 @@ namespace THNeonMirage.UI
 
         public void OnAdd()
         {
-            if (player.playerData.position != currentField.id) return;
+            if (player.playerData.position != currentField.index) return;
             var i = int.Parse(countLabel.text);
             if (i > currentField.level) return;
             countLabel.text = $"{i + 1}";
@@ -39,7 +39,7 @@ namespace THNeonMirage.UI
         
         public void OnSub()
         {
-            if (player.playerData.position != currentField.id) return;
+            if (player.playerData.position != currentField.index) return;
             var i = int.Parse(countLabel.text);
             if (i <= 0) return;
             countLabel.text = $"{i - 1}";

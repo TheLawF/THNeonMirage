@@ -4,6 +4,7 @@ using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;
+using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -46,7 +47,6 @@ namespace THNeonMirage.UI
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log("???");
             if (player.IsBot()) return;
             if (!player.IsMyTurn()) return;
             
@@ -54,6 +54,8 @@ namespace THNeonMirage.UI
             pos = player.playerData.position;
             pos += DiceValue;
 
+            Debug.Log(pos.ToString());
+            
             player.SetPosIndex(pos);
             inGamePanel.GetComponent<InGamePanelHandler>().SetTile(level, player.playerData.position);
             shouldRenderTooltip = true;

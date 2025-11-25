@@ -157,6 +157,8 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventName.cs" />
+    <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventCallViewer.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\RenderRegistry.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />

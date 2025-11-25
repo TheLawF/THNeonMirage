@@ -59,6 +59,8 @@ namespace THNeonMirage
             aboutButton = Registries.GetComponent<Button>(UIRegistry.AboutButton);
             balanceLabel = Registries.GetComponent<TMP_Text>(UIRegistry.BalanceText);
             level = Registries.GetComponent<Level>(LevelRegistry.Level);
+            
+            inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
         }
 
         private void RegisterUIListeners()
@@ -70,7 +72,9 @@ namespace THNeonMirage
         {
             Registries.GetObject(UIRegistry.HomePage).SetActive(false);
             Registries.Tiles.Values.ToList().ForEach(go => go.SetActive(true));
+            
             level.CreateLevel();
+            inGamePanelObj.SetActive(true);
 
             var client = GetComponent<GameClient>();
             
