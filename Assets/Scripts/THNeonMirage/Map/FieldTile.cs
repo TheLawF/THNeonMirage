@@ -87,7 +87,7 @@ namespace THNeonMirage.Map
         {
             inGamePanel.SetActive(true);
             tooltipString = $"编号：{index}\n名称：{Property.Name}";
-            spriteRenderer.color = new Color(backGroundColor.r, backGroundColor.g, backGroundColor.b, 0.85f);
+            // spriteRenderer.color = new Color(backGroundColor.r, backGroundColor.g, backGroundColor.b, 0.85f);
             
             var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
             inGame.TrySetTexts(gameLevel, index);
@@ -105,7 +105,6 @@ namespace THNeonMirage.Map
 
         private void OnMouseExit()
         {
-            spriteRenderer.color = backGroundColor;
         }
 
         public bool HasOwner() => Owner == null;

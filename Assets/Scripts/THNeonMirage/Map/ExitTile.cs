@@ -4,6 +4,7 @@ namespace THNeonMirage.Map
     {
         private void Start()
         {
+            Init();
             canPurchased = false;
         }
     }

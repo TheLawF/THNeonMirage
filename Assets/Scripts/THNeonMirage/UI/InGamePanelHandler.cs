@@ -77,6 +77,7 @@ namespace THNeonMirage.UI
         public void TrySetTexts(Level level, int positionIndex)
         {
             if (!Registries.GetObject(UIRegistry.InGamePanel).activeInHierarchy) return;
+            Debug.Log(positionIndex);
             field = level.GetTile<FieldTile>(positionIndex);
             title.text = field.Property.Name;
             description.text = field.description;

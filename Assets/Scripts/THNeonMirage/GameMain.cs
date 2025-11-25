@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fictology.Registry;
@@ -12,6 +13,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage
 {
@@ -20,6 +22,7 @@ namespace THNeonMirage
         public Button startButton;
         public Button aboutButton;
         public TMP_Text balanceLabel;
+        public Random random;
         
         public Level level;
         public List<GameObject> players;
@@ -61,6 +64,7 @@ namespace THNeonMirage
             level = Registries.GetComponent<Level>(LevelRegistry.Level);
             
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
+            random = new Random((uint)DateTime.Now.Millisecond);
         }
 
         private void RegisterUIListeners()
@@ -91,10 +95,13 @@ namespace THNeonMirage
         {
             var playerObject = LevelRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
             var player = playerObject.GetComponent<PlayerManager>();
+            var sprite = player.GetComponent<SpriteRenderer>();
             players.Add(playerObject);
             
             player.playerData.isBot = isBot;
             player.playerData.roundIndex = players.IndexOf(playerObject);
+            sprite.color = new Color(random.NextFloat(0, 1), random.NextFloat(0, 1), random.NextFloat(0, 1));
+
 
             if (isBot) return;
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
