@@ -169,7 +169,6 @@ namespace THNeonMirage.Manager
 
         public void AIEndTurn()
         {
-            playerData.pauseCount--;
             level.NextTurn();
         }
 

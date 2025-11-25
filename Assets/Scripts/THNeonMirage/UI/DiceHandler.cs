@@ -54,8 +54,6 @@ namespace THNeonMirage.UI
             pos = player.playerData.position;
             pos += DiceValue;
 
-            Debug.Log(pos.ToString());
-            
             player.SetPosIndex(pos);
             inGamePanel.GetComponent<InGamePanelHandler>().SetTile(level, player.playerData.position);
             shouldRenderTooltip = true;

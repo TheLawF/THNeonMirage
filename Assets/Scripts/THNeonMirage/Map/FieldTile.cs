@@ -2,17 +2,12 @@ using System;
 using Fictology.Registry;
 using Fictology.UnityEditor;
 using FlyRabbit.EventCenter;
-using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
-using THNeonMirage.Util;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage.Map
@@ -103,7 +98,7 @@ namespace THNeonMirage.Map
             }
             else
             {
-                inGame.purchase.enabled = false;
+                inGame.purchase.enabled = true;
                 inGame.cancel.SetActive(true);
             }
         }

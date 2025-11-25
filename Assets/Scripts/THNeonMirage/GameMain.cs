@@ -118,7 +118,7 @@ namespace THNeonMirage
         private void OnMouseUpAsButton()
         {
             if (inGamePanelObj == null) return;
-            if(RayHelper.CheckMouseClickHit(Camera.main, out var hit))
+            if(!RayHelper.CheckMouseClickHit(Camera.main, out var hit))
             {
                 inGamePanelObj.SetActive(false);
             }

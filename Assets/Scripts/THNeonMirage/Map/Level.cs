@@ -246,9 +246,12 @@ namespace THNeonMirage.Map
             }
 
             if (currentRoundPlayer.playerData.pauseCount > 0)
-            {
                 currentRoundPlayer.playerData.pauseCount--;
-            }
+            
+
+            if (currentRoundPlayer.playerData.pauseCount < 0)
+                currentRoundPlayer.playerData.pauseCount = 0;
+            
             // if(photonView.IsMine)
             // {
             //     WaitForOtherPlayer();
