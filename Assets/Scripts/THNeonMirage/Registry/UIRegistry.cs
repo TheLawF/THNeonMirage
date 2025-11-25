@@ -13,7 +13,9 @@ namespace THNeonMirage.Registry
         public const string LabelRootKey = "Label";
         public const string PanelRootKey = "Panel";
         public const string ButtonRootKey = "Button";
+        public const string CanvasKey = "Canvas";
 
+        public static readonly RegistryKey Canvas = Registries.CreateKey(CanvasKey, "Main");
         public static readonly RegistryKey TileName = Registries.CreateKey(LabelRootKey, "TileName");
         public static readonly RegistryKey BalanceText = Registries.CreateKey(LabelRootKey, "BalanceText");
         public static readonly RegistryKey CountdownText = Registries.CreateKey(LabelRootKey, "CountdownText");
@@ -34,8 +36,11 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey BuildingButton = Registries.CreateKey(ButtonRootKey, "Building");
         public static readonly RegistryKey CancelButton = Registries.CreateKey(ButtonRootKey, "Cancel");
 
+        public static readonly PrefabType IndexLabel = Registries.CreateType("Prefabs/IndexLabel");
+
         public static void RegisterTypes()
         {
+            Registries.RegistryTypes.Add(typeof(GameCanvas));
             Registries.RegistryTypes.Add(typeof(TextLabel));
             Registries.RegistryTypes.Add(typeof(GamePanel));
             Registries.RegistryTypes.Add(typeof(GameButton));

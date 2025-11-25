@@ -12,9 +12,9 @@ namespace THNeonMirage.Util.Math
                 hit = rayHit;
                 return true;
             }
-
             hit = default;
             return false;
         }
+        
     }
 }

@@ -45,7 +45,8 @@ namespace THNeonMirage.Map
         public List<GameObject> fields = new ();
         public List<PlayerManager> players = new ();
         public static string CurrentPlayerId;
-        
+
+        private Transform m_transform;
         private const float Side = 10;
         private int _playerRound;
         private static Vector3 _uUnit = Vector3.right;
@@ -123,6 +124,7 @@ namespace THNeonMirage.Map
         {
             Players = new ObservableList<Player>();
             fields = new List<GameObject>();
+            m_transform = GetComponent<Transform>();
             PlayerRound = 1;
         }
 
@@ -169,11 +171,11 @@ namespace THNeonMirage.Map
 
             var list = new List<Func<GameObject>>(new Func<GameObject>[]
             {
-                () => LevelRegistry.TilePrefab.Instantiate(StartPos - uOffset, Quaternion.identity, transform),
-                () => LevelRegistry.TilePrefab.Instantiate(LeftUp - vOffset, Quaternion.identity, transform),
-                () => LevelRegistry.TilePrefab.Instantiate(LeftDown + uOffset, Quaternion.identity, transform),
-                () => LevelRegistry.TilePrefab.Instantiate(RightDown + vOffset, Quaternion.identity, transform),
-                () => LevelRegistry.TilePrefab.Instantiate(Vector3.zero, Quaternion.identity, transform)
+                () => LevelRegistry.TilePrefab.Instantiate(StartPos - uOffset, Quaternion.identity, m_transform),
+                () => LevelRegistry.TilePrefab.Instantiate(LeftUp - vOffset, Quaternion.identity, m_transform),
+                () => LevelRegistry.TilePrefab.Instantiate(LeftDown + uOffset, Quaternion.identity, m_transform),
+                () => LevelRegistry.TilePrefab.Instantiate(RightDown + vOffset, Quaternion.identity, m_transform),
+                () => LevelRegistry.TilePrefab.Instantiate(Vector3.zero, Quaternion.identity, m_transform)
             });
 
             var instance = Utils.SwitchByMap(list, index);

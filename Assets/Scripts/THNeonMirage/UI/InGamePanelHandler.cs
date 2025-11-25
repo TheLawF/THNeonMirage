@@ -33,9 +33,9 @@ namespace THNeonMirage.UI
         private void Start()
         {
             title = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.TileName);
-            description = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.DescriptionText);
             toll = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.TollText);
             purchase = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.PurchaseText);
+            description = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.DescriptionText);
         }
 
         private void UpdateUI(object playerData, ValueEventArgs args)

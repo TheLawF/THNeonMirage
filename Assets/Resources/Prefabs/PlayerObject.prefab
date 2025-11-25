@@ -99,12 +99,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d602748d2bb554493bab4de8e152b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerData:
-    PauseCount: 0
-  Id: 
-  Password: 
+  registryKey:
+    rootName: 
+    registryName: 
+  level: {fileID: 0}
+  indexLabel: {fileID: 0}
+  playerData:
+    roundIndex: 0
+    userName: 
+    isBot: 0
+    pauseCount: 0
+    position: 0
+    balance: 0
+  canvas: {fileID: 0}
   database: {fileID: 0}
-  DiceType: 0
 --- !u!114 &9010060989422911570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,7 +132,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 9110736245687120660}
   - {fileID: 772805875041474682}
   sceneViewId: 0
   InstantiationId: 0

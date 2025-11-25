@@ -33,14 +33,17 @@ namespace THNeonMirage.Manager
         public Level level;
         public GameObject indexLabel;
         public PlayerData playerData;
+        public GameObject canvas;
 
         [DisplayOnly] public GameLauncher database;
 
+        private Transform m_transform;
         private Vector3 prev_pos;
         private Vector3 next_pos;
         private SpriteRenderer sprite;
         private Vector3 networkPosition;
         private Quaternion networkRotation;
+        private Camera _camera;
 
         private void Awake()
         {
@@ -49,10 +52,14 @@ namespace THNeonMirage.Manager
 
         private void Start()
         {
+            _camera = Camera.main;
             level = Registries.Get<Level>(LevelRegistry.Level);
             sprite = GetComponent<SpriteRenderer>();
 
-            var random = new Random();
+            canvas = Registries.GetObject(UIRegistry.Canvas);
+            m_transform = GetComponent<Transform>();
+            indexLabel = UIRegistry.IndexLabel.Instantiate(GetPointOnScreen(), Quaternion.identity, canvas.transform);
+            indexLabel.GetComponent<TextMeshProUGUI>().text = playerData.roundIndex.ToString();
         }
 
         public IEnumerator ExecuteAITask()
@@ -127,14 +134,21 @@ namespace THNeonMirage.Manager
         {
             for (var i = 0f; i < 1; i += 0.02f)
             {
-                transform.position = Vector3.Lerp(prevPos, nextPos, i);
+                m_transform.position = Vector3.Lerp(prevPos, nextPos, i);
+                indexLabel.transform.position = GetPointOnScreen();
+                
                 yield return new WaitForSeconds(0.02f);
             }
         }
 
+        public Vector3 GetPointOnScreen()
+        {
+            return _camera.WorldToScreenPoint(m_transform.position + Vector3.up + Vector3.right * 2);
+        }
+
         public void AIStartTurn()
         {
-            if (playerData.roundIndex != level.PlayerRound) return;
+            
         }
         
         public void AITossDice()
