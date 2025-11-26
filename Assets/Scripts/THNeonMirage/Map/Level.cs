@@ -30,7 +30,7 @@ namespace THNeonMirage.Map
             set => _playerRound = value > players.Count - 1 ? 0 : value;
         }
 
-        public GameClient client;
+        public ObsoleteGameClient client;
         public GameObject settingsPanel;
         public GameObject tilePrefab;
         public GameObject inGamePanel;

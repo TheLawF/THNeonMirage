@@ -20,7 +20,7 @@ namespace THNeonMirage.Map
         public string description;
         public Color backGroundColor;
         
-        public GameClient client;
+        public ObsoleteGameClient client;
         public FieldProperty Property;
         public PlayerManager Owner;
         public bool canPurchased;

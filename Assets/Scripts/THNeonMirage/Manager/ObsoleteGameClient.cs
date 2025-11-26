@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon;
@@ -19,10 +20,10 @@ using UnityEngine.UI;
 
 namespace THNeonMirage.Manager
 {
-    public class GameClient: GameBehaviourPunCallbacks
+    [Obsolete]
+    public class ObsoleteGameClient: GameBehaviourPunCallbacks
     {
         
-
         private void Start()
         {
             OnInstantiate += Initialize;

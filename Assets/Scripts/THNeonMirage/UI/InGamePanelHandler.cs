@@ -20,7 +20,7 @@ namespace THNeonMirage.UI
         public GameObject build;
         public GameObject mortgage;
         
-        public GameClient client;
+        public ObsoleteGameClient client;
         public PlayerManager player;
 
         private FieldTile field;
@@ -43,9 +43,8 @@ namespace THNeonMirage.UI
         {
             field = level.GetTile<FieldTile>(posIndex);
             inGamePanel.SetActive(true);
-
-            if (field.HasOwner()) Registries.GetObject(UIRegistry.PurchaseButton).SetActive(false);
-            else if (field.Owner.playerData.userName.Equals(player.playerData.userName))
+            
+            if (field.HasOwner() && field.Owner.playerData.userName.Equals(player.playerData.userName))
             {
                 Registries.GetObject(UIRegistry.PurchaseButton).SetActive(false);
                 cancel.SetActive(false);

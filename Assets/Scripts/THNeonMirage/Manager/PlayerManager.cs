@@ -35,7 +35,7 @@ namespace THNeonMirage.Manager
         public PlayerData playerData;
         public GameObject canvas;
 
-        [DisplayOnly] public GameLauncher database;
+        [DisplayOnly] public GameHost database;
 
         private Transform m_transform;
         private Vector3 prev_pos;

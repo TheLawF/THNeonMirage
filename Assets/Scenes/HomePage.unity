@@ -2563,8 +2563,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1499407948}
   m_HandleRect: {fileID: 1499407947}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 0.99999994
+  m_Value: 1
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2993,6 +2993,7 @@ GameObject:
   - component: {fileID: 667353104}
   - component: {fileID: 667353103}
   - component: {fileID: 667353106}
+  - component: {fileID: 667353107}
   m_Layer: 5
   m_Name: LobbyPanel
   m_TagString: Untagged
@@ -3110,6 +3111,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 415004362}
   buttonPrefab: {fileID: 7085691434504689125, guid: 76be5944a2c12ec4dac7186fbdeb946c, type: 3}
+--- !u!114 &667353107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 667353101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f45cff9946461f8ac9f0074e28078b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Panel
+    registryName: Lobby
 --- !u!1 &829709780
 GameObject:
   m_ObjectHideFlags: 0
@@ -3422,9 +3438,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cf394478fb04d078bf89826c8b57212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 9110736245687120657, guid: db4c84b7937087a4c96002f6fff8f6fc, type: 3}
+  playerInstance: {fileID: 0}
   usernameInput: {fileID: 923687462}
   passwordInput: {fileID: 1246560993}
+  gameVersion: 1.0
+  maxPlayersPerRoom: 4
+  player: {fileID: 0}
   host: {fileID: 6731911776157743711, guid: c6dc62aa85d6a7245b0bb71c48402139, type: 3}
   client: {fileID: 6696573588815281738, guid: f6ef1cf5c13aef44c9d0bd49c56e23fd, type: 3}
   hostUI: {fileID: 1991048500}
@@ -6263,6 +6282,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1322837131}
   m_CullTransparentMesh: 1
+--- !u!1 &1340313589 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4618540910981432031, guid: 1f9395c5521b7f948aee81322750527c, type: 3}
+  m_PrefabInstance: {fileID: 1862530995}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1340313594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340313589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 763f57f8386d450ca2f2a174ac8a027e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: 
+    registryName: 
 --- !u!1001 &1350984870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9301,6 +9340,21 @@ MonoBehaviour:
   textInput: {fileID: 253093371}
   confirmText: {fileID: 1988304779}
   cancelText: {fileID: 454096500}
+--- !u!114 &1862531005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862531001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f45cff9946461f8ac9f0074e28078b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Panel
+    registryName: JoinRoom
 --- !u!1 &1876376194
 GameObject:
   m_ObjectHideFlags: 0

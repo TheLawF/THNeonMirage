@@ -21,7 +21,7 @@ namespace THNeonMirage.UI
         public bool canRenderTooltip;
 
         public Level level;
-        public GameClient client;
+        public ObsoleteGameClient client;
         public GameObject inGamePanel;
 
         private bool shouldRenderTooltip;

@@ -27,11 +27,13 @@ namespace THNeonMirage
         
         public Level level;
         public List<GameObject> players;
-        
+
+        public GameObject lobby;
         public GameObject diceObj;
         public GameObject inGamePanelObj;
         public DiceHandler dice;
         public InGamePanelHandler inGamePanel;
+        public GameHost host;
 
         /// <summary>
         /// GameStart Clicked -> Disable Home Panel -> Enable Background -> Create Map -> Game Loop
@@ -42,8 +44,7 @@ namespace THNeonMirage
             InitAllFields();
             RegisterUIListeners();
         }
-
-
+        
         private void RegisterWhenSceneStart()
         {
             UIRegistry.RegisterTypes();
@@ -63,10 +64,13 @@ namespace THNeonMirage
             aboutButton = Registries.GetComponent<Button>(UIRegistry.AboutButton);
             balanceLabel = Registries.GetComponent<TMP_Text>(UIRegistry.BalanceText);
             level = Registries.GetComponent<Level>(LevelRegistry.Level);
-            
+
+            lobby = Registries.GetObject(UIRegistry.LobbyPanel);
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
             inGamePanel = inGamePanelObj.GetComponent<InGamePanelHandler>();
             random = new Random((uint)DateTime.Now.Millisecond);
+
+            host = Registries.GetComponent<GameHost>(UIRegistry.HostLauncher);
         }
 
         private void RegisterUIListeners()
@@ -78,10 +82,11 @@ namespace THNeonMirage
         {
             Registries.GetObject(UIRegistry.HomePage).SetActive(false);
             Registries.Tiles.Values.ToList().ForEach(go => go.SetActive(true));
-            
-            level.CreateLevel();
-            inGamePanelObj.SetActive(true);
 
+            lobby.SetActive(true);
+            host.Connect();
+            // level.CreateLevel();
+            // inGamePanelObj.SetActive(true);
             CreateEventListeningChain();
             
             CreatePlayer(false);
