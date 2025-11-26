@@ -155,8 +155,9 @@ namespace THNeonMirage.Manager
         {
             var random = new Random();
             var diceValue = random.Next(1, 7); 
-            SetPosIndex(playerData.position);
             var level = Registries.Get<Level>(LevelRegistry.Level);
+            
+            SetPosIndex(playerData.position + diceValue);
             level.GetTile<FieldTile>(playerData.position).OnPlayerStop(this, playerData.position, playerData.position);
         }
 

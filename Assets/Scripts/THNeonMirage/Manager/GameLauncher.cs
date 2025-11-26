@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using Fictology.UnityEditor;
 using MySql.Data.MySqlClient;
 using Photon.Pun;
 using Photon.Realtime;
@@ -13,14 +16,15 @@ using THNeonMirage.Util;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace THNeonMirage.Manager
 {
-    public class GameLauncher : MonoBehaviour
+    public class GameLauncher : MonoBehaviourPunCallbacks
     {
-        [NotNull]
-        private PlayerData player_data;
         private MySqlConnection connection;
         private DatabaseConnector connector;
         private DiceHandler dice;
@@ -33,9 +37,16 @@ namespace THNeonMirage.Manager
         private string port = "3306";			//MySQL服务的端口号
         
         [Header("用户信息")]
-        public GameObject playerPrefab;
+        public GameObject playerInstance;
         public TMP_InputField usernameInput;
         public TMP_InputField passwordInput;
+        
+        [Header("连接配置")]
+        public string gameVersion = "1.0";
+        public byte maxPlayersPerRoom = 4;
+        public ObservableList<RoomInfo> rooms = new ();
+
+        [DisplayOnly] public PlayerManager player;
 
         [Header("主机和客户端")]
         public GameObject host;
@@ -59,11 +70,18 @@ namespace THNeonMirage.Manager
         public GameObject progressPrefab;
         public GameObject content;
 
-        private Level game_map;
+        private Level level;
         private GameHost game_host;
         private GameClient game_client;
         private PlayerManager _playerManager;
+        
+        private bool isConnecting;
+        private GameObject bar_instance;
 
+        private void Awake()
+        {
+            gameManager = GameObject.Find("GameManager");
+        }
         private void Start()
         {
             dice = diceObject.GetComponent<DiceHandler>();
@@ -71,11 +89,19 @@ namespace THNeonMirage.Manager
             _user = new User(connector);
             Debug.Log("连接数据库成功");
         }
-
-
-        private void Awake()
+        
+        public void Connect()
         {
-            gameManager = GameObject.Find("GameManager");
+            PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
+            PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
+            PhotonNetwork.AutomaticallySyncScene = true;
+            PhotonNetwork.GameVersion = gameVersion;
+            isConnecting = PhotonNetwork.ConnectUsingSettings();
+            
+            progressPrefab.SetActive(true);
+            var bar = Instantiate(progressPrefab, new Vector3(0, 0, 0), Quaternion.identity, canvas.transform);
+            bar_instance = bar;
+            
         }
 
         // 注册
@@ -122,7 +148,7 @@ namespace THNeonMirage.Manager
             else
             {
                 var authorization = _user.Login(username, pwd);
-                player_data = authorization.PlayerData;
+                player.playerData = authorization.PlayerData;
                 switch (authorization.Status)
                 {
                     case Authorization.ConnectionStatus.LoginSuccess:
@@ -147,54 +173,8 @@ namespace THNeonMirage.Manager
                         break;
                 }
 
-                StartClient();
-                // if (Administrators.Exists(s => s.Equals(player_data.UserName))) StartHost();
-                // else StartClient();
+                Connect();
             }
-        }
-        
-        private void StartHost()
-        {
-            var hostInst = Instantiate(host);
-            game_host = hostInst.GetComponent<GameHost>();
-            InitClient();
-            hostUI.SetActive(true);
-        }
-        
-        private void StartClient()
-        {
-            var clientInst = Instantiate(client);
-            game_client = clientInst.GetComponent<GameClient>();
-            dice.client = game_client;
-            dice.inGamePanel = inGamePanel;
-            InitClient();
-        }
-
-        private void InitClient()
-        {
-            game_client = game_client.GetComponent<GameClient>();
-            game_map = gameManager.GetComponent<Level>();
-            game_map.client = game_client.GetComponent<GameClient>();
-            
-            dice.level = game_map;
-            
-            game_client.dice = dice;
-            game_client.level = game_map;
-            game_client.data = player_data;
-
-            game_client.canvas = canvas;
-            game_client.hudPanel = hudPanel;
-            game_client.lobbyPanel = lobbyPanel;
-            game_client.inGamePanel = inGamePanel;
-
-            game_client.buttonPrefab = buttonPrefab;
-            game_client.progressPrefab = progressPrefab;
-            game_client.balanceLabel = balanceLabel;
-            game_client.content = content;
-            game_client.Connect();
-            
-            homePanel.SetActive(false);
-            diceObject.SetActive(true);
         }
 
         public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);
@@ -203,13 +183,118 @@ namespace THNeonMirage.Manager
         public void AddAndJoinRoom()
         {
             var randomRoomId = $"{Utils.UniqueShuffle(1000, 9999, 25).Pop()}";
+            PhotonNetwork.LeaveRoom();
             PhotonNetwork.CreateRoom(randomRoomId, new RoomOptions { MaxPlayers = 4 });
+            PhotonNetwork.JoinRoom(randomRoomId);
         }
         
         public void ExitRoom() => PhotonNetwork.LeaveRoom();
         public void CopyRoomId() => GUIUtility.systemCopyBuffer = roomNameLabel.GetComponent<TMP_Text>().text;
         public void ShowInputRoomIdPanel() => joinRoomPanel.SetActive(true);
+        
+        protected GameObject Initialize<TArgs>(string prefabName, Vector3 pos, Quaternion rotation, TArgs arg5)
+        {
+            playerInstance = PhotonNetwork.Instantiate(prefabName, pos, rotation);
+            if (arg5 is not PlayerEventArgs args) return playerInstance;
+            lobbyPanel.SetActive(false);
+            inGamePanel.SetActive(true);
+            
+            var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
+            inGame.player = player;
+            
+            player = playerInstance.GetComponent<PlayerManager>();
+            player.level = level;
+            // playerManager.Instance = playerInstance;
+            
+            player.playerData.balance += 60_000;
 
+            return playerInstance;
+        }
+
+        
+        public override void OnConnectedToMaster()
+        {
+            if (!isConnecting) return;
+            PhotonNetwork.JoinRandomRoom();
+            Destroy(bar_instance);
+            
+            lobbyPanel.SetActive(true);
+            isConnecting = false;
+
+        }
+
+        // ReSharper disable Unity.PerformanceAnalysis
+        public override void OnJoinedRoom()
+        {
+            Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
+            hudPanel.SetActive(true);
+            CreatePlayer();
+
+            level.CreateLevel();
+            player.playerData.roundIndex = PhotonNetwork.CurrentRoom.Players.Keys.Count;
+            player.playerData.roundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
+            
+            level.Players.Add(PhotonNetwork.LocalPlayer);
+            level.PlayerInstances.Add(playerInstance);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "can_interact", "true" } });
+        }
+
+        public override void OnRoomListUpdate(List<RoomInfo> roomList)
+        {
+            // 添加或更新开放房间
+            foreach (var room in roomList.Where(r => r.IsOpen && !r.RemovedFromList)) {
+                if (!rooms.Contains(room)) 
+                    rooms.Add(room);
+                else {
+                    var index = rooms.IndexOf(room);
+                    rooms[index] = room;
+                }
+            }
+
+            // 更新UI
+            UpdateButtons();
+        }
+
+        private void UpdateButtons()
+        {
+            foreach (var room in rooms) {
+                var newButton = Instantiate(buttonPrefab, content.transform);
+                newButton.GetComponentInChildren<TMP_Text>().text = 
+                    $"房间名：{room.Name}  玩家：{room.PlayerCount}/{room.MaxPlayers}";
+                newButton.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Name));
+            }
+            AdjustContent(20); // 根据按钮高度调整
+        }
+        
+        public void JoinRoom(string roomName)
+        {
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                PhotonNetwork.JoinRoom(roomName);
+                inGamePanel.SetActive(true);
+            }
+            else Debug.LogWarning("未连接到 Photon，无法加入房间！");
+        }
+
+        
+        private void AdjustContent(int itemHeight)
+        {
+            var childCount = content.transform.childCount;
+            content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,  10 + childCount * itemHeight);
+        }
+        
+        public void CreatePlayer()
+        {
+            Initialize("playerObject", PlayerManager.GetPlayerPosByIndex(player.playerData.position), Quaternion.identity, new PlayerEventArgs(0));
+        }
+
+        public override void OnPlayerEnteredRoom(Player newPlayer)
+        {
+            // level.PlayerOrder.Add(newPlayer.ActorNumber);
+            level.PlayerInstances.Add(playerInstance);
+            level.players.Add(playerInstance.GetComponent<PlayerManager>());
+        }
+        
         public static string EncryptPassword(string password)
         {
             var crypt = new SHA256Managed();

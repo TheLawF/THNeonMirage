@@ -29,12 +29,6 @@ namespace THNeonMirage.Manager
         //     PhotonNetwork.ConnectUsingSettings();
         // }
 
-        public override void OnConnectedToMaster()
-        {
-            Debug.Log("服务器连接成功");
-            PhotonNetwork.JoinLobby();
-        }
-
         public override void OnJoinedLobby()
         {
             Debug.Log("已加入大厅，等待房间列表更新...");

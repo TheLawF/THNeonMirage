@@ -33,7 +33,7 @@ namespace THNeonMirage.Data
 
         private string GenerateNextInvitationCode()
         {
-            var random = new Random(165494150);
+            var random = new Random(DateTime.Now.Millisecond);
             return random.Next(1000,9999).ToString();
         }
         

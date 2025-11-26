@@ -39,7 +39,7 @@ namespace THNeonMirage.Data
                     Debug.Log("登录成功");
                     break;
                 case ConnectionStatus.UserNonExist:
-                    Debug.LogWarning("用户名已存在，请选择不同的用户名！");
+                    Debug.LogWarning("用户名不存在！");
                     break;
                 case ConnectionStatus.PasswordError:
                     Debug.LogWarning("用户名或者密码错误");
