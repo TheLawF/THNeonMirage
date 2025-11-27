@@ -56,7 +56,7 @@ namespace THNeonMirage.UI
 
         public void ContinueProgress()
         {
-            m_lockedAt = 0;
+            m_lockedAt = 2;
         }
 
         public void JumpToProgress(float jumpedAt) => m_jumpedAt = jumpedAt;

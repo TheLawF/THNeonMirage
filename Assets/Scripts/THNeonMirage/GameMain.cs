@@ -70,7 +70,7 @@ namespace THNeonMirage
             inGamePanel = inGamePanelObj.GetComponent<InGamePanelHandler>();
             random = new Random((uint)DateTime.Now.Millisecond);
 
-            host = Registries.GetComponent<GameHost>(UIRegistry.HostLauncher);
+            host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
         }
 
         private void RegisterUIListeners()

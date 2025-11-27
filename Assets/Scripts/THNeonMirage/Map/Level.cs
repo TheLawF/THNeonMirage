@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Fictology.Registry;
 using Photon.Pun;
@@ -31,8 +32,8 @@ namespace THNeonMirage.Map
         public GameObject settingsPanel;
         public GameObject tilePrefab;
         public GameObject inGamePanel;
-        
-        public ObservableList<Player> Players = new ();
+
+        public ConcurrentDictionary<int, GameObject> OnLinePlayers = new();
         public ObservableList<GameObject> PlayerInstances = new ();
         public List<GameObject> fields = new ();
         public List<PlayerManager> players = new ();

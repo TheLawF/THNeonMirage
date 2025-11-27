@@ -186,9 +186,29 @@ namespace THNeonMirage.Manager
             progressPrefab.SetActive(true);
             bar_instance = Instantiate(progressPrefab, new Vector3(0, 0, 0), Quaternion.identity, canvas.transform);
             progress = bar_instance.GetComponent<ProgressBarControl>();
-            progress.LockProgress(0.9F);
+            StartCoroutine(CheckConnectionLockProgress());
         }
-        
+
+        private IEnumerator CheckConnectionLockProgress()
+        {
+            switch (PhotonNetwork.NetworkClientState)
+            {
+                case ClientState.ConnectingToNameServer:
+                    progress.LockProgress(lockedAt: 0.7F);
+                    break;
+                case ClientState.ConnectedToNameServer:
+                    progress.ContinueProgress();
+                    break;
+                case ClientState.ConnectingToMasterServer:
+                    progress.LockProgress(lockedAt: 0.9F);
+                    break;
+                case ClientState.ConnectedToMasterServer:
+                    progress.ContinueProgress();
+                    break;
+            }
+
+            yield return null;
+        }
         
         public override void OnConnectedToMaster()
         {
@@ -245,7 +265,6 @@ namespace THNeonMirage.Manager
             player.playerData.roundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
             
             level.players.Add(player);
-            level.Players.Add(PhotonNetwork.LocalPlayer);
             level.PlayerInstances.Add(playerInstance);
             
             InitializeGame();
@@ -259,7 +278,7 @@ namespace THNeonMirage.Manager
             level.PlayerInstances.Add(playerObject);
             
             player.playerData.isBot = isBot;
-            player.playerData.roundIndex = PhotonNetwork.IsConnectedAndReady 
+            player.playerData.roundIndex = PhotonNetwork.IsConnectedAndReady
                 ? PhotonNetwork.LocalPlayer.ActorNumber
                 : level.PlayerInstances.IndexOf(playerObject);
             
@@ -273,6 +292,11 @@ namespace THNeonMirage.Manager
             
             Registries.GetObject(UIRegistry.DiceButton).SetActive(true);
             Registries.GetComponent<DiceHandler>(UIRegistry.DiceButton).player = player;
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Registries.Instance.RegisterNetworkInstances(playerObject.GetPhotonView(), playerObject);
+            }
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -565,7 +589,7 @@ namespace THNeonMirage.Manager
     {
         return playerOrder.Count;
     }
-    
+
     public int GetCurrentRound()
     {
         return currentRound;

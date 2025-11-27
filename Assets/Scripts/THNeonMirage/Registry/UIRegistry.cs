@@ -27,7 +27,6 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey LobbyText = Registries.CreateKey(LabelRootKey, nameof(LobbyText));
         public static readonly RegistryKey RoomIdText = Registries.CreateKey(LabelRootKey, nameof(RoomIdText));
 
-        public static readonly RegistryKey HostLauncher = Registries.CreateKey(PanelRootKey, "Launcher");
         public static readonly RegistryKey LobbyPanel = Registries.CreateKey(PanelRootKey, "Lobby");
         public static readonly RegistryKey CreateRoomDialogue = Registries.CreateKey(PanelRootKey, "CreateRoom");
         public static readonly RegistryKey InputRoomIdDialogue = Registries.CreateKey(PanelRootKey, "InputRoomId");

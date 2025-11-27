@@ -13,7 +13,7 @@ using Random = System.Random;
 
 namespace THNeonMirage.UI
 {
-    public class DiceHandler: MonoBehaviourPun, IPointerClickHandler
+    public class DiceHandler: MonoBehaviourPun, IPointerClickHandler, IPunObservable
     { 
         [DisplayOnly] public int DiceValue;
         public int pos;
@@ -21,19 +21,21 @@ namespace THNeonMirage.UI
         public bool canRenderTooltip;
 
         public Level level;
-        public ObsoleteGameClient client;
+        
+        public PlayerManager player;
         public GameObject inGamePanel;
 
+        private PhotonView m_view;
         private bool shouldRenderTooltip;
         private Random random = new();
         private TMP_Text foreground_text; 
-        public PlayerManager player;
 
         private void Start()
         {
             canInteract = true;
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
             level = Registries.Get<Level>(LevelRegistry.ClientLevel);
+            
         }
 
         private void OnGUI()
@@ -47,7 +49,12 @@ namespace THNeonMirage.UI
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
         {
-            
+            var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                if (!m_view.IsMine) return;
+                m_view.GetComponent<PlayerManager>();
+            }
             if (player.IsBot()) return;
             if (!player.IsMyTurn()) return;
             if (!player.CanMove())
@@ -69,5 +76,9 @@ namespace THNeonMirage.UI
         
         
         private new string ToString() => string.Concat(DiceValue);
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            
+        }
     }
 }

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Fictology.Registry;
+using Photon.Pun;
 using THNeonMirage.Map;
 using THNeonMirage.UI;
 using Unity.VisualScripting;
@@ -14,9 +16,11 @@ namespace THNeonMirage.Registry
     /// 对于唯一的游戏物体，例如已经添加在Hierarchy面板上的游戏物体，采取直接注册的方式
     /// 对于预制体和使用脚本创建和实例化的游戏物体，采取
     /// </summary>
-    public static class Registries
+    public class Registries
     {
         public static readonly List<Type> RegistryTypes = new();
+        public static readonly ConcurrentDictionary<int, List<GameObject>> NetworkInstances = new();
+        
         public static readonly Dictionary<string, List<RegistryKey>> RootKeys = new();
         private static readonly Dictionary<string, GameObject> Key2ObjectMap = new();
         private static readonly Dictionary<string, RegistryEntry> Key2EntryMap = new();
@@ -26,6 +30,15 @@ namespace THNeonMirage.Registry
         public static readonly Dictionary<GameButton, GameObject> Buttons = new();
         
         public static readonly Dictionary<FieldTile, GameObject> Tiles = new();
+
+        public static Registries Instance = new ();
+
+        public void RegisterNetworkInstances(PhotonView view, GameObject gameObject)
+        {
+            var containsId = NetworkInstances.ContainsKey(view.ViewID);
+            if (containsId) NetworkInstances[view.ViewID].Add(gameObject);
+            else NetworkInstances.TryAdd(view.ViewID, new List<GameObject>());
+        }
 
         public static RegistryKey CreateKey(string rootName, string registryName)
         {
