@@ -1,25 +1,27 @@
+using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Linq;
 using Fictology.Registry;
 using Fictology.UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Debug = UnityEngine.Debug;
 
 namespace THNeonMirage.UI
 {
     public class ProgressBarControl : RegistryEntry
     {
-        public float progress;
-        public float startTime;
+        private float m_progress;
+        private float m_lockedAt;
+        private float m_jumpedAt = -1;
 
-        [DisplayOnly] public bool shouldLockProgress = false;
         public GameObject progressObj;
         private RectTransform rect_transform;
         private RectTransform parent_transform;
 
         private Stopwatch stop_watch;
         public static readonly float Timeout = 20;
-        public static readonly float[] Ratio = { 0.2f, 0.5f, 0.8f, 0.95f };
         private void Start()
         {
             rect_transform = GetComponent<RectTransform>();
@@ -28,9 +30,17 @@ namespace THNeonMirage.UI
             
             stop_watch = new Stopwatch();
             stop_watch.Start();
-            
         }
-        
+
+        private void Update()
+        {
+            Debug.Log("Prog: " + m_progress + ", " + "Lock: " + m_lockedAt);
+            if (m_progress > 1) Destroy(progressObj);
+            m_progress = Time.time / Timeout;
+            if (ShouldLockProgress()) return;
+            rect_transform.sizeDelta = new Vector2(parent_transform.rect.width * m_progress * 2, 20);
+        }
+
         // private IEnumerator CheckUpdateProgress()
         // {
         //     UpdateProgress();
@@ -41,26 +51,15 @@ namespace THNeonMirage.UI
         //     }
         // }
 
-        private void Update()
+        public bool ShouldLockProgress() => m_lockedAt <= m_progress;
+        public void LockProgress(float lockedAt) => m_lockedAt = lockedAt;
+        
+
+        public void ContinueProgress()
         {
-            
-            progress = Time.time / Timeout;
-            var deltaProgress = Time.deltaTime / Timeout;
-            rect_transform.sizeDelta += new Vector2(parent_transform.rect.width * 2 * deltaProgress, 0);
+            m_lockedAt = 0;
         }
 
-        private IEnumerator UpdateProgress()
-        {
-            if (shouldLockProgress) yield break;
-            progress = Time.time / Timeout;
-            var deltaProgress = Time.deltaTime / Timeout;
-            rect_transform.sizeDelta += new Vector2(parent_transform.rect.width * 2 * deltaProgress, 0);
-            yield return new WaitForSeconds(0.1F);
-        }
-        
-        public void LockProgress()
-        {
-            shouldLockProgress = true;
-        }
+        public void JumpToProgress(float jumpedAt) => m_jumpedAt = jumpedAt;
     }
 }

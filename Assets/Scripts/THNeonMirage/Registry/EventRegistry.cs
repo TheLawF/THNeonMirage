@@ -19,5 +19,7 @@ namespace THNeonMirage.Registry
 
         public static readonly EventKey OnPositionChanged = new EventKey("OnPositionChanged",
             typeof(PlayerManager), typeof(int), typeof(int));
+
+        public static readonly EventKey OnRoundStarted = new EventKey(nameof(OnRoundStarted));
     }
 }

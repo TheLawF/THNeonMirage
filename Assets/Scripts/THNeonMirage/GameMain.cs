@@ -88,12 +88,6 @@ namespace THNeonMirage
             // level.CreateLevel();
             // inGamePanelObj.SetActive(true);
             CreateEventListeningChain();
-            
-            CreatePlayer(false);
-            CreatePlayer(true);
-            CreatePlayer(true);
-            CreatePlayer(true);
-            
             level.players.AddRange(players.Select(obj => obj.GetComponent<PlayerManager>()));
         }
 
@@ -119,6 +113,7 @@ namespace THNeonMirage
             dice = diceObj.GetComponent<DiceHandler>();
             dice.player = player;
         }
+        
         
         
         public void CreateEventListeningChain()

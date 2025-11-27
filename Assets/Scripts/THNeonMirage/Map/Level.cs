@@ -21,9 +21,6 @@ namespace THNeonMirage.Map
     [Serializable]
     public class Level : RegistryEntry
     {
-        public event ScriptEventHandler<ValueEventArgs> RoundEnd;
-        public event ScriptEventHandler<ValueEventArgs> RoundStart;
-        public GameObject dice;
         public int PlayerRound
         {
             get => _playerRound;
@@ -34,17 +31,11 @@ namespace THNeonMirage.Map
         public GameObject settingsPanel;
         public GameObject tilePrefab;
         public GameObject inGamePanel;
-        public SpriteRenderer sprite;
-
-        public int countdownSeconds = 30;
-        public TMP_Text countdownText;
-        public TMP_Text infoText;
         
         public ObservableList<Player> Players = new ();
         public ObservableList<GameObject> PlayerInstances = new ();
         public List<GameObject> fields = new ();
         public List<PlayerManager> players = new ();
-        public static string CurrentPlayerId;
 
         private Transform m_transform;
         private const float Side = 10;
@@ -133,18 +124,14 @@ namespace THNeonMirage.Map
             Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
             fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             inGamePanel.GetComponent<InGamePanelHandler>().client = client;
+            var hud = Registries.GetObject(UIRegistry.HUD);
+            hud.SetActive(true);
         }
 
         private void Update()
         {
             if (Input.GetKey(KeyCode.Escape)) settingsPanel.SetActive(true);
         }
-
-        private void MovePlayerOnDiceClick()
-        {
-            
-        }
-        
 
         private void StartCountdown(MonoBehaviour monoBehaviour, ValueEventArgs args)
         {
@@ -230,15 +217,19 @@ namespace THNeonMirage.Map
         {
             return fields[index].GetComponent<TTile>();
         }
-        
-        public void StartTurn()
-        {
-            RoundStart?.Invoke(this, new ValueEventArgs(PlayerRound));
-        }
-        
+
         public void NextTurn()
         {
             PlayerRound++;
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                var currentOnlinePlayer = PhotonNetwork.PlayerList[PlayerRound];
+                if (PhotonNetwork.LocalPlayer == currentOnlinePlayer)
+                {
+                    
+                }
+                return;
+            }
             var currentRoundPlayer = players[PlayerRound];
             if (currentRoundPlayer.playerData.isBot)
             {

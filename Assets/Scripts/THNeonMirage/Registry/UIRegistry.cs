@@ -23,6 +23,8 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey DescriptionText = Registries.CreateKey(LabelRootKey, "DescriptionText");
         public static readonly RegistryKey PurchaseText = Registries.CreateKey(LabelRootKey, nameof(PurchaseText));
         public static readonly RegistryKey TollText = Registries.CreateKey(LabelRootKey, "TollText");
+
+        public static readonly RegistryKey LobbyText = Registries.CreateKey(LabelRootKey, nameof(LobbyText));
         public static readonly RegistryKey RoomIdText = Registries.CreateKey(LabelRootKey, nameof(RoomIdText));
 
         public static readonly RegistryKey HostLauncher = Registries.CreateKey(PanelRootKey, "Launcher");

@@ -177,7 +177,7 @@ namespace THNeonMirage.Util
         public static int Error(string error) => OfError(error).Invoke(error);
         public static int Act<T>(Action<T> action, T parameter) => OfAction(action, parameter).Invoke(action);
 
-        public static Stack<int> UniqueShuffle(int min, int max, int count) {
+        public static Stack<int> Shuffle(int min, int max, int count) {
             if (count <= 0 || max <= min || count > max - min + 1)
                 throw new ArgumentException("参数无效。");
 

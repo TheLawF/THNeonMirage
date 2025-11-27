@@ -5,8 +5,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using Fictology.Registry;
 using Fictology.UnityEditor;
+using FlyRabbit.EventCenter;
 using MySql.Data.MySqlClient;
 using Photon.Pun;
 using Photon.Realtime;
@@ -22,6 +24,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage.Manager
 {
@@ -59,16 +62,37 @@ namespace THNeonMirage.Manager
         public GameObject inGamePanel;
         
         [Header("UI预制体")]
-        public GameObject diceObject;
         public GameObject buttonPrefab;
         public GameObject progressPrefab;
         public GameObject content;
 
         private Level level;
         private PlayerManager _playerManager;
+        public TMP_Text lobbyText;
         
         public bool isConnecting;
         private GameObject bar_instance;
+        private ProgressBarControl progress;
+        
+        public GameState currentState = GameState.WaitingForPlayers;
+        public int currentTurnPlayerId = -1;
+        public int currentRound = 0;
+        public float turnTimeLimit = 30f; // 每回合时间限制
+    
+        // 玩家顺序列表
+        private List<int> playerOrder = new ();
+        private int currentPlayerIndex = 0;
+    
+        // 事件委托
+        public Action<int> OnTurnChanged;
+        public Action<int> OnRoundStarted;
+        public Action OnGameStarted;
+    
+        // 房间属性键
+        private const string ROOM_CURRENT_TURN = "CurrentTurn";
+        private const string ROOM_CURRENT_ROUND = "CurrentRound";
+        private const string ROOM_GAME_STATE = "GameState";
+        private const string ROOM_PLAYER_ORDER = "PlayerOrder";
 
         private void Start()
         {
@@ -77,19 +101,7 @@ namespace THNeonMirage.Manager
             Debug.Log("连接数据库成功");
         }
         
-        public void Connect()
-        {
-            PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
-            PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
-            PhotonNetwork.AutomaticallySyncScene = true;
-            PhotonNetwork.GameVersion = gameVersion;
-            isConnecting = PhotonNetwork.ConnectUsingSettings();
-            
-            progressPrefab.SetActive(true);
-            var bar = Instantiate(progressPrefab, new Vector3(0, 0, 0), Quaternion.identity, canvas.transform);
-            bar_instance = bar;
-        }
-
+        
         // 注册
         public void Register()
         {
@@ -162,13 +174,49 @@ namespace THNeonMirage.Manager
                 Connect();
             }
         }
+        
+        public void Connect()
+        {
+            level = Registries.Get<Level>(LevelRegistry.Level);
+            lobbyText = Registries.GetComponent<TMP_Text>(UIRegistry.LobbyText);
+            lobbyText.text = "加载中...";
+            
+            PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
+            PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
+            PhotonNetwork.AutomaticallySyncScene = true;
+            PhotonNetwork.GameVersion = gameVersion;
+            isConnecting = PhotonNetwork.ConnectUsingSettings();
+            
+            progressPrefab.SetActive(true);
+            bar_instance = Instantiate(progressPrefab, new Vector3(0, 0, 0), Quaternion.identity, canvas.transform);
+            progress = bar_instance.GetComponent<ProgressBarControl>();
+            progress.LockProgress(0.9F);
+        }
+        
+        
+        public override void OnConnectedToMaster()
+        {
+            if (!isConnecting) return;
+            PhotonNetwork.JoinLobby();
+            
+            progress.ContinueProgress();
+            var addRoom = Registries.GetObject(UIRegistry.AddRoomButton);
+            var joinRoom = Registries.GetObject(UIRegistry.JoinRoomButton);
+            lobbyText.text = "游戏大厅";
+            
+            addRoom.SetActive(true);
+            joinRoom.SetActive(true);
+            
+            lobbyPanel.SetActive(true);
+            isConnecting = false;
+        }
 
         public Authorization SaveAll(PlayerData playerData) => _user.Update(playerData);
         public void Save(string username, string columnName, object data) => _user.Save(username, columnName, data);
         
         public void AddAndJoinRoom()
         {
-            var randomRoomId = $"{Utils.UniqueShuffle(1000, 9999, 25).Pop()}";
+            var randomRoomId = $"{Utils.Shuffle(1000, 9999, 25).Pop()}";
             PhotonNetwork.CreateRoom(randomRoomId, new RoomOptions { MaxPlayers = 4 });
             PhotonNetwork.JoinRoom(randomRoomId);
         }
@@ -177,40 +225,13 @@ namespace THNeonMirage.Manager
         public void CopyRoomId()
         {
             var roomIdText = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.RoomIdText);
-            GUIUtility.systemCopyBuffer = roomIdText.text;
+            var pattern = @"[\u200B-\u200D\uFEFF]";
+            var s = Regex.Replace(roomIdText.text, pattern, "");
+            GUIUtility.systemCopyBuffer = s.Replace("房间号：", "");
         }
 
         public void ShowInputRoomIdPanel() => joinRoomPanel.SetActive(true);
         
-        protected GameObject Initialize<TArgs>(string prefabName, Vector3 pos, Quaternion rotation, TArgs arg5)
-        {
-            playerInstance = PhotonNetwork.Instantiate(prefabName, pos, rotation);
-            if (arg5 is not PlayerEventArgs args) return playerInstance;
-            lobbyPanel.SetActive(false);
-            inGamePanel.SetActive(true);
-            
-            var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
-            inGame.player = player;
-            
-            player = playerInstance.GetComponent<PlayerManager>();
-            player.level = level;
-            // playerManager.Instance = playerInstance;
-            
-            player.playerData.balance += 60_000;
-            return playerInstance;
-        }
-
-        
-        public override void OnConnectedToMaster()
-        {
-            if (!isConnecting) return;
-            PhotonNetwork.JoinLobby();
-            Destroy(bar_instance);
-            
-            lobbyPanel.SetActive(true);
-            isConnecting = false;
-        }
-
         // ReSharper disable Unity.PerformanceAnalysis
         public override void OnJoinedRoom()
         {
@@ -224,12 +245,35 @@ namespace THNeonMirage.Manager
             
             // CreatePlayer();
             level.CreateLevel();
-            player.playerData.roundIndex = PhotonNetwork.CurrentRoom.Players.Keys.Count;
+            CreateOnlinePlayer(false);
             player.playerData.roundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
             
+            level.players.Add(player);
             level.Players.Add(PhotonNetwork.LocalPlayer);
             level.PlayerInstances.Add(playerInstance);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(new Hashtable { { "can_interact", "true" } });
+            
+            InitializeGame();
+        }
+        
+        public void CreateOnlinePlayer(bool isBot)
+        {
+            // var playerObject = LevelRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
+            var playerObject = PhotonNetwork.Instantiate(LevelRegistry.Player.PrefabPath, PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
+            player = playerObject.GetComponent<PlayerManager>();
+            level.PlayerInstances.Add(playerObject);
+            
+            player.playerData.isBot = isBot;
+            player.playerData.roundIndex = level.PlayerInstances.IndexOf(playerObject);
+            var random = new Random((uint)DateTime.Now.Millisecond);
+            var sprite = player.GetComponent<SpriteRenderer>();
+            sprite.color = new Color(random.NextFloat(0, 1), random.NextFloat(0, 1), random.NextFloat(0, 1));
+            
+            if (isBot) return;
+            EventCenter.TriggerEvent(EventRegistry.OnBalanceChanged, player, player.playerData.balance, player.playerData.balance);
+            Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel).player = player;
+            
+            Registries.GetObject(UIRegistry.DiceButton).SetActive(true);
+            Registries.GetComponent<DiceHandler>(UIRegistry.DiceButton).player = player;
         }
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
@@ -257,25 +301,281 @@ namespace THNeonMirage.Manager
             }
             else Debug.LogWarning("未连接到 Photon，无法加入房间！");
         }
-        
-        public void CreatePlayer()
-        {
-            Initialize("playerObject", PlayerManager.GetPlayerPosByIndex(player.playerData.position), Quaternion.identity, new PlayerEventArgs(0));
-        }
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            // level.PlayerOrder.Add(newPlayer.ActorNumber);
-            level.PlayerInstances.Add(playerInstance);
-            level.players.Add(playerInstance.GetComponent<PlayerManager>());
+            if (PhotonNetwork.IsMasterClient)
+            {
+                // 主客户端更新玩家列表
+                UpdatePlayerOrder();
+                SyncGameState();
+            }
         }
+        
+        public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Debug.Log($"玩家 {otherPlayer.ActorNumber} 离开了房间");
+        
+        if (PhotonNetwork.IsMasterClient)
+        {
+            HandlePlayerLeft(otherPlayer.ActorNumber);
+        }
+    }
+    
+    private void InitializeGame()
+    {
+        if (PhotonNetwork.IsMasterClient) InitializeRoomProperties();
+        else SyncFromRoomProperties();
+        lobbyPanel.SetActive(false);
+    }
+    
+    private void InitializeRoomProperties()
+    {
+        // 初始化玩家顺序
+        UpdatePlayerOrder();
+        
+        // 设置初始房间属性
+        Hashtable initialProps = new Hashtable();
+        initialProps[ROOM_GAME_STATE] = (int)GameState.WaitingForPlayers;
+        initialProps[ROOM_CURRENT_TURN] = 0;
+        initialProps[ROOM_CURRENT_ROUND] = 1;
+        initialProps[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
+        
+        PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
+        
+        // 检查是否所有玩家已准备好，开始游戏
+        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) // 假设至少需要2名玩家
+        {
+            StartGame();
+        }
+    }
+    
+    private void UpdatePlayerOrder()
+    {
+        playerOrder.Clear();
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            playerOrder.Add(player.ActorNumber);
+        }
+        playerOrder.Sort(); // 简单的按ActorNumber排序，可根据需要自定义
+    }
+    
+    [PunRPC]
+    public void StartGame()
+    {
+        currentRound = 1;
+        currentPlayerIndex = 0;
+        currentTurnPlayerId = playerOrder[currentPlayerIndex];
+        
+        // 更新房间属性
+        Hashtable props = new Hashtable();
+        props[ROOM_GAME_STATE] = (int)GameState.PlayerTurn;
+        props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
+        props[ROOM_CURRENT_ROUND] = currentRound;
+        props[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
+        
+        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+        
+        currentState = GameState.PlayerTurn;
+        OnGameStarted?.Invoke();
+        StartTurn();
+        
+        Debug.Log($"游戏开始！第{currentRound}轮，玩家{currentTurnPlayerId}的回合");
+    }
+    
+    private void StartTurn()
+    {
+        if (PhotonNetwork.LocalPlayer.ActorNumber == currentTurnPlayerId)
+        {
+            // 当前玩家回合的逻辑
+            Debug.Log("这是你的回合！");
+            StartCoroutine(TurnTimer());
+        }
+        
+        OnTurnChanged?.Invoke(currentTurnPlayerId);
+    }
+    
+    private IEnumerator TurnTimer()
+    {
+        float timeLeft = turnTimeLimit;
+        
+        while (timeLeft > 0 && currentTurnPlayerId == PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            timeLeft -= Time.deltaTime;
+            // UIManager.Instance.UpdateTurnTimer(timeLeft); // 更新UI
+            
+            if (timeLeft <= 0)
+            {
+                // 时间到，自动结束回合
+                EndTurn();
+            }
+            yield return null;
+        }
+    }
+    
+    // 玩家结束回合
+    public void EndTurn()
+    {
+        if (PhotonNetwork.LocalPlayer.ActorNumber != currentTurnPlayerId)
+        {
+            Debug.LogWarning("不是你的回合！");
+            return;
+        }
+        
+        photonView.RPC("RPC_EndTurn", RpcTarget.MasterClient);
+    }
+    
+    [PunRPC]
+    private void RPC_EndTurn()
+    {
+        if (!PhotonNetwork.IsMasterClient) return;
+        
+        // 切换到下一个玩家
+        currentPlayerIndex++;
+        
+        // 检查是否一轮结束
+        if (currentPlayerIndex >= playerOrder.Count)
+        {
+            currentPlayerIndex = 0;
+            currentRound++;
+            OnRoundStarted?.Invoke(currentRound);
+        }
+        
+        currentTurnPlayerId = playerOrder[currentPlayerIndex];
+        
+        // 更新房间属性
+        var props = new Hashtable();
+        props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
+        props[ROOM_CURRENT_ROUND] = currentRound;
+        
+        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+        
+        // 通知所有客户端开始新回合
+        photonView.RPC("RPC_StartNewTurn", RpcTarget.All, currentTurnPlayerId, currentRound);
+    }
+    
+    [PunRPC]
+    private void RPC_StartNewTurn(int playerId, int round)
+    {
+        currentTurnPlayerId = playerId;
+        currentRound = round;
+        StartTurn();
+        
+        Debug.Log($"第{currentRound}轮，玩家{currentTurnPlayerId}的回合开始");
+    }
+    
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        // 同步房间属性变化
+        if (propertiesThatChanged.TryGetValue(ROOM_GAME_STATE, out var state))
+        {
+            currentState = (GameState)(int)state;
+        }
+        
+        if (propertiesThatChanged.TryGetValue(ROOM_CURRENT_TURN, out var playerIndex))
+        {
+            int newTurnPlayer = (int)playerIndex;
+            if (newTurnPlayer != currentTurnPlayerId)
+            {
+                currentTurnPlayerId = newTurnPlayer;
+                OnTurnChanged?.Invoke(currentTurnPlayerId);
+            }
+        }
+        
+        if (propertiesThatChanged.TryGetValue(ROOM_CURRENT_ROUND, out var round))
+        {
+            currentRound = (int)round;
+        }
+        
+        if (propertiesThatChanged.TryGetValue(ROOM_PLAYER_ORDER, out var order))
+        {
+            playerOrder = new List<int>((int[])order);
+        }
+    }
+    
+    private void SyncFromRoomProperties()
+    {
+        // 从房间属性同步当前状态
+        Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
+        
+        if (roomProps.TryGetValue(ROOM_GAME_STATE, out var state))
+        {
+            currentState = (GameState)(int)state;
+        }
+        
+        if (roomProps.TryGetValue(ROOM_CURRENT_TURN, out var playerIndex))
+        {
+            currentTurnPlayerId = (int)playerIndex;
+        }
+        
+        if (roomProps.TryGetValue(ROOM_CURRENT_ROUND, out var round))
+        {
+            currentRound = (int)round;
+        }
+        
+        if (roomProps.TryGetValue(ROOM_PLAYER_ORDER, out var order))
+        {
+            playerOrder = new List<int>((int[])order);
+        }
+    }
+    
+    private void HandlePlayerLeft(int leftPlayerId)
+    {
+        // 移除离开的玩家
+        playerOrder.Remove(leftPlayerId);
+        
+        if (playerOrder.Count == 0)
+        {
+            // 所有玩家都离开了
+            currentState = GameState.GameOver;
+            return;
+        }
+        
+        // 调整当前玩家索引
+        if (currentTurnPlayerId == leftPlayerId)
+        {
+            // 如果离开的玩家是当前回合玩家，切换到下一个玩家
+            RPC_EndTurn();
+        }
+        else
+        {
+            // 更新玩家顺序
+            currentPlayerIndex = playerOrder.IndexOf(currentTurnPlayerId);
+            SyncGameState();
+        }
+    }
+    
+    private void SyncGameState()
+    {
+        Hashtable props = new Hashtable();
+        props[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
+        props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
+        props[ROOM_CURRENT_ROUND] = currentRound;
+        
+        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+    }
+    
+    // 工具方法
+    public bool IsMyTurn()
+    {
+        return PhotonNetwork.LocalPlayer.ActorNumber == currentTurnPlayerId;
+    }
+    
+    public int GetPlayerCount()
+    {
+        return playerOrder.Count;
+    }
+    
+    public int GetCurrentRound()
+    {
+        return currentRound;
+    }
         
         private void AdjustContent(int itemHeight)
         {
             var childCount = content.transform.childCount;
             content.GetComponent<RectTransform>().sizeDelta = new Vector2(0,  10 + childCount * itemHeight);
         }
-        
         
         private void UpdateButtons()
         {
@@ -298,6 +598,14 @@ namespace THNeonMirage.Manager
                 hash.Append(theByte.ToString("x2"));
             }
             return hash.ToString();
+        }
+        
+        public enum GameState
+        {
+            WaitingForPlayers,
+            PlayerTurn,
+            RoundEnd,
+            GameOver
         }
     }
 }
