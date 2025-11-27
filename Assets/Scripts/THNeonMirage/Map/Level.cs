@@ -36,6 +36,7 @@ namespace THNeonMirage.Map
         public ObservableList<GameObject> PlayerInstances = new ();
         public List<GameObject> fields = new ();
         public List<PlayerManager> players = new ();
+        public GameHost host;
 
         private Transform m_transform;
         private const float Side = 10;
@@ -113,8 +114,6 @@ namespace THNeonMirage.Map
         
         private void Start()
         {
-            Players = new ObservableList<Player>();
-            fields = new List<GameObject>();
             m_transform = GetComponent<Transform>();
             PlayerRound = 1;
         }

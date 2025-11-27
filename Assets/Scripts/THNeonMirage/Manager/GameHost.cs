@@ -1,12 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using Fictology.Registry;
 using Fictology.UnityEditor;
 using FlyRabbit.EventCenter;
 using MySql.Data.MySqlClient;
@@ -18,10 +16,8 @@ using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using THNeonMirage.Util;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Random = Unity.Mathematics.Random;
@@ -177,7 +173,7 @@ namespace THNeonMirage.Manager
         
         public void Connect()
         {
-            level = Registries.Get<Level>(LevelRegistry.Level);
+            level = Registries.Get<Level>(LevelRegistry.ClientLevel);
             lobbyText = Registries.GetComponent<TMP_Text>(UIRegistry.LobbyText);
             lobbyText.text = "加载中...";
             
@@ -263,7 +259,10 @@ namespace THNeonMirage.Manager
             level.PlayerInstances.Add(playerObject);
             
             player.playerData.isBot = isBot;
-            player.playerData.roundIndex = level.PlayerInstances.IndexOf(playerObject);
+            player.playerData.roundIndex = PhotonNetwork.IsConnectedAndReady 
+                ? PhotonNetwork.LocalPlayer.ActorNumber
+                : level.PlayerInstances.IndexOf(playerObject);
+            
             var random = new Random((uint)DateTime.Now.Millisecond);
             var sprite = player.GetComponent<SpriteRenderer>();
             sprite.color = new Color(random.NextFloat(0, 1), random.NextFloat(0, 1), random.NextFloat(0, 1));
@@ -307,6 +306,7 @@ namespace THNeonMirage.Manager
             if (PhotonNetwork.IsMasterClient)
             {
                 // 主客户端更新玩家列表
+                CreateOnlinePlayer(false);
                 UpdatePlayerOrder();
                 SyncGameState();
             }

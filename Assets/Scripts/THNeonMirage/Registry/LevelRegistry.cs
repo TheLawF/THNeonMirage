@@ -10,7 +10,8 @@ namespace THNeonMirage.Registry
         public const string LevelRootKey = "Level";
         public const string TileRootKey = "Tile";
         public const string PlayerRootKey = "Player";
-        public static readonly RegistryKey Level = Registries.CreateKey(LevelRootKey, "MainLevel");
+        public static readonly RegistryKey ClientLevel = Registries.CreateKey(LevelRootKey, "ClientLevel");
+        public static readonly RegistryKey ServerLevel = Registries.CreateKey(LevelRootKey, nameof(ServerLevel));
         public static readonly RegistryKey Tile = Registries.CreateKey(TileRootKey, "Tile");
         public static readonly PrefabType Player = Registries.CreateType("Prefabs/PlayerObject");
         public static readonly PrefabType TilePrefab = Registries.CreateType("Prefabs/TilePrefab");

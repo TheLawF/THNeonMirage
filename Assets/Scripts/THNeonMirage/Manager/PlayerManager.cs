@@ -53,7 +53,7 @@ namespace THNeonMirage.Manager
         private void Start()
         {
             _camera = Camera.main;
-            level = Registries.Get<Level>(LevelRegistry.Level);
+            level = Registries.Get<Level>(LevelRegistry.ClientLevel);
             sprite = GetComponent<SpriteRenderer>();
 
             canvas = Registries.GetObject(UIRegistry.Canvas);
@@ -100,7 +100,15 @@ namespace THNeonMirage.Manager
         }
 
         public bool CanMove() => playerData.pauseCount <= 0;
-        public bool IsMyTurn() => playerData.roundIndex == level.PlayerRound;
+
+        public bool IsMyTurn()
+        {
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                return playerData.roundIndex == PhotonNetwork.LocalPlayer.ActorNumber;
+            }
+            return playerData.roundIndex == level.PlayerRound;
+        }
         public bool IsBot() => playerData.isBot;
         public Authorization SaveAll(PlayerData playerData) => database.SaveAll(playerData);
         public void Save(string columnName, object data) => database.Save(playerData.userName, columnName, data);
@@ -155,7 +163,7 @@ namespace THNeonMirage.Manager
         {
             var random = new Random();
             var diceValue = random.Next(1, 7); 
-            var level = Registries.Get<Level>(LevelRegistry.Level);
+            var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
             
             SetPosIndex(playerData.position + diceValue);
             level.GetTile<FieldTile>(playerData.position).OnPlayerStop(this, playerData.position, playerData.position);

@@ -88,7 +88,7 @@ namespace THNeonMirage.Map
             // spriteRenderer.color = new Color(backGroundColor.r, backGroundColor.g, backGroundColor.b, 0.85f);
             
             var inGame = inGamePanel.GetComponent<InGamePanelHandler>();
-            var gameLevel = Registries.Get<Level>(LevelRegistry.Level);
+            var gameLevel = Registries.Get<Level>(LevelRegistry.ClientLevel);
             inGame.TrySetTexts(gameLevel, index);
             inGame.UpdateUI(gameLevel, index);
         }

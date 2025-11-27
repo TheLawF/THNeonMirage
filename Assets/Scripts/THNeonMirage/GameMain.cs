@@ -63,7 +63,7 @@ namespace THNeonMirage
             startButton = Registries.GetComponent<Button>(UIRegistry.StartButton);
             aboutButton = Registries.GetComponent<Button>(UIRegistry.AboutButton);
             balanceLabel = Registries.GetComponent<TMP_Text>(UIRegistry.BalanceText);
-            level = Registries.GetComponent<Level>(LevelRegistry.Level);
+            level = Registries.GetComponent<Level>(LevelRegistry.ClientLevel);
 
             lobby = Registries.GetObject(UIRegistry.LobbyPanel);
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
@@ -113,8 +113,6 @@ namespace THNeonMirage
             dice = diceObj.GetComponent<DiceHandler>();
             dice.player = player;
         }
-        
-        
         
         public void CreateEventListeningChain()
         {
@@ -181,5 +179,6 @@ namespace THNeonMirage
                 }
             }
         }
+        
     }
 }

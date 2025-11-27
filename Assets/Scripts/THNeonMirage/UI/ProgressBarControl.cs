@@ -34,7 +34,6 @@ namespace THNeonMirage.UI
 
         private void Update()
         {
-            Debug.Log("Prog: " + m_progress + ", " + "Lock: " + m_lockedAt);
             if (m_progress > 1) Destroy(progressObj);
             m_progress = Time.time / Timeout;
             if (ShouldLockProgress()) return;

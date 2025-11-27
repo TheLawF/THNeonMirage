@@ -33,7 +33,7 @@ namespace THNeonMirage.UI
         {
             canInteract = true;
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
-            level = Registries.Get<Level>(LevelRegistry.Level);
+            level = Registries.Get<Level>(LevelRegistry.ClientLevel);
         }
 
         private void OnGUI()
@@ -47,6 +47,7 @@ namespace THNeonMirage.UI
         public void OnMouseExit() => shouldRenderTooltip = false;
         public void OnPointerClick(PointerEventData eventData)
         {
+            
             if (player.IsBot()) return;
             if (!player.IsMyTurn()) return;
             if (!player.CanMove())
