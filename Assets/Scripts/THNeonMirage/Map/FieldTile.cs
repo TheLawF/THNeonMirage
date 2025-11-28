@@ -61,7 +61,7 @@ namespace THNeonMirage.Map
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
 
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerPassBy);
-            EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerStop);
+            EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnPositionChanged, OnPlayerStopAt);
         }
 
         public int CurrentTolls()
@@ -103,7 +103,7 @@ namespace THNeonMirage.Map
 
         public bool HasOwner() => Owner is not null;
         
-        public virtual void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
+        public virtual void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
             if (!IsTileValid(currentPos)) return;
             if (!HasOwner())return;
@@ -113,11 +113,20 @@ namespace THNeonMirage.Map
             player.SetBalance(player.playerData.balance - CurrentTolls());
             Owner.SetBalance(Owner.playerData.balance + CurrentTolls());
         }
-
+        public virtual void OnPlayerStopRPC(PhotonView view, int prevPos, int currentPos)
+        {
+            if (!IsTileValid(currentPos)) return;
+            if (!HasOwner())return;
+            
+        }
+        
         public virtual void OnPlayerPassBy(PlayerManager player, int prevPosition, int currentPosition)
         {
         }
 
+        public virtual void OnPlayerPassByRPC(PlayerManager player, int prevPosition, int currentPosition)
+        {
+        }
 
         protected bool NextBool() => new System.Random().Next(1, 2) == 1;
         protected int NextInt(int min, int max) => new System.Random().Next(min, max);
@@ -128,11 +137,17 @@ namespace THNeonMirage.Map
         [PunRPC]
         public void SendEventToMaster()
         {
-            var type = typeof(FieldTile);
-            var method = type.GetMethod(nameof(OnPlayerStop));
-            if (method == null)return;
-            View.RPC("RegisterEventOnMaster", RpcTarget.All, EventRegistry.OnPositionChanged, 
-                Delegate.CreateDelegate(type, method));
+            var type = GetType();
+            var onPlayerStop = GetType().GetMethod(nameof(OnPlayerStopRPC));
+            var onPlayerPass = GetType().GetMethod(nameof(OnPlayerPassByRPC));
+            
+            if (onPlayerStop == null)return;
+            View.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
+                Delegate.CreateDelegate(type, onPlayerStop));
+            
+            if (onPlayerPass == null)return;
+            View.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
+                Delegate.CreateDelegate(type, onPlayerPass));
         }
 
         [PunRPC]

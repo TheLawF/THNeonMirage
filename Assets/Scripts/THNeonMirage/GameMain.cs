@@ -23,6 +23,7 @@ namespace THNeonMirage
     /// 1. PunRPC：在带有该属性的方法中使用 photonView.RPC("methodName", RpcTarget.ALL, parameters)表示该方法是一个将数据从本地端发送到远程端的网络通信方法<br></br>
     /// 2. PunRPC：在带有该属性的方法如果存在参数且不存在photonView.RPC调用，表明该方法是一个在本地端接收远程端数据修改本地端数据的接收方法<br></br>
     /// 3. PhotonNetwork.IsMasterClient：判断当前本地端是否为房主端，是Pun在云端自动管理的一个属性，可用于管理房间信息，例如GamHose.cs内注册表的增删改，在增删改等操作后可以使用PunRPC同步到远程端的GameHost.cs的注册表，之后远程端就能实时查看注册表内容了<br></br>
+    /// 4. PhotonNetwork.LocalPlayer.ActorNumber 初始为 1，当有玩家退出房间后，新加入的玩家不会被分配退出的玩家的ActorNumber，而会分配一个新值<br></br>
     /// </summary>
     public class GameMain : MonoBehaviour
     {
@@ -125,8 +126,7 @@ namespace THNeonMirage
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnBalanceChanged, SetBalanceText);
             EventCenter.AddListener<PlayerManager, int, int>(EventRegistry.OnBalanceChanged, CheckBalance);
         }
-
-
+        
         private void OnMouseUpAsButton()
         {
             if (inGamePanelObj == null) return;

@@ -14,9 +14,9 @@ namespace THNeonMirage.Map
             Init();
             // Player.PlayerData.OnPositionChanged += OnPlayerStop;
         }
-        public override void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
+        public override void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
-            base.OnPlayerStop(player, prevPos, currentPos);
+            base.OnPlayerStopAt(player, prevPos, currentPos);
             if (!IsTileValid(currentPos))return;
             player.playerData.pauseCount = IsTileValid(currentPos) && NextBool() ? NextInt(-2, 0) : NextInt(1, 3);
         }

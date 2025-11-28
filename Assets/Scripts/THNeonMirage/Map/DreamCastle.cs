@@ -14,7 +14,7 @@ namespace THNeonMirage.Map
             description = "经过或停在此处时可以获得10000月虹币\n\n<i><color=#444444>“欢迎来到梦乐园~”</color></i>";
         }
 
-        public override void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
+        public override void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
             if (!IsTileValid(currentPos))return;
             player.SetBalance(player.playerData.balance + 10000);

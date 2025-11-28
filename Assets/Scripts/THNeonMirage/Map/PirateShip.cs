@@ -16,7 +16,7 @@ namespace THNeonMirage.Map
         }
         
         // 随机向前或者向后移动0-5格
-        public override void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
+        public override void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
             if (!IsTileValid(currentPos)) return;
             var bonus = random.Next(5);

@@ -3513,6 +3513,7 @@ GameObject:
   - component: {fileID: 897889065}
   - component: {fileID: 897889066}
   - component: {fileID: 897889067}
+  - component: {fileID: 897889068}
   m_Layer: 0
   m_Name: Launcher
   m_TagString: Untagged
@@ -3558,7 +3559,7 @@ MonoBehaviour:
   hudPanel: {fileID: 829709780}
   lobbyPanel: {fileID: 667353101}
   inGamePanel: {fileID: 1305293117}
-  buttonPrefab: {fileID: 7085691434504689125, guid: 76be5944a2c12ec4dac7186fbdeb946c, type: 3}
+  buttonPrefab: {fileID: 6562878341305577134, guid: b29452f4865336642b941cadcc3617ab, type: 3}
   progressPrefab: {fileID: 1542931715251280246, guid: 89ba140ad33a3ee40ba7a804b045947b, type: 3}
   content: {fileID: 415004362}
   lobbyText: {fileID: 0}
@@ -3567,6 +3568,8 @@ MonoBehaviour:
   currentTurnPlayerId: -1
   currentRound: 0
   turnTimeLimit: 30
+  playerOrder: 
+  currentPlayerIndex: 0
 --- !u!114 &897889067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3582,6 +3585,29 @@ MonoBehaviour:
   registryKey:
     rootName: Level
     registryName: ServerLevel
+--- !u!114 &897889068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897889064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 0
+  ObservedComponents:
+  - {fileID: 897889066}
+  sceneViewId: 2
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &900236939
 GameObject:
   m_ObjectHideFlags: 0
@@ -9455,7 +9481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dfb1e20d89044a39e2ca02ff59d3d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inGamePanel: {fileID: 0}
+  inGamePanel: {fileID: 1305293117}
   dialogueUI: {fileID: 1862531001}
   textInput: {fileID: 253093371}
   confirmText: {fileID: 1988304779}

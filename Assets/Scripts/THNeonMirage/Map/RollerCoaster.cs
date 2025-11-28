@@ -14,7 +14,7 @@ namespace THNeonMirage.Map
             canPurchased = false;
         }
 
-        public override void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
+        public override void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
             if (!IsTileValid(currentPos))return;
             var bonus = Random.NextInt(300, 10000);

@@ -24,7 +24,7 @@ using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage.Manager
 {
-    public class GameHost : MonoBehaviourPunCallbacks
+    public class GameHost : MonoBehaviourPunCallbacks, IPunObservable
     {
         private MySqlConnection connection;
         private DatabaseConnector connector;
@@ -76,8 +76,8 @@ namespace THNeonMirage.Manager
         public float turnTimeLimit = 30f; // 每回合时间限制
     
         // 玩家顺序列表
-        private List<int> playerOrder = new ();
-        private int currentPlayerIndex = 0;
+        public List<int> playerOrder = new ();
+        public int currentPlayerIndex = 0;
     
         // 事件委托
         public Action<int> OnTurnChanged;
@@ -368,11 +368,12 @@ namespace THNeonMirage.Manager
             
             PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
             
+            StartGame();
             // 检查是否所有玩家已准备好，开始游戏
-            if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) // 假设至少需要2名玩家
-            {
-                StartGame();
-            }
+            // if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) // 假设至少需要2名玩家
+            // {
+            //     StartGame();
+            // }
         }
         
         private void UpdatePlayerOrder()
@@ -623,7 +624,11 @@ namespace THNeonMirage.Manager
             }
             return hash.ToString();
         }
-        
+
+        public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+        {
+            
+        }
     }
     public enum GameState
     {

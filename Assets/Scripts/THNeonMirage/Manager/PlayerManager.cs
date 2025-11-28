@@ -166,7 +166,7 @@ namespace THNeonMirage.Manager
             var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
             
             SetPosIndex(playerData.position + diceValue);
-            level.GetTile<FieldTile>(playerData.position).OnPlayerStop(this, playerData.position, playerData.position);
+            level.GetTile<FieldTile>(playerData.position).OnPlayerStopAt(this, playerData.position, playerData.position);
         }
 
         public void AIPurchaseField(int fieldIndex)

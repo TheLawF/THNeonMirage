@@ -32,6 +32,7 @@ namespace THNeonMirage.UI
 
         private void Start()
         {
+            m_view = GetComponent<PhotonView>();
             canInteract = true;
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
             level = Registries.Get<Level>(LevelRegistry.ClientLevel);
@@ -82,8 +83,6 @@ namespace THNeonMirage.UI
             shouldRenderTooltip = true;
             level.NextTurn();
         }
-
-        
         
         private new string ToString() => string.Concat(DiceValue);
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

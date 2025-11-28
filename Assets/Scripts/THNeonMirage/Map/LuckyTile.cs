@@ -12,7 +12,7 @@ namespace THNeonMirage.Map
             description = "可以抽取一次祈福效果";
         }
 
-        public override void OnPlayerStop(PlayerManager player, int prevPos, int currentPos)
+        public override void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
             
         }
