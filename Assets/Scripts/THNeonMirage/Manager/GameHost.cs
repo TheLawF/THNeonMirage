@@ -83,7 +83,7 @@ namespace THNeonMirage.Manager
         public Action<int> OnTurnChanged;
         public Action<int> OnRoundStarted;
         public Action OnGameStarted;
-    
+
         // 房间属性键
         private const string ROOM_CURRENT_TURN = "CurrentTurn";
         private const string ROOM_CURRENT_ROUND = "CurrentRound";
@@ -269,7 +269,7 @@ namespace THNeonMirage.Manager
             
             InitializeGame();
         }
-        
+
         public void CreateOnlinePlayer(bool isBot)
         {
             // var playerObject = LevelRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
@@ -298,6 +298,7 @@ namespace THNeonMirage.Manager
                 Registries.Instance.RegisterNetworkInstances(playerObject.GetPhotonView(), playerObject);
             }
         }
+        
 
         public override void OnRoomListUpdate(List<RoomInfo> roomList)
         {
@@ -327,274 +328,273 @@ namespace THNeonMirage.Manager
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
+            CreateOnlinePlayer(false);
             if (PhotonNetwork.IsMasterClient)
             {
                 // 主客户端更新玩家列表
-                CreateOnlinePlayer(false);
                 UpdatePlayerOrder();
                 SyncGameState();
             }
         }
         
         public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        Debug.Log($"玩家 {otherPlayer.ActorNumber} 离开了房间");
-        
-        if (PhotonNetwork.IsMasterClient)
         {
-            HandlePlayerLeft(otherPlayer.ActorNumber);
-        }
-    }
-    
-    private void InitializeGame()
-    {
-        if (PhotonNetwork.IsMasterClient) InitializeRoomProperties();
-        else SyncFromRoomProperties();
-        lobbyPanel.SetActive(false);
-    }
-    
-    private void InitializeRoomProperties()
-    {
-        // 初始化玩家顺序
-        UpdatePlayerOrder();
-        
-        // 设置初始房间属性
-        Hashtable initialProps = new Hashtable();
-        initialProps[ROOM_GAME_STATE] = (int)GameState.WaitingForPlayers;
-        initialProps[ROOM_CURRENT_TURN] = 0;
-        initialProps[ROOM_CURRENT_ROUND] = 1;
-        initialProps[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
-        
-        PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
-        
-        // 检查是否所有玩家已准备好，开始游戏
-        if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) // 假设至少需要2名玩家
-        {
-            StartGame();
-        }
-    }
-    
-    private void UpdatePlayerOrder()
-    {
-        playerOrder.Clear();
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            playerOrder.Add(player.ActorNumber);
-        }
-        playerOrder.Sort(); // 简单的按ActorNumber排序，可根据需要自定义
-    }
-    
-    [PunRPC]
-    public void StartGame()
-    {
-        currentRound = 1;
-        currentPlayerIndex = 0;
-        currentTurnPlayerId = playerOrder[currentPlayerIndex];
-        
-        // 更新房间属性
-        Hashtable props = new Hashtable();
-        props[ROOM_GAME_STATE] = (int)GameState.PlayerTurn;
-        props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
-        props[ROOM_CURRENT_ROUND] = currentRound;
-        props[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
-        
-        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
-        
-        currentState = GameState.PlayerTurn;
-        OnGameStarted?.Invoke();
-        StartTurn();
-        
-        Debug.Log($"游戏开始！第{currentRound}轮，玩家{currentTurnPlayerId}的回合");
-    }
-    
-    private void StartTurn()
-    {
-        if (PhotonNetwork.LocalPlayer.ActorNumber == currentTurnPlayerId)
-        {
-            // 当前玩家回合的逻辑
-            Debug.Log("这是你的回合！");
-            StartCoroutine(TurnTimer());
-        }
-        
-        OnTurnChanged?.Invoke(currentTurnPlayerId);
-    }
-    
-    private IEnumerator TurnTimer()
-    {
-        float timeLeft = turnTimeLimit;
-        
-        while (timeLeft > 0 && currentTurnPlayerId == PhotonNetwork.LocalPlayer.ActorNumber)
-        {
-            timeLeft -= Time.deltaTime;
-            // UIManager.Instance.UpdateTurnTimer(timeLeft); // 更新UI
+            Debug.Log($"玩家 {otherPlayer.ActorNumber} 离开了房间");
             
-            if (timeLeft <= 0)
+            if (PhotonNetwork.IsMasterClient)
             {
-                // 时间到，自动结束回合
-                EndTurn();
+                HandlePlayerLeft(otherPlayer.ActorNumber);
             }
-            yield return null;
-        }
-    }
-    
-    // 玩家结束回合
-    public void EndTurn()
-    {
-        if (PhotonNetwork.LocalPlayer.ActorNumber != currentTurnPlayerId)
-        {
-            Debug.LogWarning("不是你的回合！");
-            return;
         }
         
-        photonView.RPC("RPC_EndTurn", RpcTarget.MasterClient);
-    }
-    
-    [PunRPC]
-    private void RPC_EndTurn()
-    {
-        if (!PhotonNetwork.IsMasterClient) return;
-        
-        // 切换到下一个玩家
-        currentPlayerIndex++;
-        
-        // 检查是否一轮结束
-        if (currentPlayerIndex >= playerOrder.Count)
+        private void InitializeGame()
         {
+            if (PhotonNetwork.IsMasterClient) InitializeRoomProperties();
+            else SyncFromRoomProperties();
+            lobbyPanel.SetActive(false);
+        }
+        
+        private void InitializeRoomProperties()
+        {
+            // 初始化玩家顺序
+            UpdatePlayerOrder();
+            
+            // 设置初始房间属性
+            Hashtable initialProps = new Hashtable();
+            initialProps[ROOM_GAME_STATE] = (int)GameState.WaitingForPlayers;
+            initialProps[ROOM_CURRENT_TURN] = 0;
+            initialProps[ROOM_CURRENT_ROUND] = 1;
+            initialProps[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
+            
+            PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
+            
+            // 检查是否所有玩家已准备好，开始游戏
+            if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) // 假设至少需要2名玩家
+            {
+                StartGame();
+            }
+        }
+        
+        private void UpdatePlayerOrder()
+        {
+            playerOrder.Clear();
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                playerOrder.Add(player.ActorNumber);
+            }
+            playerOrder.Sort(); // 简单的按ActorNumber排序，可根据需要自定义
+        }
+        
+        [PunRPC]
+        public void StartGame()
+        {
+            currentRound = 1;
             currentPlayerIndex = 0;
-            currentRound++;
-            OnRoundStarted?.Invoke(currentRound);
+            currentTurnPlayerId = playerOrder[currentPlayerIndex];
+            
+            // 更新房间属性
+            Hashtable props = new Hashtable();
+            props[ROOM_GAME_STATE] = (int)GameState.PlayerTurn;
+            props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
+            props[ROOM_CURRENT_ROUND] = currentRound;
+            props[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
+            
+            PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+            
+            currentState = GameState.PlayerTurn;
+            OnGameStarted?.Invoke();
+            StartTurn();
+            
+            Debug.Log($"游戏开始！第{currentRound}轮，玩家{currentTurnPlayerId}的回合");
         }
         
-        currentTurnPlayerId = playerOrder[currentPlayerIndex];
-        
-        // 更新房间属性
-        var props = new Hashtable();
-        props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
-        props[ROOM_CURRENT_ROUND] = currentRound;
-        
-        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
-        
-        // 通知所有客户端开始新回合
-        photonView.RPC("RPC_StartNewTurn", RpcTarget.All, currentTurnPlayerId, currentRound);
-    }
-    
-    [PunRPC]
-    private void RPC_StartNewTurn(int playerId, int round)
-    {
-        currentTurnPlayerId = playerId;
-        currentRound = round;
-        StartTurn();
-        
-        Debug.Log($"第{currentRound}轮，玩家{currentTurnPlayerId}的回合开始");
-    }
-    
-    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
-    {
-        // 同步房间属性变化
-        if (propertiesThatChanged.TryGetValue(ROOM_GAME_STATE, out var state))
+        private void StartTurn()
         {
-            currentState = (GameState)(int)state;
-        }
-        
-        if (propertiesThatChanged.TryGetValue(ROOM_CURRENT_TURN, out var playerIndex))
-        {
-            int newTurnPlayer = (int)playerIndex;
-            if (newTurnPlayer != currentTurnPlayerId)
+            if (PhotonNetwork.LocalPlayer.ActorNumber == currentTurnPlayerId)
             {
-                currentTurnPlayerId = newTurnPlayer;
-                OnTurnChanged?.Invoke(currentTurnPlayerId);
+                // 当前玩家回合的逻辑
+                Debug.Log("这是你的回合！");
+                StartCoroutine(TurnTimer());
+            }
+            
+            OnTurnChanged?.Invoke(currentTurnPlayerId);
+        }
+        
+        private IEnumerator TurnTimer()
+        {
+            float timeLeft = turnTimeLimit;
+            
+            while (timeLeft > 0 && currentTurnPlayerId == PhotonNetwork.LocalPlayer.ActorNumber)
+            {
+                timeLeft -= Time.deltaTime;
+                // UIManager.Instance.UpdateTurnTimer(timeLeft); // 更新UI
+                
+                if (timeLeft <= 0)
+                {
+                    // 时间到，自动结束回合
+                    EndTurn();
+                }
+                yield return null;
             }
         }
         
-        if (propertiesThatChanged.TryGetValue(ROOM_CURRENT_ROUND, out var round))
+        // 玩家结束回合
+        public void EndTurn()
         {
-            currentRound = (int)round;
+            if (PhotonNetwork.LocalPlayer.ActorNumber != currentTurnPlayerId)
+            {
+                return;
+            }
+            
+            photonView.RPC("RPC_EndTurn", RpcTarget.MasterClient);
         }
         
-        if (propertiesThatChanged.TryGetValue(ROOM_PLAYER_ORDER, out var order))
+        [PunRPC]
+        private void RPC_EndTurn()
         {
-            playerOrder = new List<int>((int[])order);
-        }
-    }
-    
-    private void SyncFromRoomProperties()
-    {
-        // 从房间属性同步当前状态
-        Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
-        
-        if (roomProps.TryGetValue(ROOM_GAME_STATE, out var state))
-        {
-            currentState = (GameState)(int)state;
-        }
-        
-        if (roomProps.TryGetValue(ROOM_CURRENT_TURN, out var playerIndex))
-        {
-            currentTurnPlayerId = (int)playerIndex;
-        }
-        
-        if (roomProps.TryGetValue(ROOM_CURRENT_ROUND, out var round))
-        {
-            currentRound = (int)round;
-        }
-        
-        if (roomProps.TryGetValue(ROOM_PLAYER_ORDER, out var order))
-        {
-            playerOrder = new List<int>((int[])order);
-        }
-    }
-    
-    private void HandlePlayerLeft(int leftPlayerId)
-    {
-        // 移除离开的玩家
-        playerOrder.Remove(leftPlayerId);
-        
-        if (playerOrder.Count == 0)
-        {
-            // 所有玩家都离开了
-            currentState = GameState.GameOver;
-            return;
+            if (!PhotonNetwork.IsMasterClient) return;
+            
+            // 切换到下一个玩家
+            currentPlayerIndex++;
+            
+            // 检查是否一轮结束
+            if (currentPlayerIndex >= playerOrder.Count)
+            {
+                currentPlayerIndex = 0;
+                currentRound++;
+                OnRoundStarted?.Invoke(currentRound);
+            }
+            
+            currentTurnPlayerId = playerOrder[currentPlayerIndex];
+            
+            // 更新房间属性
+            var props = new Hashtable();
+            props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
+            props[ROOM_CURRENT_ROUND] = currentRound;
+            
+            PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+            
+            // 通知所有客户端开始新回合
+            photonView.RPC(nameof(RPC_NextTurn), RpcTarget.All, currentTurnPlayerId, currentRound);
         }
         
-        // 调整当前玩家索引
-        if (currentTurnPlayerId == leftPlayerId)
+        [PunRPC]
+        private void RPC_NextTurn(int playerId, int round)
         {
-            // 如果离开的玩家是当前回合玩家，切换到下一个玩家
-            RPC_EndTurn();
+            currentTurnPlayerId = playerId;
+            currentRound = round;
+            StartTurn();
+            
+            Debug.Log($"第{currentRound}轮，玩家{currentTurnPlayerId}的回合开始");
         }
-        else
-        {
-            // 更新玩家顺序
-            currentPlayerIndex = playerOrder.IndexOf(currentTurnPlayerId);
-            SyncGameState();
-        }
-    }
-    
-    private void SyncGameState()
-    {
-        Hashtable props = new Hashtable();
-        props[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
-        props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
-        props[ROOM_CURRENT_ROUND] = currentRound;
         
-        PhotonNetwork.CurrentRoom.SetCustomProperties(props);
-    }
-    
-    // 工具方法
-    public bool IsMyTurn()
-    {
-        return PhotonNetwork.LocalPlayer.ActorNumber == currentTurnPlayerId;
-    }
-    
-    public int GetPlayerCount()
-    {
-        return playerOrder.Count;
-    }
+        public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+        {
+            // 同步房间属性变化
+            if (propertiesThatChanged.TryGetValue(ROOM_GAME_STATE, out var state))
+            {
+                currentState = (GameState)(int)state;
+            }
+            
+            if (propertiesThatChanged.TryGetValue(ROOM_CURRENT_TURN, out var playerIndex))
+            {
+                int newTurnPlayer = (int)playerIndex;
+                if (newTurnPlayer != currentTurnPlayerId)
+                {
+                    currentTurnPlayerId = newTurnPlayer;
+                    OnTurnChanged?.Invoke(currentTurnPlayerId);
+                }
+            }
+            
+            if (propertiesThatChanged.TryGetValue(ROOM_CURRENT_ROUND, out var round))
+            {
+                currentRound = (int)round;
+            }
+            
+            if (propertiesThatChanged.TryGetValue(ROOM_PLAYER_ORDER, out var order))
+            {
+                playerOrder = new List<int>((int[])order);
+            }
+        }
+        
+        private void SyncFromRoomProperties()
+        {
+            // 从房间属性同步当前状态
+            Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
+            
+            if (roomProps.TryGetValue(ROOM_GAME_STATE, out var state))
+            {
+                currentState = (GameState)(int)state;
+            }
+            
+            if (roomProps.TryGetValue(ROOM_CURRENT_TURN, out var playerIndex))
+            {
+                currentTurnPlayerId = (int)playerIndex;
+            }
+            
+            if (roomProps.TryGetValue(ROOM_CURRENT_ROUND, out var round))
+            {
+                currentRound = (int)round;
+            }
+            
+            if (roomProps.TryGetValue(ROOM_PLAYER_ORDER, out var order))
+            {
+                playerOrder = new List<int>((int[])order);
+            }
+        }
+        
+        private void HandlePlayerLeft(int leftPlayerId)
+        {
+            // 移除离开的玩家
+            playerOrder.Remove(leftPlayerId);
+            
+            if (playerOrder.Count == 0)
+            {
+                // 所有玩家都离开了
+                currentState = GameState.GameOver;
+                return;
+            }
+            
+            // 调整当前玩家索引
+            if (currentTurnPlayerId == leftPlayerId)
+            {
+                // 如果离开的玩家是当前回合玩家，切换到下一个玩家
+                RPC_EndTurn();
+            }
+            else
+            {
+                // 更新玩家顺序
+                currentPlayerIndex = playerOrder.IndexOf(currentTurnPlayerId);
+                SyncGameState();
+            }
+        }
+        
+        private void SyncGameState()
+        {
+            Hashtable props = new Hashtable();
+            props[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
+            props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
+            props[ROOM_CURRENT_ROUND] = currentRound;
+            
+            PhotonNetwork.CurrentRoom.SetCustomProperties(props);
+        }
+        
+        // 工具方法
+        public bool IsMyTurn()
+        {
+            return PhotonNetwork.LocalPlayer.ActorNumber == currentTurnPlayerId;
+        }
+        
+        public int GetPlayerCount()
+        {
+            return playerOrder.Count;
+        }
 
-    public int GetCurrentRound()
-    {
-        return currentRound;
-    }
-        
+        public int GetCurrentRound()
+        {
+            return currentRound;
+        }
+            
         private void AdjustContent(int itemHeight)
         {
             var childCount = content.transform.childCount;
@@ -624,12 +624,12 @@ namespace THNeonMirage.Manager
             return hash.ToString();
         }
         
-        public enum GameState
-        {
-            WaitingForPlayers,
-            PlayerTurn,
-            RoundEnd,
-            GameOver
-        }
+    }
+    public enum GameState
+    {
+        WaitingForPlayers,
+        PlayerTurn,
+        RoundEnd,
+        GameOver
     }
 }

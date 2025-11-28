@@ -1,12 +1,15 @@
 using System;
+using Fictology.Event;
 using Fictology.Registry;
 using Fictology.UnityEditor;
 using FlyRabbit.EventCenter;
+using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
+using Unity.VisualScripting;
 using UnityEngine;
 using Random = Unity.Mathematics.Random;
 
@@ -31,6 +34,7 @@ namespace THNeonMirage.Map
         [DisplayOnly] public GameObject hoverText;
 
         protected Random Random = new();
+        protected PhotonView View;
         private string tooltipString;
         
         private void Start()
@@ -52,7 +56,7 @@ namespace THNeonMirage.Map
         public virtual void Init()
         {
             Start();
-            
+            View = GetComponent<PhotonView>();
             Random = new Random((uint)DateTime.Now.Millisecond);
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
 
@@ -120,6 +124,23 @@ namespace THNeonMirage.Map
 
         public bool IsTileValid(ValueEventArgs args) => (int)args.Value == index;
         public bool IsTileValid(int index) => index == this.index;
+
+        [PunRPC]
+        public void SendEventToMaster()
+        {
+            var type = typeof(FieldTile);
+            var method = type.GetMethod(nameof(OnPlayerStop));
+            if (method == null)return;
+            View.RPC("RegisterEventOnMaster", RpcTarget.All, EventRegistry.OnPositionChanged, 
+                Delegate.CreateDelegate(type, method));
+        }
+
+        [PunRPC]
+        public void RegisterEventOnMaster(EventKey key, Delegate method)
+        {
+            if (!PhotonNetwork.IsMasterClient)return;
+            EventCenter.AddListenerByKey(key, method);
+        }
 
         public enum Type
         {

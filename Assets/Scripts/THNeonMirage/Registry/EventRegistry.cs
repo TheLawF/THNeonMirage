@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Fictology.Event;
 using FlyRabbit.EventCenter;
+using Photon.Pun;
 using THNeonMirage.Manager;
 using Unity.Mathematics;
 
@@ -19,6 +20,12 @@ namespace THNeonMirage.Registry
 
         public static readonly EventKey OnPositionChanged = new EventKey("OnPositionChanged",
             typeof(PlayerManager), typeof(int), typeof(int));
+
+        public static readonly EventKey OnPositionChangedRPC = new EventKey(nameof(OnPositionChangedRPC),
+            typeof(PhotonView), typeof(int), typeof(int));
+
+        public static readonly EventKey OnBalanceChangedRPC = new EventKey(nameof(OnBalanceChangedRPC),
+            typeof(PhotonView), typeof(int), typeof(int));
 
         public static readonly EventKey OnRoundStarted = new EventKey(nameof(OnRoundStarted));
     }

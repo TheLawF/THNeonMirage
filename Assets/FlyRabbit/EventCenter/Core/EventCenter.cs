@@ -520,7 +520,7 @@ namespace FlyRabbit.EventCenter
             }
             m_EventTable[eventName] = Delegate.Combine(m_EventTable[eventName], listener);
         }
-        private static void AddListenerByKey(EventKey eventName, Delegate listener)
+        public static void AddListenerByKey(EventKey eventName, Delegate listener)
         {
             if (listener == null)
             {

@@ -47,13 +47,23 @@ namespace THNeonMirage.UI
         public void OnMouseOver() => shouldRenderTooltip = true;    
 
         public void OnMouseExit() => shouldRenderTooltip = false;
+        
         public void OnPointerClick(PointerEventData eventData)
         {
-            var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            var client = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
             if (PhotonNetwork.IsConnectedAndReady)
             {
                 if (!m_view.IsMine) return;
-                m_view.GetComponent<PlayerManager>();
+                if (!client.IsMyTurn()) return;
+                
+                DiceValue = random.Next(1,7);
+                pos = player.playerData.position;
+                pos += DiceValue;
+
+                player.SetPosIndex(pos);
+                inGamePanel.GetComponent<InGamePanelHandler>().SetTile(level, player.playerData.position);
+                shouldRenderTooltip = true;
+                return;
             }
             if (player.IsBot()) return;
             if (!player.IsMyTurn()) return;

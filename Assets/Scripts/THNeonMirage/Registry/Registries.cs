@@ -31,7 +31,8 @@ namespace THNeonMirage.Registry
         
         public static readonly Dictionary<FieldTile, GameObject> Tiles = new();
 
-        public static Registries Instance = new ();
+        private static Registries m_instance;
+        public static Registries Instance => m_instance ??= new Registries();
 
         public void RegisterNetworkInstances(PhotonView view, GameObject gameObject)
         {
