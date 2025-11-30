@@ -23,6 +23,7 @@ namespace THNeonMirage.UI
         
         public ObsoleteGameClient client;
         public PlayerManager player;
+        public GameObject playerObject;
 
         private FieldTile field;
         private RectTransform rect_transform;
@@ -87,7 +88,7 @@ namespace THNeonMirage.UI
 
         public void OnPlayerPurchase()
         {
-            if (!field.canPurchased)return;
+            if (!field.canPurchase)return;
             player.SetBalance(player.playerData.balance - field.Property.Price.Purchase);
             // player.playerData.balance -= field.Property.Price.Purchase;
             // client.SetLabelWhenBalanceChanged(player.playerData, new ValueEventArgs(player.playerData.balance));
@@ -96,8 +97,8 @@ namespace THNeonMirage.UI
             var sprite = field.GetComponent<SpriteRenderer>();
             if (PhotonNetwork.IsConnectedAndReady)
             {
-                
-                var color = FindObjectOfType<PlayerManager>();
+                field.SetOwnerOnLocal(playerObject.GetPhotonView().ViewID);
+                player.NotifyOnlineOwnerChange(playerObject.GetPhotonView(), field.index);
             }
             else
             {

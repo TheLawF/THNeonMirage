@@ -10,7 +10,7 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Init();
-            canPurchased = false;
+            canPurchase = false;
             description = "经过或停在此处时可以获得10000月虹币\n\n<i><color=#444444>“欢迎来到梦乐园~”</color></i>";
         }
 

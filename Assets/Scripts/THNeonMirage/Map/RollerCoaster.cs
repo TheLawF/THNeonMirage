@@ -11,7 +11,7 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Init();
-            canPurchased = false;
+            canPurchase = false;
         }
 
         public override void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)

@@ -5,7 +5,7 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Init();
-            canPurchased = false;
+            canPurchase = false;
             description = "在这里停下需要去舞台表演节目，否则失去5000月虹币";
         }
     }

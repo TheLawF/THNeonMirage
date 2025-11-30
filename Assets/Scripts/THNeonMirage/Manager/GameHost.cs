@@ -300,7 +300,8 @@ namespace THNeonMirage.Manager
                 
                 var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
                 var diceButton = Registries.GetObject(UIRegistry.DiceButton);
-                var diceHandler = diceButton.GetComponent<DiceHandler>(); 
+                var diceHandler = diceButton.GetComponent<DiceHandler>();
+                inGamePanelHandler.playerObject = playerObject;
                 inGamePanelHandler.player = player;
                 diceHandler.player = player;
                 diceButton.SetActive(true);

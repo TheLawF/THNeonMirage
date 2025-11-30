@@ -150,6 +150,37 @@ namespace THNeonMirage.Manager
             return _camera.WorldToScreenPoint(m_transform.position + Vector3.up + Vector3.right * 2);
         }
 
+        /// <summary>
+        /// Fictology - 网络发包命名规则：<br></br>
+        /// 发送端命名为：NotifyXXXXXChange(); 可以在末尾添加ToEveryone表示发送给所有人<br></br>
+        /// 接收端命名为：ReceiveXXXXChange();<br></br>
+        /// </summary>
+        /// <param name="onlineOwner">发送者</param>
+        /// <param name="posIndex">发送者购买的土地的索引</param>
+        public void NotifyOnlineOwnerChange(PhotonView onlineOwner, int posIndex)
+        {
+            onlineOwner.RPC(nameof(ReceiveOnlineOwnerChange), RpcTarget.All, onlineOwner.ViewID, posIndex);
+        }
+
+        /// <summary>
+        /// Fictology - 网络发包命名规则：<br></br>
+        /// 发送端命名为：NotifyXXXXXChange();<br></br>
+        /// 接收端命名为：ReceiveXXXXChange();<br></br>
+        /// </summary>
+        /// <param name="senderViewId">发送者</param>
+        /// <param name="posIndex">发送者购买的土地的索引</param>
+        [PunRPC]
+        public void ReceiveOnlineOwnerChange(int senderViewId, int posIndex)
+        {
+            var tile = level.GetTile<FieldTile>(posIndex);
+            tile.SetOwnerOnLocal(senderViewId);
+        }
+
+        public void NotifyFieldPropertyChange(int senderViewId, FieldProperty fp, int posIndex)
+        {
+            level.GetTile<FieldTile>(posIndex).Property = fp;
+        }
+        
         public void AIStartTurn()
         {
             

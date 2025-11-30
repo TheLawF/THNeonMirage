@@ -10,7 +10,7 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Init();
-            canPurchased = false;
+            canPurchase = false;
             description = "被紫妈抓进隙间，停三回合";
         }
 

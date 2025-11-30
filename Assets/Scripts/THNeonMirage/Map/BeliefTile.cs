@@ -7,7 +7,7 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Init();
-            canPurchased = false;
+            canPurchase = false;
             description = "抽取一次信仰效果";
         }
     }

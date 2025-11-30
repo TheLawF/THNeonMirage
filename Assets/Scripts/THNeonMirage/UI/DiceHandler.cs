@@ -49,10 +49,15 @@ namespace THNeonMirage.UI
         
         public void OnPointerClick(PointerEventData eventData)
         {
-            var client = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            var server = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
             if (PhotonNetwork.IsConnectedAndReady)
             {
-                if (!client.IsMyTurn()) return;
+                if (!server.IsMyTurn()) return;
+                // if (!player.CanMove())
+                // {
+                //     client.NextTurn();
+                //     return;
+                // }
                 DiceValue = random.Next(1,7);
                 pos = player.playerData.position;
                 pos += DiceValue;
@@ -60,7 +65,7 @@ namespace THNeonMirage.UI
                 player.SetPosIndex(pos);
                 inGamePanel.GetComponent<InGamePanelHandler>().SetTile(level, player.playerData.position);
                 shouldRenderTooltip = true;
-                client.NextTurn();
+                server.NextTurn();
                 return;
             }
             if (player.IsBot()) return;

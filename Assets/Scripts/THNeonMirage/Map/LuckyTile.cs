@@ -8,7 +8,7 @@ namespace THNeonMirage.Map
         private void Start()
         {
             Init();
-            canPurchased = false;
+            canPurchase = false;
             description = "可以抽取一次祈福效果";
         }
 

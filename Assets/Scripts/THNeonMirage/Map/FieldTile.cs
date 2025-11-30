@@ -11,6 +11,7 @@ using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage.Map
@@ -26,7 +27,7 @@ namespace THNeonMirage.Map
         public ObsoleteGameClient client;
         public FieldProperty Property;
         public PlayerManager Owner;
-        public bool canPurchased;
+        [FormerlySerializedAs("canPurchased")] public bool canPurchase;
         
         public SpriteRenderer spriteRenderer;
         [DisplayOnly] public GameObject inGamePanel;
@@ -34,12 +35,12 @@ namespace THNeonMirage.Map
         [DisplayOnly] public GameObject hoverText;
 
         protected Random Random = new();
-        protected PhotonView OnlineOwner;
+        public PhotonView onlineOwner;
         private string tooltipString;
         
         private void Start()
         {
-            canPurchased = true;
+            canPurchase = true;
             hoverPanel = GameObject.Find("Canvas/HoverPanel");
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
             backGroundColor = new Color(1f,1f, 1f, 0.6f);
@@ -56,7 +57,7 @@ namespace THNeonMirage.Map
         public virtual void Init()
         {
             Start();
-            OnlineOwner = GetComponent<PhotonView>();
+            onlineOwner = GetComponent<PhotonView>();
             Random = new Random((uint)DateTime.Now.Millisecond);
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
 
@@ -102,7 +103,7 @@ namespace THNeonMirage.Map
         }
 
         public bool HasOwner() => Owner is not null;
-        public bool HasOnlineOwner() => OnlineOwner is not null;
+        public bool HasOnlineOwner() => onlineOwner is not null;
         
         public virtual void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
@@ -119,7 +120,7 @@ namespace THNeonMirage.Map
             if (!IsTileValid(currentPos)) return;
             if (!HasOnlineOwner())return;
             var player = view.GetComponent<PlayerManager>();
-            var onlinePlayer = OnlineOwner.GetComponent<PlayerManager>();
+            var onlinePlayer = onlineOwner.GetComponent<PlayerManager>();
             player.SetBalance(player.playerData.balance - CurrentTolls());
             onlinePlayer.SetBalance(onlinePlayer.playerData.balance + CurrentTolls());
         }
@@ -147,11 +148,11 @@ namespace THNeonMirage.Map
             var onPlayerPass = GetType().GetMethod(nameof(OnPlayerPassByRPC));
             
             if (onPlayerStop == null)return;
-            OnlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
+            onlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
                 Delegate.CreateDelegate(type, onPlayerStop));
             
             if (onPlayerPass == null)return;
-            OnlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
+            onlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
                 Delegate.CreateDelegate(type, onPlayerPass));
         }
 
@@ -162,9 +163,16 @@ namespace THNeonMirage.Map
             EventCenter.AddListenerByKey(key, method);
         }
 
-        public void SetOnlineOwner(PhotonView view) => OnlineOwner = view;
+        public PhotonView GetOnlineOwner() => onlineOwner;
 
-        public void RemoveOnlineOwner() => OnlineOwner = null;
+        public void SetOwnerOnLocal(int onlineOwnerViewId)
+        {
+            canPurchase = false;
+            onlineOwner = PhotonView.Find(onlineOwnerViewId);
+            spriteRenderer.color = onlineOwner.GetComponent<SpriteRenderer>().color;
+        }
+
+        public void RemoveOnlineOwner() => onlineOwner = null;
 
         public enum Type
         {
