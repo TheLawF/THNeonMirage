@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using Fictology.Event;
 using Fictology.Registry;
 using Fictology.UnityEditor;
 using FlyRabbit.EventCenter;
@@ -11,11 +9,9 @@ using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;
-using THNeonMirage.UI;
 using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = System.Random;
 
 namespace System.Runtime.CompilerServices

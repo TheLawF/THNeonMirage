@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Fictology.Registry;
+using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Manager;
@@ -75,7 +76,6 @@ namespace THNeonMirage.UI
         public void TrySetTexts(Level level, int positionIndex)
         {
             if (!Registries.GetObject(UIRegistry.InGamePanel).activeInHierarchy) return;
-            Debug.Log(positionIndex);
             field = level.GetTile<FieldTile>(positionIndex);
             title.text = field.Property.Name;
             description.text = field.description;
@@ -94,11 +94,20 @@ namespace THNeonMirage.UI
             field.Owner = player;
             player.playerData.AddField(field.index);
             var sprite = field.GetComponent<SpriteRenderer>();
-            var color = Registries.GetPrefabInstances(LevelRegistry.Player).First(p =>
-                    p.GetComponent<PlayerManager>().playerData.roundIndex == player.playerData.roundIndex)
-                .GetComponent<SpriteRenderer>().color;
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                
+                var color = FindObjectOfType<PlayerManager>();
+            }
+            else
+            {
+                var color = Registries.GetPrefabInstances(LevelRegistry.Player).First(p =>
+                        p.GetComponent<PlayerManager>().playerData.roundIndex == player.playerData.roundIndex)
+                    .GetComponent<SpriteRenderer>().color;
 
-            sprite.color = color;
+                sprite.color = color;
+            }
+            
         }
 
         public void OnPlayerBuild()

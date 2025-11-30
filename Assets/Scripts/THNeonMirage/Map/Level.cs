@@ -218,16 +218,16 @@ namespace THNeonMirage.Map
             return fields[index].GetComponent<TTile>();
         }
 
+        public void SetOnlineOwner(PhotonView onlineOwner, int posIndex)
+        {
+            GetTile<FieldTile>(posIndex).SetOnlineOwner(onlineOwner);
+        }
+        
         public void NextTurn()
         {
             PlayerRound++;
             if (PhotonNetwork.IsConnectedAndReady)
             {
-                var currentOnlinePlayer = PhotonNetwork.PlayerList[PlayerRound];
-                if (PhotonNetwork.LocalPlayer == currentOnlinePlayer)
-                {
-                    
-                }
                 return;
             }
             var currentRoundPlayer = players[PlayerRound];

@@ -47,6 +47,7 @@ namespace THNeonMirage.Manager
         public ObservableList<RoomInfo> rooms = new ();
 
         [DisplayOnly] public PlayerManager player;
+        private PlayerManager local_player;
 
         [Header("主机和客户端")]
         public GameObject joinRoomPanel;
@@ -170,7 +171,12 @@ namespace THNeonMirage.Manager
                 Connect();
             }
         }
-        
+
+        public override void OnDisconnected(DisconnectCause cause)
+        {
+            if (cause != DisconnectCause.DisconnectByClientLogic) StartCoroutine(TryReconnect());
+        }
+
         public void Connect()
         {
             level = Registries.Get<Level>(LevelRegistry.ClientLevel);
@@ -273,6 +279,7 @@ namespace THNeonMirage.Manager
         public void CreateOnlinePlayer(bool isBot)
         {
             // var playerObject = LevelRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
+            
             var playerObject = PhotonNetwork.Instantiate(LevelRegistry.Player.PrefabPath, PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
             player = playerObject.GetComponent<PlayerManager>();
             level.PlayerInstances.Add(playerObject);
@@ -282,17 +289,23 @@ namespace THNeonMirage.Manager
                 ? PhotonNetwork.LocalPlayer.ActorNumber
                 : level.PlayerInstances.IndexOf(playerObject);
             
+            
             var random = new Random((uint)DateTime.Now.Millisecond);
             var sprite = player.GetComponent<SpriteRenderer>();
             sprite.color = new Color(random.NextFloat(0, 1), random.NextFloat(0, 1), random.NextFloat(0, 1));
+            if (!isBot)
+            {
+                EventCenter.TriggerEvent(EventRegistry.OnBalanceChanged, player, 
+                    player.playerData.balance, player.playerData.balance);
+                
+                var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
+                var diceButton = Registries.GetObject(UIRegistry.DiceButton);
+                var diceHandler = diceButton.GetComponent<DiceHandler>(); 
+                inGamePanelHandler.player = player;
+                diceHandler.player = player;
+                diceButton.SetActive(true);
+            }
             
-            if (isBot) return;
-            EventCenter.TriggerEvent(EventRegistry.OnBalanceChanged, player, player.playerData.balance, player.playerData.balance);
-            Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel).player = player;
-            
-            Registries.GetObject(UIRegistry.DiceButton).SetActive(true);
-            Registries.GetComponent<DiceHandler>(UIRegistry.DiceButton).player = player;
-
             if (PhotonNetwork.IsMasterClient)
             {
                 Registries.Instance.RegisterNetworkInstances(playerObject.GetPhotonView(), playerObject);
@@ -328,15 +341,13 @@ namespace THNeonMirage.Manager
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            CreateOnlinePlayer(false);
-            if (PhotonNetwork.IsMasterClient)
-            {
-                // 主客户端更新玩家列表
-                UpdatePlayerOrder();
-                SyncGameState();
-            }
+            if (!PhotonNetwork.IsMasterClient) return;
+            // 主客户端更新玩家列表
+            UpdatePlayerOrder();
+            SyncGameState();
+
         }
-        
+
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             Debug.Log($"玩家 {otherPlayer.ActorNumber} 离开了房间");
@@ -360,7 +371,7 @@ namespace THNeonMirage.Manager
             UpdatePlayerOrder();
             
             // 设置初始房间属性
-            Hashtable initialProps = new Hashtable();
+            var initialProps = new Hashtable();
             initialProps[ROOM_GAME_STATE] = (int)GameState.WaitingForPlayers;
             initialProps[ROOM_CURRENT_TURN] = 0;
             initialProps[ROOM_CURRENT_ROUND] = 1;
@@ -433,23 +444,23 @@ namespace THNeonMirage.Manager
                 if (timeLeft <= 0)
                 {
                     // 时间到，自动结束回合
-                    EndTurn();
+                    NextTurn();
                 }
                 yield return null;
             }
         }
         
         // 玩家结束回合
-        public void EndTurn()
+        public void NextTurn()
         {
             if (PhotonNetwork.LocalPlayer.ActorNumber != currentTurnPlayerId)
             {
                 return;
             }
             
-            photonView.RPC("RPC_EndTurn", RpcTarget.MasterClient);
+            photonView.RPC(nameof(RPC_EndTurn), RpcTarget.MasterClient);
         }
-        
+
         [PunRPC]
         private void RPC_EndTurn()
         {
@@ -521,7 +532,7 @@ namespace THNeonMirage.Manager
         private void SyncFromRoomProperties()
         {
             // 从房间属性同步当前状态
-            Hashtable roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
+            var roomProps = PhotonNetwork.CurrentRoom.CustomProperties;
             
             if (roomProps.TryGetValue(ROOM_GAME_STATE, out var state))
             {
@@ -572,11 +583,11 @@ namespace THNeonMirage.Manager
         
         private void SyncGameState()
         {
-            Hashtable props = new Hashtable();
+            var props = new Hashtable();
             props[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
             props[ROOM_CURRENT_TURN] = currentTurnPlayerId;
             props[ROOM_CURRENT_ROUND] = currentRound;
-            
+
             PhotonNetwork.CurrentRoom.SetCustomProperties(props);
         }
         
@@ -611,6 +622,22 @@ namespace THNeonMirage.Manager
                 newButton.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Name));
             }
             AdjustContent(20); // 根据按钮高度调整
+        }
+
+        private IEnumerator TryReconnect()
+        {
+            if (PhotonNetwork.Reconnect())
+            {
+                var waitTime = 0f;
+                var timeout = 10f; // 10秒超时
+
+                while (waitTime < timeout)
+                {
+                    waitTime += Time.deltaTime;
+                    if (PhotonNetwork.IsConnected) yield break;
+                    yield return null;
+                }
+            }
         }
 
         public static string EncryptPassword(string password)

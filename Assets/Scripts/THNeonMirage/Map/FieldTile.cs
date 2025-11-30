@@ -34,7 +34,7 @@ namespace THNeonMirage.Map
         [DisplayOnly] public GameObject hoverText;
 
         protected Random Random = new();
-        protected PhotonView View;
+        protected PhotonView OnlineOwner;
         private string tooltipString;
         
         private void Start()
@@ -56,7 +56,7 @@ namespace THNeonMirage.Map
         public virtual void Init()
         {
             Start();
-            View = GetComponent<PhotonView>();
+            OnlineOwner = GetComponent<PhotonView>();
             Random = new Random((uint)DateTime.Now.Millisecond);
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
 
@@ -102,6 +102,7 @@ namespace THNeonMirage.Map
         }
 
         public bool HasOwner() => Owner is not null;
+        public bool HasOnlineOwner() => OnlineOwner is not null;
         
         public virtual void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
@@ -116,16 +117,20 @@ namespace THNeonMirage.Map
         public virtual void OnPlayerStopRPC(PhotonView view, int prevPos, int currentPos)
         {
             if (!IsTileValid(currentPos)) return;
-            if (!HasOwner())return;
-            
+            if (!HasOnlineOwner())return;
+            var player = view.GetComponent<PlayerManager>();
+            var onlinePlayer = OnlineOwner.GetComponent<PlayerManager>();
+            player.SetBalance(player.playerData.balance - CurrentTolls());
+            onlinePlayer.SetBalance(onlinePlayer.playerData.balance + CurrentTolls());
         }
         
         public virtual void OnPlayerPassBy(PlayerManager player, int prevPosition, int currentPosition)
         {
         }
 
-        public virtual void OnPlayerPassByRPC(PlayerManager player, int prevPosition, int currentPosition)
+        public virtual void OnPlayerPassByRPC(PhotonView player, int prevPosition, int currentPosition)
         {
+            
         }
 
         protected bool NextBool() => new System.Random().Next(1, 2) == 1;
@@ -142,11 +147,11 @@ namespace THNeonMirage.Map
             var onPlayerPass = GetType().GetMethod(nameof(OnPlayerPassByRPC));
             
             if (onPlayerStop == null)return;
-            View.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
+            OnlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
                 Delegate.CreateDelegate(type, onPlayerStop));
             
             if (onPlayerPass == null)return;
-            View.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
+            OnlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
                 Delegate.CreateDelegate(type, onPlayerPass));
         }
 
@@ -156,6 +161,10 @@ namespace THNeonMirage.Map
             if (!PhotonNetwork.IsMasterClient)return;
             EventCenter.AddListenerByKey(key, method);
         }
+
+        public void SetOnlineOwner(PhotonView view) => OnlineOwner = view;
+
+        public void RemoveOnlineOwner() => OnlineOwner = null;
 
         public enum Type
         {
