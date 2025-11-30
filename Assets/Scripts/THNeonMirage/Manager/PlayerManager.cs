@@ -32,13 +32,11 @@ namespace THNeonMirage.Manager
         public GameObject canvas;
 
         [DisplayOnly] public GameHost database;
+        public GameObject instance;
 
         private Transform m_transform;
         private Vector3 prev_pos;
         private Vector3 next_pos;
-        private SpriteRenderer sprite;
-        private Vector3 networkPosition;
-        private Quaternion networkRotation;
         private Camera _camera;
 
         private void Awake()
@@ -50,7 +48,6 @@ namespace THNeonMirage.Manager
         {
             _camera = Camera.main;
             level = Registries.Get<Level>(LevelRegistry.ClientLevel);
-            sprite = GetComponent<SpriteRenderer>();
 
             canvas = Registries.GetObject(UIRegistry.Canvas);
             m_transform = GetComponent<Transform>();
@@ -152,33 +149,68 @@ namespace THNeonMirage.Manager
 
         /// <summary>
         /// Fictology - 网络发包命名规则：<br></br>
-        /// 发送端命名为：NotifyXXXXXChange(); 可以在末尾添加ToEveryone表示发送给所有人<br></br>
-        /// 接收端命名为：ReceiveXXXXChange();<br></br>
+        /// 发送端命名为：NotifyXXXXXUpdate(); 可以在末尾添加ToEveryone表示发送给所有人<br></br>
+        /// 接收端命名为：ReceiveXXXXUpdate();<br></br>
         /// </summary>
         /// <param name="onlineOwner">发送者</param>
         /// <param name="posIndex">发送者购买的土地的索引</param>
-        public void NotifyOnlineOwnerChange(PhotonView onlineOwner, int posIndex)
+        public void NotifyOnlineOwnerUpdate(int posIndex)
         {
-            onlineOwner.RPC(nameof(ReceiveOnlineOwnerChange), RpcTarget.All, onlineOwner.ViewID, posIndex);
+            var view = gameObject.GetPhotonView();
+            view.RPC(nameof(ReceiveOnlineOwnerUpdate), RpcTarget.All, view.ViewID, posIndex);
         }
 
         /// <summary>
         /// Fictology - 网络发包命名规则：<br></br>
-        /// 发送端命名为：NotifyXXXXXChange();<br></br>
-        /// 接收端命名为：ReceiveXXXXChange();<br></br>
+        /// 发送端命名为：NotifyXXXXXUppdate(); 或者 SendXXXXXUpdate();<br></br>
+        /// 接收端命名为：ReceiveXXXXUppdate();<br></br>
         /// </summary>
         /// <param name="senderViewId">发送者</param>
         /// <param name="posIndex">发送者购买的土地的索引</param>
         [PunRPC]
-        public void ReceiveOnlineOwnerChange(int senderViewId, int posIndex)
+        public void ReceiveOnlineOwnerUpdate(int posIndex)
         {
             var tile = level.GetTile<FieldTile>(posIndex);
-            tile.SetOwnerOnLocal(senderViewId);
+            tile.SetOwnerOnLocal(gameObject.GetPhotonView().ViewID);
         }
 
-        public void NotifyFieldPropertyChange(int senderViewId, FieldProperty fp, int posIndex)
+        public void NotifyFieldLevelUpdate(int fieldLevel, int posIndex)
         {
-            level.GetTile<FieldTile>(posIndex).Property = fp;
+            var view = gameObject.GetPhotonView();
+            level.GetTile<FieldTile>(posIndex).level = fieldLevel;
+            view.RPC(nameof(ReceiveFieldLevelUpdate), RpcTarget.All, view.ViewID, posIndex);
+        }
+        
+        [PunRPC]
+        public void ReceiveFieldLevelUpdate(int fieldLevel, int posIndex)
+        {
+            var tile = level.GetTile<FieldTile>(posIndex);
+            tile.level = fieldLevel;
+        }
+
+        public void NotifySpriteUpdate(string skinPath, Color color)
+        {
+            var sprite = gameObject.GetComponent<SpriteRenderer>();
+            var view = gameObject.GetPhotonView();
+            if (skinPath != null)
+            {
+                sprite.sprite = (Sprite) Resources.Load(skinPath);
+            }
+
+            sprite.color = color;
+            view.RPC(nameof(ReceiveSpriteUpdate), RpcTarget.All, skinPath, color.r, color.g, color.b);
+        }
+
+        [PunRPC]
+        public void ReceiveSpriteUpdate(string skinPath, float r, float g, float b)
+        {
+            var sprite = gameObject.GetComponent<SpriteRenderer>();
+            if (skinPath != null)
+            {
+                sprite.sprite = (Sprite) Resources.Load(skinPath);
+            }
+
+            sprite.color = new Color(r, g, b);
         }
         
         public void AIStartTurn()

@@ -285,11 +285,11 @@ namespace THNeonMirage.Manager
             level.PlayerInstances.Add(playerObject);
             
             player.playerData.isBot = isBot;
+            player.NotifySpriteUpdate(null, playerObject.GetComponent<SpriteRenderer>().color);
             player.playerData.roundIndex = PhotonNetwork.IsConnectedAndReady
                 ? PhotonNetwork.LocalPlayer.ActorNumber
                 : level.PlayerInstances.IndexOf(playerObject);
-            
-            
+
             var random = new Random((uint)DateTime.Now.Millisecond);
             var sprite = player.GetComponent<SpriteRenderer>();
             sprite.color = new Color(random.NextFloat(0, 1), random.NextFloat(0, 1), random.NextFloat(0, 1));

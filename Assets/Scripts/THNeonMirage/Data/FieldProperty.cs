@@ -3,7 +3,10 @@ using THNeonMirage.Map;
 
 namespace THNeonMirage.Data
 {
-    public record FieldProperty(string Name, FieldTile.Type FieldType, Price Price);
+    public record FieldProperty(string Name, FieldTile.Type FieldType, Price Price)
+    {
+
+    }
     
     public struct Price
     {
@@ -19,4 +22,5 @@ namespace THNeonMirage.Data
             Level3 = level3;
         }
     }
+    
 }

@@ -98,7 +98,7 @@ namespace THNeonMirage.UI
             if (PhotonNetwork.IsConnectedAndReady)
             {
                 field.SetOwnerOnLocal(playerObject.GetPhotonView().ViewID);
-                player.NotifyOnlineOwnerChange(playerObject.GetPhotonView(), field.index);
+                player.NotifyOnlineOwnerUpdate(field.index);
             }
             else
             {
@@ -115,6 +115,7 @@ namespace THNeonMirage.UI
         {
             player.playerData.balance -= field.Property.Price.Building;
             field.level++;
+            player.NotifyFieldLevelUpdate(field.level, field.index);
         }
         
         public void OnCanceled()
