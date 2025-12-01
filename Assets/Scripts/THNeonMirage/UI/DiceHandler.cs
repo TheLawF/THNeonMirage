@@ -60,6 +60,8 @@ namespace THNeonMirage.UI
                 // }
                 DiceValue = random.Next(1,7);
                 pos = player.playerData.position;
+                
+                // Todo: Test Player Purchase;
                 pos += DiceValue;
 
                 player.SetPosIndex(pos);
