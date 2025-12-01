@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -19,6 +20,31 @@ namespace THNeonMirage.Util
 
     public static class Utils
     {
+        public static void WriteBool(MemoryStream stream, bool b)
+        {
+            var boolBytes = BitConverter.GetBytes(b);
+            stream.Write(boolBytes, 0, boolBytes.Length);
+        }
+        public static void WriteInt(MemoryStream stream, int i)
+        {
+            var intBytes = BitConverter.GetBytes(i);
+            stream.Write(intBytes, 0, intBytes.Length);
+        }
+        
+        public static void WriteString(MemoryStream stream, string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                stream.Write(BitConverter.GetBytes(0), 0, 4);
+            }
+            else
+            {
+                var stringBytes = System.Text.Encoding.UTF8.GetBytes(str);
+                stream.Write(BitConverter.GetBytes(stringBytes.Length), 0, 4);
+                stream.Write(stringBytes, 0, stringBytes.Length);
+            }
+        }
+        
         public static GameObject FindDontDestroyedObj(string objName)
         {
             var ddScene = SceneManager.GetSceneByName("DontDestroyOnLoad");

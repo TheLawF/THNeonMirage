@@ -27,7 +27,7 @@ namespace THNeonMirage.Map
         public ObsoleteGameClient client;
         public FieldProperty Property;
         public PlayerManager Owner;
-        [FormerlySerializedAs("canPurchased")] public bool canPurchase;
+        public bool canPurchase;
         
         public SpriteRenderer spriteRenderer;
         [DisplayOnly] public GameObject inGamePanel;
@@ -120,18 +120,24 @@ namespace THNeonMirage.Map
         /// <summary>
         /// 本地玩家在开始设置新位置时调用该方法，检测本地玩家自己客户端上即将抵达的土地是否已被某个在线玩家占有，如果占有则扣除当前过路费
         /// </summary>
-        /// <param name="view"></param>
+        /// <param name="localPlayerView"></param>
         /// <param name="prevPos"></param>
         /// <param name="currentPos"></param>
-        public virtual void OnPlayerStopRPC(PhotonView view, int prevPos, int currentPos)
+        public virtual void OnLocalPlayerStopAt(PhotonView localPlayerView, int prevPos, int currentPos)
         {
             if (!PhotonNetwork.IsConnected) return;// 仅限在线模式调用
             if (!IsTileValid(currentPos)) return;  // 遍历，检测土地的index是否和玩家即将抵达的土地index相等
             if (!HasOnlineOwner())return;          // 检测本地端下的土地上，远端玩家的 photon view 是否为 null，不为 null 则扣除本地玩家过路费
-            var localPlayer = view.GetComponent<PlayerManager>();
-            var onlinePlayer = onlineOwner.GetComponent<PlayerManager>();
-            localPlayer.SetBalance(localPlayer.playerData.balance - CurrentTolls());
-            onlinePlayer.SetBalance(onlinePlayer.playerData.balance + CurrentTolls());
+            var localPlayer = localPlayerView.GetComponent<PlayerManager>();
+            
+            localPlayer.SetBalance(localPlayer.playerData.balance + CurrentTolls());
+            localPlayer.SendPlayerDataUpdate(onlineOwner.Owner, new PlayerData().AddBalance(CurrentTolls()));
+        }
+
+        [PunRPC]
+        public void SendBalanceUpdateToOnlineOwner()
+        {
+            
         }
         
         public virtual void OnPlayerPassBy(PlayerManager player, int prevPosition, int currentPosition)
@@ -149,21 +155,21 @@ namespace THNeonMirage.Map
         public bool IsTileValid(ValueEventArgs args) => (int)args.Value == index;
         public bool IsTileValid(int index) => index == this.index;
 
-        [PunRPC]
-        public void SendEventToMaster()
-        {
-            var type = GetType();
-            var onPlayerStop = GetType().GetMethod(nameof(OnPlayerStopRPC));
-            var onPlayerPass = GetType().GetMethod(nameof(OnPlayerPassByRPC));
-            
-            if (onPlayerStop == null)return;
-            onlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
-                Delegate.CreateDelegate(type, onPlayerStop));
-            
-            if (onPlayerPass == null)return;
-            onlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
-                Delegate.CreateDelegate(type, onPlayerPass));
-        }
+        // [PunRPC]
+        // public void SendEventToMaster()
+        // {
+        //     var type = GetType();
+        //     var onPlayerStop = GetType().GetMethod(nameof(OnLocalPlayerStopAt));
+        //     var onPlayerPass = GetType().GetMethod(nameof(OnPlayerPassByRPC));
+        //     
+        //     if (onPlayerStop == null)return;
+        //     onlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
+        //         Delegate.CreateDelegate(type, onPlayerStop));
+        //     
+        //     if (onPlayerPass == null)return;
+        //     onlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
+        //         Delegate.CreateDelegate(type, onPlayerPass));
+        // }
 
         [PunRPC]
         public void RegisterEventOnMaster(EventKey key, Delegate method)

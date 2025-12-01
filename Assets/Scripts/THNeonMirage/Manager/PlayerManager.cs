@@ -5,6 +5,7 @@ using Fictology.Registry;
 using Fictology.UnityEditor;
 using FlyRabbit.EventCenter;
 using Photon.Pun;
+using Photon.Realtime;
 using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
@@ -70,7 +71,7 @@ namespace THNeonMirage.Manager
         public void SetPosIndex(int currentPos)
         {
             var view = gameObject.GetPhotonView();
-            level.GetTile<FieldTile>(currentPos).OnPlayerStopRPC(view, playerData.position, currentPos);
+            level.GetTile<FieldTile>(currentPos).OnLocalPlayerStopAt(view, playerData.position, currentPos);
             EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, this, playerData.position, currentPos);
             
             SetPosition(currentPos);
@@ -184,6 +185,18 @@ namespace THNeonMirage.Manager
         {
             var tile = level.GetTile<FieldTile>(posIndex);
             tile.level = fieldLevel;
+        }
+
+        public void SendPlayerDataUpdate(Player targetPlayer, PlayerData data)
+        {
+            var view = gameObject.GetPhotonView();
+            view.RPC(nameof(ReceivePlayerDataUpdate), targetPlayer, data);
+        }
+
+        [PunRPC]
+        public void ReceivePlayerDataUpdate(PlayerData data)
+        {
+            playerData = data;
         }
 
         public void SendSpriteUpdateToOthers(string skinPath, Color color)

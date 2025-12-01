@@ -93,6 +93,7 @@ namespace THNeonMirage.UI
             // player.playerData.balance -= field.Property.Price.Purchase;
             // client.SetLabelWhenBalanceChanged(player.playerData, new ValueEventArgs(player.playerData.balance));
             field.Owner = player;
+            field.canPurchase = false;
             player.playerData.AddField(field.index);
             var sprite = field.GetComponent<SpriteRenderer>();
             if (PhotonNetwork.IsConnectedAndReady)
@@ -138,10 +139,8 @@ namespace THNeonMirage.UI
         private bool CanPurchase()
         {
             var fieldMatches = player.playerData.position == field.index;
-            if (!PhotonNetwork.IsConnectedAndReady) return field.canPurchase && fieldMatches && player.IsMyTurn();
-            
-            var server = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
-            return field.canPurchase && fieldMatches && server.IsMyTurn();
+            if (!PhotonNetwork.IsConnectedAndReady) return field.canPurchase && fieldMatches;
+            return field.canPurchase && fieldMatches;
         }
         
 // #if UNITY_EDITOR || UNITY_STANDALONE

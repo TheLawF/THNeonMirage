@@ -451,6 +451,7 @@ namespace THNeonMirage.Manager
                 {
                     // 时间到，自动结束回合
                     NextTurn();
+                    player.AITossDice();
                 }
                 yield return null;
             }

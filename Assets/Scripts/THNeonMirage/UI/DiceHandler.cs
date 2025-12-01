@@ -62,7 +62,7 @@ namespace THNeonMirage.UI
                 pos = player.playerData.position;
                 
                 // Todo: Test Player Purchase;
-                pos += DiceValue;
+                // pos += DiceValue;
 
                 player.SetPosIndex(pos);
                 inGamePanel.GetComponent<InGamePanelHandler>().SetTile(level, player.playerData.position);

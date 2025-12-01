@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ExitGames.Client.Photon;
 using Fictology.Registry;
 using FlyRabbit.EventCenter;
+using THNeonMirage.Data;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;
@@ -39,6 +41,18 @@ namespace THNeonMirage
         public DiceHandler dice;
         public InGamePanelHandler inGamePanel;
         public GameHost host;
+
+        private static int m_type_code = 23;
+
+        private void Awake()
+        {
+            PhotonPeer.RegisterType(typeof(PlayerData), NextId(), PlayerData.Serialize, PlayerData.Deserialize);
+        }
+
+        private static byte NextId()
+        {
+            return (byte)(m_type_code + 1);
+        }
 
         /// <summary>
         /// GameStart Clicked -> Disable Home Panel -> Enable Background -> Create Map -> Game Loop
