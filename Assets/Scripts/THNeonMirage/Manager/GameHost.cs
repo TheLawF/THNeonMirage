@@ -200,13 +200,13 @@ namespace THNeonMirage.Manager
             switch (PhotonNetwork.NetworkClientState)
             {
                 case ClientState.ConnectingToNameServer:
-                    progress.LockProgress(lockedAt: 0.7F);
+                    progress.LockProgress(lockedAt: 0.9F);
                     break;
                 case ClientState.ConnectedToNameServer:
                     progress.ContinueProgress();
                     break;
                 case ClientState.ConnectingToMasterServer:
-                    progress.LockProgress(lockedAt: 0.9F);
+                    progress.LockProgress(lockedAt: 0.99F);
                     break;
                 case ClientState.ConnectedToMasterServer:
                     progress.ContinueProgress();
@@ -268,6 +268,7 @@ namespace THNeonMirage.Manager
             // CreatePlayer();
             level.CreateLevel();
             CreateOnlinePlayer(false);
+            player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
             player.playerData.roundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
             
             level.players.Add(player);
@@ -280,15 +281,15 @@ namespace THNeonMirage.Manager
         {
             // var playerObject = LevelRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
             
-            var playerObject = PhotonNetwork.Instantiate(LevelRegistry.Player.PrefabPath, PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
-            player = playerObject.GetComponent<PlayerManager>();
-            level.PlayerInstances.Add(playerObject);
+            playerInstance = PhotonNetwork.Instantiate(LevelRegistry.Player.PrefabPath, PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
+            player = playerInstance.GetComponent<PlayerManager>();
+            level.PlayerInstances.Add(playerInstance);
             
             player.playerData.isBot = isBot;
-            player.NotifySpriteUpdate(null, playerObject.GetComponent<SpriteRenderer>().color);
+            player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
             player.playerData.roundIndex = PhotonNetwork.IsConnectedAndReady
                 ? PhotonNetwork.LocalPlayer.ActorNumber
-                : level.PlayerInstances.IndexOf(playerObject);
+                : level.PlayerInstances.IndexOf(playerInstance);
 
             var random = new Random((uint)DateTime.Now.Millisecond);
             var sprite = player.GetComponent<SpriteRenderer>();
@@ -301,7 +302,7 @@ namespace THNeonMirage.Manager
                 var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
                 var diceButton = Registries.GetObject(UIRegistry.DiceButton);
                 var diceHandler = diceButton.GetComponent<DiceHandler>();
-                inGamePanelHandler.playerObject = playerObject;
+                inGamePanelHandler.playerObject = playerInstance;
                 inGamePanelHandler.player = player;
                 diceHandler.player = player;
                 diceButton.SetActive(true);
@@ -309,7 +310,7 @@ namespace THNeonMirage.Manager
             
             if (PhotonNetwork.IsMasterClient)
             {
-                Registries.Instance.RegisterNetworkInstances(playerObject.GetPhotonView(), playerObject);
+                Registries.Instance.RegisterNetworkInstances(playerInstance.GetPhotonView(), playerInstance);
             }
         }
         
@@ -342,11 +343,15 @@ namespace THNeonMirage.Manager
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            if (!PhotonNetwork.IsMasterClient) return;
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                // player.SendSpriteUpdate(null, playerInstance.GetComponent<SpriteRenderer>().color);
+                return;
+            }
+            player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
             // 主客户端更新玩家列表
             UpdatePlayerOrder();
             SyncGameState();
-
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)

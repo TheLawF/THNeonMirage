@@ -113,6 +113,7 @@ MonoBehaviour:
     balance: 0
   canvas: {fileID: 0}
   database: {fileID: 0}
+  instance: {fileID: 0}
 --- !u!114 &9010060989422911570
 MonoBehaviour:
   m_ObjectHideFlags: 0

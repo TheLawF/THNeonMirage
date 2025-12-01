@@ -88,7 +88,7 @@ namespace THNeonMirage.UI
 
         public void OnPlayerPurchase()
         {
-            if (!field.canPurchase)return;
+            if (!CanPurchase())return;
             player.SetBalance(player.playerData.balance - field.Property.Price.Purchase);
             // player.playerData.balance -= field.Property.Price.Purchase;
             // client.SetLabelWhenBalanceChanged(player.playerData, new ValueEventArgs(player.playerData.balance));
@@ -98,7 +98,7 @@ namespace THNeonMirage.UI
             if (PhotonNetwork.IsConnectedAndReady)
             {
                 field.SetOwnerOnLocal(playerObject.GetPhotonView().ViewID);
-                player.NotifyOnlineOwnerUpdate(field.index);
+                player.SendFieldPropertyUpdate(field.index, field.level, field.Property.AsSerializable());
             }
             else
             {
@@ -115,7 +115,7 @@ namespace THNeonMirage.UI
         {
             player.playerData.balance -= field.Property.Price.Building;
             field.level++;
-            player.NotifyFieldLevelUpdate(field.level, field.index);
+            player.SendFieldPropertyUpdate(field.index, field.level, field.Property.AsSerializable());
         }
         
         public void OnCanceled()
@@ -133,6 +133,15 @@ namespace THNeonMirage.UI
             field.level = 0;
             field.Owner.SetBalance(field.level * field.Property.Price.Building + field.Property.Price.Purchase);
             field.Owner = null;
+        }
+
+        private bool CanPurchase()
+        {
+            var fieldMatches = player.playerData.position == field.index;
+            if (!PhotonNetwork.IsConnectedAndReady) return field.canPurchase && fieldMatches && player.IsMyTurn();
+            
+            var server = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            return field.canPurchase && fieldMatches && server.IsMyTurn();
         }
         
 // #if UNITY_EDITOR || UNITY_STANDALONE

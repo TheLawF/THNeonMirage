@@ -103,7 +103,8 @@ namespace THNeonMirage.Map
         }
 
         public bool HasOwner() => Owner is not null;
-        public bool HasOnlineOwner() => onlineOwner is not null;
+        public bool HasOnlineOwner() => onlineOwner is not null && onlineOwner.GetComponent<PlayerManager>() is not null;
+        
         
         public virtual void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
@@ -115,13 +116,21 @@ namespace THNeonMirage.Map
             player.SetBalance(player.playerData.balance - CurrentTolls());
             Owner.SetBalance(Owner.playerData.balance + CurrentTolls());
         }
+        
+        /// <summary>
+        /// 本地玩家在开始设置新位置时调用该方法，检测本地玩家自己客户端上即将抵达的土地是否已被某个在线玩家占有，如果占有则扣除当前过路费
+        /// </summary>
+        /// <param name="view"></param>
+        /// <param name="prevPos"></param>
+        /// <param name="currentPos"></param>
         public virtual void OnPlayerStopRPC(PhotonView view, int prevPos, int currentPos)
         {
-            if (!IsTileValid(currentPos)) return;
-            if (!HasOnlineOwner())return;
-            var player = view.GetComponent<PlayerManager>();
+            if (!PhotonNetwork.IsConnected) return;// 仅限在线模式调用
+            if (!IsTileValid(currentPos)) return;  // 遍历，检测土地的index是否和玩家即将抵达的土地index相等
+            if (!HasOnlineOwner())return;          // 检测本地端下的土地上，远端玩家的 photon view 是否为 null，不为 null 则扣除本地玩家过路费
+            var localPlayer = view.GetComponent<PlayerManager>();
             var onlinePlayer = onlineOwner.GetComponent<PlayerManager>();
-            player.SetBalance(player.playerData.balance - CurrentTolls());
+            localPlayer.SetBalance(localPlayer.playerData.balance - CurrentTolls());
             onlinePlayer.SetBalance(onlinePlayer.playerData.balance + CurrentTolls());
         }
         

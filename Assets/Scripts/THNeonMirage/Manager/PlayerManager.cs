@@ -69,7 +69,10 @@ namespace THNeonMirage.Manager
         
         public void SetPosIndex(int currentPos)
         {
+            var view = gameObject.GetPhotonView();
+            level.GetTile<FieldTile>(currentPos).OnPlayerStopRPC(view, playerData.position, currentPos);
             EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, this, playerData.position, currentPos);
+            
             SetPosition(currentPos);
         }
 
@@ -152,12 +155,14 @@ namespace THNeonMirage.Manager
         /// 发送端命名为：NotifyXXXXXUpdate(); 可以在末尾添加ToEveryone表示发送给所有人<br></br>
         /// 接收端命名为：ReceiveXXXXUpdate();<br></br>
         /// </summary>
-        /// <param name="onlineOwner">发送者</param>
         /// <param name="posIndex">发送者购买的土地的索引</param>
-        public void NotifyOnlineOwnerUpdate(int posIndex)
+        /// <param name="fieldLevel">土地的等级，用以判断过路费费用</param>
+        /// <param name="property">土地的其它数据，比如售价、不同等级土地的所有过路费</param>
+        public void SendFieldPropertyUpdate(int posIndex, int fieldLevel, SerializableProperty property)
         {
             var view = gameObject.GetPhotonView();
-            view.RPC(nameof(ReceiveOnlineOwnerUpdate), RpcTarget.All, view.ViewID, posIndex);
+            view.RPC(nameof(ReceiveOnlineOwnerUpdate), RpcTarget.Others, view.ViewID, posIndex);
+            view.RPC(nameof(ReceiveFieldLevelUpdate), RpcTarget.Others, fieldLevel, posIndex);
         }
 
         /// <summary>
@@ -168,19 +173,12 @@ namespace THNeonMirage.Manager
         /// <param name="senderViewId">发送者</param>
         /// <param name="posIndex">发送者购买的土地的索引</param>
         [PunRPC]
-        public void ReceiveOnlineOwnerUpdate(int posIndex)
+        public void ReceiveOnlineOwnerUpdate(int senderViewId, int posIndex)
         {
             var tile = level.GetTile<FieldTile>(posIndex);
-            tile.SetOwnerOnLocal(gameObject.GetPhotonView().ViewID);
+            tile.SetOwnerOnLocal(senderViewId);
         }
 
-        public void NotifyFieldLevelUpdate(int fieldLevel, int posIndex)
-        {
-            var view = gameObject.GetPhotonView();
-            level.GetTile<FieldTile>(posIndex).level = fieldLevel;
-            view.RPC(nameof(ReceiveFieldLevelUpdate), RpcTarget.All, view.ViewID, posIndex);
-        }
-        
         [PunRPC]
         public void ReceiveFieldLevelUpdate(int fieldLevel, int posIndex)
         {
@@ -188,7 +186,7 @@ namespace THNeonMirage.Manager
             tile.level = fieldLevel;
         }
 
-        public void NotifySpriteUpdate(string skinPath, Color color)
+        public void SendSpriteUpdateToOthers(string skinPath, Color color)
         {
             var sprite = gameObject.GetComponent<SpriteRenderer>();
             var view = gameObject.GetPhotonView();
@@ -198,12 +196,13 @@ namespace THNeonMirage.Manager
             }
 
             sprite.color = color;
-            view.RPC(nameof(ReceiveSpriteUpdate), RpcTarget.All, skinPath, color.r, color.g, color.b);
+            view.RPC(nameof(ReceiveSpriteUpdate), RpcTarget.Others, skinPath, view.ViewID, color.r, color.g, color.b);
         }
 
         [PunRPC]
-        public void ReceiveSpriteUpdate(string skinPath, float r, float g, float b)
+        public void ReceiveSpriteUpdate(string skinPath, int senderId, float r, float g, float b)
         {
+            if (gameObject.GetPhotonView().ViewID != senderId) return;
             var sprite = gameObject.GetComponent<SpriteRenderer>();
             if (skinPath != null)
             {
