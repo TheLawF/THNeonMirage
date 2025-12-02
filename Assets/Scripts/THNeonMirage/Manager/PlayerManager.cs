@@ -33,8 +33,8 @@ namespace THNeonMirage.Manager
         public GameObject canvas;
 
         [DisplayOnly] public GameHost database;
-        public GameObject instance;
 
+        private PhotonView m_view;
         private Transform m_transform;
         private Vector3 prev_pos;
         private Vector3 next_pos;
@@ -51,6 +51,7 @@ namespace THNeonMirage.Manager
             level = Registries.Get<Level>(LevelRegistry.ClientLevel);
 
             canvas = Registries.GetObject(UIRegistry.Canvas);
+            m_view = gameObject.GetPhotonView();
             m_transform = GetComponent<Transform>();
             indexLabel = UIRegistry.IndexLabel.Instantiate(GetPointOnScreen(), Quaternion.identity, canvas.transform);
             indexLabel.GetComponent<TextMeshProUGUI>().text = playerData.roundIndex.ToString();
@@ -71,9 +72,7 @@ namespace THNeonMirage.Manager
         public void SetPosIndex(int currentPos)
         {
             var view = gameObject.GetPhotonView();
-            level.GetTile<FieldTile>(currentPos).OnLocalPlayerStopAt(view, playerData.position, currentPos);
             EventCenter.TriggerEvent(EventRegistry.OnPositionChanged, this, playerData.position, currentPos);
-            
             SetPosition(currentPos);
         }
 
@@ -81,6 +80,7 @@ namespace THNeonMirage.Manager
         {
             EventCenter.TriggerEvent(EventRegistry.OnBalanceChanged, this, playerData.balance, currentBalance);
             playerData.balance = currentBalance;
+            SendPlayerDataUpdate(m_view.ViewID, playerData);
         }
 
         private void OnRoundEnd(MonoBehaviour script, ValueEventArgs args)
@@ -192,11 +192,16 @@ namespace THNeonMirage.Manager
             var view = gameObject.GetPhotonView();
             view.RPC(nameof(ReceivePlayerDataUpdate), targetPlayer, data);
         }
+        
+        public void SendPlayerDataUpdate(int actorViewId, PlayerData data)
+        {
+            m_view.RPC(nameof(ReceivePlayerDataUpdate), RpcTarget.Others, actorViewId, data);
+        }
 
         [PunRPC]
-        public void ReceivePlayerDataUpdate(PlayerData data)
+        public void ReceivePlayerDataUpdate(int actorViewId, PlayerData data)
         {
-            playerData = data;
+           PhotonView.Find(actorViewId).GetComponent<PlayerManager>().playerData = data;
         }
 
         public void SendSpriteUpdateToOthers(string skinPath, Color color)

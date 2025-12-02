@@ -441,7 +441,6 @@ namespace THNeonMirage.Manager
         private IEnumerator TurnTimer()
         {
             float timeLeft = turnTimeLimit;
-            
             while (timeLeft > 0 && currentTurnPlayerId == PhotonNetwork.LocalPlayer.ActorNumber)
             {
                 timeLeft -= Time.deltaTime;
@@ -451,7 +450,8 @@ namespace THNeonMirage.Manager
                 {
                     // 时间到，自动结束回合
                     NextTurn();
-                    player.AITossDice();
+                    // TODO: Add Auto Dice Toss
+                    // player.AITossDice();
                 }
                 yield return null;
             }

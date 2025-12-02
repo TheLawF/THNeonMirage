@@ -35,7 +35,7 @@ namespace THNeonMirage.Map
         [DisplayOnly] public GameObject hoverText;
 
         protected Random Random = new();
-        public PhotonView onlineOwner;
+        [FormerlySerializedAs("onlineOwner")] public PhotonView remoteOwner;
         private string tooltipString;
         
         private void Start()
@@ -52,12 +52,12 @@ namespace THNeonMirage.Map
                           $"两幢房屋：{Property.Price.Level2}\n" +
                           $"三幢房屋：{Property.Price.Level3}\n" +
                           $"每幢房屋建造费用：{Property.Price.Building}";
+            Init();
         }
 
         public virtual void Init()
         {
-            Start();
-            onlineOwner = GetComponent<PhotonView>();
+            remoteOwner = GetComponent<PhotonView>();
             Random = new Random((uint)DateTime.Now.Millisecond);
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
 
@@ -103,41 +103,79 @@ namespace THNeonMirage.Map
         }
 
         public bool HasOwner() => Owner is not null;
-        public bool HasOnlineOwner() => onlineOwner is not null && onlineOwner.GetComponent<PlayerManager>() is not null;
-        
-        
+        public bool HasRemoteOwner() => remoteOwner is not null && remoteOwner.GetComponent<PlayerManager>() is not null;
+
         public virtual void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
         {
             if (!IsTileValid(currentPos)) return;
+            if (HasRemoteOwner())
+            {
+                OnLocalPlayerStopAt(player);
+                return;
+            }
             if (!HasOwner())return;
-            if (player.playerData.userName == null) return;
-            if (Owner.playerData.userName == player.playerData.userName)return;
             
             player.SetBalance(player.playerData.balance - CurrentTolls());
             Owner.SetBalance(Owner.playerData.balance + CurrentTolls());
+            OnLocalPlayerStopAt(player);
         }
-        
+
         /// <summary>
+        /// <list type="number">
+        /// <item>
         /// 本地玩家在开始设置新位置时调用该方法，检测本地玩家自己客户端上即将抵达的土地是否已被某个在线玩家占有，如果占有则扣除当前过路费
+        /// </item>
+        /// <item>
+        /// 这里需要发送两次，因为假如A被B收取过路费，则需要通知房间内所有玩家B,C,D扣除他们各自客户端上的A玩家的相应余额。同时还要通知A,B,C,D增加他们各自客户端上B玩家的相应余额
+        /// </item>
+        /// <item>
+        /// 我将 A(扣除余额) -> B,C,D 的网络通信集成在 player.SetBalance() 方法中了，这个方法只需额外调用 A(增加B的余额) -> B,C,D 的逻辑同步即可
+        /// </item>
+        /// </list>
         /// </summary>
-        /// <param name="localPlayerView"></param>
-        /// <param name="prevPos"></param>
-        /// <param name="currentPos"></param>
-        public virtual void OnLocalPlayerStopAt(PhotonView localPlayerView, int prevPos, int currentPos)
+        /// <param name="player">本地玩家</param>
+        public virtual void OnLocalPlayerStopAt(PlayerManager player)
         {
-            if (!PhotonNetwork.IsConnected) return;// 仅限在线模式调用
-            if (!IsTileValid(currentPos)) return;  // 遍历，检测土地的index是否和玩家即将抵达的土地index相等
-            if (!HasOnlineOwner())return;          // 检测本地端下的土地上，远端玩家的 photon view 是否为 null，不为 null 则扣除本地玩家过路费
-            var localPlayer = localPlayerView.GetComponent<PlayerManager>();
+            if (!PhotonNetwork.IsConnected) return; // 仅限在线模式调用
+            if (OwnerIsMe(player))
+            {
+                OnStoppedAtMyProperty();
+                return;
+            }
             
-            localPlayer.SetBalance(localPlayer.playerData.balance + CurrentTolls());
-            localPlayer.SendPlayerDataUpdate(onlineOwner.Owner, new PlayerData().AddBalance(CurrentTolls()));
+            var onlinePlayer = remoteOwner.GetComponent<PlayerManager>();
+            
+            player.SetBalance(player.playerData.balance - CurrentTolls());
+            player.SendPlayerDataUpdate(remoteOwner.ViewID, onlinePlayer.playerData.AddBalance(CurrentTolls()));
+        }
+
+        public virtual void OnStoppedAtMyProperty()
+        {
+            
         }
 
         [PunRPC]
         public void SendBalanceUpdateToOnlineOwner()
         {
             
+        }
+
+        /// <summary>
+        /// 检测是否是自己的土地
+        /// <list type="number">
+        /// <item>
+        /// 在离线模式下，直接检测player和owner的引用是否一致
+        /// </item>
+        /// <item>
+        /// 如果检测到field存储的远端玩家的viewId等于传入的本地玩家的viewId，则表明土地是自己的
+        /// </item>
+        /// </list>
+        /// </summary>
+        /// <returns></returns>
+        public bool OwnerIsMe(PlayerManager player)
+        {
+            if (player == Owner) return true;
+            return remoteOwner.ViewID == player.gameObject.GetPhotonView().ViewID;
         }
         
         public virtual void OnPlayerPassBy(PlayerManager player, int prevPosition, int currentPosition)
@@ -178,16 +216,16 @@ namespace THNeonMirage.Map
             EventCenter.AddListenerByKey(key, method);
         }
 
-        public PhotonView GetOnlineOwner() => onlineOwner;
+        public PhotonView GetOnlineOwner() => remoteOwner;
 
         public void SetOwnerOnLocal(int onlineOwnerViewId)
         {
             canPurchase = false;
-            onlineOwner = PhotonView.Find(onlineOwnerViewId);
-            spriteRenderer.color = onlineOwner.GetComponent<SpriteRenderer>().color;
+            remoteOwner = PhotonView.Find(onlineOwnerViewId);
+            spriteRenderer.color = remoteOwner.GetComponent<SpriteRenderer>().color;
         }
 
-        public void RemoveOnlineOwner() => onlineOwner = null;
+        public void RemoveOnlineOwner() => remoteOwner = null;
 
         public enum Type
         {

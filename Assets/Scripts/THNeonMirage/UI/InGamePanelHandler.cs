@@ -100,6 +100,7 @@ namespace THNeonMirage.UI
             {
                 field.SetOwnerOnLocal(playerObject.GetPhotonView().ViewID);
                 player.SendFieldPropertyUpdate(field.index, field.level, field.Property.AsSerializable());
+                player.SendPlayerDataUpdate(player.gameObject.GetPhotonView().ViewID, player.playerData);
             }
             else
             {
@@ -109,7 +110,6 @@ namespace THNeonMirage.UI
 
                 sprite.color = color;
             }
-            
         }
 
         public void OnPlayerBuild()

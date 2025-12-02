@@ -36,7 +36,6 @@ namespace THNeonMirage.Data
             using var writer = new BinaryWriter(stream);
             
             writer.Write((byte)SerializeVersion);
-            writer.Write(data.userName);
             writer.Write(data.isBot);
             
             writer.Write(data.roundIndex);
@@ -49,16 +48,14 @@ namespace THNeonMirage.Data
 
         public static object Deserialize(byte[] bytes)
         {
-            using var stream = new MemoryStream();
+            using var stream = new MemoryStream(bytes);
             using var reader = new BinaryReader(stream);
             if (reader.ReadByte() != SerializeVersion)
             {
                 throw new InvalidDataException($"不支持的序列化版本，仅支持：{SerializeVersion}，但是发现了：{(int)reader.ReadByte()}");
             }
 
-            var name = reader.ReadString();
             var isbot = reader.ReadBoolean();
-
             var round = reader.ReadInt32();
             var pause = reader.ReadInt32();
             var posIndex = reader.ReadInt32();
@@ -66,9 +63,7 @@ namespace THNeonMirage.Data
 
             return new PlayerData
             {
-                userName = name,
                 isBot = isbot,
-
                 roundIndex = round,
                 pauseCount = pause,
                 balance = balanceCount,
@@ -85,6 +80,7 @@ namespace THNeonMirage.Data
         
         public PlayerData()
         {
+            userName = "";
             Inventory = new ObservableList<int>();
             Fields = new ObservableList<int>();
             UniqueId = new UniqueId();
