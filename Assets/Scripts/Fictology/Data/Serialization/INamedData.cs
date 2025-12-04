@@ -6,21 +6,33 @@ namespace Fictology.Data.Serialization
 {
     public interface INamedData: ISynchronizable
     {
-        private static Dictionary<SerializationType, Func<INamedData, INamedData>> Types = new()
-        {
-            { SerializationType.Bool, data => (BoolData)data },
-            { SerializationType.Integer, data => (IntData)data },
-            { SerializationType.Float, data => (FloatData)data },
-            { SerializationType.String, data => (StringData)data },
-            { SerializationType.IntList, data => (ListData)data },
-            { SerializationType.Object, data => (CompoundData)data },
-        };
+        
         public const INamedData Empty = null;
         SerializationType GetSerializedType();
 
         INamedData GetDataFromType(SerializationType type)
         {
-            return Types[type].Invoke(this);
+            return Factory.Create(type);
+        }
+        
+        private static class Factory
+        {
+            private static Dictionary<SerializationType, Func<INamedData>> TypeFactories = new()
+            {
+                { SerializationType.Bool, () => new BoolData() },
+                { SerializationType.Integer, () => new IntData() },
+                { SerializationType.Float, () => new FloatData()},
+                { SerializationType.String, () => new StringData()},
+                { SerializationType.IntList, () => new ListData() },
+                { SerializationType.FloatList, () => new ListData() },
+                { SerializationType.StringList, () => new ListData() },
+                { SerializationType.ObjectList, () => new ListData() },
+                { SerializationType.Object, () => new CompoundData() },
+            };
+            public static INamedData Create(SerializationType type)
+            {
+                return TypeFactories[type].Invoke();
+            }
         }
     }
 }

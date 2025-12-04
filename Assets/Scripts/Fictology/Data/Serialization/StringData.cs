@@ -9,6 +9,11 @@ namespace Fictology.Data.Serialization
         public SerializationType serializationType = SerializationType.String;
         public string value;
 
+        public StringData()
+        {
+            
+        }
+        
         public StringData(string value)
         {
             this.value = value;

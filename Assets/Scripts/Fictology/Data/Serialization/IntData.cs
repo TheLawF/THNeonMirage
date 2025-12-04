@@ -27,14 +27,12 @@ namespace Fictology.Data.Serialization
         public readonly string name;
         public new int value;
 
-        public IntData(int value) : base(SerializationType.Integer)
+        public IntData() : base(SerializationType.Integer)
         {
-            this.value = value;
         }
 
-        public IntData(string name, int value) : base(SerializationType.Integer)
+        public IntData(int value) : this()
         {
-            this.name = name;
             this.value = value;
         }
 

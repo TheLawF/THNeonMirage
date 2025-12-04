@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using ExitGames.Client.Photon.StructWrapping;
 using Unity.VisualScripting;
-using UnityEngine;
 
 namespace Fictology.Data.Serialization
 {
@@ -36,7 +32,7 @@ namespace Fictology.Data.Serialization
             m_entries[key] = data;
         }
 
-        public void AddInt(string key, int value) => Add(key, new IntData(value));
+        public void AddInt(string key, int value) => Add(key, IntData.Of(value));
         public void AddFloat(string key, float value)
         {
             m_entries.TryAdd(key, new FloatData(value));
@@ -81,7 +77,7 @@ namespace Fictology.Data.Serialization
 
         public void FromBytes(byte[] bytes)
         {
-            using var stream = new MemoryStream();
+            using var stream = new MemoryStream(bytes);
             using var reader = new BinaryReader(stream);
             var count = reader.ReadInt32();
             for (var i = 0; i < count - 1; i++)

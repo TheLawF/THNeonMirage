@@ -8,7 +8,7 @@ namespace Fictology.Data.Serialization
     {
         protected bool Equals(FloatData other)
         {
-            return serializationType == other.serializationType && name == other.name && value.Equals(other.value);
+            return serializationType == other.serializationType && value.Equals(other.value);
         }
 
         public override bool Equals(object obj)
@@ -18,21 +18,14 @@ namespace Fictology.Data.Serialization
             return obj.GetType() == GetType() && Equals((FloatData)obj);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(name, value);
-        }
-        public string name;
         public float value;
+
+        public FloatData() : base(SerializationType.Float)
+        {
+        }
 
         public FloatData(float value) : base(SerializationType.Float)
         {
-            this.value = value;
-        }
-
-        public FloatData(string name, float value) : base(SerializationType.Float)
-        {
-            this.name = name;
             this.value = value;
         }
 

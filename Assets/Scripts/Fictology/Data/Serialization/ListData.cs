@@ -11,6 +11,10 @@ namespace Fictology.Data.Serialization
         public string name;
         [SerializeReference] private List<INamedData> dataList;
 
+        public ListData()
+        {
+            
+        }
         public ListData(string name)
         {
             this.name = name;
@@ -24,11 +28,8 @@ namespace Fictology.Data.Serialization
             {
                 SerializationType.Integer => SerializationType.IntList,
                 SerializationType.Float => SerializationType.FloatList,
-                SerializationType.Vec2 => SerializationType.Vec2List,
-                SerializationType.Vec3 => SerializationType.Vec3List,
-                SerializationType.StringList => SerializationType.StringList,
-                SerializationType.Danmaku => SerializationType.DanmakuList,
-                SerializationType.Expression => SerializationType.Null,
+                SerializationType.String => SerializationType.StringList,
+                SerializationType.Object => SerializationType.ObjectList,
                 _ => serializationType
             };
             dataList.Add(data);
