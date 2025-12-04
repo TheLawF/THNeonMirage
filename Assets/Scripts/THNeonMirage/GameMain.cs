@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon;
+using Fictology.Data.Serialization;
 using Fictology.Registry;
 using FlyRabbit.EventCenter;
 using THNeonMirage.Data;
@@ -57,6 +58,7 @@ namespace THNeonMirage
         private void Awake()
         {
             PhotonPeer.RegisterType(typeof(PlayerData), NextId(), PlayerData.Serialize, PlayerData.Deserialize);
+            PhotonPeer.RegisterType(typeof(ISynchronizable), NextId(), ISynchronizable.Serialize, ISynchronizable.Deserialize);
         }
 
         private static byte NextId()

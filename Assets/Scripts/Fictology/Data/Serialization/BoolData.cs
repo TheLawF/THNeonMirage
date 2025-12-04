@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Fictology.Data.Serialization
@@ -60,8 +61,8 @@ namespace Fictology.Data.Serialization
         public static BoolData operator |(BoolData left, BoolData right) => new(left.value | right.value);
         public static BoolData operator ^(BoolData left, BoolData right) => new(left.value ^ right.value);
         
-        public static BoolData operator ==(BoolData left, BoolData right) => new(left.value == right.value);
-        public static BoolData operator !=(BoolData left, BoolData right) => new(left.value != right.value);
+        public static BoolData operator ==([NotNull] BoolData left,[NotNull] BoolData right) => new(left.value == right.value);
+        public static BoolData operator !=([NotNull] BoolData left,[NotNull] BoolData right) => new(left.value != right.value);
         
         public static bool operator false(BoolData self) => !self.value;
         public static bool operator true(BoolData self) => self.value;

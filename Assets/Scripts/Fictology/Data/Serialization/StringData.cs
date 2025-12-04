@@ -6,7 +6,7 @@ namespace Fictology.Data.Serialization
     [Serializable]
     public class StringData : INamedData
     {
-        public SerializationType serializationType = SerializationType.String;
+        public const SerializationType SerializationType = Serialization.SerializationType.String;
         public string value;
 
         public StringData()

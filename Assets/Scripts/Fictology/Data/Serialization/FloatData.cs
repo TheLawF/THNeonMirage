@@ -8,7 +8,7 @@ namespace Fictology.Data.Serialization
     {
         protected bool Equals(FloatData other)
         {
-            return serializationType == other.serializationType && value.Equals(other.value);
+            return value.Equals(other.value);
         }
 
         public override bool Equals(object obj)

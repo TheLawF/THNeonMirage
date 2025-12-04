@@ -9,17 +9,12 @@ namespace Fictology.Data.Serialization
     public class CompoundData : INamedData
     {
         // public readonly ScriptExecutor Executor = new();
-        public SerializationType serializationType = SerializationType.Object;
+        public const SerializationType SerializationType = Serialization.SerializationType.Object;
         private readonly ConcurrentDictionary<string, INamedData> m_entries;
 
         public SerializationType GetSerializedType()
         {
-            return serializationType;
-        }
-
-        public INamedData GetDataFromType(SerializationType type)
-        {
-            throw new NotImplementedException();
+            return SerializationType;
         }
 
         public void Add(string key, INamedData data)
@@ -64,14 +59,18 @@ namespace Fictology.Data.Serialization
         {
             using var stream = new MemoryStream();
             using var writer = new BinaryWriter(stream);
+    
             writer.Write(m_entries.Count);
             foreach (var kv in m_entries)
             {
                 writer.Write(kv.Key);
                 writer.Write((int)kv.Value.GetSerializedType());
-                writer.Write(kv.Value.ToBytes());
+        
+                var dataBytes = kv.Value.ToBytes();
+                writer.Write(dataBytes.Length); // 写入数据长度
+                writer.Write(dataBytes);
             }
-
+    
             return stream.ToArray();
         }
 
@@ -84,10 +83,23 @@ namespace Fictology.Data.Serialization
             {
                 var key = reader.ReadString();
                 var type = (SerializationType)reader.ReadInt32();
-                var value = GetDataFromType(type);
+                
+                var dataLength = reader.ReadInt32();
+                var dataBytes = reader.ReadBytes(dataLength);
+                var value = INamedData.Factory.Create(type);
+                
+                value.FromBytes(dataBytes);
                 m_entries.TryAdd(key, value);
             }
         }
 
+        public static byte[] Serialize(ISynchronizable synchronizable) => synchronizable.ToBytes();
+
+        public static ISynchronizable Deserialize(byte[] bytes)
+        {
+            using var stream = new MemoryStream(bytes);
+            using var reader = new BinaryReader(stream);
+            return INamedData.Factory.Create((SerializationType)reader.ReadInt32());
+        }
     }
 }

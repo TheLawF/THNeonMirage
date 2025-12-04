@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Fictology.Data.Serialization
@@ -40,12 +41,33 @@ namespace Fictology.Data.Serialization
         public INamedData this[int index] => dataList[index];
         public byte[] ToBytes()
         {
-            throw new NotImplementedException();
+            using var stream = new MemoryStream();
+            using var writer = new BinaryWriter(stream);
+            writer.Write(dataList.Count);
+            foreach (var data in dataList)
+            {
+                writer.Write((int)data.GetSerializedType());
+                writer.Write(data.ToBytes().Length);
+                writer.Write(data.ToBytes());
+            }
+            return stream.ToArray();
         }
 
         public void FromBytes(byte[] bytes)
         {
-            throw new NotImplementedException();
+            using var stream = new MemoryStream(bytes);
+            using var reader = new BinaryReader(stream);
+            var count = reader.ReadInt32();
+            for (var i = 0; i < count - 1; i++)
+            {
+                var type = reader.ReadInt32();
+                var length = reader.ReadInt32();
+                var dataBytes = reader.ReadBytes(length);
+                var value = INamedData.Factory.Create((SerializationType)type);
+                
+                value.FromBytes(dataBytes);
+                dataList.Add(value);
+            }
         }
 
         public SerializationType GetSerializedType()
