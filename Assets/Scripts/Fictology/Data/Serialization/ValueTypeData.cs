@@ -10,5 +10,7 @@ namespace Fictology.Data.Serialization
         protected ValueTypeData(SerializationType serializationType) => this.serializationType = serializationType;
         public SerializationType GetSerializedType() => serializationType;
         public abstract ValueTypeData Cast();
+        public abstract byte[] ToBytes();
+        public abstract void FromBytes(byte[] bytes);
     }
 }

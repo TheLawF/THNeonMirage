@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Fictology.Data.Serialization
 {
     [Serializable]
-    public class ListData
+    public class ListData: INamedData
     {
         public SerializationType serializationType = SerializationType.Null;
         public string name;
@@ -37,5 +37,19 @@ namespace Fictology.Data.Serialization
         public List<INamedData> Get() => dataList;
         
         public INamedData this[int index] => dataList[index];
+        public byte[] ToBytes()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void FromBytes(byte[] bytes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SerializationType GetSerializedType()
+        {
+            return serializationType;
+        }
     }
 }

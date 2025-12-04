@@ -1,6 +1,6 @@
 namespace Fictology.Data.Serialization
 {
-    public interface IPunSynchronizable
+    public interface ISynchronizable
     {
         byte[] ToBytes();
         void FromBytes(byte[] bytes);

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace Fictology.Data.Serialization
 {
@@ -38,6 +39,20 @@ namespace Fictology.Data.Serialization
         }
 
         public override ValueTypeData Cast() => this;
+        public override byte[] ToBytes()
+        {
+            using var stream = new MemoryStream();
+            using var writer = new BinaryWriter(stream);
+            writer.Write(value);
+            return stream.ToArray();
+        }
+
+        public override void FromBytes(byte[] bytes)
+        {
+            using var stream = new MemoryStream(bytes);
+            using var reader = new BinaryReader(stream);
+            value = reader.ReadInt32();
+        }
 
         public static IntData Of(int data) => new(data);
         

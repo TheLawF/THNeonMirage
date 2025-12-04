@@ -7,7 +7,7 @@ namespace Fictology.Data.Serialization
     public class StringData : INamedData
     {
         public SerializationType serializationType = SerializationType.String;
-        public readonly string value;
+        public string value;
 
         public StringData(string value)
         {
@@ -18,17 +18,19 @@ namespace Fictology.Data.Serialization
         {
             return SerializationType.String;
         }
-
-        public byte[] Serialize(MemoryStream stream)
+        public byte[] ToBytes()
         {
+            using var stream = new MemoryStream();
             using var writer = new BinaryWriter(stream);
             writer.Write(value);
             return stream.ToArray();
         }
 
-        public void Deserialize(INamedData data)
+        public void FromBytes(byte[] bytes)
         {
-            
+            using var stream = new MemoryStream(bytes);
+            using var reader = new BinaryReader(stream);
+            value = reader.ReadString();
         }
     }
 }

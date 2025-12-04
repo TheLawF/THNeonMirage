@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace Fictology.Data.Serialization
@@ -26,6 +27,21 @@ namespace Fictology.Data.Serialization
         public string name;
         public bool value;
         public override ValueTypeData Cast() => this;
+        public override byte[] ToBytes()
+        {
+            using var stream = new MemoryStream();
+            using var writer = new BinaryWriter(stream);
+            writer.Write(value);
+            return stream.ToArray();
+        }
+
+        public override void FromBytes(byte[] bytes)
+        {
+            using var stream = new MemoryStream(bytes);
+            using var reader = new BinaryReader(stream);
+            value = reader.ReadBoolean();
+        }
+
         public static BoolData Of(bool data) => new(data);
 
         public BoolData(bool value) : base(SerializationType.Bool) => this.value = value;

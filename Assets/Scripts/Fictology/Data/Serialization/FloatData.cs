@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 
 namespace Fictology.Data.Serialization
 {
@@ -36,6 +37,18 @@ namespace Fictology.Data.Serialization
         }
 
         public override ValueTypeData Cast() => this;
+        public override byte[] ToBytes()
+        {
+            using var stream = new MemoryStream();
+            using var writer = new BinaryWriter(stream);
+            writer.Write(value);
+            return stream.ToArray();
+        }
+
+        public override void FromBytes(byte[] bytes)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// 这里是一元操作符，表示颠倒正负
