@@ -25,7 +25,7 @@ namespace THNeonMirage.Registry
             typeof(PhotonView), typeof(int), typeof(int));
 
         public static readonly EventKey OnBalanceChangedRPC = new EventKey(nameof(OnBalanceChangedRPC),
-            typeof(PhotonView), typeof(int), typeof(int));
+            typeof(int), typeof(int));
 
         public static readonly EventKey OnRoundStarted = new EventKey(nameof(OnRoundStarted));
     }

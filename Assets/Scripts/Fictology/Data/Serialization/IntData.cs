@@ -1,0 +1,79 @@
+using System;
+
+namespace Fictology.Data.Serialization
+{
+    [Serializable]
+    public class IntData : NumberData
+    {
+        protected bool Equals(IntData other)
+        {
+            return serializationType == other.serializationType && name == other.name && value == other.value;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((IntData)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine((int)serializationType, name, value);
+        }
+        
+        public readonly string name;
+        public new int value;
+
+        public IntData(int value) : base(SerializationType.Integer)
+        {
+            this.value = value;
+        }
+
+        public IntData(string name, int value) : base(SerializationType.Integer)
+        {
+            this.name = name;
+            this.value = value;
+        }
+
+        public override ValueTypeData Cast() => this;
+
+        public static IntData Of(int data) => new(data);
+        
+        /// <summary>
+        /// 这里是一元操作符，表示颠倒正负
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static IntData operator -(IntData self) => new(-self.value);
+        
+        public static IntData operator +(IntData left, IntData right) => new(left.value + right.value);
+        public static IntData operator -(IntData left, IntData right) => new(left.value - right.value);
+        public static IntData operator *(IntData left, IntData right) => new(left.value * right.value);
+        public static IntData operator /(IntData left, IntData right) => new(left.value / right.value);
+        public static IntData operator %(IntData left, IntData right) => new(left.value % right.value);
+
+        public static IntData operator ~(IntData self) => new (~self.value);
+        public static IntData operator &(IntData left, IntData right) => new(left.value & right.value);
+        public static IntData operator |(IntData left, IntData right) => new(left.value | right.value);
+        public static IntData operator ^(IntData left, IntData right) => new(left.value ^ right.value);
+        
+        public static bool operator <(IntData left, IntData right) => left.value < right.value;
+        public static bool operator >(IntData left, IntData right) => left.value > right.value;
+        public static bool operator <=(IntData left, IntData right) => left.value <= right.value;
+        public static bool operator >=(IntData left, IntData right) => left.value >= right.value;
+        public static bool operator ==(IntData left, IntData right) => left!.value == right!.value;
+        public static bool operator !=(IntData left, IntData right) => left!.value != right!.value;
+
+        public static IntData operator >>(IntData left, int i) => new(left.value >> i);
+        public static IntData operator <<(IntData left, int i) => new(left.value << i);
+
+        public static IntData operator ++(IntData self) => new(++self.value);
+        public static IntData operator --(IntData self) => new(--self.value);
+        
+        public static explicit operator IntData(FloatData floatData) => new((int)floatData.value);
+        public static explicit operator IntData(BoolData boolData) => boolData ? new IntData(1) : new IntData(0);
+        public static explicit operator IntData(int i) => new(i);
+    }
+}

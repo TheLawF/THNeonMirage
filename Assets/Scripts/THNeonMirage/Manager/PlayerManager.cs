@@ -202,6 +202,7 @@ namespace THNeonMirage.Manager
         public void ReceivePlayerDataUpdate(int actorViewId, PlayerData data)
         {
            PhotonView.Find(actorViewId).GetComponent<PlayerManager>().playerData = data;
+           EventCenter.TriggerEvent(EventRegistry.OnBalanceChangedRPC, m_view.ViewID, data.balance);
         }
 
         public void SendSpriteUpdateToOthers(string skinPath, Color color)

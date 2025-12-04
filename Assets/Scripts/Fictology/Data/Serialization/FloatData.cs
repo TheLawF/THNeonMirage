@@ -1,0 +1,68 @@
+using System;
+
+namespace Fictology.Data.Serialization
+{
+    [Serializable]
+    public class FloatData : ValueTypeData
+    {
+        protected bool Equals(FloatData other)
+        {
+            return serializationType == other.serializationType && name == other.name && value.Equals(other.value);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((FloatData)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(name, value);
+        }
+        public string name;
+        public float value;
+
+        public FloatData(float value) : base(SerializationType.Float)
+        {
+            this.value = value;
+        }
+
+        public FloatData(string name, float value) : base(SerializationType.Float)
+        {
+            this.name = name;
+            this.value = value;
+        }
+
+        public override ValueTypeData Cast() => this;
+
+        /// <summary>
+        /// 这里是一元操作符，表示颠倒正负
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static FloatData operator -(FloatData self) => new(-self.value);
+        
+        public static FloatData operator +(FloatData left, FloatData right) => new(left.value + right.value);
+        public static FloatData operator -(FloatData left, FloatData right) => new(left.value - right.value);
+        public static FloatData operator *(FloatData left, FloatData right) => new(left.value * right.value);
+        public static FloatData operator /(FloatData left, FloatData right) => new(left.value / right.value);
+        public static FloatData operator %(FloatData left, FloatData right) => new(left.value % right.value);
+
+        public static bool operator <(FloatData left, FloatData right) => left.value < right.value;
+        public static bool operator >(FloatData left, FloatData right) => left.value > right.value;
+        public static bool operator <=(FloatData left, FloatData right) => left.value <= right.value;
+        public static bool operator >=(FloatData left, FloatData right) => left.value >= right.value;
+        
+        public static bool operator ==(FloatData left, FloatData right) => right != null && left != null && Math.Abs(left.value - right.value) < 1e-6;
+        public static bool operator !=(FloatData left, FloatData right) => right != null && left != null && Math.Abs(left.value - right.value) > 1e-6;
+
+        public static FloatData operator ++(FloatData self) => new(++self.value);
+        public static FloatData operator --(FloatData self) => new(--self.value);
+
+        public static explicit operator FloatData(IntData intData) => new(intData.value);
+        public static explicit operator FloatData(BoolData boolData) => boolData ? new FloatData(1) : new FloatData(0);
+        public static explicit operator FloatData(float f) => new(f);
+    }
+}
