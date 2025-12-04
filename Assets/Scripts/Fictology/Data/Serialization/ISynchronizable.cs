@@ -12,7 +12,9 @@ namespace Fictology.Data.Serialization
         {
             using var stream = new MemoryStream(bytes);
             using var reader = new BinaryReader(stream);
-            return INamedData.Factory.Create((SerializationType)reader.ReadInt32());
+            var value = INamedData.Factory.Create((SerializationType)reader.ReadInt32());
+            value.FromBytes(bytes);
+            return value;
         }
     }
 }

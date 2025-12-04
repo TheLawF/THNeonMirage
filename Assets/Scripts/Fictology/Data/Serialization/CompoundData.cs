@@ -8,7 +8,6 @@ namespace Fictology.Data.Serialization
     [Serializable]
     public class CompoundData : INamedData
     {
-        // public readonly ScriptExecutor Executor = new();
         public const SerializationType SerializationType = Serialization.SerializationType.Object;
         private readonly ConcurrentDictionary<string, INamedData> m_entries;
 
@@ -60,6 +59,7 @@ namespace Fictology.Data.Serialization
             using var stream = new MemoryStream();
             using var writer = new BinaryWriter(stream);
     
+            writer.Write((int)GetSerializedType());
             writer.Write(m_entries.Count);
             foreach (var kv in m_entries)
             {
