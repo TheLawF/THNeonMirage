@@ -11,7 +11,7 @@ namespace THNeonMirage.Map
         {
             Init();
             canPurchase = false;
-            description = "经过或停在此处时可以获得10000月虹币\n\n<i><color=#444444>“欢迎来到梦乐园~”</color></i>";
+            description = "经过或停在此处时可以获得10000月虹币\n\n<i><color=#A1A1A1>“欢迎来到梦乐园~”</color></i>";
         }
 
         public override void OnPlayerStopAt(PlayerManager player, int prevPos, int currentPos)
