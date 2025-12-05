@@ -164,7 +164,7 @@ namespace THNeonMirage
         {
             if (player.playerData.isBot) return;
             // if(!PhotonView.IsMine) return;
-            balanceLabel.SetText("月虹币余额：" + currentBalance);
+            balanceLabel.SetText(currentBalance.ToString());
         }
 
         private void CheckBalance(PlayerManager player, int prevBalance, int currentBalance)
