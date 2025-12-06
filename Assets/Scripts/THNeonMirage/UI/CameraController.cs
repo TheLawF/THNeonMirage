@@ -1,9 +1,11 @@
+using System.Collections;
+using Fictology.Registry;
 using UnityEngine;
 
 namespace THNeonMirage.UI
 {
 
-    public class CameraController : MonoBehaviour
+    public class CameraController : RegistryEntry
     {
         public const float DevWidth = 9.6F;
         public const float DevHeight = 6.4F;
@@ -13,6 +15,21 @@ namespace THNeonMirage.UI
         public bool allowDrag = true;
         public float ZoomSpeed = 10F;
         public float DragSpeed = 0.8F;
+
+        public bool enableMouseCtrl;
+
+        public GameObject BindingPlayer
+        {
+            get => m_player;
+            set
+            {
+                if (value is not null) StartCoroutine(UpdatePlayerControl());
+                m_player = value;
+            }
+        }
+
+        private GameObject m_player;
+        
         private Vector2 _worldPos, _startPos, _moveDirection;
         private Vector3 _cameraPrevPos;
 
@@ -21,7 +38,6 @@ namespace THNeonMirage.UI
             camera = GetComponent<Camera>();
             // var orthoSize = camera.orthographicSize;
             // var aspectRatio = Screen.width * 1F / Screen.height;
-// 
             // var cameraWidth = orthoSize * 2 * aspectRatio;
             // if (cameraWidth < )
             // {
@@ -39,18 +55,44 @@ namespace THNeonMirage.UI
 
         private void Update()
         {
+            UpdateMouseControl();
+        }
+
+        private IEnumerator UpdatePlayerControl()
+        {
+            if (BindingPlayer is null) yield break;
+            var pos = BindingPlayer.transform.position;
+            Debug.Log(pos);
+            SetPos(new Vector3(pos.x, pos.y, -10));
+            Debug.Log(transform.position);
+            yield return null;
+        }
+
+        public void SetOrthographicSize(float size)
+        {
+            camera.orthographicSize = size;
+        }
+
+        public void SetPos(Vector3 pos)
+        {
+            transform.position = pos;
+        }
+
+        
+        private void UpdateMouseControl()
+        {
             if (!allowZoom || !allowDrag) return;
             var delta = Input.GetAxis("Mouse ScrollWheel");
             camera.orthographicSize -= delta * ZoomSpeed;
             _worldPos = GetWorldPos(Input.mousePosition);
             
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(2))
             {
                 _startPos = _worldPos;
                 _cameraPrevPos = transform.position;
             }
 
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButton(2))
             {
                 _moveDirection = (_worldPos - _startPos) * DragSpeed;
                 var t = transform;

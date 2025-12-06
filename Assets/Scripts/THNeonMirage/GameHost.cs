@@ -291,6 +291,12 @@ namespace THNeonMirage.Manager
                 ? PhotonNetwork.LocalPlayer.ActorNumber
                 : level.PlayerInstances.IndexOf(playerInstance);
 
+            if (playerInstance.GetPhotonView().IsMine)
+            {
+                var camera = Registries.Get<CameraController>(UIRegistry.MainCamera);
+                camera.BindingPlayer = playerInstance;
+            }
+
             var random = new Random((uint)DateTime.Now.Millisecond);
             var sprite = player.GetComponent<SpriteRenderer>();
             sprite.color = new Color(random.NextFloat(0, 1), random.NextFloat(0, 1), random.NextFloat(0, 1));
@@ -450,8 +456,7 @@ namespace THNeonMirage.Manager
                 {
                     // 时间到，自动结束回合
                     NextTurn();
-                    // TODO: Add Auto Dice Toss
-                    // player.AITossDice();
+                    player.AITossDice();
                 }
                 yield return null;
             }
@@ -460,12 +465,15 @@ namespace THNeonMirage.Manager
         // 玩家结束回合
         public void NextTurn()
         {
-            if (PhotonNetwork.LocalPlayer.ActorNumber != currentTurnPlayerId)
+            if (PhotonNetwork.LocalPlayer.ActorNumber == currentTurnPlayerId)
             {
-                return;
+                var camera = Registries.Get<CameraController>(UIRegistry.MainCamera);
+                var nextBindingPlayer = level.PlayerInstances.First(
+                    obj => obj.GetComponent<PlayerManager>().playerData.roundIndex == currentTurnPlayerId);
+                camera.BindingPlayer = nextBindingPlayer;
+                photonView.RPC(nameof(RPC_EndTurn), RpcTarget.MasterClient);
             }
             
-            photonView.RPC(nameof(RPC_EndTurn), RpcTarget.MasterClient);
         }
 
         [PunRPC]

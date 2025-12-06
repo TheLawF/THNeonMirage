@@ -34,7 +34,6 @@ namespace THNeonMirage.UI
             canInteract = true;
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
             level = Registries.Get<Level>(LevelRegistry.ClientLevel);
-            
         }
 
         private void OnGUI()

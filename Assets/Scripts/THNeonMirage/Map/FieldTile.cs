@@ -35,7 +35,7 @@ namespace THNeonMirage.Map
         [DisplayOnly] public GameObject hoverText;
 
         protected Random Random = new();
-        [FormerlySerializedAs("onlineOwner")] public PhotonView remoteOwner;
+        public PhotonView remoteOwner;
         private string tooltipString;
         
         private void Start()

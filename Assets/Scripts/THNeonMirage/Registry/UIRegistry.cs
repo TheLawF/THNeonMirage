@@ -14,16 +14,18 @@ namespace THNeonMirage.Registry
         public const string PanelRootKey = "Panel";
         public const string ButtonRootKey = "Button";
         public const string CanvasKey = "Canvas";
+        public const string CameraKey = "Camera";
 
+        public static readonly RegistryKey MainCamera = Registries.CreateKey(CameraKey, nameof(MainCamera));
         public static readonly RegistryKey Canvas = Registries.CreateKey(CanvasKey, "Main");
         public static readonly RegistryKey TileName = Registries.CreateKey(LabelRootKey, "TileName");
+        
         public static readonly RegistryKey BalanceText = Registries.CreateKey(LabelRootKey, "BalanceText");
         public static readonly RegistryKey CountdownText = Registries.CreateKey(LabelRootKey, "CountdownText");
-
         public static readonly RegistryKey DescriptionText = Registries.CreateKey(LabelRootKey, "DescriptionText");
         public static readonly RegistryKey PurchaseText = Registries.CreateKey(LabelRootKey, nameof(PurchaseText));
+        
         public static readonly RegistryKey TollText = Registries.CreateKey(LabelRootKey, "TollText");
-
         public static readonly RegistryKey LobbyText = Registries.CreateKey(LabelRootKey, nameof(LobbyText));
         public static readonly RegistryKey RoomIdText = Registries.CreateKey(LabelRootKey, nameof(RoomIdText));
 
@@ -54,6 +56,7 @@ namespace THNeonMirage.Registry
 
         public static void RegisterTypes()
         {
+            Registries.RegistryTypes.Add(typeof(CameraController));
             Registries.RegistryTypes.Add(typeof(GameCanvas));
             Registries.RegistryTypes.Add(typeof(GamePanel));
             Registries.RegistryTypes.Add(typeof(GameButton));

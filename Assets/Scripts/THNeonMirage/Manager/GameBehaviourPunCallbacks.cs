@@ -9,7 +9,7 @@ namespace THNeonMirage.Manager
 {
     public class GameBehaviourPunCallbacks : MonoBehaviourPunCallbacks
     {
-        [FormerlySerializedAs("levelManager")] [FormerlySerializedAs("gameMap")] public Level level;
+        public Level level;
         public event Func<string, Vector3, Quaternion, IGameEventArgs, GameObject> OnInstantiate;
 
         protected virtual GameObject Initialize<TArgs>(string prefabName, Vector3 pos, Quaternion rotation, TArgs arg5)
