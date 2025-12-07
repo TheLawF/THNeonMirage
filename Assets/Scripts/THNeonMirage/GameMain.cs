@@ -57,8 +57,7 @@ namespace THNeonMirage
 
         private void Awake()
         {
-            PhotonPeer.RegisterType(typeof(PlayerData), NextId(), PlayerData.Serialize, PlayerData.Deserialize);
-            PhotonPeer.RegisterType(typeof(ISynchronizable), NextId(), ISynchronizable.Serialize, ISynchronizable.Deserialize);
+            PhotonPeer.RegisterType(typeof(CompoundData), NextId(), INamedData.Serialize, INamedData.Deserialize);
         }
 
         private static byte NextId()

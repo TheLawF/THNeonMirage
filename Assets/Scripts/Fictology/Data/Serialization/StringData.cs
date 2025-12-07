@@ -19,6 +19,8 @@ namespace Fictology.Data.Serialization
             this.value = value;
         }
 
+        public static StringData Of(string value) => new StringData(value);
+
         public SerializationType GetSerializedType()
         {
             return SerializationType.String;

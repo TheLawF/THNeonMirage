@@ -7,5 +7,6 @@ namespace Fictology.Data.Serialization
     {
         TData Serialize();
         void Deserialize(TData data);
+
     }
 }

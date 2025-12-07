@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Xml;
 using ExitGames.Client.Photon;
+using Fictology.Data.Serialization;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Util;
@@ -13,7 +14,7 @@ namespace THNeonMirage.Data
 {
     // int Balance, List<int> Items, List<Pair<int,int>> OccupiedFields
     [Serializable]
-    public class PlayerData
+    public class PlayerData: ISerializable<CompoundData>
     {
         public int roundIndex;
         public string userName;
@@ -167,5 +168,25 @@ namespace THNeonMirage.Data
 
         public PlayerData Copy() => new PlayerData().Name(userName).Pos(position).SetBalance(balance)
             .SetInv(Inventory).SetFields(Fields);
+
+        public CompoundData Serialize()
+        {
+            var data = new CompoundData();
+            data.AddInt("pause_count", pauseCount);
+            data.AddInt("balance", balance);
+            data.AddInt("pos", position);
+            data.AddBool("is_bot", isBot);
+            
+            if (userName is not ("" or null)) data.AddString("user_name", userName);
+            return data;
+        }
+
+        public void Deserialize(CompoundData data)
+        {
+            pauseCount = data.GetInt("pause_count");
+            balance = data.GetInt("balance");
+            position = data.GetInt("pos");
+            isBot = data.GetBool("is_bot");
+        }
     }
 }

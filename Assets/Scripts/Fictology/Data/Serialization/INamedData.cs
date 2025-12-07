@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using Unity.VisualScripting;
 using UnityEngine.UI.Extensions;
 
 namespace Fictology.Data.Serialization
@@ -9,6 +11,25 @@ namespace Fictology.Data.Serialization
         
         public const INamedData Empty = null;
         SerializationType GetSerializedType();
+        
+        public static byte[] Serialize(object obj)
+        {
+            using var stream = new MemoryStream();
+            using var writer = new BinaryWriter(stream);
+            var data = (INamedData)obj;
+            writer.Write((int)data.GetSerializedType());
+            writer.Write(data.ToBytes());
+            return stream.ToArray();
+        }
+
+        public static ISynchronizable Deserialize(byte[] bytes)
+        {
+            using var stream = new MemoryStream(bytes);
+            using var reader = new BinaryReader(stream);
+            var value = INamedData.Factory.Create((SerializationType)reader.ReadInt32());
+            value.FromBytes(bytes);
+            return value;
+        }
 
         public static class Factory
         {

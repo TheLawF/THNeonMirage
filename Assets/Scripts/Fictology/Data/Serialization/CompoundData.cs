@@ -9,7 +9,7 @@ namespace Fictology.Data.Serialization
     public class CompoundData : INamedData
     {
         public const SerializationType SerializationType = Serialization.SerializationType.Object;
-        private readonly ConcurrentDictionary<string, INamedData> m_entries;
+        private readonly ConcurrentDictionary<string, INamedData> m_entries = new ();
 
         public SerializationType GetSerializedType()
         {
@@ -27,25 +27,18 @@ namespace Fictology.Data.Serialization
         }
 
         public void AddInt(string key, int value) => Add(key, IntData.Of(value));
-        public void AddFloat(string key, float value)
-        {
-            m_entries.TryAdd(key, new FloatData(value));
-        }
-        
-        public void AddAll(CompoundData data)
-        {
-            m_entries.AddRange(data.m_entries);
-        }
+        public void AddFloat(string key, float value) => Add(key, FloatData.Of(value));
+        public void AddBool(string key, bool value) => Add(key, BoolData.Of(value));
+        public void AddString(string key, string value) => Add(key, StringData.Of(value));
+        public void AddAll(CompoundData data) => m_entries.AddRange(data.m_entries);
 
-        public INamedData Get(string key)
-        {
-            return m_entries[key];
-        }
+        public INamedData Get(string key) => m_entries[key];
 
-        public float GetFloat(string key) => m_entries[key] is FloatData ? ((FloatData)m_entries[key]).value : 0f;
         public int GetInt(string key) => m_entries[key] is IntData ? ((IntData)m_entries[key]).value : 0;
         public bool GetBool(string key) => m_entries[key] is BoolData && ((BoolData)m_entries[key]).value;
-
+        public float GetFloat(string key) => m_entries[key] is FloatData ? ((FloatData)m_entries[key]).value : 0f;
+        public string GetString(string key) => m_entries[key] is StringData ? ((StringData)m_entries[key]).value : "";
+        
         public static CompoundData operator +(CompoundData left, CompoundData right)
         {
             var data = new CompoundData();
@@ -59,7 +52,6 @@ namespace Fictology.Data.Serialization
             using var stream = new MemoryStream();
             using var writer = new BinaryWriter(stream);
     
-            writer.Write((int)GetSerializedType());
             writer.Write(m_entries.Count);
             foreach (var kv in m_entries)
             {

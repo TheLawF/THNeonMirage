@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Linq;
+using Fictology.Data.Serialization;
 using Fictology.Registry;
 using Fictology.UnityEditor;
 using FlyRabbit.EventCenter;
@@ -190,19 +191,20 @@ namespace THNeonMirage.Manager
         public void SendPlayerDataUpdate(Player targetPlayer, PlayerData data)
         {
             var view = gameObject.GetPhotonView();
-            view.RPC(nameof(ReceivePlayerDataUpdate), targetPlayer, data);
+            view.RPC(nameof(ReceivePlayerDataUpdate), targetPlayer, data.Serialize());
         }
         
         public void SendPlayerDataUpdate(int actorViewId, PlayerData data)
         {
-            m_view.RPC(nameof(ReceivePlayerDataUpdate), RpcTarget.Others, actorViewId, data);
+            m_view.RPC(nameof(ReceivePlayerDataUpdate), RpcTarget.Others, actorViewId, data.Serialize());
         }
 
         [PunRPC]
-        public void ReceivePlayerDataUpdate(int actorViewId, PlayerData data)
-        {
-           PhotonView.Find(actorViewId).GetComponent<PlayerManager>().playerData = data;
-           EventCenter.TriggerEvent(EventRegistry.OnBalanceChangedRPC, m_view.ViewID, data.balance);
+        public void ReceivePlayerDataUpdate(int actorViewId, CompoundData compound)
+        { 
+            var data = PhotonView.Find(actorViewId).GetComponent<PlayerManager>().playerData; 
+            data.Deserialize(compound); 
+            EventCenter.TriggerEvent(EventRegistry.OnBalanceChangedRPC, m_view.ViewID, data.balance);
         }
 
         public void SendSpriteUpdateToOthers(string skinPath, Color color)

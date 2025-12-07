@@ -52,11 +52,11 @@ namespace THNeonMirage.UI
             if (PhotonNetwork.IsConnectedAndReady)
             {
                 if (!server.IsMyTurn()) return;
-                // if (!player.CanMove())
-                // {
-                //     client.NextTurn();
-                //     return;
-                // }
+                if (!player.CanMove())
+                {
+                    server.NextTurn();
+                    return;
+                }
                 DiceValue = random.Next(1,7);
                 pos = player.playerData.position;
                 

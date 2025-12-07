@@ -20,6 +20,7 @@ namespace Fictology.Data.Serialization
 
         public float value;
 
+        public static FloatData Of(float value) => new FloatData(value);
         public FloatData() : base(SerializationType.Float)
         {
         }

@@ -2567,7 +2567,7 @@ MonoBehaviour:
     registryName: MainCamera
   camera: {fileID: 519420031}
   allowZoom: 0
-  allowDrag: 0
+  allowDrag: 1
   ZoomSpeed: 10
   DragSpeed: 0.8
   enableMouseCtrl: 0

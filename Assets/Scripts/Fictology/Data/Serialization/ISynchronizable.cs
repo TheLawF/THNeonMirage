@@ -6,15 +6,5 @@ namespace Fictology.Data.Serialization
     {
         byte[] ToBytes();
         void FromBytes(byte[] bytes);
-        public static byte[] Serialize(object obj) => ((ISynchronizable)obj).ToBytes();
-
-        public static ISynchronizable Deserialize(byte[] bytes)
-        {
-            using var stream = new MemoryStream(bytes);
-            using var reader = new BinaryReader(stream);
-            var value = INamedData.Factory.Create((SerializationType)reader.ReadInt32());
-            value.FromBytes(bytes);
-            return value;
-        }
     }
 }

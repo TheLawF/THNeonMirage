@@ -62,9 +62,7 @@ namespace THNeonMirage.UI
         {
             if (BindingPlayer is null) yield break;
             var pos = BindingPlayer.transform.position;
-            Debug.Log(pos);
             SetPos(new Vector3(pos.x, pos.y, -10));
-            Debug.Log(transform.position);
             yield return null;
         }
 
@@ -81,9 +79,9 @@ namespace THNeonMirage.UI
         
         private void UpdateMouseControl()
         {
-            if (!allowZoom || !allowDrag) return;
             var delta = Input.GetAxis("Mouse ScrollWheel");
-            camera.orthographicSize -= delta * ZoomSpeed;
+            if (allowZoom) camera.orthographicSize -= delta * ZoomSpeed;
+            if (!allowDrag) return;
             _worldPos = GetWorldPos(Input.mousePosition);
             
             if (Input.GetMouseButtonDown(2))
