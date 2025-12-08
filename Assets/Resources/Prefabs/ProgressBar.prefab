@@ -92,4 +92,5 @@ MonoBehaviour:
   registryKey:
     rootName: 
     registryName: 
+  progress: 0
   progressObj: {fileID: 1542931715251280246}

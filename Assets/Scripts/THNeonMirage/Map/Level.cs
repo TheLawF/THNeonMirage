@@ -107,10 +107,10 @@ namespace THNeonMirage.Map
 
         public static readonly Dictionary<Range, Func<int, Vector3>> PosInRange = new()
         {
-            {..10, index => StartPos - new Vector3(index % 10, 0)},
-            {10..20, index => StartPos - _uUnit * 10 - new Vector3(0, index % 10)},
-            {20..30, index => StartPos - _uUnit * 10 - _vUnit * 10 + new Vector3(index % 10, 0)},
-            {30..40, index => StartPos - _vUnit * 10 + new Vector3(0, index % 10)}
+            {..10, index => StartPos - new Vector3(index % 10, 0, 1)},
+            {10..20, index => StartPos - _uUnit * 10 - new Vector3(0, index % 10, 1)},
+            {20..30, index => StartPos - _uUnit * 10 - _vUnit * 10 + new Vector3(index % 10, 0, 1)},
+            {30..40, index => StartPos - _vUnit * 10 + new Vector3(0, index % 10, 1)}
         };
         
         private void Start()

@@ -16,6 +16,7 @@ using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using THNeonMirage.Util;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -191,6 +192,9 @@ namespace THNeonMirage.Manager
             
             progressPrefab.SetActive(true);
             bar_instance = Instantiate(progressPrefab, new Vector3(0, 0, 0), Quaternion.identity, canvas.transform);
+            
+            Debug.Log(bar_instance.name);
+            
             progress = bar_instance.GetComponent<ProgressBarControl>();
             StartCoroutine(CheckConnectionLockProgress());
         }
@@ -222,6 +226,7 @@ namespace THNeonMirage.Manager
             PhotonNetwork.JoinLobby();
             
             progress.ContinueProgress();
+            progress.JumpToProgress(1F);
             var addRoom = Registries.GetObject(UIRegistry.AddRoomButton);
             var joinRoom = Registries.GetObject(UIRegistry.JoinRoomButton);
             lobbyText.text = "游戏大厅";
@@ -465,6 +470,11 @@ namespace THNeonMirage.Manager
         // 玩家结束回合
         public void NextTurn()
         {
+            if (player.playerData.pauseCount > 0)
+                player.playerData.pauseCount--;
+
+            if (player.playerData.pauseCount < 0)
+                player.playerData.pauseCount = 0;
             if (PhotonNetwork.LocalPlayer.ActorNumber == currentTurnPlayerId)
             {
                 var camera = Registries.Get<CameraController>(UIRegistry.MainCamera);
@@ -473,7 +483,6 @@ namespace THNeonMirage.Manager
                 camera.BindingPlayer = nextBindingPlayer;
                 photonView.RPC(nameof(RPC_EndTurn), RpcTarget.MasterClient);
             }
-            
         }
 
         [PunRPC]
@@ -631,10 +640,16 @@ namespace THNeonMirage.Manager
         private void UpdateButtons()
         {
             foreach (var room in rooms) {
-                var newButton = Instantiate(buttonPrefab, content.transform);
-                newButton.GetComponentInChildren<TMP_Text>().text = 
-                    $"房间名：{room.Name}  玩家：{room.PlayerCount}/{room.MaxPlayers}";
-                newButton.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Name));
+                var btnInstance = Instantiate(buttonPrefab, content.transform);
+                var text = btnInstance.GetComponentInChildren<TMP_Text>();
+                var rect = btnInstance.GetComponent<RectTransform>().rect;
+                
+                rect.width = text.preferredWidth + 4;
+                rect.height = text.preferredHeight + 4;
+                text.color = Color.white;
+                
+                btnInstance.GetComponentInChildren<TMP_Text>().text = $"房间名：{room.Name}  玩家：{room.PlayerCount}/{room.MaxPlayers}";
+                btnInstance.GetComponent<Button>().onClick.AddListener(() => JoinRoom(room.Name));
             }
             AdjustContent(20); // 根据按钮高度调整
         }
