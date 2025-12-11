@@ -2519,7 +2519,7 @@ Camera:
   far clip plane: 1000
   field of view: 34
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 300
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -5653,7 +5653,6 @@ MonoBehaviour:
   inGamePanel: {fileID: 1305293117}
   fields: []
   players: []
-  host: {fileID: 0}
 --- !u!114 &1240687989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6170,7 +6169,6 @@ MonoBehaviour:
   cancel: {fileID: 1078837933}
   build: {fileID: 1108162329}
   mortgage: {fileID: 211839286}
-  client: {fileID: 0}
   player: {fileID: 0}
   playerObject: {fileID: 0}
   toll: {fileID: 0}

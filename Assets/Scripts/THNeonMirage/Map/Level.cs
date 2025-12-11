@@ -33,22 +33,20 @@ namespace THNeonMirage.Map
         public GameObject tilePrefab;
         public GameObject inGamePanel;
 
-        public ConcurrentDictionary<int, GameObject> OnLinePlayers = new();
         public ObservableList<GameObject> PlayerInstances = new ();
         public List<GameObject> fields = new ();
         public List<PlayerManager> players = new ();
-        public GameHost host;
 
         private Transform m_transform;
-        private const float Side = 10;
+        private const float SideLength = 100;
         private int _playerRound;
         private static Vector3 _uUnit = Vector3.right;
         private static Vector3 _vUnit = Vector3.up;
         
-        public static Vector3 StartPos = _uUnit * (Side / 2) + _vUnit * (Side / 2);
-        public static Vector3 LeftUp = StartPos - _uUnit * Side;
-        public static Vector3 LeftDown = StartPos - _uUnit * Side - _vUnit * Side;
-        public static Vector3 RightDown = StartPos - _vUnit * Side;
+        public static Vector3 StartPos = _uUnit * (SideLength / 2) + _vUnit * (SideLength / 2);
+        public static Vector3 LeftUp = StartPos - _uUnit * SideLength;
+        public static Vector3 LeftDown = StartPos - _uUnit * SideLength - _vUnit * SideLength;
+        public static Vector3 RightDown = StartPos - _vUnit * SideLength;
 
         public static Random Random = new ();
         private static readonly Price CheapPrice = new (8000, 6000, 500, 4000, 10000, 20000);
@@ -107,10 +105,10 @@ namespace THNeonMirage.Map
 
         public static readonly Dictionary<Range, Func<int, Vector3>> PosInRange = new()
         {
-            {..10, index => StartPos - new Vector3(index % 10, 0, 1)},
-            {10..20, index => StartPos - _uUnit * 10 - new Vector3(0, index % 10, 1)},
-            {20..30, index => StartPos - _uUnit * 10 - _vUnit * 10 + new Vector3(index % 10, 0, 1)},
-            {30..40, index => StartPos - _vUnit * 10 + new Vector3(0, index % 10, 1)}
+            {..10, index => StartPos - new Vector3(SideLength * (index % 10), 0, 1)},
+            {10..20, index => StartPos - _uUnit * 10 * SideLength - new Vector3(0,SideLength * (index % 10), 1)},
+            {20..30, index => StartPos - _uUnit * 10 * SideLength - _vUnit * 10 * SideLength + new Vector3(SideLength * (index % 10), 0, 1)},
+            {30..40, index => StartPos - _vUnit * 10 * SideLength + new Vector3(0, SideLength * (index % 10), 1)}
         };
         
         private void Start()
@@ -123,9 +121,20 @@ namespace THNeonMirage.Map
         {
             Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
             fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
-            inGamePanel.GetComponent<InGamePanelHandler>().client = client;
+            
+            fields.ForEach(o =>
+            {
+                var t = o.GetComponent<Transform>();
+                var scale = o.GetComponent<Transform>().localScale;
+                scale.x = SideLength;
+                scale.y = SideLength;
+
+                t.localScale = scale;
+            });
+            
             var hud = Registries.GetObject(UIRegistry.HUD);
             hud.SetActive(true);
+            // LoadFieldTexture();
         }
 
         private void Update()
@@ -153,8 +162,8 @@ namespace THNeonMirage.Map
         /// <returns>实例化且挂载了 FieldTile 的地块对象</returns>
         private GameObject InitField(GameObject tp, int index)
         {
-            var uOffset = new Vector3(index % Side, 0);
-            var vOffset = new Vector3(0, index % Side);
+            var uOffset = new Vector3((index % 10) * SideLength, 0);
+            var vOffset = new Vector3(0, (index % 10) * SideLength);
 
             var list = new List<Func<GameObject>>(new Func<GameObject>[]
             {
@@ -194,6 +203,46 @@ namespace THNeonMirage.Map
             };
             
             return instance;
+        }
+
+        public void LoadFieldTexture()
+        {
+            Utils.ForAct(fields.Count, index =>
+            {
+                var spriteRenderer = fields[index].GetComponent<SpriteRenderer>();
+                var sprite = index switch
+                {
+                    0 => Resources.Load<Sprite>("Textures/Mansion"),
+                    3 => Resources.Load<Sprite>("Textures/Torii"),
+                    7 => Resources.Load<Sprite>("Textures/Mansion"),
+                    8 => Resources.Load<Sprite>("Textures/Jeweler_House"),
+                    
+                    9 => Resources.Load<Sprite>("Textures/Village_House"),
+                    11 => Resources.Load<Sprite>("Textures/Shrine"),
+                    15 => Resources.Load<Sprite>("Textures/Mansion"),
+                    16 => Resources.Load<Sprite>("Textures/Village_House"),
+                    
+                    17 => Resources.Load<Sprite>("Textures/Jeweler_House"),
+                    18 => Resources.Load<Sprite>("Textures/Mansion"),
+                    19 => Resources.Load<Sprite>("Textures/Mansion"),
+                    20 => Resources.Load<Sprite>("Textures/Jeweler_House"),
+                    
+                    23 => Resources.Load<Sprite>("Textures/Torii"),
+                    29 => Resources.Load<Sprite>("Textures/Jeweler_House"),
+                    34 => Resources.Load<Sprite>("Textures/Mansion"),
+                    35 => Resources.Load<Sprite>("Textures/Shrine"),
+                    
+                    38 => Resources.Load<Sprite>("Textures/Hotspring_Inn"),
+                    39 => Resources.Load<Sprite>("Textures/Mansion"),
+                    _ => Resources.Load<Sprite>("Textures/Mystia_Izakaya"),
+                };
+
+                var scale = tilePrefab.GetComponent<Transform>().localScale;
+                var rect = sprite.textureRect;
+                rect.width = scale.x;
+                rect.height = scale.y;
+                spriteRenderer.sprite = sprite;
+            });
         }
 
         public int WithFieldData<TF>(GameObject go, int id, FieldProperty fieldProperty) where TF: FieldTile

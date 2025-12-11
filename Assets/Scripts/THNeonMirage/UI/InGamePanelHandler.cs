@@ -21,7 +21,6 @@ namespace THNeonMirage.UI
         public GameObject build;
         public GameObject mortgage;
         
-        public ObsoleteGameClient client;
         public PlayerManager player;
         public GameObject playerObject;
 

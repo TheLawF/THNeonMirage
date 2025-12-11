@@ -92,6 +92,11 @@ namespace THNeonMirage.Registry
             return (TEntry)Key2EntryMap[registryKey.ToString()];
         }
 
+        public static object GetOrDefault(RegistryKey key, object defaultValue)
+        {
+            return defaultValue;
+        }
+
         /// <summary>
         /// 
         /// </summary>

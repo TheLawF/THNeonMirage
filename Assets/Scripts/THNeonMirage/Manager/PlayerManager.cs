@@ -271,9 +271,13 @@ namespace THNeonMirage.Manager
         {
             
         }
-        
-        public static Vector3 GetPlayerPosByIndex(int index) => Level.PosInRange.First(pair => 
-            Utils.IsInRange(pair.Key, index)).Value.Invoke(index);
+
+        public static Vector3 GetPlayerPosByIndex(int index)
+        {
+            var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
+            var transform = level.fields[index].GetComponent<Transform>();
+            return transform.position;
+        }
     }
 }
 
