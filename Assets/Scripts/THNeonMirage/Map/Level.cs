@@ -44,9 +44,9 @@ namespace THNeonMirage.Map
         private static Vector3 _vUnit = Vector3.up;
         
         public static Vector3 StartPos = _uUnit * (SideLength / 2) + _vUnit * (SideLength / 2);
-        public static Vector3 LeftUp = StartPos - _uUnit * SideLength;
-        public static Vector3 LeftDown = StartPos - _uUnit * SideLength - _vUnit * SideLength;
-        public static Vector3 RightDown = StartPos - _vUnit * SideLength;
+        public static Vector3 LeftUp = StartPos - _uUnit * SideLength * 10;
+        public static Vector3 LeftDown = StartPos - _uUnit * SideLength * 10 - _vUnit * SideLength * 10;
+        public static Vector3 RightDown = StartPos - _vUnit * SideLength * 10;
 
         public static Random Random = new ();
         private static readonly Price CheapPrice = new (8000, 6000, 500, 4000, 10000, 20000);
@@ -121,20 +121,18 @@ namespace THNeonMirage.Map
         {
             Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
             fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
-            
             fields.ForEach(o =>
             {
                 var t = o.GetComponent<Transform>();
                 var scale = o.GetComponent<Transform>().localScale;
                 scale.x = SideLength;
                 scale.y = SideLength;
-
                 t.localScale = scale;
             });
             
             var hud = Registries.GetObject(UIRegistry.HUD);
             hud.SetActive(true);
-            // LoadFieldTexture();
+            LoadFieldTexture();
         }
 
         private void Update()
@@ -237,11 +235,15 @@ namespace THNeonMirage.Map
                     _ => Resources.Load<Sprite>("Textures/Mystia_Izakaya"),
                 };
 
-                var scale = tilePrefab.GetComponent<Transform>().localScale;
-                var rect = sprite.textureRect;
-                rect.width = scale.x;
-                rect.height = scale.y;
+                var tileTransform = tilePrefab.GetComponent<Transform>();
+                var tileSize = tilePrefab.GetComponent<SpriteRenderer>().sprite.bounds.size;
+                var size = sprite.bounds.size;
+
                 spriteRenderer.sprite = sprite;
+                var sx = tileSize.x / size.x;
+                var sy = tileSize.y / size.y;
+                var prevScale = tileTransform.localScale;
+                tileTransform.localScale = new Vector3(prevScale.x * sx, prevScale.y * sy, 1);
             });
         }
 
