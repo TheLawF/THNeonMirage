@@ -285,7 +285,6 @@ namespace THNeonMirage.Manager
         public void CreateOnlinePlayer(bool isBot)
         {
             // var playerObject = LevelRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
-            
             playerInstance = PhotonNetwork.Instantiate(LevelRegistry.Player.PrefabPath, PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
             player = playerInstance.GetComponent<PlayerManager>();
             level.PlayerInstances.Add(playerInstance);
@@ -295,6 +294,9 @@ namespace THNeonMirage.Manager
             player.playerData.roundIndex = PhotonNetwork.IsConnectedAndReady
                 ? PhotonNetwork.LocalPlayer.ActorNumber
                 : level.PlayerInstances.IndexOf(playerInstance);
+            
+            var exitRoom = Registries.GetComponent<Button>(UIRegistry.ExitButton);
+            exitRoom.onClick.AddListener(() => GameMain.GameOver(player));
 
             if (playerInstance.GetPhotonView().IsMine)
             {
@@ -372,6 +374,10 @@ namespace THNeonMirage.Manager
             if (PhotonNetwork.IsMasterClient)
             {
                 HandlePlayerLeft(otherPlayer.ActorNumber);
+            }
+            if (PhotonNetwork.PlayerList.Length == 1)
+            {
+                GameMain.GameOver(player);
             }
         }
         

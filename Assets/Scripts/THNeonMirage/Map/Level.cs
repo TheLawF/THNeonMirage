@@ -120,7 +120,6 @@ namespace THNeonMirage.Map
         public void CreateLevel()
         {
             Utils.ForAddToList(40, fields, i => InitField(tilePrefab, i));
-            fields.ForEach(o => o.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, 0.6f));
             fields.ForEach(o =>
             {
                 var t = o.GetComponent<Transform>();
@@ -205,10 +204,10 @@ namespace THNeonMirage.Map
 
         public void LoadFieldTexture()
         {
-            Utils.ForAct(fields.Count, index =>
+            fields.ForEach(obj =>
             {
-                var spriteRenderer = fields[index].GetComponent<SpriteRenderer>();
-                var sprite = index switch
+                var spriteRenderer = obj.GetComponent<SpriteRenderer>();
+                var sprite = fields.IndexOf(obj) switch
                 {
                     0 => Resources.Load<Sprite>("Textures/Mansion"),
                     3 => Resources.Load<Sprite>("Textures/Torii"),
@@ -234,16 +233,17 @@ namespace THNeonMirage.Map
                     39 => Resources.Load<Sprite>("Textures/Mansion"),
                     _ => Resources.Load<Sprite>("Textures/Mystia_Izakaya"),
                 };
-
-                var tileTransform = tilePrefab.GetComponent<Transform>();
-                var tileSize = tilePrefab.GetComponent<SpriteRenderer>().sprite.bounds.size;
-                var size = sprite.bounds.size;
-
+                //
+                // var tileTransform = obj.GetComponent<Transform>();
                 spriteRenderer.sprite = sprite;
-                var sx = tileSize.x / size.x;
-                var sy = tileSize.y / size.y;
-                var prevScale = tileTransform.localScale;
-                tileTransform.localScale = new Vector3(prevScale.x * sx, prevScale.y * sy, 1);
+                //
+                // var size = sprite.bounds.size;
+                // var sx = tileSize.x / size.x;
+                // var sy = tileSize.y / size.y;
+                // var prevScale = tileTransform.localScale;
+                //
+                // tileTransform.localScale = new Vector3(prevScale.x * sx, prevScale.y * sy, 1);
+                
             });
         }
 
@@ -257,7 +257,6 @@ namespace THNeonMirage.Map
             ft.Property = fieldProperty;
             
             ft.spriteRenderer = go.GetComponent<SpriteRenderer>();
-            ft.spriteRenderer.color = ft.backGroundColor;
             ft.inGamePanel = inGamePanel;
             ft.client = client;
             

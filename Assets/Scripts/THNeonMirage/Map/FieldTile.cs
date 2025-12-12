@@ -43,7 +43,7 @@ namespace THNeonMirage.Map
             canPurchase = true;
             hoverPanel = GameObject.Find("Canvas/HoverPanel");
             hoverText = GameObject.Find("Canvas/HoverPanel/HoverText");
-            backGroundColor = new Color(1f,1f, 1f, 0.6f);
+            backGroundColor = new Color(1f,1f, 1f, 1f);
             spriteRenderer.color = backGroundColor;
 
             description = $"土地价格：{Property.Price.Purchase}\n\n" +

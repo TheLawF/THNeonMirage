@@ -40,6 +40,8 @@ namespace THNeonMirage
     {
         public Button startButton;
         public Button aboutButton;
+        public Button exitButton;
+        
         public TMP_Text balanceLabel;
         public Random random;
         
@@ -90,16 +92,17 @@ namespace THNeonMirage
         
         private void InitAllFields()
         {
+            exitButton = Registries.GetComponent<Button>(UIRegistry.ExitButton);
             startButton = Registries.GetComponent<Button>(UIRegistry.StartButton);
             aboutButton = Registries.GetComponent<Button>(UIRegistry.AboutButton);
             balanceLabel = Registries.GetComponent<TMP_Text>(UIRegistry.BalanceText);
-            level = Registries.GetComponent<Level>(LevelRegistry.ClientLevel);
-
+            
             lobby = Registries.GetObject(UIRegistry.LobbyPanel);
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
             inGamePanel = inGamePanelObj.GetComponent<InGamePanelHandler>();
             random = new Random((uint)DateTime.Now.Millisecond);
 
+            level = Registries.GetComponent<Level>(LevelRegistry.ClientLevel);
             host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
         }
 
@@ -175,9 +178,16 @@ namespace THNeonMirage
             
         }
 
-        public void GameOver(PlayerManager player)
+        public static void GameOver(PlayerManager player)
         {
+            Destroy(player.gameObject);
+            player.level.fields.ForEach(Destroy);
+
+            var inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
+            var lobby = Registries.GetObject(UIRegistry.LobbyPanel);
             
+            inGamePanel.SetActive(false);
+            lobby.SetActive(true);
         }
 
         public static List<GameObject> GetAllSceneObjects(bool includeInactive = true)
