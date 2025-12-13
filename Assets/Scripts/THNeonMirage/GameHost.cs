@@ -381,6 +381,15 @@ namespace THNeonMirage.Manager
             }
         }
         
+        
+        private void InitUI()
+        {
+            var up = Registries.GetComponent<Button>(UIRegistry.UpButton);
+            var down = Registries.GetComponent<Button>(UIRegistry.DownButton);
+            var lockSelection = Registries.GetComponent<Button>(UIRegistry.LockSelection);
+            
+        }
+        
         private void InitializeGame()
         {
             if (PhotonNetwork.IsMasterClient) InitializeRoomProperties();

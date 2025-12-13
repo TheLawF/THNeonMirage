@@ -30,6 +30,7 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey RoomIdText = Registries.CreateKey(LabelRootKey, nameof(RoomIdText));
 
         public static readonly RegistryKey LobbyPanel = Registries.CreateKey(PanelRootKey, "Lobby");
+        public static readonly RegistryKey RoomWindow = Registries.CreateKey(PanelRootKey, nameof(RoomWindow));
         public static readonly RegistryKey CreateRoomDialogue = Registries.CreateKey(PanelRootKey, "CreateRoom");
         public static readonly RegistryKey InputRoomIdDialogue = Registries.CreateKey(PanelRootKey, "InputRoomId");
         
@@ -38,8 +39,10 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey InGamePanel = Registries.CreateKey(PanelRootKey, "InGame");
         public static readonly RegistryKey HUD = Registries.CreateKey(PanelRootKey, "HUD");
 
-        public static readonly RegistryKey RegisterButton = Registries.CreateKey(ButtonRootKey, "Register");
-        public static readonly RegistryKey LoginButton = Registries.CreateKey(ButtonRootKey, "Login");
+        public static readonly RegistryKey UpButton = Registries.CreateKey(ButtonRootKey, "Up");
+        public static readonly RegistryKey DownButton = Registries.CreateKey(ButtonRootKey, "Down");
+
+        public static readonly RegistryKey LockSelection = Registries.CreateKey(ButtonRootKey, nameof(LockSelection));
         public static readonly RegistryKey AddRoomButton = Registries.CreateKey(ButtonRootKey, "AddRoom");
         public static readonly RegistryKey JoinRoomButton = Registries.CreateKey(ButtonRootKey, "JoinRoom");
 
