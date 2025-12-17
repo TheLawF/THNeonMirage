@@ -140,7 +140,9 @@
     <Compile Include="Assets\Scripts\THNeonMirage\Map\HotSpring.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Registry\RenderRegistry.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Registry\PrefabRegistry.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Pair.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Util\UnicodeTable.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Data\FieldProperty.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
@@ -179,8 +181,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\AvatarManager.cs" />
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventName.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Registry\PrefabRegistry.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Util\UnicodeTable.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\EmptyObject.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />

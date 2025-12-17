@@ -21,6 +21,8 @@ namespace THNeonMirage.UI
         public int selectedPlayers;
         private int select_index;
         private bool localPlayerisReady;
+
+        private GameObject local_avatar;
         private Either<IntData, IntData> m_waitOrSelect = Either<IntData, IntData>.Or(0, 1);
         
         private GameObject m_ready;
@@ -55,13 +57,12 @@ namespace THNeonMirage.UI
             m_ready.GetComponent<Button>().onClick.AddListener(SetReadyAndSendToRemote);
             _lock.GetComponent<Button>().onClick.AddListener(OnLockSelection);
         }
-
-
+        
         [PunRPC]
         public void AddNewPlayerToRoomList(int viewId)
         {
             var childCount = player_list.transform.childCount;
-            var instance = PrefabRegistry.Avatar.NetworkInstantiate(Vector3.zero, Quaternion.identity);
+            var instance = PrefabRegistry.JoinedPlayer.NetworkInstantiate(Vector3.zero, Quaternion.identity);
             var itemHeight = instance.GetComponent<RectTransform>().rect.height;
             
             player_list.GetComponent<RectTransform>().sizeDelta = new Vector2(0,  10 + childCount * itemHeight);
@@ -80,7 +81,18 @@ namespace THNeonMirage.UI
             avatar_list.SetActive(true);
         }
 
+        private void InitAvatar()
+        {
+            local_avatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(local.transform.position, Quaternion.identity, local.transform);
+            
+        }
+
         private void OnClickAvatarSprite()
+        {
+            
+        }
+
+        private void ReceiveAvatarUpdate()
         {
             
         }
@@ -101,7 +113,8 @@ namespace THNeonMirage.UI
         {
             if (stream.IsWriting)
             {
-                
+                stream.SendNext(readyPlayers);
+                stream.SendNext(selectedPlayers);
             }
             else
             {

@@ -11,6 +11,7 @@ namespace THNeonMirage.Registry
     public static class UIRegistry
     {
         public const string LabelRootKey = "Label";
+        public const string EmptyKey = "Empty";
         public const string PanelRootKey = "Panel";
         public const string ButtonRootKey = "Button";
         public const string CanvasKey = "Canvas";
@@ -33,7 +34,13 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey RoomWindow = Registries.CreateKey(PanelRootKey, nameof(RoomWindow));
         public static readonly RegistryKey PlayerList = Registries.CreateKey(PanelRootKey, nameof(PlayerList));
         public static readonly RegistryKey AvatarList = Registries.CreateKey(PanelRootKey, nameof(AvatarList));
-        
+
+        public static readonly RegistryKey LocalAvatar = Registries.CreateKey(EmptyKey, nameof(LocalAvatar));
+
+        public static readonly RegistryKey Remote1 = Registries.CreateKey(EmptyKey, nameof(Remote1));
+        public static readonly RegistryKey Remote2 = Registries.CreateKey(EmptyKey, nameof(Remote2));
+        public static readonly RegistryKey Remote3 = Registries.CreateKey(EmptyKey, nameof(Remote3));
+
         public static readonly RegistryKey CreateRoomDialogue = Registries.CreateKey(PanelRootKey, "CreateRoom");
         public static readonly RegistryKey InputRoomIdDialogue = Registries.CreateKey(PanelRootKey, "InputRoomId");
         
@@ -70,6 +77,7 @@ namespace THNeonMirage.Registry
             
             Registries.RegistryTypes.Add(typeof(TextInput));
             Registries.RegistryTypes.Add(typeof(TextLabel));
+            Registries.RegistryTypes.Add(typeof(EmptyObject));
             Registries.RegistryTypes.Add(typeof(ProgressBarControl));
         }
 

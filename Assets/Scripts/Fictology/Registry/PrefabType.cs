@@ -36,6 +36,14 @@ namespace Fictology.Registry
             return netInstance;
         }
         
+        public GameObject NetworkInstantiate(Vector3 pos, Quaternion rot, Transform parent)
+        {
+            var netInstance = PhotonNetwork.Instantiate(PrefabPath, pos, rot);
+            netInstance.transform.SetParent(parent);
+            Registries.RegisterPrefabInstance(this, netInstance);
+            return netInstance;
+        }
+        
         public GameObject Instantiate(Vector3 position, Quaternion rotation)
         {
             var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath), position, rotation);
