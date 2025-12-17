@@ -180,6 +180,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\UI\AvatarManager.cs" />
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventName.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Registry\PrefabRegistry.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Util\UnicodeTable.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />

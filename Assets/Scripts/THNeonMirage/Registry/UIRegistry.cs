@@ -31,7 +31,9 @@ namespace THNeonMirage.Registry
 
         public static readonly RegistryKey LobbyPanel = Registries.CreateKey(PanelRootKey, "Lobby");
         public static readonly RegistryKey RoomWindow = Registries.CreateKey(PanelRootKey, nameof(RoomWindow));
+        public static readonly RegistryKey PlayerList = Registries.CreateKey(PanelRootKey, nameof(PlayerList));
         public static readonly RegistryKey AvatarList = Registries.CreateKey(PanelRootKey, nameof(AvatarList));
+        
         public static readonly RegistryKey CreateRoomDialogue = Registries.CreateKey(PanelRootKey, "CreateRoom");
         public static readonly RegistryKey InputRoomIdDialogue = Registries.CreateKey(PanelRootKey, "InputRoomId");
         
@@ -40,6 +42,7 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey InGamePanel = Registries.CreateKey(PanelRootKey, "InGame");
         public static readonly RegistryKey HUD = Registries.CreateKey(PanelRootKey, "HUD");
 
+        public static readonly RegistryKey ReadyButton = Registries.CreateKey(ButtonRootKey, "Ready");
         public static readonly RegistryKey UpButton = Registries.CreateKey(ButtonRootKey, "Up");
         public static readonly RegistryKey DownButton = Registries.CreateKey(ButtonRootKey, "Down");
 

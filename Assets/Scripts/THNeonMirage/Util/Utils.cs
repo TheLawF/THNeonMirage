@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
@@ -20,6 +21,15 @@ namespace THNeonMirage.Util
 
     public static class Utils
     {
+        public static string NextRandomString(int length, Range unicodeRange)
+        {
+            var sb = new StringBuilder();
+            var list = new List<string>(unicodeRange.End.Value - unicodeRange.Start.Value);
+            var stack = Shuffle(list.ConvertAll(input => Regex.Unescape($"\\u{list.IndexOf(input) + unicodeRange.Start.Value}")), length);
+            for (var i = 0; i < stack.Count; i++) sb.Append(stack.Pop());
+            return sb.ToString();
+        }
+        
         public static void WriteBool(MemoryStream stream, bool b)
         {
             var boolBytes = BitConverter.GetBytes(b);
@@ -218,6 +228,25 @@ namespace THNeonMirage.Util
     
             return new Stack<int>(range.Take(count).ToList());
         }
+
+        public static Stack<T> Shuffle<T>(List<T> list, int takeCount)
+        {
+            var rng = new Random();
+    
+            // Fisher-Yates洗牌
+            for (var i = list.Count - 1; i > 0; i--) {
+                var j = rng.Next(i + 1);
+                (list[j], list[i]) = (list[i], list[j]);
+            }
+    
+            return new Stack<T>(list.Take(takeCount).ToList());
+        }
+
+        public static T Roll<T>(List<T> list)
+        {
+            return list[new Random().Next(list.Count - 1)];
+        }
+
     }
     
 }
