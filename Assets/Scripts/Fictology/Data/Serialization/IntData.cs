@@ -89,6 +89,7 @@ namespace Fictology.Data.Serialization
         
         public static explicit operator IntData(FloatData floatData) => new((int)floatData.value);
         public static explicit operator IntData(BoolData boolData) => boolData ? new IntData(1) : new IntData(0);
-        public static explicit operator IntData(int i) => new(i);
+        public static implicit operator IntData(int i) => new(1);
+
     }
 }

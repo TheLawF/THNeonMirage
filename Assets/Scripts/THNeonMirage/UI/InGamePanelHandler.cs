@@ -103,7 +103,7 @@ namespace THNeonMirage.UI
             }
             else
             {
-                var color = Registries.GetPrefabInstances(LevelRegistry.Player).First(p =>
+                var color = Registries.GetPrefabInstances(PrefabRegistry.Player).First(p =>
                         p.GetComponent<PlayerManager>().playerData.roundIndex == player.playerData.roundIndex)
                     .GetComponent<SpriteRenderer>().color;
 

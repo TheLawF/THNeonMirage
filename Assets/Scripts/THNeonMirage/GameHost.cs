@@ -265,27 +265,48 @@ namespace THNeonMirage.Manager
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
             hudPanel.SetActive(true);
             
-            var room = Registries.GetObject(UIRegistry.RoomPage);
+            var room = Registries.GetObject(UIRegistry.RoomDialogue);
+            var roomManager = Registries.GetComponent<RoomManager>(UIRegistry.RoomWindow);
             var roomIdText = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.RoomIdText);
             room.SetActive(true);
             roomIdText.text += PhotonNetwork.CurrentRoom.Name;
             
-            // CreatePlayer();
-            level.CreateLevel();
-            CreateOnlinePlayer(false);
-            player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
-            player.playerData.roundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
             
-            level.players.Add(player);
-            level.PlayerInstances.Add(playerInstance);
+
+            // level.CreateLevel();
+            // CreateOnlinePlayer(false);
+            // player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
+            // player.playerData.roundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
+            //
+            // level.players.Add(player);
+            // level.PlayerInstances.Add(playerInstance);
             
             InitializeGame();
         }
 
+        public void ShowAvatarSelection()
+        {
+            foreach (var player1 in PhotonNetwork.PlayerList)
+            {
+                photonView.RPC(nameof(SetAvatarImage), player1, 1,2,3,"a","a","A");
+            }
+            // switch (player.gameObject.GetPhotonView().ViewID)
+            // {
+            //     case 1: return SetAvatarImage();
+            // }
+        }
+
+        private void SetAvatarImage(int remoteId1, int remoteId2, int remoteId3, string path1, string path2, string path3)
+        {
+            // me: 1 | other: 234
+            // me: 2 | other: 134
+            // me: 3 | other: 124
+            // me: 4 | other: 123
+        }
+
         public void CreateOnlinePlayer(bool isBot)
         {
-            // var playerObject = LevelRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
-            playerInstance = PhotonNetwork.Instantiate(LevelRegistry.Player.PrefabPath, PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
+            playerInstance = PhotonNetwork.Instantiate(PrefabRegistry.Player.PrefabPath, PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
             player = playerInstance.GetComponent<PlayerManager>();
             level.PlayerInstances.Add(playerInstance);
             
@@ -358,7 +379,6 @@ namespace THNeonMirage.Manager
         {
             if (!PhotonNetwork.IsMasterClient)
             {
-                // player.SendSpriteUpdate(null, playerInstance.GetComponent<SpriteRenderer>().color);
                 return;
             }
             player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);

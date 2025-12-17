@@ -1,4 +1,5 @@
 using Fictology.Registry;
+using Photon.Pun;
 using THNeonMirage.Registry;
 using UnityEngine;
 
@@ -26,6 +27,13 @@ namespace Fictology.Registry
             var instance = Object.Instantiate((GameObject)Resources.Load(PrefabPath));
             Registries.RegisterPrefabInstance(this, instance);
             return instance;
+        }
+
+        public GameObject NetworkInstantiate(Vector3 pos, Quaternion rot)
+        {
+            var netInstance = PhotonNetwork.Instantiate(PrefabPath, pos, rot);
+            Registries.RegisterPrefabInstance(this, netInstance);
+            return netInstance;
         }
         
         public GameObject Instantiate(Vector3 position, Quaternion rotation)

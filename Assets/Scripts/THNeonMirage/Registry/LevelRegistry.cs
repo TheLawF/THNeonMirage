@@ -13,8 +13,6 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey ClientLevel = Registries.CreateKey(LevelRootKey, "ClientLevel");
         public static readonly RegistryKey ServerLevel = Registries.CreateKey(LevelRootKey, nameof(ServerLevel));
         public static readonly RegistryKey Tile = Registries.CreateKey(TileRootKey, "Tile");
-        public static readonly PrefabType Player = Registries.CreateType("Prefabs/PlayerObject");
-        public static readonly PrefabType TilePrefab = Registries.CreateType("Prefabs/TilePrefab");
 
         public static void RegisterTypes()
         {

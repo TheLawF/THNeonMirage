@@ -54,7 +54,7 @@ namespace THNeonMirage.Manager
             canvas = Registries.GetObject(UIRegistry.Canvas);
             m_view = gameObject.GetPhotonView();
             m_transform = GetComponent<Transform>();
-            indexLabel = UIRegistry.IndexLabel.Instantiate(GetPointOnScreen(), Quaternion.identity, canvas.transform);
+            indexLabel = PrefabRegistry.IndexLabel.Instantiate(GetPointOnScreen(), Quaternion.identity, canvas.transform);
             indexLabel.GetComponent<TextMeshProUGUI>().text = playerData.roundIndex.ToString();
         }
 

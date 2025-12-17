@@ -164,11 +164,11 @@ namespace THNeonMirage.Map
 
             var list = new List<Func<GameObject>>(new Func<GameObject>[]
             {
-                () => LevelRegistry.TilePrefab.Instantiate(StartPos - uOffset, Quaternion.identity, m_transform),
-                () => LevelRegistry.TilePrefab.Instantiate(LeftUp - vOffset, Quaternion.identity, m_transform),
-                () => LevelRegistry.TilePrefab.Instantiate(LeftDown + uOffset, Quaternion.identity, m_transform),
-                () => LevelRegistry.TilePrefab.Instantiate(RightDown + vOffset, Quaternion.identity, m_transform),
-                () => LevelRegistry.TilePrefab.Instantiate(Vector3.zero, Quaternion.identity, m_transform)
+                () => PrefabRegistry.TilePrefab.Instantiate(StartPos - uOffset, Quaternion.identity, m_transform),
+                () => PrefabRegistry.TilePrefab.Instantiate(LeftUp - vOffset, Quaternion.identity, m_transform),
+                () => PrefabRegistry.TilePrefab.Instantiate(LeftDown + uOffset, Quaternion.identity, m_transform),
+                () => PrefabRegistry.TilePrefab.Instantiate(RightDown + vOffset, Quaternion.identity, m_transform),
+                () => PrefabRegistry.TilePrefab.Instantiate(Vector3.zero, Quaternion.identity, m_transform)
             });
 
             var instance = Utils.SwitchByMap(list, index);

@@ -31,10 +31,11 @@ namespace THNeonMirage.Registry
 
         public static readonly RegistryKey LobbyPanel = Registries.CreateKey(PanelRootKey, "Lobby");
         public static readonly RegistryKey RoomWindow = Registries.CreateKey(PanelRootKey, nameof(RoomWindow));
+        public static readonly RegistryKey AvatarList = Registries.CreateKey(PanelRootKey, nameof(AvatarList));
         public static readonly RegistryKey CreateRoomDialogue = Registries.CreateKey(PanelRootKey, "CreateRoom");
         public static readonly RegistryKey InputRoomIdDialogue = Registries.CreateKey(PanelRootKey, "InputRoomId");
         
-        public static readonly RegistryKey RoomPage = Registries.CreateKey(PanelRootKey, nameof(RoomPage));
+        public static readonly RegistryKey RoomDialogue = Registries.CreateKey(PanelRootKey, nameof(RoomDialogue));
         public static readonly RegistryKey HomePage = Registries.CreateKey(PanelRootKey, nameof(HomePage));
         public static readonly RegistryKey InGamePanel = Registries.CreateKey(PanelRootKey, "InGame");
         public static readonly RegistryKey HUD = Registries.CreateKey(PanelRootKey, "HUD");
@@ -56,7 +57,6 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey CancelButton = Registries.CreateKey(ButtonRootKey, "Cancel");
 
         // public static readonly RegistryKey Room
-        public static readonly PrefabType IndexLabel = Registries.CreateType("Prefabs/IndexLabel");
 
         public static void RegisterTypes()
         {

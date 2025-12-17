@@ -46,6 +46,8 @@ namespace Fictology.Data.Serialization
         }
 
         public static BoolData Of(bool data) => new(data);
+        public static BoolData True() => new (true);
+        public static BoolData False() => new(false);
 
         public BoolData(): base(SerializationType.Bool)
         {

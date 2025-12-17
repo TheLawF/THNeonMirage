@@ -126,7 +126,7 @@ namespace THNeonMirage
 
         public void CreatePlayer(bool isBot)
         {
-            var playerObject = LevelRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
+            var playerObject = PrefabRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
             var player = playerObject.GetComponent<PlayerManager>();
             var sprite = player.GetComponent<SpriteRenderer>();
             players.Add(playerObject);

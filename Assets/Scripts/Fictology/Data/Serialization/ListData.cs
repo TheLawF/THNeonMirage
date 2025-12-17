@@ -36,6 +36,9 @@ namespace Fictology.Data.Serialization
             dataList.Add(data);
         }
 
+        public void AddRange<D>(List<D> listData) where D: INamedData => listData.ForEach(data => Add(data));
+        
+
         public List<INamedData> Get() => dataList;
         
         public INamedData this[int index] => dataList[index];
