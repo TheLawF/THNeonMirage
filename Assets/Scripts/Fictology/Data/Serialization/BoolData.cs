@@ -33,7 +33,6 @@ namespace Fictology.Data.Serialization
             using var stream = new MemoryStream();
             using var writer = new BinaryWriter(stream);
             
-            writer.Write((int)GetSerializedType());
             writer.Write(value);
             return stream.ToArray();
         }

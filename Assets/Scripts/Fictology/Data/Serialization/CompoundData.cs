@@ -38,6 +38,8 @@ namespace Fictology.Data.Serialization
         public bool GetBool(string key) => m_entries[key] is BoolData && ((BoolData)m_entries[key]).value;
         public float GetFloat(string key) => m_entries[key] is FloatData ? ((FloatData)m_entries[key]).value : 0f;
         public string GetString(string key) => m_entries[key] is StringData ? ((StringData)m_entries[key]).value : "";
+
+        public INamedData this[string key] => m_entries.GetOrAdd(key, s => null);
         
         public static CompoundData operator +(CompoundData left, CompoundData right)
         {

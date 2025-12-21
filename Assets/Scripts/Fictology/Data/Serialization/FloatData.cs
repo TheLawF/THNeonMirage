@@ -36,14 +36,16 @@ namespace Fictology.Data.Serialization
             using var stream = new MemoryStream();
             using var writer = new BinaryWriter(stream);
             
-            writer.Write((int)GetSerializedType());
             writer.Write(value);
             return stream.ToArray();
         }
 
         public override void FromBytes(byte[] bytes)
         {
-            throw new NotImplementedException();
+            using var stream = new MemoryStream(bytes);
+            using var reader = new BinaryReader(stream);
+
+            value = reader.ReadInt32();
         }
 
         /// <summary>

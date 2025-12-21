@@ -16,7 +16,7 @@ namespace THNeonMirage.Data
             var data = new CompoundData();
             var eData = EnumData.Of(ID);
             
-            data.Add("enum", eData);
+            data.Add("identity", eData);
 
             return data;
         }
