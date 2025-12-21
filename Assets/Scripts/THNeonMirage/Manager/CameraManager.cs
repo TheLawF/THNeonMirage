@@ -22,6 +22,12 @@ namespace THNeonMirage.Manager
             var delta = gameCamera.orthographicSize <= 0 ? 0 : Input.GetAxis("Mouse ScrollWheel");
             gameCamera.orthographicSize -= delta * zoomSpeed;
             worldPos = GetWorldPos(Input.mousePosition);
+
+            if (Input.touches.Length == 1)
+            {
+                startPos = worldPos;
+                cameraPrevPos = transform.position;
+            }
             
             if (Input.GetMouseButtonDown(1))
             {

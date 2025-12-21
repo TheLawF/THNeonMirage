@@ -76,6 +76,29 @@ namespace THNeonMirage.Registry
             Key2ObjectMap.AddRange(dictionary
                 .Select(pair => new {Key = pair.Key.registryKey.ToString(), Obj = pair.Value})
                 .ToDictionary(keyAndObj => keyAndObj.Key, keyAndObj => keyAndObj.Obj));
+            // foreach (var kv in dictionary)
+            // {
+            //     var flag = Key2ObjectMap.TryAdd(kv.Key.ToString(), kv.Value);
+            //     if (flag)
+            //     {
+            //         Debug.LogError($"注册表对象不唯一，已存在注册名为：{kv.Key} " +
+            //                        $"的注册对象：{Key2ObjectMap[kv.Key.ToString()].name}。" +
+            //                        $"尝试注册的新对象：{kv.Value.name}");
+            //     }
+            // }
+            // try
+            // {
+            //     Key2ObjectMap.AddRange(dictionary
+            //         .Select(pair => new {Key = pair.Key.registryKey.ToString(), Obj = pair.Value})
+            //         .ToDictionary(keyAndObj => keyAndObj.Key, keyAndObj => keyAndObj.Obj));
+            // }
+            // catch (Exception e)
+            // {
+            //     Console.WriteLine(e);
+            //     Debug.LogError();
+            //     throw;
+            // }
+            
             Key2EntryMap.AddRange(dictionary
                 .Select(pair => new {Key = pair.Key.registryKey.ToString(), Entry = pair.Key})
                 .ToDictionary(keyAndEntry => keyAndEntry.Key, keyAndEntry => keyAndEntry.Entry));

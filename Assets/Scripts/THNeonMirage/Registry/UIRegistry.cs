@@ -36,7 +36,6 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey AvatarList = Registries.CreateKey(PanelRootKey, nameof(AvatarList));
 
         public static readonly RegistryKey LocalAvatar = Registries.CreateKey(EmptyKey, nameof(LocalAvatar));
-
         public static readonly RegistryKey Remote1 = Registries.CreateKey(EmptyKey, nameof(Remote1));
         public static readonly RegistryKey Remote2 = Registries.CreateKey(EmptyKey, nameof(Remote2));
         public static readonly RegistryKey Remote3 = Registries.CreateKey(EmptyKey, nameof(Remote3));

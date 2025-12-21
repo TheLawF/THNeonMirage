@@ -1,53 +1,99 @@
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using THNeonMirage.Util;
+using Unity.VisualScripting;
 
 namespace Fictology.Data.Serialization
 {
     public class EnumData: INamedData
     {
-        private readonly List<EnumData> m_entries = new();
-        private EnumData m_parent;
-        public string Name { get; private set; }
+        private int m_enum_count;
+        private int m_enum_value;
+        private bool m_has_flag;
 
-        private EnumData(string name)
+        private EnumData(Enum e)
         {
-            Name = name;
+            var enumType = e.GetType();
+            m_enum_count = Enum.GetValues(enumType).Length;
+            m_enum_value = Convert.ToInt32(e);  // 更安全的转换
+    
+            // 检查枚举类型是否有[Flags]特性
+            m_has_flag = enumType.IsDefined(typeof(FlagsAttribute), false);
         }
 
-        private EnumData(EnumData parent, string name)
+        public static EnumData Of(Enum e) => new(e);
+
+        public List<Enum> ToEnum(Type enumType)
         {
-            m_parent = parent;
-            Name = name;
+            var list = new List<Enum>();
+    
+            if (m_has_flag)
+            {
+                // 处理标志枚举
+                for (var i = 0; i < 32; i++)  // int 是32位
+                {
+                    var mask = 1 << i;
+                    if ((m_enum_value & mask) == 0) continue;
+                    // 检查这个值是否在枚举中定义
+                    if (Enum.IsDefined(enumType, mask))
+                    {
+                        list.Add((Enum)Enum.ToObject(enumType, mask));
+                    }
+                }
+        
+                // 如果没有找到任何标志，检查是否为0
+                if (list.Count == 0 && Enum.IsDefined(enumType, 0))
+                {
+                    list.Add((Enum)Enum.ToObject(enumType, 0));
+                }
+            }
+            else
+            {
+                // 处理非标志枚举
+                if (Enum.IsDefined(enumType, m_enum_value))
+                {
+                    list.Add((Enum)Enum.ToObject(enumType, m_enum_value));
+                }
+            }
+    
+            return list;
         }
+        
+        public void EnableMask() => m_has_flag = true;
 
-        public void AddEntry(EnumData newEnumEntry)
+        public void SetMaskOnDigit(int digit, bool value)
         {
-            if (newEnumEntry.m_parent != null) return;
-            if (m_entries.Any(e => e.Name == newEnumEntry.Name)) return;
-            newEnumEntry.m_parent = this;
-            newEnumEntry.m_entries.Clear();
-            newEnumEntry.m_entries.AddRange(m_entries);
-            m_entries.Add(newEnumEntry);
+            if (!m_has_flag) return;
+            // 验证位位置有效性
+            if (digit < 0 || digit > 31)
+            {
+                throw new ArgumentOutOfRangeException(nameof(digit), 
+                    "位置必须在0-31之间（包含边界）");
+            }
+        
+            if (value)
+            {
+                // 将指定位设置为1：使用按位或操作
+                m_enum_value |= (1 << digit);
+            }
+            else
+            {
+                // 将指定位设置为0：先创建掩码的反码，然后使用按位与操作
+                m_enum_value &= ~(1 << digit);
+            }
         }
-
-        public EnumData Get(string name) => m_entries.First(e => e.Name == name);
-        public int IndexOfValue(string name) => m_entries.IndexOf(Get(name));
-
+        
         public byte[] ToBytes()
         {
             using var stream = new MemoryStream();
             using var writer = new BinaryWriter(stream);
             
-            writer.Write(Name);
-            writer.Write(IndexOfValue(Name));
-
-            var list = new ListData();
-            list.AddRange(m_entries);
-            writer.Write(m_entries.Count);
-            writer.Write(list.ToBytes());
+            writer.Write(m_enum_count);
+            writer.Write(m_enum_value);
+            writer.Write(m_has_flag);
             return stream.ToArray();
         }
 
@@ -55,10 +101,10 @@ namespace Fictology.Data.Serialization
         {
             using var stream = new MemoryStream(bytes);
             using var reader = new BinaryReader(stream);
-            Name = reader.ReadString();
-            var index = reader.ReadInt32();
-            var list = new ListData();
-            list.FromBytes(reader.ReadBytes(reader.ReadInt32()));
+
+            m_enum_count = reader.ReadInt32();
+            m_enum_value = reader.ReadInt32();
+            m_has_flag = reader.ReadBoolean();
         }
 
         public SerializationType GetSerializedType()

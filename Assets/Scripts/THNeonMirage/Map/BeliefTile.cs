@@ -27,6 +27,7 @@ namespace THNeonMirage.Map
 
         public void RollFromPool(PlayerManager player, int prevPos, int currentPos)
         {
+            if(!IsTileValid(currentPos)) return;
             var random = new Random();
             description = Belives[random.Next(Belives.Count - 1)].Invoke(player, prevPos, currentPos);
             player.SendPlayerDataUpdate(player.gameObject.GetPhotonView().ViewID, player.playerData);

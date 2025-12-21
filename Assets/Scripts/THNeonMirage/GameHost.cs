@@ -11,6 +11,7 @@ using MySql.Data.MySqlClient;
 using Photon.Pun;
 using Photon.Realtime;
 using THNeonMirage.Data;
+using THNeonMirage.Manager;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
@@ -23,7 +24,7 @@ using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Random = Unity.Mathematics.Random;
 
-namespace THNeonMirage.Manager
+namespace THNeonMirage
 {
     public class GameHost : MonoBehaviourPunCallbacks, IPunObservable
     {
@@ -52,6 +53,9 @@ namespace THNeonMirage.Manager
 
         [Header("主机和客户端")]
         public GameObject joinRoomPanel;
+
+        private GameObject room;
+        private RoomManager roomManager;
 
         [Header("UI父组件")]
         public GameObject canvas;
@@ -233,6 +237,7 @@ namespace THNeonMirage.Manager
             
             addRoom.SetActive(true);
             joinRoom.SetActive(true);
+            // joinRoom.GetComponent<Button>().onClick.AddListener(ShowInputRoomIdPanel);
             
             lobbyPanel.SetActive(true);
             isConnecting = false;
@@ -265,14 +270,13 @@ namespace THNeonMirage.Manager
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
             hudPanel.SetActive(true);
             
-            var room = Registries.GetObject(UIRegistry.RoomDialogue);
-            var roomManager = Registries.GetComponent<RoomManager>(UIRegistry.RoomWindow);
-            var roomIdText = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.RoomIdText);
+            room = Registries.GetObject(UIRegistry.RoomWindow);
+            roomManager = Registries.GetComponent<RoomManager>(UIRegistry.RoomWindow);
             room.SetActive(true);
-            roomIdText.text += PhotonNetwork.CurrentRoom.Name;
-            
-            
 
+            var roomIdText = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.RoomIdText);
+            roomIdText.text += PhotonNetwork.CurrentRoom.Name;
+            //
             // level.CreateLevel();
             // CreateOnlinePlayer(false);
             // player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
@@ -280,8 +284,8 @@ namespace THNeonMirage.Manager
             //
             // level.players.Add(player);
             // level.PlayerInstances.Add(playerInstance);
-            
-            InitializeGame();
+            //
+            // InitializeGame();
         }
 
         public void ShowAvatarSelection()
@@ -377,6 +381,7 @@ namespace THNeonMirage.Manager
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
+            playerInstance.GetPhotonView().RPC(nameof(roomManager.AddNewPlayerToRoomList), RpcTarget.All, playerInstance.GetPhotonView().ViewID);
             if (!PhotonNetwork.IsMasterClient)
             {
                 return;

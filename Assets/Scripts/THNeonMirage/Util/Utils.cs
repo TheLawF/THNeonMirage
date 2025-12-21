@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Fictology.Data.Serialization;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -28,6 +29,11 @@ namespace THNeonMirage.Util
             var stack = Shuffle(list.ConvertAll(input => Regex.Unescape($"\\u{list.IndexOf(input) + unicodeRange.Start.Value}")), length);
             for (var i = 0; i < stack.Count; i++) sb.Append(stack.Pop());
             return sb.ToString();
+        }
+
+        public static void WriteList(MemoryStream stream, List<INamedData> list)
+        {
+            
         }
         
         public static void WriteBool(MemoryStream stream, bool b)

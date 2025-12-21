@@ -23,6 +23,9 @@ namespace THNeonMirage.UI
         private bool localPlayerisReady;
 
         private GameObject local_avatar;
+        private GameObject remote1_avatar;
+        private GameObject remote2_avatar;
+        private GameObject remote3_avatar;
         private Either<IntData, IntData> m_waitOrSelect = Either<IntData, IntData>.Or(0, 1);
         
         private GameObject m_ready;
@@ -46,6 +49,11 @@ namespace THNeonMirage.UI
         private void OnEnable()
         {
             var current = (IntData)m_waitOrSelect.Current;
+            local = Registries.GetObject(UIRegistry.LocalAvatar);
+            remote1 = Registries.GetObject(UIRegistry.Remote1);
+            remote2 = Registries.GetObject(UIRegistry.Remote2);
+            remote3 = Registries.GetObject(UIRegistry.Remote3);
+            
             m_ready = Registries.GetObject(UIRegistry.ReadyButton);
             player_list = Registries.GetObject(UIRegistry.PlayerList);
             avatar_list = Registries.GetObject(UIRegistry.AvatarList);
@@ -54,7 +62,7 @@ namespace THNeonMirage.UI
             _down = Registries.GetObject(UIRegistry.DownButton);
             _lock = Registries.GetObject(UIRegistry.LockSelection);
             
-            m_ready.GetComponent<Button>().onClick.AddListener(SetReadyAndSendToRemote);
+            m_ready.GetComponent<Button>().onClick.AddListener(SetReadyAndSyncToRemote);
             _lock.GetComponent<Button>().onClick.AddListener(OnLockSelection);
         }
         
@@ -62,14 +70,14 @@ namespace THNeonMirage.UI
         public void AddNewPlayerToRoomList(int viewId)
         {
             var childCount = player_list.transform.childCount;
-            var instance = PrefabRegistry.JoinedPlayer.NetworkInstantiate(Vector3.zero, Quaternion.identity);
+            var instance = PrefabRegistry.JoinedPlayer.NetworkInstantiate(Vector3.zero, Quaternion.identity, player_list.transform);
             var itemHeight = instance.GetComponent<RectTransform>().rect.height;
             
             player_list.GetComponent<RectTransform>().sizeDelta = new Vector2(0,  10 + childCount * itemHeight);
             instance.GetComponentInChildren<TextMeshPro>().text = Utils.NextRandomString(10, UnicodeTable.Characters);
         }
 
-        private void SetReadyAndSendToRemote() 
+        private void SetReadyAndSyncToRemote()
         {
             // TODO: Call OnPhotonSerializeView
             localPlayerisReady = true;
@@ -84,7 +92,12 @@ namespace THNeonMirage.UI
         private void InitAvatar()
         {
             local_avatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(local.transform.position, Quaternion.identity, local.transform);
-            
+            remote1_avatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(remote1.transform.position,
+                Quaternion.identity, remote1.transform);
+            remote2_avatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(remote2.transform.position,
+                Quaternion.identity, remote2.transform);
+            remote3_avatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(remote3.transform.position,
+                Quaternion.identity, remote3.transform);
         }
 
         private void OnClickAvatarSprite()

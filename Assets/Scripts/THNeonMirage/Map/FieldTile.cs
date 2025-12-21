@@ -193,22 +193,6 @@ namespace THNeonMirage.Map
         public bool IsTileValid(ValueEventArgs args) => (int)args.Value == index;
         public bool IsTileValid(int index) => index == this.index;
 
-        // [PunRPC]
-        // public void SendEventToMaster()
-        // {
-        //     var type = GetType();
-        //     var onPlayerStop = GetType().GetMethod(nameof(OnLocalPlayerStopAt));
-        //     var onPlayerPass = GetType().GetMethod(nameof(OnPlayerPassByRPC));
-        //     
-        //     if (onPlayerStop == null)return;
-        //     onlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
-        //         Delegate.CreateDelegate(type, onPlayerStop));
-        //     
-        //     if (onPlayerPass == null)return;
-        //     onlineOwner.RPC(nameof(RegisterEventOnMaster), RpcTarget.All, EventRegistry.OnPositionChangedRPC, 
-        //         Delegate.CreateDelegate(type, onPlayerPass));
-        // }
-
         [PunRPC]
         public void RegisterEventOnMaster(EventKey key, Delegate method)
         {

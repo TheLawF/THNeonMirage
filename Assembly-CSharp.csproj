@@ -122,6 +122,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\GameMain.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\UI\EmptyObject.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\BumperCar.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\BigPendulum.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\HudManager.cs" />
@@ -181,7 +182,8 @@
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\AvatarManager.cs" />
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventName.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\UI\EmptyObject.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Data\NetPlayerViewer.cs" />
+    <Compile Include="Assets\Scripts\Fictology\Data\Serialization\ISerializableEnum.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />
