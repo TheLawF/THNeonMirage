@@ -71,6 +71,18 @@ namespace THNeonMirage.Registry
             return Prefab2InstancesMap[prefabType];
         }
 
+        public static void Register(GameObject obj, RegistryEntry registry)
+        {
+            if (!Key2ObjectMap.TryAdd(registry.registryKey.ToString(), obj))
+            {
+                Debug.LogError($"注册表对象不唯一，已存在注册名为：\"{registry.registryKey}\" " +
+                               $"的注册对象：{Key2ObjectMap[registry.registryKey.ToString()].name}， " + 
+                               $"尝试注册的新对象：{obj.name}");
+            }
+            
+            Key2EntryMap.TryAdd(registry.registryKey.ToString(), registry);
+        }
+        
         public static void RegisterAll(Dictionary<RegistryEntry, GameObject> dictionary)
         {
             Key2ObjectMap.AddRange(dictionary

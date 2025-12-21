@@ -262,8 +262,6 @@ namespace THNeonMirage
             GUIUtility.systemCopyBuffer = s.Replace("房间号：", "");
         }
 
-        public void ShowInputRoomIdPanel() => joinRoomPanel.SetActive(true);
-        
         // ReSharper disable Unity.PerformanceAnalysis
         public override void OnJoinedRoom()
         {
@@ -287,27 +285,7 @@ namespace THNeonMirage
             //
             // InitializeGame();
         }
-
-        public void ShowAvatarSelection()
-        {
-            foreach (var player1 in PhotonNetwork.PlayerList)
-            {
-                photonView.RPC(nameof(SetAvatarImage), player1, 1,2,3,"a","a","A");
-            }
-            // switch (player.gameObject.GetPhotonView().ViewID)
-            // {
-            //     case 1: return SetAvatarImage();
-            // }
-        }
-
-        private void SetAvatarImage(int remoteId1, int remoteId2, int remoteId3, string path1, string path2, string path3)
-        {
-            // me: 1 | other: 234
-            // me: 2 | other: 134
-            // me: 3 | other: 124
-            // me: 4 | other: 123
-        }
-
+        
         public void CreateOnlinePlayer(bool isBot)
         {
             playerInstance = PhotonNetwork.Instantiate(PrefabRegistry.Player.PrefabPath, PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
@@ -404,15 +382,6 @@ namespace THNeonMirage
             {
                 GameMain.GameOver(player);
             }
-        }
-        
-        
-        private void InitUI()
-        {
-            var up = Registries.GetComponent<Button>(UIRegistry.UpButton);
-            var down = Registries.GetComponent<Button>(UIRegistry.DownButton);
-            var lockSelection = Registries.GetComponent<Button>(UIRegistry.LockSelection);
-            
         }
         
         private void InitializeGame()

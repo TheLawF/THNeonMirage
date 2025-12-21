@@ -41,6 +41,8 @@ namespace THNeonMirage
         public Button startButton;
         public Button aboutButton;
         public Button exitButton;
+        public Button joinRoomButton;
+        public GameObject joinRoomPanel;
         
         public TMP_Text balanceLabel;
         public Random random;
@@ -84,10 +86,13 @@ namespace THNeonMirage
             
             var validEntries = GetAllSceneObjects()
                 .Select(obj => new { Object = obj, Entry = obj.GetComponent<RegistryEntry>() })
-                .Where(objAndEntry => objAndEntry.Entry != null && Registries.RegistryTypes.Contains(objAndEntry.Entry.GetType()))
-                .ToDictionary(objAndEntry => objAndEntry.Entry, objAndEntry => objAndEntry.Object);
+                .Where(objAndEntry => objAndEntry.Entry != null && Registries.RegistryTypes.Contains(objAndEntry.Entry.GetType()));
 
-            Registries.RegisterAll(validEntries);
+            foreach (var entry in validEntries)
+            {
+                Registries.Register(entry.Object, entry.Entry);
+            }
+            // Registries.RegisterAll(validEntries);
         }
         
         private void InitAllFields()
@@ -96,6 +101,9 @@ namespace THNeonMirage
             startButton = Registries.GetComponent<Button>(UIRegistry.StartButton);
             aboutButton = Registries.GetComponent<Button>(UIRegistry.AboutButton);
             balanceLabel = Registries.GetComponent<TMP_Text>(UIRegistry.BalanceText);
+            
+            joinRoomPanel = Registries.GetObject(UIRegistry.RoomDialogue);
+            joinRoomButton = Registries.GetComponent<Button>(UIRegistry.JoinRoomButton);
             
             lobby = Registries.GetObject(UIRegistry.LobbyPanel);
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
@@ -109,7 +117,9 @@ namespace THNeonMirage
         private void RegisterUIListeners()
         {
             startButton.onClick.AddListener(OnGameStartClicked);
+            joinRoomButton.onClick.AddListener(ShowInputRoomIdPanel);
         }
+        
         
         public void OnGameStartClicked()
         {
@@ -124,6 +134,9 @@ namespace THNeonMirage
             level.players.AddRange(players.Select(obj => obj.GetComponent<PlayerManager>()));
         }
 
+        
+        public void ShowInputRoomIdPanel() => joinRoomPanel.SetActive(true);
+        
         public void CreatePlayer(bool isBot)
         {
             var playerObject = PrefabRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);

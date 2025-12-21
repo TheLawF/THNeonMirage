@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Fictology.Data.Serialization;
 using Fictology.Registry;
 using Fictology.Util;
@@ -16,6 +17,7 @@ namespace THNeonMirage.UI
     {
         private const int Wait = 0;
         private const int Select = 1;
+        private GameObject local_instance;
 
         public int readyPlayers;
         public int selectedPlayers;
@@ -26,7 +28,7 @@ namespace THNeonMirage.UI
         private GameObject remote1_avatar;
         private GameObject remote2_avatar;
         private GameObject remote3_avatar;
-        private Either<IntData, IntData> m_waitOrSelect = Either<IntData, IntData>.Or(0, 1);
+        private Either<IntData> m_waitOrSelect = Either<IntData>.Or(0, 1);
         
         private GameObject m_ready;
         private GameObject player_list;
@@ -48,7 +50,6 @@ namespace THNeonMirage.UI
 
         private void OnEnable()
         {
-            var current = (IntData)m_waitOrSelect.Current;
             local = Registries.GetObject(UIRegistry.LocalAvatar);
             remote1 = Registries.GetObject(UIRegistry.Remote1);
             remote2 = Registries.GetObject(UIRegistry.Remote2);
@@ -62,7 +63,7 @@ namespace THNeonMirage.UI
             _down = Registries.GetObject(UIRegistry.DownButton);
             _lock = Registries.GetObject(UIRegistry.LockSelection);
             
-            m_ready.GetComponent<Button>().onClick.AddListener(SetReadyAndSyncToRemote);
+            m_ready.GetComponent<Button>().onClick.AddListener(SendReadyToRemote);
             _lock.GetComponent<Button>().onClick.AddListener(OnLockSelection);
         }
         
@@ -70,14 +71,14 @@ namespace THNeonMirage.UI
         public void AddNewPlayerToRoomList(int viewId)
         {
             var childCount = player_list.transform.childCount;
-            var instance = PrefabRegistry.JoinedPlayer.NetworkInstantiate(Vector3.zero, Quaternion.identity, player_list.transform);
-            var itemHeight = instance.GetComponent<RectTransform>().rect.height;
+            local_instance = PrefabRegistry.JoinedPlayer.NetworkInstantiate(Vector3.zero, Quaternion.identity, player_list.transform);
+            var itemHeight = local_instance.GetComponent<RectTransform>().rect.height;
             
             player_list.GetComponent<RectTransform>().sizeDelta = new Vector2(0,  10 + childCount * itemHeight);
-            instance.GetComponentInChildren<TextMeshPro>().text = Utils.NextRandomString(10, UnicodeTable.Characters);
+            local_instance.GetComponentInChildren<TextMeshPro>().text = Utils.NextRandomString(10, UnicodeTable.Characters);
         }
 
-        private void SetReadyAndSyncToRemote()
+        private void SendReadyToRemote()
         {
             // TODO: Call OnPhotonSerializeView
             localPlayerisReady = true;
@@ -87,6 +88,15 @@ namespace THNeonMirage.UI
             m_waitOrSelect.SwitchToAnother();
             player_list.SetActive(false);
             avatar_list.SetActive(true);
+            
+            local_instance.GetPhotonView().RPC(nameof(ReceiveReadyFromRemote), RpcTarget.Others, local_instance.GetPhotonView().ViewID);
+        }
+
+        private void ReceiveReadyFromRemote(int viewId)
+        {
+            var views = player_list.GetComponentsInChildren<PhotonView>();
+            var obj = views.First(view => view.ViewID == viewId).gameObject;
+            readyPlayers++;
         }
 
         private void InitAvatar()

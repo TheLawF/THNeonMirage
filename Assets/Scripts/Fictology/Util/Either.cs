@@ -3,32 +3,51 @@ using Fictology.Data.Serialization;
 
 namespace Fictology.Util
 {
-    public class Either<F,S> where F : ISynchronizable where S : ISynchronizable
+    public class Either<TData> : ISerializable<CompoundData> where TData: class, INamedData
     {
-        private F _first;
-        private S _second;
-        public ISynchronizable Current;
+        private TData _first;
+        private TData _second;
+        public TData Current;
 
-        public Either(F first, S second)
+        public Either(TData first, TData second)
         {
             _first = first;
             _second = second;
             Current = first;
         }
         
-        public static Either<F, S> Or(F defaultValue, S another)
+        public static Either<TData> Or(TData defaultValue, TData another)
         {
-            return new Either<F, S>(defaultValue, another);
+            return new Either<TData>(defaultValue, another);
         }
 
         public void SwitchToAnother()
         {
-            Current = Current switch
+            if (Current.ToBytes() == _first.ToBytes())
             {
-                F => _second,
-                S => _first,
-                _ => Current
-            };
+                Current = _second;
+            }
+            else if(Current.ToBytes() == _second.ToBytes())
+            {
+                Current = _first;
+            }
+        }
+
+        public CompoundData Serialize()
+        {
+            var data = new CompoundData();
+            data.Add("first", _first);
+            data.Add("second", _second);
+            data.Add("current", Current);
+
+            return data;
+        }
+
+        public void Deserialize(CompoundData data)
+        {
+            _first = data["first"] as TData;
+            _second = data["second"] as TData;
+            Current = data["current"] as TData;
         }
     }
 }

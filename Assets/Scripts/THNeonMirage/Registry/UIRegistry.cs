@@ -40,9 +40,6 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey Remote2 = Registries.CreateKey(EmptyKey, nameof(Remote2));
         public static readonly RegistryKey Remote3 = Registries.CreateKey(EmptyKey, nameof(Remote3));
 
-        public static readonly RegistryKey CreateRoomDialogue = Registries.CreateKey(PanelRootKey, "CreateRoom");
-        public static readonly RegistryKey InputRoomIdDialogue = Registries.CreateKey(PanelRootKey, "InputRoomId");
-        
         public static readonly RegistryKey RoomDialogue = Registries.CreateKey(PanelRootKey, nameof(RoomDialogue));
         public static readonly RegistryKey HomePage = Registries.CreateKey(PanelRootKey, nameof(HomePage));
         public static readonly RegistryKey InGamePanel = Registries.CreateKey(PanelRootKey, "InGame");
