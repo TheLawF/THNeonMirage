@@ -5,6 +5,7 @@ using ExitGames.Client.Photon;
 using Fictology.Data.Serialization;
 using Fictology.Registry;
 using FlyRabbit.EventCenter;
+using Photon.Pun;
 using THNeonMirage.Data;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
@@ -193,7 +194,7 @@ namespace THNeonMirage
 
         public static void GameOver(PlayerManager player)
         {
-            Destroy(player.gameObject);
+            PhotonNetwork.Destroy(player.gameObject);
             player.level.fields.ForEach(Destroy);
 
             var inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);

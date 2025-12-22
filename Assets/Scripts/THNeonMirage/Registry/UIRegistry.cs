@@ -75,6 +75,8 @@ namespace THNeonMirage.Registry
             Registries.RegistryTypes.Add(typeof(TextLabel));
             Registries.RegistryTypes.Add(typeof(EmptyObject));
             Registries.RegistryTypes.Add(typeof(ProgressBarControl));
+            
+            Registries.RegistryTypes.Add(typeof(RoomManager));
         }
 
     }

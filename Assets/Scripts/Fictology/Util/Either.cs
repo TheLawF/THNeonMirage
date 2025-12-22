@@ -15,10 +15,17 @@ namespace Fictology.Util
             _second = second;
             Current = first;
         }
-        
+
+        public static Either<TData> Of(TData one, TData another) => new (one, another);
         public static Either<TData> Or(TData defaultValue, TData another)
         {
             return new Either<TData>(defaultValue, another);
+        }
+
+        public Either<TData> Default(TData defaultData)
+        {
+            Current = defaultData;
+            return this;
         }
 
         public void SwitchToAnother()

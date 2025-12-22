@@ -197,6 +197,7 @@ namespace THNeonMirage
             progressPrefab.SetActive(true);
             bar_instance = Instantiate(progressPrefab, new Vector3(0, 0, 0), Quaternion.identity, canvas.transform);
             
+            roomManager = Registries.Get<RoomManager>(UIRegistry.RoomWindow);
             Debug.Log(bar_instance.name);
             
             progress = bar_instance.GetComponent<ProgressBarControl>();
@@ -269,7 +270,6 @@ namespace THNeonMirage
             hudPanel.SetActive(true);
             
             room = Registries.GetObject(UIRegistry.RoomWindow);
-            roomManager = Registries.GetComponent<RoomManager>(UIRegistry.RoomWindow);
             room.SetActive(true);
 
             var roomIdText = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.RoomIdText);
@@ -300,7 +300,7 @@ namespace THNeonMirage
             
             var exitRoom = Registries.GetComponent<Button>(UIRegistry.ExitButton);
             exitRoom.onClick.AddListener(() => GameMain.GameOver(player));
-
+            
             if (playerInstance.GetPhotonView().IsMine)
             {
                 var camera = Registries.Get<CameraController>(UIRegistry.MainCamera);
@@ -318,6 +318,7 @@ namespace THNeonMirage
                 var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
                 var diceButton = Registries.GetObject(UIRegistry.DiceButton);
                 var diceHandler = diceButton.GetComponent<DiceHandler>();
+                
                 inGamePanelHandler.playerObject = playerInstance;
                 inGamePanelHandler.player = player;
                 diceHandler.player = player;
@@ -335,7 +336,7 @@ namespace THNeonMirage
         {
             // 添加或更新开放房间
             foreach (var room in roomList.Where(r => r.IsOpen && !r.RemovedFromList)) {
-                if (!rooms.Contains(room)) 
+                if (!rooms.Contains(room))
                     rooms.Add(room);
                 else {
                     var index = rooms.IndexOf(room);
@@ -359,7 +360,8 @@ namespace THNeonMirage
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            playerInstance.GetPhotonView().RPC(nameof(roomManager.AddNewPlayerToRoomList), RpcTarget.All, playerInstance.GetPhotonView().ViewID);
+            roomManager.SendPlayerJoinEvent();
+            // playerInstance.GetPhotonView().RPC(nameof(roomManager.AddNewPlayerToRoomList), RpcTarget.All, playerInstance.GetPhotonView().ViewID);
             if (!PhotonNetwork.IsMasterClient)
             {
                 return;

@@ -1929,6 +1929,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 365967254}
+  - component: {fileID: 365967255}
   m_Layer: 5
   m_Name: LocalPlayer
   m_TagString: Untagged
@@ -1956,6 +1957,21 @@ RectTransform:
   m_AnchoredPosition: {x: -195, y: -172}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &365967255
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365967253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42ce01e5fe624ab6b1efba11e37ee566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  registryKey:
+    rootName: Empty
+    registryName: LocalAvatar
 --- !u!1 &368568767
 GameObject:
   m_ObjectHideFlags: 0
@@ -7744,12 +7760,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1482119476}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8f45cff9946461f8ac9f0074e28078b, type: 3}
+  m_Script: {fileID: 11500000, guid: be1cd90b281d495399886200e291df07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   registryKey:
     rootName: Panel
     registryName: RoomWindow
+  readyPlayers: 0
+  selectedPlayers: 0
 --- !u!1 &1493646617
 GameObject:
   m_ObjectHideFlags: 0

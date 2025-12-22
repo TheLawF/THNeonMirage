@@ -67,12 +67,18 @@ namespace THNeonMirage.UI
             _lock.GetComponent<Button>().onClick.AddListener(OnLockSelection);
         }
         
+        public void SendPlayerJoinEvent()
+        {
+            local_instance = PrefabRegistry.JoinedPlayer.NetworkInstantiate(Vector3.zero, Quaternion.identity, player_list.transform);
+            local_instance.GetPhotonView().RPC(nameof(ReceivePlayerJoinEvent), RpcTarget.Others, local_instance.GetPhotonView().ViewID);
+        }
+        
         [PunRPC]
-        public void AddNewPlayerToRoomList(int viewId)
+        public void ReceivePlayerJoinEvent(int viewId)
         {
             var childCount = player_list.transform.childCount;
-            local_instance = PrefabRegistry.JoinedPlayer.NetworkInstantiate(Vector3.zero, Quaternion.identity, player_list.transform);
-            var itemHeight = local_instance.GetComponent<RectTransform>().rect.height;
+            var newJoinedPlayerObj = PhotonView.Find(viewId).gameObject;
+            var itemHeight = newJoinedPlayerObj.GetComponent<RectTransform>().rect.height;
             
             player_list.GetComponent<RectTransform>().sizeDelta = new Vector2(0,  10 + childCount * itemHeight);
             local_instance.GetComponentInChildren<TextMeshPro>().text = Utils.NextRandomString(10, UnicodeTable.Characters);
