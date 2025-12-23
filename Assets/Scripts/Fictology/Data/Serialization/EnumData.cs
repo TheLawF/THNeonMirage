@@ -10,17 +10,26 @@ namespace Fictology.Data.Serialization
         private int m_enum_value;
         private bool m_has_flag;
 
+        private EnumData(int count, bool hasFlag)
+        {
+            m_enum_count = count;
+            m_has_flag = hasFlag;
+            m_enum_value = m_has_flag ? 1 : 0;
+        }
+        
         private EnumData(Enum e)
         {
             var enumType = e.GetType();
             m_enum_count = Enum.GetValues(enumType).Length;
             m_enum_value = Convert.ToInt32(e);  // 更安全的转换
-    
+
             // 检查枚举类型是否有[Flags]特性
             m_has_flag = enumType.IsDefined(typeof(FlagsAttribute), false);
         }
 
         public static EnumData Of(Enum e) => new(e);
+        public static EnumData Create(int count, bool hasFlag) => new EnumData(count, hasFlag);
+
 
         public List<Enum> ToEnum(Type enumType)
         {

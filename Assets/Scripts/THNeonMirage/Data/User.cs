@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using Fictology.Data.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using THNeonMirage.Util;
@@ -139,7 +140,7 @@ namespace THNeonMirage.Data
 
         private static string InvToJson(ICollection inv) => Utils.ListToJsonString("inv", inv);
 
-        private static string FieldsToJson(List<Pair<int, int>> list)
+        private static string FieldsToJson(List<Pair<IntData, IntData>> list)
         {
             var sb = new StringBuilder();
             sb.Append("{\"fields\":[");

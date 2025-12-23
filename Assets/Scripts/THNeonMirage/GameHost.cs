@@ -274,6 +274,8 @@ namespace THNeonMirage
 
             var roomIdText = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.RoomIdText);
             roomIdText.text += PhotonNetwork.CurrentRoom.Name;
+            
+            roomManager.CreateAvatarWhenJoinIn();
             //
             // level.CreateLevel();
             // CreateOnlinePlayer(false);
@@ -360,7 +362,6 @@ namespace THNeonMirage
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            roomManager.SendPlayerJoinEvent();
             // playerInstance.GetPhotonView().RPC(nameof(roomManager.AddNewPlayerToRoomList), RpcTarget.All, playerInstance.GetPhotonView().ViewID);
             if (!PhotonNetwork.IsMasterClient)
             {

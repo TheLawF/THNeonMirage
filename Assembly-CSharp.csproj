@@ -102,7 +102,7 @@
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventCenter.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\RollerCoaster.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\ProgressBarControl.cs" />
-    <Compile Include="Assets\Scripts\Fictology\Util\Either.cs" />
+    <Compile Include="Assets\Scripts\Fictology\Data\Serialization\Either.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\LuckyTile.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\GameHost.cs" />
@@ -182,9 +182,9 @@
     <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventSubscriberWindow.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\OnStartDelete.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\UI\AvatarManager.cs" />
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventName.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Registry\PunNetworkRegistry.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Manager\AvatarManager.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />

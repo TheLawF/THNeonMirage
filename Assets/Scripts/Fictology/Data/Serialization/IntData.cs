@@ -54,7 +54,11 @@ namespace Fictology.Data.Serialization
         }
 
         public static IntData Of(int data) => new(data);
-        
+        public override string ToString()
+        {
+            return value.ToString();
+        }
+
         /// <summary>
         /// 这里是一元操作符，表示颠倒正负
         /// </summary>
@@ -88,7 +92,7 @@ namespace Fictology.Data.Serialization
         
         public static explicit operator IntData(FloatData floatData) => new((int)floatData.value);
         public static explicit operator IntData(BoolData boolData) => boolData ? new IntData(1) : new IntData(0);
-        public static implicit operator IntData(int i) => new(1);
+        public static implicit operator IntData(int i) => new(i);
 
     }
 }

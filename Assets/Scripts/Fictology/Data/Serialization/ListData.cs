@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 namespace Fictology.Data.Serialization
 {
     [Serializable]
-    public class ListData: INamedData
+    public class ListData: INamedData, ICollection<INamedData>
     {
         public SerializationType serializationType = SerializationType.Null;
         public string name;
@@ -36,9 +37,18 @@ namespace Fictology.Data.Serialization
             dataList.Add(data);
         }
 
+        public void Clear() => dataList.Clear();
+
+        public bool Contains(INamedData item) => dataList.Contains(item);
+        public void CopyTo(INamedData[] array, int arrayIndex) => dataList.CopyTo(array, arrayIndex);
+
+        public bool Remove(INamedData item) => dataList.Remove(item);
+
+        public int Count => dataList.Count;
+        public bool IsReadOnly => false;
+
         public void AddRange<D>(List<D> listData) where D: INamedData => listData.ForEach(data => Add(data));
         
-
         public List<INamedData> Get() => dataList;
         
         public INamedData this[int index] => dataList[index];
@@ -77,6 +87,13 @@ namespace Fictology.Data.Serialization
         public SerializationType GetSerializedType()
         {
             return serializationType;
+        }
+
+        public IEnumerator<INamedData> GetEnumerator() => dataList.GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

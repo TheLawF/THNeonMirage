@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 5412995390680406746}
   - component: {fileID: 70436959953335141}
   - component: {fileID: 298923355521070241}
+  - component: {fileID: 7267179062740161403}
+  - component: {fileID: -8648354914506384456}
   m_Layer: 5
   m_Name: RawImagePrefab
   m_TagString: Untagged
@@ -73,3 +75,43 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &7267179062740161403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841233078375265709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &-8648354914506384456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8841233078375265709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d62b30f1f742e29136df4bd0398ee9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  avatarName: 
+  selectable: 1
+  spriteColor: {r: 0, g: 0, b: 0, a: 0}
+  outline: {fileID: 0}
+  localAvatar: {fileID: 0}
+  room: {fileID: 0}

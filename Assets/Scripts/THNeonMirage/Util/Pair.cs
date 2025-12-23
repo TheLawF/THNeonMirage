@@ -4,29 +4,32 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Fictology.Data.Serialization;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace THNeonMirage.Util
 {
-    public class Pair<TK, TV>
+    public class Pair<TKey, TValue>: ISerializable<CompoundData>where TKey : class, INamedData where TValue : class, INamedData
     {
-        public TK Key { get; set; }
-        public TV Value { get; set; }
+        public TKey Key { get; set; }
+        public TValue Value { get; set; }
 
-        public Pair(TK key, TV value)
+        public Pair(TKey key, TValue value)
         {
             Key = key;
             Value = value;
         }
 
-        public static Pair<TK, TV> Of(TK key, TV value) => new (key, value);
+        public static Pair<TKey, TValue> Of(TKey key, TValue value) => new (key, value);
 
         public override string ToString()
         {
-            var sK = Key is ICollection key ? ListString(key) : Key.ToString();
-            var sV = Value is ICollection value ? ListString(value) : Value.ToString();
+            var sK = Key is ListData key ? ListString(key) : Key.ToString();
+            var sV = Value is ListData value ? ListString(value) : Value.ToString();
             return $"{{Key = {sK}, Value = {sV}}}";
         }
+
 
         public string ToJsonString(string keyName, string valueName)
         {
@@ -34,31 +37,19 @@ namespace THNeonMirage.Util
             var vStr = $"{Value}";
             var sK = Key switch
             {
-                int => kStr,
-                long => kStr,
-                short => kStr,
-                float => kStr,
-                double => kStr,
-                string => $"\"{Key}\"",
-                ICollection key => ListString(key),
+                ListData key => ListString(key),
                 _ => ""
             }; 
             
             var sV = Value switch
             {
-                int => vStr,
-                long => vStr,
-                short => vStr,
-                float => vStr,
-                double => vStr,
-                string => $"\"{Value}\"",
-                ICollection key => ListString(key),
+                ListData key => ListString(key),
                 _ => ""
             }; 
             return $"{{\"{keyName}\":{sK},\"{valueName}\":{sV}}}";
         }
         
-        public static string ListString(ICollection list)
+        public static string ListString(ListData list)
         {
             var sb = new StringBuilder();
             sb.Append("[");
@@ -80,6 +71,21 @@ namespace THNeonMirage.Util
             sb.Remove(sb.Length - 1, 1);
             sb.Append("]");
             return sb.ToString();
+        }
+
+        public CompoundData Serialize()
+        {
+            var data = new CompoundData();
+            data.Add("kay", Key);
+            data.Add("value", Value);
+
+            return data;
+        }
+
+        public void Deserialize(CompoundData data)
+        {
+            Key = data["key"] as TKey;
+            Value = data["value"] as TValue;
         }
     }
 }

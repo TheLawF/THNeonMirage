@@ -4,7 +4,7 @@ using System.IO;
 namespace Fictology.Data.Serialization
 {
     [Serializable]
-    public class FloatData : ValueTypeData
+    public class FloatData : NumberData
     {
         protected bool Equals(FloatData other)
         {
@@ -74,6 +74,6 @@ namespace Fictology.Data.Serialization
 
         public static explicit operator FloatData(IntData intData) => new(intData.value);
         public static explicit operator FloatData(BoolData boolData) => boolData ? new FloatData(1) : new FloatData(0);
-        public static explicit operator FloatData(float f) => new(f);
+        public static implicit operator FloatData(float f) => new(f);
     }
 }
