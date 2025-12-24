@@ -1,15 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using Fictology.Data.Serialization;
 using Fictology.Registry;
-using Fictology.Util;
 using Photon.Pun;
 using THNeonMirage.Manager;
-using THNeonMirage.Map;
 using THNeonMirage.Registry;
-using THNeonMirage.Util;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -65,7 +58,7 @@ namespace THNeonMirage.UI
                 });
             }
 
-            local_avatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(Vector3.zero, Quaternion.identity, local.transform);
+            local_avatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(local.transform.position, Quaternion.identity, local.transform);
             local_avatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
             avatars.ForEach(manager => manager.localAvatar = local_avatar);
             

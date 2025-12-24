@@ -6,6 +6,7 @@ using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using THNeonMirage.Util.Math;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -16,6 +17,7 @@ namespace THNeonMirage.Manager
     {
         public string avatarName;
         public bool selectable = true;
+        public bool isSelected;
         
         public Color spriteColor;
         public Outline outline;
@@ -38,21 +40,6 @@ namespace THNeonMirage.Manager
             _canvas = Registries.GetComponent<Canvas>(UIRegistry.Canvas);
             room = Registries.Get<RoomManager>(UIRegistry.RoomWindow);
         }
-        
-        private void Update()
-        {
-            if (!Input.GetMouseButtonDown(0)) return;
-            
-            var results = new List<RaycastResult>();
-            var eventData = new PointerEventData(EventSystem.current) { position = Input.mousePosition };
-            EventSystem.current.RaycastAll(eventData, results);
-            
-            // 如果你只需要最顶层的UI元素，可以这样做：
-            if (results.Count <= 0) return;
-            var topmostUIElement = results[0].gameObject;
-            Debug.Log("Topmost UI Element: " + topmostUIElement.name);
-
-        }
 
         public void SendPlayerJoinEvent()
         {
@@ -73,20 +60,6 @@ namespace THNeonMirage.Manager
                 rawImage.uvRect = new Rect(1, 0.23f, 1, 0.7f);
             });
         }
-        
-        public void SendAvatarUpdate(string texturePath)
-        {
-            var view = gameObject.GetPhotonView();
-            view.RPC(nameof(ReceiveAvatarUpdate), RpcTarget.Others, view.ViewID, texturePath);
-        }
-        
-        [PunRPC]
-        private void ReceiveAvatarUpdate(int viewId, string texturePath)
-        {
-            var obj = PhotonView.Find(viewId).gameObject;
-            var img = obj.GetComponent<RawImage>();
-            img.texture = Resources.Load<Texture2D>(texturePath);
-        }
 
         public void SendLockSelectionAndReady() =>
             gameObject.GetPhotonView().RPC(nameof(ReceiveLockSelectionAndReady), RpcTarget.Others);
@@ -99,18 +72,38 @@ namespace THNeonMirage.Manager
 
         public void OnPointerClick(PointerEventData eventData)
         {
-            Debug.Log("左键单击了");
             if (!selectable) return;
             m_select_label = PrefabRegistry.BackgroundLabel.Instantiate(m_transform.position, Quaternion.identity, m_transform);
-            m_select_label.GetComponent<TMP_Text>().text = $"Player{PhotonNetwork.LocalPlayer.ActorNumber}";
+            m_select_label.GetComponent<RectTransform>().localScale = new Vector3(0.2f, 0.2f, 1f);
+            
+            var label = PrefabRegistry.Label.Instantiate(m_select_label.transform.position, Quaternion.identity, m_select_label.transform);
+            var textPro = label.GetComponent<TMP_Text>();
+            textPro.text = $"Player{PhotonNetwork.LocalPlayer.ActorNumber}";
+            
+            GameObjectUtil.FillParentRect(label);
+            GameObjectUtil.SetTextGeoMidAndAutoSize(textPro);
+            
             spriteColor = Selected;
+            isSelected = true;
+            room.avatars.ForEach(avatar =>
+            {
+                if (avatar.avatarName != avatarName && avatar.isSelected) avatar.isSelected = false;
+            });
+            localAvatar.GetComponent<RawImage>().texture = Resources.Load<Texture2D>(avatarName);
             localAvatar.GetPhotonView().RPC(nameof(ReceiveAvatarUpdate), RpcTarget.Others, 
                 localAvatar.GetPhotonView().ViewID, avatarName);
+        }
+        
+        [PunRPC]
+        private void ReceiveAvatarUpdate(int viewId, string texturePath)
+        {
+            var obj = PhotonView.Find(viewId).gameObject;
+            var img = obj.GetComponent<RawImage>();
+            img.texture = Resources.Load<Texture2D>(texturePath);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            Debug.Log("鼠标悬浮");
             if (!selectable)
             {
                 outline.enabled = false;
@@ -123,7 +116,6 @@ namespace THNeonMirage.Manager
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            Debug.Log("鼠标退出");
             if (!selectable)
             {
                 outline.enabled = false;

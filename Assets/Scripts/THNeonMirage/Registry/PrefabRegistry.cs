@@ -5,7 +5,7 @@ namespace THNeonMirage.Registry
     public class PrefabRegistry
     {
         public static readonly PrefabType RawImageSprite = Registries.CreateType("Prefabs/RawImagePrefab");
-        public static readonly PrefabType IndexLabel = Registries.CreateType("Prefabs/IndexLabel");
+        public static readonly PrefabType Label = Registries.CreateType("Prefabs/Label");
 
         public static readonly PrefabType BackgroundLabel = Registries.CreateType("Prefabs/TextBackground");
         public static readonly PrefabType JoinedPlayer = Registries.CreateType("Prefabs/Table");

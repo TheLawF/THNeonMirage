@@ -149,6 +149,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\Data\FieldProperty.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Manager\AvatarManager.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\DreamCastle.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\ScrollViewManager.cs" />
@@ -184,7 +185,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\BezierCurve.cs" />
     <Compile Include="Assets\FlyRabbit\EventCenter\Core\EventName.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Registry\PunNetworkRegistry.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Manager\AvatarManager.cs" />
+    <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\GameObjectUtil.cs" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
     <None Include="Assets\Photon\PhotonLibs\netstandard2.0\Photon3Unity3D.xml" />
     <None Include="Assets\Shaders\HashLib.hlsl" />

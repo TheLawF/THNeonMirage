@@ -1,7 +1,4 @@
-using System;
-using Fictology.Data.Serialization;
-
-namespace Fictology.Util
+namespace Fictology.Data.Serialization
 {
     public class Either<TData> : ISerializable<CompoundData> where TData: class, INamedData
     {
