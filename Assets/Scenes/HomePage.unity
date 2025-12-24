@@ -2203,6 +2203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 365967254}
   - component: {fileID: 365967255}
+  - component: {fileID: 365967256}
   m_Layer: 5
   m_Name: LocalPlayer
   m_TagString: Untagged
@@ -2245,6 +2246,14 @@ MonoBehaviour:
   registryKey:
     rootName: Empty
     registryName: LocalAvatar
+--- !u!222 &365967256
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 365967253}
+  m_CullTransparentMesh: 1
 --- !u!1 &368568767
 GameObject:
   m_ObjectHideFlags: 0
@@ -2928,6 +2937,7 @@ GameObject:
   m_Component:
   - component: {fileID: 491064452}
   - component: {fileID: 491064453}
+  - component: {fileID: 491064454}
   m_Layer: 5
   m_Name: Remote2
   m_TagString: Untagged
@@ -2970,6 +2980,14 @@ MonoBehaviour:
   registryKey:
     rootName: Empty
     registryName: Remote2
+--- !u!222 &491064454
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 491064451}
+  m_CullTransparentMesh: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -3323,6 +3341,7 @@ GameObject:
   m_Component:
   - component: {fileID: 585851721}
   - component: {fileID: 585851722}
+  - component: {fileID: 585851723}
   m_Layer: 5
   m_Name: Remote1
   m_TagString: Untagged
@@ -3365,6 +3384,14 @@ MonoBehaviour:
   registryKey:
     rootName: Empty
     registryName: Remote1
+--- !u!222 &585851723
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 585851720}
+  m_CullTransparentMesh: 1
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -4178,7 +4205,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1013469381}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5481,11 +5508,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6562878341305577133, guid: b29452f4865336642b941cadcc3617ab, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.000019073
       objectReference: {fileID: 0}
     - target: {fileID: 6562878341305577133, guid: b29452f4865336642b941cadcc3617ab, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -67.468
+      value: -81.00001
       objectReference: {fileID: 0}
     - target: {fileID: 6562878341305577133, guid: b29452f4865336642b941cadcc3617ab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9964,6 +9991,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1666338787}
   - component: {fileID: 1666338788}
+  - component: {fileID: 1666338789}
   m_Layer: 5
   m_Name: Remote3
   m_TagString: Untagged
@@ -10006,6 +10034,14 @@ MonoBehaviour:
   registryKey:
     rootName: Empty
     registryName: Remote3
+--- !u!222 &1666338789
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666338786}
+  m_CullTransparentMesh: 1
 --- !u!1 &1678530450
 GameObject:
   m_ObjectHideFlags: 0

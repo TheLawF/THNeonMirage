@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,6 +16,10 @@ namespace THNeonMirage.Util.Math
         
         }
 
+        public static List<GameObject> GetAllChildren(GameObject parent) 
+            => (from Transform child in parent.transform select child.gameObject).ToList();
+        
+
         /// <summary>
         /// 设置文本几何居中
         /// </summary>
@@ -22,5 +28,6 @@ namespace THNeonMirage.Util.Math
             textPro.enableAutoSizing = true;
             textPro.alignment = TextAlignmentOptions.CenterGeoAligned;
         }
+        
     }
 }

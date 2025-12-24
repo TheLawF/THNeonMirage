@@ -44,7 +44,11 @@ namespace THNeonMirage.Manager
         public void SendPlayerJoinEvent()
         {
             var view = gameObject.GetPhotonView();
-            view.RPC(nameof(ReceivePlayerJoinEvent), RpcTarget.All, view.ViewID);
+            var image = gameObject.GetComponent<RawImage>();
+            image.texture = Resources.Load<Texture2D>("Textures/reimu");
+            image.uvRect = new Rect(0f, 0.23f, 1f, 0.7f);
+            image.color = Color.white;
+            view.RPC(nameof(ReceivePlayerJoinEvent), RpcTarget.Others, view.ViewID);
         }
         
         [PunRPC]
@@ -57,7 +61,7 @@ namespace THNeonMirage.Manager
                 if (room.HasRemotePlayerUnder(obj)) return;
                 newJoinedPlayerAvatar.transform.parent = obj.transform;
                 rawImage.texture = Resources.Load<Texture2D>("Textures/reimu");
-                rawImage.uvRect = new Rect(1, 0.23f, 1, 0.7f);
+                rawImage.uvRect = new Rect(0f, 0.23f, 1f, 0.7f);
             });
         }
 
@@ -73,6 +77,12 @@ namespace THNeonMirage.Manager
         public void OnPointerClick(PointerEventData eventData)
         {
             if (!selectable) return;
+            room.avatars.ForEach(avatar =>
+            {
+                if (avatar.avatarName != avatarName) return;
+                GameObjectUtil.GetAllChildren(avatar.gameObject).ForEach(Destroy);
+            });
+            
             m_select_label = PrefabRegistry.BackgroundLabel.Instantiate(m_transform.position, Quaternion.identity, m_transform);
             m_select_label.GetComponent<RectTransform>().localScale = new Vector3(0.2f, 0.2f, 1f);
             
@@ -85,10 +95,7 @@ namespace THNeonMirage.Manager
             
             spriteColor = Selected;
             isSelected = true;
-            room.avatars.ForEach(avatar =>
-            {
-                if (avatar.avatarName != avatarName && avatar.isSelected) avatar.isSelected = false;
-            });
+            
             localAvatar.GetComponent<RawImage>().texture = Resources.Load<Texture2D>(avatarName);
             localAvatar.GetPhotonView().RPC(nameof(ReceiveAvatarUpdate), RpcTarget.Others, 
                 localAvatar.GetPhotonView().ViewID, avatarName);
@@ -100,10 +107,12 @@ namespace THNeonMirage.Manager
             var obj = PhotonView.Find(viewId).gameObject;
             var img = obj.GetComponent<RawImage>();
             img.texture = Resources.Load<Texture2D>(texturePath);
+            img.uvRect = new Rect(0f, 0.23f, 1f, 0.7f);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            if (outline == null) return;
             if (!selectable)
             {
                 outline.enabled = false;
@@ -116,6 +125,7 @@ namespace THNeonMirage.Manager
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            if (outline == null) return;
             if (!selectable)
             {
                 outline.enabled = false;

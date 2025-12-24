@@ -3,6 +3,7 @@ using Fictology.Registry;
 using Photon.Pun;
 using THNeonMirage.Manager;
 using THNeonMirage.Registry;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,10 +61,9 @@ namespace THNeonMirage.UI
 
             local_avatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(local.transform.position, Quaternion.identity, local.transform);
             local_avatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
-            avatars.ForEach(manager => manager.localAvatar = local_avatar);
             
-            var rect = local_avatar.GetComponent<RectTransform>();
-            rect.position = local.GetComponent<RectTransform>().rect.position;
+            Debug.Log(local_avatar);
+            avatars.ForEach(manager => manager.localAvatar = local_avatar);
         }
 
         private void LockSelectionAndSendReady()
