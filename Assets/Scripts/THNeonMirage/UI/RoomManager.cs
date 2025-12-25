@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Linq;
 using Fictology.Registry;
 using Photon.Pun;
 using THNeonMirage.Manager;
 using THNeonMirage.Registry;
-using Unity.VisualScripting;
+using THNeonMirage.Util.Math;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,15 +17,15 @@ namespace THNeonMirage.UI
         private int select_index;
         private bool localPlayerisReady;
         
-        private GameObject local_avatar;
         private GameObject avatar_list;
         private GameObject _lock;
 
-        private GameObject local;
+        public GameObject local;
         private GameObject remote1;
         private GameObject remote2;
         private GameObject remote3;
         
+        public GameObject localAvatar;
         public List<GameObject> remotes = new();
         public List<AvatarManager> avatars = new();
 
@@ -49,21 +50,13 @@ namespace THNeonMirage.UI
         // 本地玩家加入时更改本地的层级布局
         public void CreateAvatarWhenJoinIn()
         {
-            if (HasRemotePlayerUnder(local))
-            {
-                remotes.ForEach(obj =>
-                {
-                    if (HasRemotePlayerUnder(obj)) return;
-                    var prevJoinedPlayer = local.GetComponentInChildren<Transform>();
-                    prevJoinedPlayer.parent = obj.transform;
-                });
-            }
+            var parent = DoesParentHasChild(local) ? remotes.First(o => !DoesParentHasChild(o)).transform : local.transform;
+            localAvatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(parent.position, Quaternion.identity, parent);
+            localAvatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
+            localAvatar.transform.localScale = new Vector3(1.2f, 1.2f, 1f);
 
-            local_avatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(local.transform.position, Quaternion.identity, local.transform);
-            local_avatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
-            
-            Debug.Log(local_avatar);
-            avatars.ForEach(manager => manager.localAvatar = local_avatar);
+            GameObjectUtil.FillParentRect(localAvatar);
+            avatars.ForEach(manager => manager.localAvatar = localAvatar);
         }
 
         private void LockSelectionAndSendReady()
@@ -74,7 +67,7 @@ namespace THNeonMirage.UI
             
             avatar_list.SetActive(true);
             avatars.ForEach(manager => manager.selectable = false);
-            local_avatar.GetComponent<AvatarManager>().SendLockSelectionAndReady();
+            localAvatar.GetComponent<AvatarManager>().SendLockSelectionAndReady();
         }
 
         [PunRPC]
@@ -83,7 +76,7 @@ namespace THNeonMirage.UI
             readyPlayers++;
         }
 
-        public bool HasRemotePlayerUnder(GameObject emptyParent) => emptyParent.transform.childCount > 0;
-        
+        public bool DoesParentHasChild(GameObject emptyParent) => emptyParent.transform.childCount > 0;
+        public bool ChildIsMine(GameObject emptyParent) => emptyParent.GetComponentInChildren<PhotonView>().IsMine;
     }
 }

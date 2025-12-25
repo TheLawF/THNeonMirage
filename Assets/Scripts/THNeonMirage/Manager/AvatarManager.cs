@@ -41,6 +41,8 @@ namespace THNeonMirage.Manager
             room = Registries.Get<RoomManager>(UIRegistry.RoomWindow);
         }
 
+        public static void CreateAvatar(RoomManager room) => room.CreateAvatarWhenJoinIn();
+
         public void SendPlayerJoinEvent()
         {
             var view = gameObject.GetPhotonView();
@@ -58,7 +60,7 @@ namespace THNeonMirage.Manager
             var rawImage = newJoinedPlayerAvatar.GetComponent<RawImage>();
             room.remotes.ForEach(obj =>
             {
-                if (room.HasRemotePlayerUnder(obj)) return;
+                if (room.DoesParentHasChild(obj)) return;
                 newJoinedPlayerAvatar.transform.parent = obj.transform;
                 rawImage.texture = Resources.Load<Texture2D>("Textures/reimu");
                 rawImage.uvRect = new Rect(0f, 0.23f, 1f, 0.7f);

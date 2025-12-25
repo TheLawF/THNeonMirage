@@ -68,7 +68,7 @@ namespace THNeonMirage
         public GameObject progressPrefab;
         public GameObject content;
 
-        private Level level;
+        internal Level level;
         private PlayerManager _playerManager;
         public TMP_Text lobbyText;
         
@@ -274,7 +274,6 @@ namespace THNeonMirage
 
             var roomIdText = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.RoomIdText);
             roomIdText.text += PhotonNetwork.CurrentRoom.Name;
-            
             roomManager.CreateAvatarWhenJoinIn();
             //
             // level.CreateLevel();
@@ -362,12 +361,12 @@ namespace THNeonMirage
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            // playerInstance.GetPhotonView().RPC(nameof(roomManager.AddNewPlayerToRoomList), RpcTarget.All, playerInstance.GetPhotonView().ViewID);
+            roomManager.CreateAvatarWhenJoinIn();
             if (!PhotonNetwork.IsMasterClient)
             {
                 return;
             }
-            player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
+            // player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
             // 主客户端更新玩家列表
             UpdatePlayerOrder();
             SyncGameState();
@@ -632,17 +631,7 @@ namespace THNeonMirage
         {
             return PhotonNetwork.LocalPlayer.ActorNumber == currentTurnPlayerId;
         }
-        
-        public int GetPlayerCount()
-        {
-            return playerOrder.Count;
-        }
-
-        public int GetCurrentRound()
-        {
-            return currentRound;
-        }
-            
+       
         private void AdjustContent(int itemHeight)
         {
             var childCount = content.transform.childCount;

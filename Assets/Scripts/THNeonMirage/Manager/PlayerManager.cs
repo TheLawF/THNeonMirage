@@ -11,9 +11,11 @@ using THNeonMirage.Data;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;
+using THNeonMirage.UI;
 using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = System.Random;
 
 namespace System.Runtime.CompilerServices
@@ -56,6 +58,51 @@ namespace THNeonMirage.Manager
             m_transform = GetComponent<Transform>();
             indexLabel = PrefabRegistry.Label.Instantiate(GetPointOnScreen(), Quaternion.identity, canvas.transform);
             indexLabel.GetComponent<TextMeshProUGUI>().text = playerData.roundIndex.ToString();
+        }
+
+        public static void CreateOnlinePlayer(GameHost host, bool isBot)
+        {
+            host.playerInstance = PhotonNetwork.Instantiate(PrefabRegistry.Player.PrefabPath, GetPlayerPosByIndex(0), Quaternion.identity);
+            host.player = host.playerInstance.GetComponent<PlayerManager>();
+            host.level.PlayerInstances.Add(host.playerInstance);
+            
+            host.player.playerData.isBot = isBot;
+            host.player.SendSpriteUpdateToOthers(null, host.playerInstance.GetComponent<SpriteRenderer>().color);
+            host.player.playerData.roundIndex = PhotonNetwork.IsConnectedAndReady
+                ? PhotonNetwork.LocalPlayer.ActorNumber
+                : host.level.PlayerInstances.IndexOf(host.playerInstance);
+            
+            var exitRoom = Registries.GetComponent<Button>(UIRegistry.ExitButton);
+            exitRoom.onClick.AddListener(() => GameMain.GameOver(host.player));
+            
+            if (host.playerInstance.GetPhotonView().IsMine)
+            {
+                var camera = Registries.Get<CameraController>(UIRegistry.MainCamera);
+                camera.BindingPlayer = host.playerInstance;
+            }
+
+            var random = new Unity.Mathematics.Random((uint)DateTime.Now.Millisecond);
+            var sprite = host.player.GetComponent<SpriteRenderer>();
+            sprite.color = new Color(random.NextFloat(0, 1), random.NextFloat(0, 1), random.NextFloat(0, 1));
+            if (!isBot)
+            {
+                EventCenter.TriggerEvent(EventRegistry.OnBalanceChanged, host.player, 
+                    host.player.playerData.balance, host.player.playerData.balance);
+                
+                var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
+                var diceButton = Registries.GetObject(UIRegistry.DiceButton);
+                var diceHandler = diceButton.GetComponent<DiceHandler>();
+                
+                inGamePanelHandler.playerObject = host.playerInstance;
+                inGamePanelHandler.player = host.player;
+                diceHandler.player = host.player;
+                diceButton.SetActive(true);
+            }
+            
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Registries.Instance.RegisterNetworkInstances(host.playerInstance.GetPhotonView(), host.playerInstance);
+            }
         }
 
         public IEnumerator ExecuteAITask()
