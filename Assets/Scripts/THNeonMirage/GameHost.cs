@@ -16,6 +16,7 @@ using THNeonMirage.Map;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using THNeonMirage.Util;
+using THNeonMirage.Util.Math;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -361,15 +362,30 @@ namespace THNeonMirage
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            roomManager.CreateAvatarWhenJoinIn();
             if (!PhotonNetwork.IsMasterClient)
             {
                 return;
             }
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                roomManager.CreateAvatarWhenJoinIn();
+            }
+            // GameObjectUtil.DestroyDuplicateObject(PhotonNetwork.LocalPlayer.ActorNumber, roomManager.players);
             // player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
             // 主客户端更新玩家列表
             UpdatePlayerOrder();
             SyncGameState();
+        }
+
+
+        private IEnumerator DestroyDeferred()
+        {
+            yield return new WaitForSeconds(5F);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                GameObjectUtil.DestroyDuplicateObject(PhotonNetwork.LocalPlayer.ActorNumber, roomManager.players);
+            }
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)

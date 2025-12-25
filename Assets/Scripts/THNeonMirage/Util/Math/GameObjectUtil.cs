@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Photon.Pun;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -28,6 +29,36 @@ namespace THNeonMirage.Util.Math
             textPro.enableAutoSizing = true;
             textPro.alignment = TextAlignmentOptions.CenterGeoAligned;
         }
-        
+        public static void DestroyNoOwnerObject()
+        {
+            var allViews = Object.FindObjectsOfType<PhotonView>();
+            foreach (var view in allViews)
+            {
+                if (view.Owner is null)
+                { 
+                    PhotonNetwork.Destroy(view.gameObject);
+                }
+            }
+        }
+
+        public static void DestroyDuplicateObject(int duplicatePlayerActorNumber, List<PhotonView> possibleDuplicateViews)
+        {
+            var duplicateViews = new List<PhotonView>();
+            foreach (var view in possibleDuplicateViews)
+            {
+                if (view.Owner is not null && view.Owner.ActorNumber == duplicatePlayerActorNumber)
+                {
+                    duplicateViews.Add(view);
+                }
+            }
+
+            var keptView = duplicateViews.Min(view => view.ViewID);
+            Object.Destroy(PhotonView.Find(keptView));
+            // foreach (var view in duplicateViews.Where(view => view.ViewID != keptView))
+            // {
+            //     Debug.Log(view.ViewID);
+            //     Object.Destroy(view.gameObject);
+            // }
+        }
     }
 }

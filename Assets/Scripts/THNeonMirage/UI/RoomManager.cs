@@ -6,6 +6,7 @@ using THNeonMirage.Manager;
 using THNeonMirage.Registry;
 using THNeonMirage.Util.Math;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace THNeonMirage.UI
@@ -24,10 +25,12 @@ namespace THNeonMirage.UI
         private GameObject remote1;
         private GameObject remote2;
         private GameObject remote3;
-        
+
         public GameObject localAvatar;
         public List<GameObject> remotes = new();
+        public List<GameObject> remoteAvatars;
         public List<AvatarManager> avatars = new();
+        public List<PhotonView> players = new();
 
         private void OnEnable()
         {
@@ -51,6 +54,14 @@ namespace THNeonMirage.UI
         public void CreateAvatarWhenJoinIn()
         {
             var parent = DoesParentHasChild(local) ? remotes.First(o => !DoesParentHasChild(o)).transform : local.transform;
+            if (localAvatar is not null)
+            {
+                var remoteAvatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(parent.position, Quaternion.identity, parent);
+                remoteAvatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
+                remoteAvatar.transform.localScale = new Vector3(1.2f, 1.2f, 1f);
+                remoteAvatars.Add(remoteAvatar);
+                return;
+            }
             localAvatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(parent.position, Quaternion.identity, parent);
             localAvatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
             localAvatar.transform.localScale = new Vector3(1.2f, 1.2f, 1f);

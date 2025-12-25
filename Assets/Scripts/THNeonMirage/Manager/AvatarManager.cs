@@ -137,5 +137,6 @@ namespace THNeonMirage.Manager
             outline.enabled = false;
             spriteColor = Unselected;
         }
+        
     }
 }
