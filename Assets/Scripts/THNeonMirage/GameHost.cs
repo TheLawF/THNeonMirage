@@ -269,14 +269,14 @@ namespace THNeonMirage
         {
             Debug.Log($"加入到房间：{PhotonNetwork.CurrentRoom}");
             hudPanel.SetActive(true);
-            
-            room = Registries.GetObject(UIRegistry.RoomWindow);
-            room.SetActive(true);
 
             var roomIdText = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.RoomIdText);
             roomIdText.text += PhotonNetwork.CurrentRoom.Name;
+            
+            room = Registries.GetObject(UIRegistry.RoomWindow);
+            room.SetActive(true);
             roomManager.CreateAvatarWhenJoinIn();
-            //
+            
             // level.CreateLevel();
             // CreateOnlinePlayer(false);
             // player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
@@ -366,13 +366,8 @@ namespace THNeonMirage
             {
                 return;
             }
-
-            if (PhotonNetwork.IsMasterClient)
-            {
-                roomManager.CreateAvatarWhenJoinIn();
-            }
-            // GameObjectUtil.DestroyDuplicateObject(PhotonNetwork.LocalPlayer.ActorNumber, roomManager.players);
             // player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
+            roomManager.localAvatar.GetComponent<AvatarManager>().SendCreateExistingPlayer(newPlayer);
             // 主客户端更新玩家列表
             UpdatePlayerOrder();
             SyncGameState();

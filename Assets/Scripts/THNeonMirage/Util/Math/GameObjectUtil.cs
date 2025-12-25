@@ -14,7 +14,6 @@ namespace THNeonMirage.Util.Math
             var childRect = child.GetComponent<RectTransform>();
             childRect.anchorMin = Vector2.zero;  // 左下角
             childRect.anchorMax = Vector2.one;   // 右上角
-        
         }
 
         public static List<GameObject> GetAllChildren(GameObject parent) 

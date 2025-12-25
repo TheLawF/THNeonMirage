@@ -2,9 +2,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Fictology.Registry;
 using Photon.Pun;
+using Photon.Realtime;
 using THNeonMirage.Manager;
 using THNeonMirage.Registry;
 using THNeonMirage.Util.Math;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
@@ -28,7 +30,6 @@ namespace THNeonMirage.UI
 
         public GameObject localAvatar;
         public List<GameObject> remotes = new();
-        public List<GameObject> remoteAvatars;
         public List<AvatarManager> avatars = new();
         public List<PhotonView> players = new();
 
@@ -38,7 +39,7 @@ namespace THNeonMirage.UI
             remote1 = Registries.GetObject(UIRegistry.Remote1);
             remote2 = Registries.GetObject(UIRegistry.Remote2);
             remote3 = Registries.GetObject(UIRegistry.Remote3);
-            
+
             remotes.Add(remote1);
             remotes.Add(remote2);
             remotes.Add(remote3);
@@ -53,23 +54,20 @@ namespace THNeonMirage.UI
         // 本地玩家加入时更改本地的层级布局
         public void CreateAvatarWhenJoinIn()
         {
-            var parent = DoesParentHasChild(local) ? remotes.First(o => !DoesParentHasChild(o)).transform : local.transform;
-            if (localAvatar is not null)
-            {
-                var remoteAvatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(parent.position, Quaternion.identity, parent);
-                remoteAvatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
-                remoteAvatar.transform.localScale = new Vector3(1.2f, 1.2f, 1f);
-                remoteAvatars.Add(remoteAvatar);
-                return;
-            }
-            localAvatar = PrefabRegistry.RawImageSprite.NetworkInstantiate(parent.position, Quaternion.identity, parent);
+            var parent = DoesParentHasChild(local)
+                ? remotes.First(o => !DoesParentHasChild(o)).transform
+                : local.transform;
+            
+            localAvatar = PhotonNetwork.Instantiate(PrefabRegistry.RawImageSprite.PrefabPath, local.transform.position, Quaternion.identity);
             localAvatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
+
+            localAvatar.transform.parent = parent;
             localAvatar.transform.localScale = new Vector3(1.2f, 1.2f, 1f);
 
             GameObjectUtil.FillParentRect(localAvatar);
             avatars.ForEach(manager => manager.localAvatar = localAvatar);
         }
-
+        
         private void LockSelectionAndSendReady()
         {
             localPlayerisReady = true;

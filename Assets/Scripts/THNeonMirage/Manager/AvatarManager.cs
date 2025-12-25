@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
 using THNeonMirage.Registry;
@@ -41,7 +42,6 @@ namespace THNeonMirage.Manager
             room = Registries.Get<RoomManager>(UIRegistry.RoomWindow);
         }
 
-        public static void CreateAvatar(RoomManager room) => room.CreateAvatarWhenJoinIn();
 
         public void SendPlayerJoinEvent()
         {
@@ -51,6 +51,28 @@ namespace THNeonMirage.Manager
             image.uvRect = new Rect(0f, 0.23f, 1f, 0.7f);
             image.color = Color.white;
             view.RPC(nameof(ReceivePlayerJoinEvent), RpcTarget.Others, view.ViewID);
+        }
+
+        public void SendCreateExistingPlayer(Player newPlayer)
+        {
+            var view = gameObject.GetPhotonView();
+            var viewIds = FindObjectsOfType<PhotonView>().Select(v => v.ViewID).Distinct().ToList();
+            viewIds.RemoveAll(i => i < 999);
+            view.RPC(nameof(ReceiveCreateExistingPlayer), newPlayer, viewIds);
+        }
+
+        [PunRPC]
+        public void ReceiveCreateExistingPlayer(int[] existingViewId)
+        {
+            for (var i = 0; i < existingViewId.Length - 1; i++)
+            {
+                var instance = PrefabRegistry.RawImageSprite.Instantiate();
+                instance.GetPhotonView().TransferOwnership(existingViewId[i]);
+                instance.transform.parent = room.DoesParentHasChild(room.local) 
+                    ? room.remotes.First(o => !room.DoesParentHasChild(o)).transform
+                    : room.local.transform;
+                SendPlayerJoinEvent();
+            }
         }
         
         [PunRPC]
@@ -137,6 +159,7 @@ namespace THNeonMirage.Manager
             outline.enabled = false;
             spriteColor = Unselected;
         }
-        
+
+        public void SetOwner(Player remotePlayer) => gameObject.GetPhotonView().TransferOwnership(remotePlayer);
     }
 }
