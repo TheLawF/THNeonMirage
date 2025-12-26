@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using ExitGames.Client.Photon.StructWrapping;
 using Fictology.Registry;
 using Photon.Pun;
 using Photon.Realtime;
 using THNeonMirage.Manager;
 using THNeonMirage.Registry;
 using THNeonMirage.Util.Math;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -15,6 +17,7 @@ namespace THNeonMirage.UI
 {
     public class RoomManager: RegistryEntry
     {
+        public int maxPlayerInRoom;
         public int readyPlayers;
         public int selectedPlayers;
         private int select_index;
@@ -54,10 +57,7 @@ namespace THNeonMirage.UI
         // 本地玩家加入时更改本地的层级布局
         public void CreateAvatarWhenJoinIn()
         {
-            var parent = DoesParentHasChild(local)
-                ? remotes.First(o => !DoesParentHasChild(o)).transform
-                : local.transform;
-            
+            var parent = GetVacantParent();
             localAvatar = PhotonNetwork.Instantiate(PrefabRegistry.RawImageSprite.PrefabPath, local.transform.position, Quaternion.identity);
             localAvatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
 
@@ -77,15 +77,16 @@ namespace THNeonMirage.UI
             avatar_list.SetActive(true);
             avatars.ForEach(manager => manager.selectable = false);
             localAvatar.GetComponent<AvatarManager>().SendLockSelectionAndReady();
-        }
 
-        [PunRPC]
-        private void ReceiveReadyFromRemote()
-        {
-            readyPlayers++;
+            var roomText = Registries.GetComponent<TMP_Text>(UIRegistry.RoomText);
+            roomText.fontSize = 30;
+            roomText.text = "等待其它玩家";
         }
 
         public bool DoesParentHasChild(GameObject emptyParent) => emptyParent.transform.childCount > 0;
+        public Transform GetVacantParent() => DoesParentHasChild(local)
+            ? remotes.First(o => !DoesParentHasChild(o)).transform
+            : local.transform;
         public bool ChildIsMine(GameObject emptyParent) => emptyParent.GetComponentInChildren<PhotonView>().IsMine;
     }
 }

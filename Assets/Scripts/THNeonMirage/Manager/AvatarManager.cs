@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
+using THNeonMirage.Map;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
 using THNeonMirage.Util.Math;
@@ -56,21 +57,34 @@ namespace THNeonMirage.Manager
         public void SendCreateExistingPlayer(Player newPlayer)
         {
             var view = gameObject.GetPhotonView();
-            var viewIds = FindObjectsOfType<PhotonView>().Select(v => v.ViewID).Distinct().ToList();
-            viewIds.RemoveAll(i => i < 999);
-            view.RPC(nameof(ReceiveCreateExistingPlayer), newPlayer, viewIds);
+            var viewIds = FindObjectsOfType<PhotonView>()
+                .Where(v => v.ViewID >= 1000)
+                .Select(v => v.ViewID).Distinct();
+            
+            var remoteIds = FindObjectsOfType<PhotonView>()
+                .Where(v => v.ViewID != view.ViewID && v.ViewID >= 1000)
+                .Select(v => v.ViewID);
+            
+            foreach (var remoteId in remoteIds)
+            {
+                var remoteObj = PhotonView.Find(remoteId).gameObject;
+                remoteObj.transform.position = room.GetVacantParent().position;
+                remoteObj.transform.localScale = new Vector3(1.8F, 1.8F, 1.0F);
+            }
+            view.RPC(nameof(ReceiveCreateExistingPlayer), newPlayer, viewIds.ToArray());
         }
 
         [PunRPC]
         public void ReceiveCreateExistingPlayer(int[] existingViewId)
         {
-            for (var i = 0; i < existingViewId.Length - 1; i++)
+            foreach (var id in existingViewId)
             {
-                var instance = PrefabRegistry.RawImageSprite.Instantiate();
-                instance.GetPhotonView().TransferOwnership(existingViewId[i]);
-                instance.transform.parent = room.DoesParentHasChild(room.local) 
-                    ? room.remotes.First(o => !room.DoesParentHasChild(o)).transform
-                    : room.local.transform;
+                var instance = PhotonView.Find(id).gameObject;
+                var parent = room.GetVacantParent();
+
+                instance.transform.parent = parent;
+                instance.transform.position = parent.position;
+                instance.transform.localScale = new Vector3(1.8f, 1.8f, 1f);
                 SendPlayerJoinEvent();
             }
         }
@@ -89,13 +103,38 @@ namespace THNeonMirage.Manager
             });
         }
 
-        public void SendLockSelectionAndReady() =>
+        public void SendLockSelectionAndReady()
+        {
             gameObject.GetPhotonView().RPC(nameof(ReceiveLockSelectionAndReady), RpcTarget.Others);
+        }
 
         [PunRPC]
         private void ReceiveLockSelectionAndReady()
         {
             room.readyPlayers++;
+            Debug.Log($"Ready Players = {room.readyPlayers}, Require {room.maxPlayerInRoom} Ready");
+            var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
+            var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            if (room.readyPlayers == room.maxPlayerInRoom - 1)
+            {
+                room.gameObject.SetActive(false);
+                level.CreateLevel();
+                host.CreateOnlinePlayer(true);
+                gameObject.GetPhotonView().RPC(nameof(NotifyLevelCreate), RpcTarget.Others);
+            }
+        }
+
+        /// <summary>
+        /// 使用 Notify xxx 的命名表示没有参数的远端方法调用，且该方法内部没有调用其它远端方法
+        /// </summary>
+        [PunRPC]
+        private void NotifyLevelCreate()
+        {
+            room.gameObject.SetActive(false);
+            var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
+            var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            level.CreateLevel();
+            host.CreateOnlinePlayer(true);
         }
 
         public void OnPointerClick(PointerEventData eventData)

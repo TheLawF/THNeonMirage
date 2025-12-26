@@ -1,3 +1,7 @@
+using System;
+using ExitGames.Client.Photon.StructWrapping;
+using Fictology.Util.Function;
+
 namespace Fictology.Data.Serialization
 {
     public class Either<TData> : ISerializable<CompoundData> where TData: class, INamedData
@@ -53,5 +57,6 @@ namespace Fictology.Data.Serialization
             _second = data["second"] as TData;
             Current = data["current"] as TData;
         }
+
     }
 }

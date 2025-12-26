@@ -89,6 +89,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Registry\UIRegistry.cs" />
+    <Compile Include="Assets\Scripts\Fictology\Util\Function\Maybe.cs" />
     <Compile Include="Assets\Scripts\Fictology\Data\Serialization\FloatData.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\GapTile.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\NamePickGui.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\GameHost.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
     <Compile Include="Assets\Scripts\Fictology\UnityEditor\EventEditorIntegration.cs" />
+    <Compile Include="Assets\Scripts\Fictology\Util\Function\IKind.cs" />
     <Compile Include="Assets\Scripts\Fictology\Data\Serialization\INamedData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\Util\Math\RayHelper.cs" />
     <Compile Include="Assets\Scripts\Fictology\Data\Serialization\ISynchronizable.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\TextLabel.cs" />
+    <Compile Include="Assets\Scripts\Fictology\Data\Serialization\Codec.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\GameCanvas.cs" />
     <Compile Include="Assets\Scripts\Fictology\Data\Serialization\ISerializable.cs" />
@@ -149,6 +152,7 @@
     <Compile Include="Assets\Scripts\THNeonMirage\Util\UnicodeTable.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Data\FieldProperty.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
+    <Compile Include="Assets\Scripts\Fictology\Data\Serialization\CodecBuilder.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Manager\AvatarManager.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\DreamCastle.cs" />
@@ -178,6 +182,7 @@
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\FriendItem.cs" />
     <Compile Include="Assets\Scripts\Fictology\UnityEditor\DisplayOnly.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\DemoChat\ChatGui.cs" />
+    <Compile Include="Assets\Scripts\Fictology\Util\Function\IFunctor.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\UI\DialogueHandler.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Data\DataSerializer.cs" />

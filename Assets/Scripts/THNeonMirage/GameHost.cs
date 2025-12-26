@@ -46,7 +46,7 @@ namespace THNeonMirage
         
         [Header("连接配置")]
         public string gameVersion = "1.0";
-        public byte maxPlayersPerRoom = 4;
+        private byte maxPlayersPerRoom = 2;
         public ObservableList<RoomInfo> rooms = new ();
 
         [DisplayOnly] public PlayerManager player;
@@ -199,6 +199,7 @@ namespace THNeonMirage
             bar_instance = Instantiate(progressPrefab, new Vector3(0, 0, 0), Quaternion.identity, canvas.transform);
             
             roomManager = Registries.Get<RoomManager>(UIRegistry.RoomWindow);
+            roomManager.maxPlayerInRoom = maxPlayersPerRoom;
             Debug.Log(bar_instance.name);
             
             progress = bar_instance.GetComponent<ProgressBarControl>();
@@ -271,7 +272,9 @@ namespace THNeonMirage
             hudPanel.SetActive(true);
 
             var roomIdText = Registries.GetComponent<TextMeshProUGUI>(UIRegistry.RoomIdText);
+            var roomText = Registries.GetComponent<TMP_Text>(UIRegistry.RoomText);
             roomIdText.text += PhotonNetwork.CurrentRoom.Name;
+            roomText.text = "请选择角色";
             
             room = Registries.GetObject(UIRegistry.RoomWindow);
             room.SetActive(true);

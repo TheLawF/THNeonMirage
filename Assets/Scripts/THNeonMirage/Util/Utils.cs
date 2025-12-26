@@ -9,7 +9,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Fictology.Data.Serialization;
+using Fictology.Registry;
 using Newtonsoft.Json.Linq;
+using THNeonMirage.Registry;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = System.Random;
@@ -22,6 +25,13 @@ namespace THNeonMirage.Util
 
     public static class Utils
     {
+        public static void DisplayTempMessage(Vector3 displayPos, string msg)
+        {
+            var msgObject = PrefabRegistry.Label.Instantiate(displayPos, Quaternion.identity);
+            msgObject.transform.localScale = new Vector3(.4F, .4F, 1.0F);
+            msgObject.AddComponent<TMP_Text>();
+            msgObject.GetComponent<TMP_Text>().text = msg;
+        }
         public static string NextRandomString(int length, Range unicodeRange)
         {
             var sb = new StringBuilder();

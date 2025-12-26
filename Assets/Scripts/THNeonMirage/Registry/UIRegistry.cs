@@ -20,6 +20,8 @@ namespace THNeonMirage.Registry
         public static readonly RegistryKey MainCamera = Registries.CreateKey(CameraKey, nameof(MainCamera));
         public static readonly RegistryKey Canvas = Registries.CreateKey(CanvasKey, "Main");
         public static readonly RegistryKey TileName = Registries.CreateKey(LabelRootKey, "TileName");
+
+        public static readonly RegistryKey RoomText = Registries.CreateKey(LabelRootKey, nameof(RoomText));
         
         public static readonly RegistryKey BalanceText = Registries.CreateKey(LabelRootKey, "BalanceText");
         public static readonly RegistryKey CountdownText = Registries.CreateKey(LabelRootKey, "CountdownText");
