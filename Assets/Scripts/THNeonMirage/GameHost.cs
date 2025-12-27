@@ -312,7 +312,8 @@ namespace THNeonMirage
                 
                 var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
                 var diceHandler = Registries.GetComponent<DiceHandler>(UIRegistry.DiceButton);
-                var path = Registries.GetObject(UIRegistry.LocalAvatar).GetComponentInChildren<AvatarManager>().avatarName;
+                var path = Registries.Get<RoomManager>(UIRegistry.RoomWindow).localAvatar.GetComponent<AvatarManager>().avatarName;
+                
                 player.BindUIElements(inGamePanelHandler, diceHandler);
                 player.SendSpriteUpdateToOthers(playerInstance.GetPhotonView().ViewID, path, Color.white);
             }
