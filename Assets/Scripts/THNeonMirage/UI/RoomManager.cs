@@ -68,16 +68,13 @@ namespace THNeonMirage.UI
             avatars.ForEach(manager => manager.localAvatar = localAvatar);
         }
         
-        private void LockSelectionAndSendReady()
+        public void LockSelectionAndSendReady()
         {
-            localPlayerisReady = true;
-            readyPlayers++;
-            if (readyPlayers != PhotonNetwork.PlayerList.Length) return;
-            
             avatar_list.SetActive(true);
             avatars.ForEach(manager => manager.selectable = false);
-            localAvatar.GetComponent<AvatarManager>().SendLockSelectionAndReady();
-
+            if(!localPlayerisReady) localAvatar.GetComponent<AvatarManager>().SendLockSelectionAndReady();
+            localPlayerisReady = true;
+            
             var roomText = Registries.GetComponent<TMP_Text>(UIRegistry.RoomText);
             roomText.fontSize = 30;
             roomText.text = "等待其它玩家";

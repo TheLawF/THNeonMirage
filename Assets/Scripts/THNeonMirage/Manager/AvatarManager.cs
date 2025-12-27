@@ -105,6 +105,7 @@ namespace THNeonMirage.Manager
 
         public void SendLockSelectionAndReady()
         {
+            room.readyPlayers++;
             gameObject.GetPhotonView().RPC(nameof(ReceiveLockSelectionAndReady), RpcTarget.Others);
         }
 
@@ -112,7 +113,6 @@ namespace THNeonMirage.Manager
         private void ReceiveLockSelectionAndReady()
         {
             room.readyPlayers++;
-            Debug.Log($"Ready Players = {room.readyPlayers}, Require {room.maxPlayerInRoom} Ready");
             var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
             var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
             if (room.readyPlayers == room.maxPlayerInRoom)

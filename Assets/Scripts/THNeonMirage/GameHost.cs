@@ -279,6 +279,7 @@ namespace THNeonMirage
             room = Registries.GetObject(UIRegistry.RoomWindow);
             room.SetActive(true);
             roomManager.CreateAvatarWhenJoinIn();
+            lobbyPanel.SetActive(false);
             
             // level.CreateLevel();
             // CreateOnlinePlayer(false);
@@ -322,7 +323,6 @@ namespace THNeonMirage
                 
                 var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
                 var diceHandler = Registries.GetComponent<DiceHandler>(UIRegistry.DiceButton);
-                
                 player.BindUIElements(inGamePanelHandler, diceHandler);
             }
             
@@ -354,7 +354,6 @@ namespace THNeonMirage
             if (PhotonNetwork.IsConnectedAndReady)
             {
                 PhotonNetwork.JoinRoom(roomName);
-                inGamePanel.SetActive(true);
             }
             else Debug.LogWarning("未连接到 Photon，无法加入房间！");
         }

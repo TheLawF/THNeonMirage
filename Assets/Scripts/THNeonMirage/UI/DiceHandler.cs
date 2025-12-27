@@ -1,3 +1,4 @@
+using System.Collections;
 using Fictology.UnityEditor;
 using Photon.Pun;
 using THNeonMirage.Event;
@@ -9,6 +10,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 using Random = System.Random;
 
 namespace THNeonMirage.UI
@@ -26,6 +28,7 @@ namespace THNeonMirage.UI
         public GameObject inGamePanel;
 
         private bool shouldRenderTooltip;
+        private RawImage m_image;
         private Random random = new();
         private TMP_Text foreground_text; 
 
@@ -34,6 +37,7 @@ namespace THNeonMirage.UI
             canInteract = true;
             inGamePanel = Registries.GetObject(UIRegistry.InGamePanel);
             level = Registries.Get<Level>(LevelRegistry.ClientLevel);
+            m_image = gameObject.GetComponent<RawImage>();
         }
 
         private void OnGUI()
@@ -45,10 +49,27 @@ namespace THNeonMirage.UI
         public void OnMouseOver() => shouldRenderTooltip = true;    
 
         public void OnMouseExit() => shouldRenderTooltip = false;
-        
+
         public void OnPointerClick(PointerEventData eventData)
         {
             var server = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            StartCoroutine(Toss(server));
+        }
+
+        public IEnumerator Toss(GameHost server)
+        {
+            var value = 0;
+            for (var i = 0; i < 12; i++)
+            {
+                value = random.Next(1, 7);
+                m_image.uvRect = new Rect(0F, 1F - value / 6F, 1F, 1F / 6F);
+                yield return new WaitForSeconds(0.2F);
+            }
+            ApplyTossResult(server, value);
+        }
+
+        private void ApplyTossResult(GameHost server, int value)
+        {
             if (PhotonNetwork.IsConnectedAndReady)
             {
                 if (!server.IsMyTurn()) return;
@@ -57,10 +78,8 @@ namespace THNeonMirage.UI
                     server.NextTurn();
                     return;
                 }
-                DiceValue = random.Next(1,7);
+                DiceValue = value;
                 pos = player.playerData.position;
-                
-                // Todo: Test Player Purchase;
                 pos += DiceValue;
 
                 player.SetPosIndex(pos);
