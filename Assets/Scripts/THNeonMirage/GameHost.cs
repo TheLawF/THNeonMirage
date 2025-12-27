@@ -323,7 +323,10 @@ namespace THNeonMirage
                 
                 var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
                 var diceHandler = Registries.GetComponent<DiceHandler>(UIRegistry.DiceButton);
+                
+                Debug.Log("bind ui & texture");
                 player.BindUIElements(inGamePanelHandler, diceHandler);
+                player.SendSpriteUpdateToOthers(texturePath, Color.white);
             }
             
             if (PhotonNetwork.IsMasterClient)
@@ -371,16 +374,6 @@ namespace THNeonMirage
             SyncGameState();
         }
 
-
-        private IEnumerator DestroyDeferred()
-        {
-            yield return new WaitForSeconds(5F);
-            if (PhotonNetwork.IsMasterClient)
-            {
-                GameObjectUtil.DestroyDuplicateObject(PhotonNetwork.LocalPlayer.ActorNumber, roomManager.players);
-            }
-        }
-
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             Debug.Log($"玩家 {otherPlayer.ActorNumber} 离开了房间");
@@ -395,7 +388,7 @@ namespace THNeonMirage
             }
         }
         
-        private void InitializeGame()
+        public void InitializeGame()
         {
             if (PhotonNetwork.IsMasterClient) InitializeRoomProperties();
             else SyncFromRoomProperties();
@@ -415,8 +408,9 @@ namespace THNeonMirage
             initialProps[ROOM_PLAYER_ORDER] = playerOrder.ToArray();
             
             PhotonNetwork.CurrentRoom.SetCustomProperties(initialProps);
-            
-            StartGame();
+            SyncGameState();
+            // StartGame();
+            gameObject.GetComponent<PhotonView>().RPC(nameof(StartGame), RpcTarget.All);
             // 检查是否所有玩家已准备好，开始游戏
             // if (PhotonNetwork.CurrentRoom.PlayerCount >= 2) // 假设至少需要2名玩家
             // {

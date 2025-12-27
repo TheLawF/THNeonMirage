@@ -53,39 +53,27 @@ namespace THNeonMirage.UI
         public void OnPointerClick(PointerEventData eventData)
         {
             var server = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
-            StartCoroutine(Toss(server));
+            Toss(server);
         }
 
-        public IEnumerator Toss(GameHost server)
+        public void Toss(GameHost server)
         {
-            var value = 0;
-            for (var i = 0; i < 12; i++)
-            {
-                value = random.Next(1, 7);
-                m_image.uvRect = new Rect(0F, 1F - value / 6F, 1F, 1F / 6F);
-                yield return new WaitForSeconds(0.2F);
-            }
-            ApplyTossResult(server, value);
-        }
-
-        private void ApplyTossResult(GameHost server, int value)
-        {
+            Debug.Log("toss");
             if (PhotonNetwork.IsConnectedAndReady)
             {
-                if (!server.IsMyTurn()) return;
+                Debug.Log("ready");
+                if (!server.IsMyTurn())
+                {
+                    Debug.Log("not my turn");
+                    return;
+                }
                 if (!player.CanMove())
                 {
+                    Debug.Log("can't move");
                     server.NextTurn();
                     return;
                 }
-                DiceValue = value;
-                pos = player.playerData.position;
-                pos += DiceValue;
-
-                player.SetPosIndex(pos);
-                inGamePanel.GetComponent<InGamePanelHandler>().SetTile(level, player.playerData.position);
-                shouldRenderTooltip = true;
-                server.NextTurn();
+                StartCoroutine(PlayDiceAnimation(server));
                 return;
             }
             if (player.IsBot()) return;
@@ -95,8 +83,41 @@ namespace THNeonMirage.UI
                 level.NextTurn();
                 return;
             }
+            StartCoroutine(PlayDiceAnimation(server));
+        }
+        
+        private IEnumerator PlayDiceAnimation(GameHost server)
+        {
+            var value = 0;
+            Debug.Log("start animation");
+            for (var i = 0; i < 12; i++)
+            {
+                value = random.Next(1, 7);
+                Debug.Log($"frame = {i}");
+                m_image.uvRect = new Rect(0F, 1F - value / 6F, 1F, 1F / 6F);
+                yield return new WaitForSeconds(0.2F);
+            }
+            DiceValue = value;
+            Debug.Log($"Dice = {DiceValue}");
+            ApplyTossResult(server);
+        }
 
-            DiceValue = random.Next(1,7);
+        
+        private void ApplyTossResult(GameHost server)
+        {
+            Debug.Log("apply dice");
+            if (PhotonNetwork.IsConnectedAndReady)
+            {
+                Debug.Log("set pos");
+                pos = player.playerData.position;
+                pos += DiceValue;
+
+                player.SetPosIndex(pos);
+                inGamePanel.GetComponent<InGamePanelHandler>().SetTile(level, player.playerData.position);
+                shouldRenderTooltip = true;
+                server.NextTurn();
+                return;
+            }
             pos = player.playerData.position;
             pos += DiceValue;
 

@@ -68,7 +68,7 @@ namespace THNeonMirage.Manager
             var dice = diceHandler.gameObject;
             var img = dice.GetComponent<RawImage>();
             dice.SetActive(true);
-            img.uvRect = new Rect(0, 0.16667F, 1, 1);
+            img.uvRect = new Rect(0, 0.83333F, 1, 0.16667F);
         }
 
         public static void CreateOnlinePlayer(GameHost host, bool isBot)
@@ -271,7 +271,7 @@ namespace THNeonMirage.Manager
             var view = gameObject.GetPhotonView();
             if (skinPath != null)
             {
-                sprite.sprite = (Sprite) Resources.Load(skinPath);
+                sprite.sprite = Resources.Load<Sprite>(skinPath);
             }
 
             sprite.color = color;

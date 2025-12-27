@@ -113,15 +113,9 @@ namespace THNeonMirage.Manager
         private void ReceiveLockSelectionAndReady()
         {
             room.readyPlayers++;
-            var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
-            var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
-            if (room.readyPlayers == room.maxPlayerInRoom)
-            {
-                room.gameObject.SetActive(false);
-                level.CreateLevel();
-                host.CreateOnlinePlayer(true, avatarName);
-                gameObject.GetPhotonView().RPC(nameof(NotifyLevelCreate), RpcTarget.Others);
-            }
+            if (room.readyPlayers == room.maxPlayerInRoom) 
+                gameObject.GetPhotonView().RPC(nameof(NotifyLevelCreate), RpcTarget.All);
+            
         }
 
         /// <summary>
@@ -134,7 +128,8 @@ namespace THNeonMirage.Manager
             var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
             var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
             level.CreateLevel();
-            host.CreateOnlinePlayer(true, avatarName);
+            host.CreateOnlinePlayer(false, avatarName);
+            host.InitializeGame();
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -199,6 +194,5 @@ namespace THNeonMirage.Manager
             spriteColor = Unselected;
         }
 
-        public void SetOwner(Player remotePlayer) => gameObject.GetPhotonView().TransferOwnership(remotePlayer);
     }
 }
