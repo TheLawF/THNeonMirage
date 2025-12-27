@@ -9,6 +9,9 @@ namespace THNeonMirage.Util.Math
 {
     public static class GameObjectUtil
     {
+        public static bool HasComponent<TComponent>(GameObject gameObject) where TComponent: Component 
+            => gameObject.GetComponent<TComponent>() is null;
+        
         public static void FillParentRect(GameObject child)
         {
             var childRect = child.GetComponent<RectTransform>();

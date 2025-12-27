@@ -78,7 +78,7 @@ namespace THNeonMirage.Manager
             host.level.PlayerInstances.Add(host.playerInstance);
             
             host.player.playerData.isBot = isBot;
-            host.player.SendSpriteUpdateToOthers(null, host.playerInstance.GetComponent<SpriteRenderer>().color);
+            // host.player.SendSpriteUpdateToOthers(null, host.playerInstance.GetComponent<SpriteRenderer>().color);
             host.player.playerData.roundIndex = PhotonNetwork.IsConnectedAndReady
                 ? PhotonNetwork.LocalPlayer.ActorNumber
                 : host.level.PlayerInstances.IndexOf(host.playerInstance);
@@ -265,27 +265,41 @@ namespace THNeonMirage.Manager
             EventCenter.TriggerEvent(EventRegistry.OnBalanceChangedRPC, m_view.ViewID, data.balance);
         }
 
-        public void SendSpriteUpdateToOthers(string skinPath, Color color)
+        /// <summary>
+        /// 玩家A先设置自己的贴图
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="skinPath"></param>
+        /// <param name="color"></param>
+        public void SendSpriteUpdateToOthers(int viewId, string skinPath, Color color)
         {
-            var sprite = gameObject.GetComponent<SpriteRenderer>();
-            var view = gameObject.GetPhotonView();
+            var obj = PhotonView.Find(viewId);
+            var sprite = obj.GetComponent<SpriteRenderer>();
             if (skinPath != null)
             {
                 sprite.sprite = Resources.Load<Sprite>(skinPath);
             }
 
             sprite.color = color;
-            view.RPC(nameof(ReceiveSpriteUpdate), RpcTarget.Others, skinPath, view.ViewID, color.r, color.g, color.b);
+            gameObject.GetPhotonView().RPC(nameof(ReceiveSpriteUpdate), RpcTarget.Others, viewId, skinPath, color.r, color.g, color.b);
         }
 
+        /// <summary>
+        /// 玩家A再通过RPC()方法调用发送给B，让B更改他们本地端上的A玩家物体贴图
+        /// </summary>
+        /// <param name="viewId"></param>
+        /// <param name="skinPath"></param>
+        /// <param name="r"></param>
+        /// <param name="g"></param>
+        /// <param name="b"></param>
         [PunRPC]
-        public void ReceiveSpriteUpdate(string skinPath, int senderId, float r, float g, float b)
+        public void ReceiveSpriteUpdate(int viewId, string skinPath, float r, float g, float b)
         {
-            if (gameObject.GetPhotonView().ViewID != senderId) return;
-            var sprite = gameObject.GetComponent<SpriteRenderer>();
+            var obj = PhotonView.Find(viewId);
+            var sprite = obj.GetComponent<SpriteRenderer>();
             if (skinPath != null)
             {
-                sprite.sprite = (Sprite) Resources.Load(skinPath);
+                sprite.sprite = Resources.Load<Sprite>(skinPath);
             }
 
             sprite.color = new Color(r, g, b);

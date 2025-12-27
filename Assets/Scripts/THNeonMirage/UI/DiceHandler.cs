@@ -58,18 +58,11 @@ namespace THNeonMirage.UI
 
         public void Toss(GameHost server)
         {
-            Debug.Log("toss");
             if (PhotonNetwork.IsConnectedAndReady)
             {
-                Debug.Log("ready");
-                if (!server.IsMyTurn())
-                {
-                    Debug.Log("not my turn");
-                    return;
-                }
+                if (!server.IsMyTurn()) return;
                 if (!player.CanMove())
                 {
-                    Debug.Log("can't move");
                     server.NextTurn();
                     return;
                 }
@@ -89,26 +82,20 @@ namespace THNeonMirage.UI
         private IEnumerator PlayDiceAnimation(GameHost server)
         {
             var value = 0;
-            Debug.Log("start animation");
             for (var i = 0; i < 12; i++)
             {
                 value = random.Next(1, 7);
-                Debug.Log($"frame = {i}");
                 m_image.uvRect = new Rect(0F, 1F - value / 6F, 1F, 1F / 6F);
                 yield return new WaitForSeconds(0.2F);
             }
             DiceValue = value;
-            Debug.Log($"Dice = {DiceValue}");
             ApplyTossResult(server);
         }
-
         
         private void ApplyTossResult(GameHost server)
         {
-            Debug.Log("apply dice");
             if (PhotonNetwork.IsConnectedAndReady)
             {
-                Debug.Log("set pos");
                 pos = player.playerData.position;
                 pos += DiceValue;
 

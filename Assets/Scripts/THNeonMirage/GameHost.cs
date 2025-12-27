@@ -280,16 +280,6 @@ namespace THNeonMirage
             room.SetActive(true);
             roomManager.CreateAvatarWhenJoinIn();
             lobbyPanel.SetActive(false);
-            
-            // level.CreateLevel();
-            // CreateOnlinePlayer(false);
-            // player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
-            // player.playerData.roundIndex = PhotonNetwork.LocalPlayer.ActorNumber;
-            //
-            // level.players.Add(player);
-            // level.PlayerInstances.Add(playerInstance);
-            //
-            // InitializeGame();
         }
         
         public void CreateOnlinePlayer(bool isBot, string texturePath)
@@ -299,7 +289,6 @@ namespace THNeonMirage
             level.PlayerInstances.Add(playerInstance);
             
             player.playerData.isBot = isBot;
-            player.SendSpriteUpdateToOthers(null, playerInstance.GetComponent<SpriteRenderer>().color);
             player.playerData.roundIndex = PhotonNetwork.IsConnectedAndReady
                 ? PhotonNetwork.LocalPlayer.ActorNumber
                 : level.PlayerInstances.IndexOf(playerInstance);
@@ -323,10 +312,9 @@ namespace THNeonMirage
                 
                 var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
                 var diceHandler = Registries.GetComponent<DiceHandler>(UIRegistry.DiceButton);
-                
-                Debug.Log("bind ui & texture");
+                var path = Registries.GetObject(UIRegistry.LocalAvatar).GetComponentInChildren<AvatarManager>().avatarName;
                 player.BindUIElements(inGamePanelHandler, diceHandler);
-                player.SendSpriteUpdateToOthers(texturePath, Color.white);
+                player.SendSpriteUpdateToOthers(playerInstance.GetPhotonView().ViewID, path, Color.white);
             }
             
             if (PhotonNetwork.IsMasterClient)
@@ -647,9 +635,8 @@ namespace THNeonMirage
                 var btnInstance = Instantiate(buttonPrefab, content.transform);
                 var text = btnInstance.GetComponentInChildren<TMP_Text>();
                 var rect = btnInstance.GetComponent<RectTransform>().rect;
-                
-                rect.width = text.preferredWidth + 4;
-                rect.height = text.preferredHeight + 4;
+
+                rect.height = 100;
                 text.color = Color.white;
                 
                 btnInstance.GetComponentInChildren<TMP_Text>().text = $"房间名：{room.Name}  玩家：{room.PlayerCount}/{room.MaxPlayers}";

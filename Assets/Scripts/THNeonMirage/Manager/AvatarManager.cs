@@ -9,6 +9,7 @@ using THNeonMirage.UI;
 using THNeonMirage.Util.Math;
 using TMPro;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -42,8 +43,7 @@ namespace THNeonMirage.Manager
             _canvas = Registries.GetComponent<Canvas>(UIRegistry.Canvas);
             room = Registries.Get<RoomManager>(UIRegistry.RoomWindow);
         }
-
-
+        
         public void SendPlayerJoinEvent()
         {
             var view = gameObject.GetPhotonView();
@@ -113,9 +113,17 @@ namespace THNeonMirage.Manager
         private void ReceiveLockSelectionAndReady()
         {
             room.readyPlayers++;
-            if (room.readyPlayers == room.maxPlayerInRoom) 
-                gameObject.GetPhotonView().RPC(nameof(NotifyLevelCreate), RpcTarget.All);
+            if (room.readyPlayers == room.maxPlayerInRoom)
+            {
+                gameObject.GetPhotonView().RPC(nameof(NotifyLevelCreate), RpcTarget.Others);
+                room.gameObject.SetActive(false);
+                var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
+                var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
             
+                level.CreateLevel();
+                host.CreateOnlinePlayer(false, avatarName);
+                host.InitializeGame();
+            }
         }
 
         /// <summary>
@@ -127,11 +135,16 @@ namespace THNeonMirage.Manager
             room.gameObject.SetActive(false);
             var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
             var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            
             level.CreateLevel();
             host.CreateOnlinePlayer(false, avatarName);
             host.InitializeGame();
         }
 
+        /// <summary>
+        /// 仅对AvatarList滚动面板下挂载的图片有效
+        /// </summary>
+        /// <param name="eventData"></param>
         public void OnPointerClick(PointerEventData eventData)
         {
             if (!selectable) return;
@@ -155,6 +168,7 @@ namespace THNeonMirage.Manager
             isSelected = true;
             
             localAvatar.GetComponent<RawImage>().texture = Resources.Load<Texture2D>(avatarName);
+            localAvatar.GetComponent<AvatarManager>().avatarName = avatarName;
             localAvatar.GetPhotonView().RPC(nameof(ReceiveAvatarUpdate), RpcTarget.Others, 
                 localAvatar.GetPhotonView().ViewID, avatarName);
         }
@@ -162,8 +176,10 @@ namespace THNeonMirage.Manager
         [PunRPC]
         private void ReceiveAvatarUpdate(int viewId, string texturePath)
         {
-            var obj = PhotonView.Find(viewId).gameObject;
-            var img = obj.GetComponent<RawImage>();
+            var foundObj = PhotonView.Find(viewId).gameObject;
+            var img = foundObj.GetComponent<RawImage>();
+            
+            foundObj.GetComponent<AvatarManager>().avatarName = texturePath;
             img.texture = Resources.Load<Texture2D>(texturePath);
             img.uvRect = new Rect(0f, 0.23f, 1f, 0.7f);
         }

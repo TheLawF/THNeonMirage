@@ -29,13 +29,13 @@ namespace THNeonMirage.Manager
                 cameraPrevPos = transform.position;
             }
             
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1) || Input.GetMouseButton(2))
             {
                 startPos = worldPos;
                 cameraPrevPos = transform.position;
             }
 
-            if (!Input.GetMouseButton(1)) return;
+            if (Input.GetMouseButton(0)) return;
             moveDirection = (worldPos - startPos) * dragSpeed;
             var t = transform;
             t.position = new Vector3(cameraPrevPos.x - moveDirection.x, cameraPrevPos.y - moveDirection.y,
