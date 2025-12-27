@@ -113,6 +113,7 @@ namespace THNeonMirage
 
             level = Registries.GetComponent<Level>(LevelRegistry.ClientLevel);
             host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            
         }
 
         private void RegisterUIListeners()

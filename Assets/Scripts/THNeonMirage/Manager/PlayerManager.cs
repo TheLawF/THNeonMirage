@@ -60,6 +60,18 @@ namespace THNeonMirage.Manager
             indexLabel.GetComponent<TextMeshProUGUI>().text = playerData.roundIndex.ToString();
         }
 
+        public void BindUIElements(InGamePanelHandler inGamePanel, DiceHandler diceHandler)
+        {
+            inGamePanel.playerObject = gameObject;
+            inGamePanel.player = this;
+            diceHandler.player = this;
+            var dice = diceHandler.gameObject;
+            var img = dice.GetComponent<RawImage>();
+            dice.SetActive(true);
+            img.texture = Resources.Load<Texture2D>("Textures/dice");
+            img.uvRect = new Rect(0, 0.16667F, 1, 1);
+        }
+
         public static void CreateOnlinePlayer(GameHost host, bool isBot)
         {
             host.playerInstance = PhotonNetwork.Instantiate(PrefabRegistry.Player.PrefabPath, GetPlayerPosByIndex(0), Quaternion.identity);

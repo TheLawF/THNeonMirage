@@ -115,11 +115,11 @@ namespace THNeonMirage.Manager
             Debug.Log($"Ready Players = {room.readyPlayers}, Require {room.maxPlayerInRoom} Ready");
             var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
             var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
-            if (room.readyPlayers == room.maxPlayerInRoom - 1)
+            if (room.readyPlayers == room.maxPlayerInRoom)
             {
                 room.gameObject.SetActive(false);
                 level.CreateLevel();
-                host.CreateOnlinePlayer(true);
+                host.CreateOnlinePlayer(true, avatarName);
                 gameObject.GetPhotonView().RPC(nameof(NotifyLevelCreate), RpcTarget.Others);
             }
         }
@@ -134,7 +134,7 @@ namespace THNeonMirage.Manager
             var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
             var host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
             level.CreateLevel();
-            host.CreateOnlinePlayer(true);
+            host.CreateOnlinePlayer(true, avatarName);
         }
 
         public void OnPointerClick(PointerEventData eventData)

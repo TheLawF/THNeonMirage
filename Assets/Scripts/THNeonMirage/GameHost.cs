@@ -291,7 +291,7 @@ namespace THNeonMirage
             // InitializeGame();
         }
         
-        public void CreateOnlinePlayer(bool isBot)
+        public void CreateOnlinePlayer(bool isBot, string texturePath)
         {
             playerInstance = PhotonNetwork.Instantiate(PrefabRegistry.Player.PrefabPath, PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
             player = playerInstance.GetComponent<PlayerManager>();
@@ -321,13 +321,9 @@ namespace THNeonMirage
                     player.playerData.balance, player.playerData.balance);
                 
                 var inGamePanelHandler = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
-                var diceButton = Registries.GetObject(UIRegistry.DiceButton);
-                var diceHandler = diceButton.GetComponent<DiceHandler>();
+                var diceHandler = Registries.GetComponent<DiceHandler>(UIRegistry.DiceButton);
                 
-                inGamePanelHandler.playerObject = playerInstance;
-                inGamePanelHandler.player = player;
-                diceHandler.player = player;
-                diceButton.SetActive(true);
+                player.BindUIElements(inGamePanelHandler, diceHandler);
             }
             
             if (PhotonNetwork.IsMasterClient)
