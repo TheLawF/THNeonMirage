@@ -84,7 +84,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Scripts\Fictology\Event\EventKey.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Manager\ObsoleteHost.cs" />
-    <Compile Include="Assets\Scripts\THNeonMirage\Data\NetPlayerViewer.cs" />
     <Compile Include="Assets\Scripts\THNeonMirage\Map\BeliefTile.cs" />
     <Compile Include="Assets\Photon\PhotonChat\Demos\Common\TextButtonTransition.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />

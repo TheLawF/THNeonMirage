@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Fictology.Data.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using THNeonMirage.Util;
 using UnityEngine;
 

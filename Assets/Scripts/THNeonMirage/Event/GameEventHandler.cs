@@ -1,9 +1,5 @@
-using System;
 using THNeonMirage.Manager;
-using Unity.Netcode;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Rendering;
 
 namespace THNeonMirage.Event
 {

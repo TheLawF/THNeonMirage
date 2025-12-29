@@ -1,13 +1,8 @@
 using System;
 using System.IO;
 using System.Xml;
-using ExitGames.Client.Photon;
 using Fictology.Data.Serialization;
-using THNeonMirage.Event;
-using THNeonMirage.Map;
-using THNeonMirage.Util;
 using UnityEngine.Rendering;
-using UnityEngine.Serialization;
 using InvalidDataException = System.IO.InvalidDataException;
 
 namespace THNeonMirage.Data

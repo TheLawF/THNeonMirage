@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using THNeonMirage.Data;
-using Unity.VisualScripting;
-using UnityEngine;
 
 namespace THNeonMirage.Event
 {

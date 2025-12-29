@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using THNeonMirage.Util;
-using UnityEditor.U2D.Path;
 
 namespace THNeonMirage.Data
 {
