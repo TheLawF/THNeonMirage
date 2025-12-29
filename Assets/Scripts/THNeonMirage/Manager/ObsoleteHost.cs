@@ -1,15 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Photon.Pun;
 using Photon.Realtime;
-using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace THNeonMirage.Manager
 {

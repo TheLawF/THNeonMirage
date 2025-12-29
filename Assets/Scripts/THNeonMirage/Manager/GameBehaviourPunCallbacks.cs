@@ -3,7 +3,6 @@ using Photon.Pun;
 using THNeonMirage.Event;
 using THNeonMirage.Map;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace THNeonMirage.Manager
 {

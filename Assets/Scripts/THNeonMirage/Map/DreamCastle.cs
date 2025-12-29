@@ -1,6 +1,3 @@
-using System;
-using THNeonMirage.Data;
-using THNeonMirage.Event;
 using THNeonMirage.Manager;
 
 namespace THNeonMirage.Map

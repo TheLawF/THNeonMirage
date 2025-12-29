@@ -1,7 +1,5 @@
 using System;
-using THNeonMirage.Event;
 using THNeonMirage.Map;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace THNeonMirage.Manager

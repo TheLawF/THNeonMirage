@@ -1,16 +1,11 @@
-using System;
 using System.Linq;
-using Fictology.Registry;
 using Photon.Pun;
-using THNeonMirage.Data;
-using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 namespace THNeonMirage.UI
 {

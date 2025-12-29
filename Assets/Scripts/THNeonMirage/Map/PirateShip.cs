@@ -1,5 +1,3 @@
-using THNeonMirage.Data;
-using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using Unity.Mathematics;
 

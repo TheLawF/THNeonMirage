@@ -6,7 +6,6 @@ using Fictology.Data.Serialization;
 using Fictology.Registry;
 using FlyRabbit.EventCenter;
 using Photon.Pun;
-using THNeonMirage.Data;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;

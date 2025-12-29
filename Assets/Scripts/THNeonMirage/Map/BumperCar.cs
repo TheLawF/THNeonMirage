@@ -1,8 +1,4 @@
-using THNeonMirage.Data;
-using THNeonMirage.Event;
 using THNeonMirage.Manager;
-using THNeonMirage.Util;
-using Unity.Mathematics;
 
 namespace THNeonMirage.Map
 {

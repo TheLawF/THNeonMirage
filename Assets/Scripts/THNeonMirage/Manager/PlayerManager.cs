@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Linq;
 using Fictology.Data.Serialization;
 using Fictology.Registry;
 using Fictology.UnityEditor;
@@ -12,7 +11,6 @@ using THNeonMirage.Event;
 using THNeonMirage.Map;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
-using THNeonMirage.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

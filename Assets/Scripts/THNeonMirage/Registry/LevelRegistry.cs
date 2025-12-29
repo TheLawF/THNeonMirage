@@ -1,7 +1,6 @@
 using Fictology.Registry;
 using THNeonMirage.Manager;
 using THNeonMirage.Map;
-using UnityEngine;
 
 namespace THNeonMirage.Registry
 {

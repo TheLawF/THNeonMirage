@@ -9,9 +9,7 @@ using THNeonMirage.Event;
 using THNeonMirage.Manager;
 using THNeonMirage.Registry;
 using THNeonMirage.UI;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = Unity.Mathematics.Random;
 
 namespace THNeonMirage.Map
