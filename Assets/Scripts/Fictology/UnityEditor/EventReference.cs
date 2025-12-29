@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using FlyRabbit.EventCenter.Core;
 using UnityEngine.Serialization;
 
@@ -22,3 +23,4 @@ namespace Fictology.UnityEditor
         TriggerEvent
     }
 }
+#endif

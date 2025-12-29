@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+
 using Fictology.Event;
 using UnityEditor;
 
