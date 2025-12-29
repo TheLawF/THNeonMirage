@@ -1,7 +1,6 @@
 using System;
 using Fictology.Event;
 using Fictology.Registry;
-using Fictology.UnityEditor;
 using FlyRabbit.EventCenter;
 using Photon.Pun;
 using THNeonMirage.Data;
@@ -28,9 +27,9 @@ namespace THNeonMirage.Map
         public bool canPurchase;
         
         public SpriteRenderer spriteRenderer;
-        [DisplayOnly] public GameObject inGamePanel;
-        [DisplayOnly] public GameObject hoverPanel;
-        [DisplayOnly] public GameObject hoverText;
+        public GameObject inGamePanel;
+        public GameObject hoverPanel;
+        public GameObject hoverText;
 
         protected Random Random = new();
         public PhotonView remoteOwner;

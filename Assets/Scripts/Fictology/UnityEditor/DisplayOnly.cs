@@ -1,4 +1,4 @@
-#if UNITY_EDITOR
+
 using UnityEditor;
 using UnityEngine;
 
@@ -8,6 +8,7 @@ namespace Fictology.UnityEditor
     {
         
     }
+#if UNITY_EDITOR
     [CustomPropertyDrawer(typeof(DisplayOnly))]
     public class ReadOnlyDrawer : PropertyDrawer
     {
@@ -22,5 +23,5 @@ namespace Fictology.UnityEditor
             GUI.enabled = true;
         }
     }
-}
 #endif
+}

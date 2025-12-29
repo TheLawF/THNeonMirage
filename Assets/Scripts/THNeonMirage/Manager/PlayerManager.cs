@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using Fictology.Data.Serialization;
 using Fictology.Registry;
-using Fictology.UnityEditor;
 using FlyRabbit.EventCenter;
 using Photon.Pun;
 using Photon.Realtime;
@@ -33,7 +32,7 @@ namespace THNeonMirage.Manager
         public PlayerData playerData;
         public GameObject canvas;
 
-        [DisplayOnly] public GameHost database;
+        public GameHost database;
 
         private PhotonView m_view;
         private Transform m_transform;

@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using Fictology.UnityEditor;
 using FlyRabbit.EventCenter;
 using MySql.Data.MySqlClient;
 using Photon.Pun;
@@ -47,7 +46,7 @@ namespace THNeonMirage
         private byte maxPlayersPerRoom = 2;
         public ObservableList<RoomInfo> rooms = new ();
 
-        [DisplayOnly] public PlayerManager player;
+        public PlayerManager player;
         private PlayerManager local_player;
 
         [Header("主机和客户端")]
@@ -187,6 +186,7 @@ namespace THNeonMirage
             lobbyText = Registries.GetComponent<TMP_Text>(UIRegistry.LobbyText);
             lobbyText.text = "加载中...";
             
+            PhotonNetwork.NetworkingClient.ExpectedProtocol = ExitGames.Client.Photon.ConnectionProtocol.WebSocket;
             PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "asia";
             PhotonNetwork.PhotonServerSettings.AppSettings.Port = 5055;
             PhotonNetwork.AutomaticallySyncScene = true;
