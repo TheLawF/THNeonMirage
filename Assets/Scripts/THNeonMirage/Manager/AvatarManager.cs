@@ -42,12 +42,15 @@ namespace THNeonMirage.Manager
         
         public void SendPlayerJoinEvent()
         {
-            var view = gameObject.GetPhotonView();
             var image = gameObject.GetComponent<RawImage>();
             image.texture = Resources.Load<Texture2D>("Textures/reimu");
             image.uvRect = new Rect(0f, 0.23f, 1f, 0.7f);
             image.color = Color.white;
+
+            if (!PhotonNetwork.IsConnected) return;
+            var view = gameObject.GetPhotonView();
             view.RPC(nameof(ReceivePlayerJoinEvent), RpcTarget.Others, view.ViewID);
+
         }
 
         public void SendCreateExistingPlayer(Player newPlayer)
@@ -144,6 +147,12 @@ namespace THNeonMirage.Manager
         public void OnPointerClick(PointerEventData eventData)
         {
             if (!selectable) return;
+            Debug.Log($"Name: {avatarName}, Object: {gameObject.name}");
+            if (!PhotonNetwork.IsConnected)
+            {
+                
+                return;
+            }
             room.avatars.ForEach(avatar =>
             {
                 if (avatar.avatarName != avatarName) return;

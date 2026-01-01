@@ -53,11 +53,19 @@ namespace THNeonMirage
         public GameObject lobby;
         public GameObject diceObj;
         public GameObject inGamePanelObj;
+        public GameObject room;
+        
+        public RoomManager roomManager;
         public DiceHandler dice;
         public InGamePanelHandler inGamePanel;
         public GameHost host;
 
         private static int m_type_code = 23;
+
+        private static readonly List<string> Textures = new()
+        {
+            "Texture/cirno", "Textures/reimu", "Textures/youmu", "Texture/marisa", "Texture/flandre","Texture/sakuya"
+        };
 
         private void Awake()
         {
@@ -112,6 +120,8 @@ namespace THNeonMirage
 
             level = Registries.GetComponent<Level>(LevelRegistry.ClientLevel);
             host = Registries.GetComponent<GameHost>(LevelRegistry.ServerLevel);
+            room = Registries.GetObject(UIRegistry.RoomWindow);
+            roomManager = Registries.Get<RoomManager>(UIRegistry.RoomWindow);
         }
 
         private void RegisterUIListeners()
@@ -126,10 +136,16 @@ namespace THNeonMirage
             Registries.GetObject(UIRegistry.HomePage).SetActive(false);
             Registries.Tiles.Values.ToList().ForEach(go => go.SetActive(true));
 
-            lobby.SetActive(true);
-            host.Connect();
+            // lobby.SetActive(true);
+            // host.Connect();
+            room.SetActive(true);
+            roomManager = Registries.Get<RoomManager>(UIRegistry.RoomWindow);
+            roomManager.CreateAvatarWhenJoinIn();
+            roomManager.maxPlayerInRoom = 4;
+            roomManager.main = this;
+
             // level.CreateLevel();
-            // inGamePanelObj.SetActive(true);
+            // inGamePanelObj.SetActive(false);
             CreateEventListeningChain();
             level.players.AddRange(players.Select(obj => obj.GetComponent<PlayerManager>()));
         }
@@ -146,9 +162,13 @@ namespace THNeonMirage
             
             player.playerData.isBot = isBot;
             player.playerData.roundIndex = players.IndexOf(playerObject);
-            sprite.color = new Color(random.NextFloat(0, 1), random.NextFloat(0, 1), random.NextFloat(0, 1));
+            sprite.color = Color.white;
 
-            if (isBot) return;
+            if (isBot)
+            {
+                sprite.sprite = Resources.Load<Sprite>(Textures[random.NextInt(Textures.Count - 1)]);
+                return;
+            }
             EventCenter.TriggerEvent(EventRegistry.OnBalanceChanged, player, player.playerData.balance, player.playerData.balance);
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
             inGamePanel = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);

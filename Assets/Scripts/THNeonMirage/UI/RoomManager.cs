@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fictology.Registry;
@@ -6,6 +7,7 @@ using THNeonMirage.Manager;
 using THNeonMirage.Registry;
 using THNeonMirage.Util.Math;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,6 +28,8 @@ namespace THNeonMirage.UI
         private GameObject remote1;
         private GameObject remote2;
         private GameObject remote3;
+
+        public GameMain main;
 
         public GameObject localAvatar;
         public List<GameObject> remotes = new();
@@ -54,6 +58,15 @@ namespace THNeonMirage.UI
         public void CreateAvatarWhenJoinIn()
         {
             var parent = GetVacantParent();
+            if (!PhotonNetwork.IsConnected)
+            {
+                localAvatar = PrefabRegistry.RawImageOffline.Instantiate(local.transform.position, Quaternion.identity, local.transform);
+                localAvatar.transform.localScale = new Vector3(1.2f, 1.2f, 1f);
+                localAvatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
+                GameObjectUtil.FillParentRect(localAvatar);
+                avatars.ForEach(manager => manager.localAvatar = localAvatar);
+                return;
+            }
             localAvatar = PhotonNetwork.Instantiate(PrefabRegistry.RawImageSprite.PrefabPath, local.transform.position, Quaternion.identity);
             localAvatar.GetComponent<AvatarManager>().SendPlayerJoinEvent();
 
@@ -66,6 +79,11 @@ namespace THNeonMirage.UI
         
         public void LockSelectionAndSendReady()
         {
+            if (!PhotonNetwork.IsConnected)
+            {
+                for(var i = 0; i < 3; i++) main.CreatePlayer(true);
+                return;
+            }
             avatar_list.SetActive(true);
             avatars.ForEach(manager => manager.selectable = false);
             if(!localPlayerisReady) localAvatar.GetComponent<AvatarManager>().SendLockSelectionAndReady();

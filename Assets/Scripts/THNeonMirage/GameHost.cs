@@ -197,8 +197,7 @@ namespace THNeonMirage
             
             roomManager = Registries.Get<RoomManager>(UIRegistry.RoomWindow);
             roomManager.maxPlayerInRoom = maxPlayersPerRoom;
-            Debug.Log(bar_instance.name);
-            
+
             progress = bar_instance.GetComponent<ProgressBarControl>();
             StartCoroutine(CheckConnectionLockProgress());
         }

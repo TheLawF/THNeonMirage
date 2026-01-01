@@ -6875,6 +6875,7 @@ MonoBehaviour:
   lobby: {fileID: 0}
   diceObj: {fileID: 0}
   inGamePanelObj: {fileID: 0}
+  roomManager: {fileID: 0}
   dice: {fileID: 0}
   inGamePanel: {fileID: 0}
   host: {fileID: 0}
@@ -8358,6 +8359,7 @@ MonoBehaviour:
   readyPlayers: 0
   selectedPlayers: 0
   local: {fileID: 0}
+  main: {fileID: 0}
   localAvatar: {fileID: 0}
   remotes: []
   avatars: []
