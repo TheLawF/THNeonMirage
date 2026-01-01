@@ -4,6 +4,7 @@ using System.Linq;
 using Fictology.Registry;
 using Photon.Pun;
 using THNeonMirage.Manager;
+using THNeonMirage.Map;
 using THNeonMirage.Registry;
 using THNeonMirage.Util.Math;
 using TMPro;
@@ -81,7 +82,10 @@ namespace THNeonMirage.UI
         {
             if (!PhotonNetwork.IsConnected)
             {
+                var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
+                level.CreateLevel();
                 for(var i = 0; i < 3; i++) main.CreatePlayer(true);
+                main.CreatePlayer(false);
                 return;
             }
             avatar_list.SetActive(true);

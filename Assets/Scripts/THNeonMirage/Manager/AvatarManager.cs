@@ -147,9 +147,30 @@ namespace THNeonMirage.Manager
         public void OnPointerClick(PointerEventData eventData)
         {
             if (!selectable) return;
-            Debug.Log($"Name: {avatarName}, Object: {gameObject.name}");
             if (!PhotonNetwork.IsConnected)
             {
+                m_select_label = PrefabRegistry.BackgroundLabel.Instantiate(m_transform.position, Quaternion.identity, m_transform);
+                m_select_label.GetComponent<RectTransform>().localScale = new Vector3(0.2f, 0.2f, 1f);
+            
+                var labelOffline = PrefabRegistry.Label.Instantiate(m_select_label.transform.position, Quaternion.identity, m_select_label.transform);
+                var textProOffline = labelOffline.GetComponent<TMP_Text>();
+                textProOffline.text = $"Player{PhotonNetwork.LocalPlayer.ActorNumber}";
+            
+                GameObjectUtil.FillParentRect(labelOffline);
+                GameObjectUtil.SetTextGeoMidAndAutoSize(textProOffline);
+            
+                spriteColor = Selected;
+                isSelected = true;
+            
+                localAvatar.GetComponent<RawImage>().texture = Resources.Load<Texture2D>(avatarName);
+                localAvatar.GetComponent<AvatarManager>().avatarName = avatarName;
+                
+                room.avatars.ForEach(avatar =>
+                {
+                    if (avatar.avatarName != avatarName) return;
+                    GameObjectUtil.GetAllChildren(avatar.gameObject).ForEach(Destroy);
+                });
+                
                 
                 return;
             }

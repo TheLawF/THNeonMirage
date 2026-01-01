@@ -78,6 +78,7 @@ namespace THNeonMirage.Registry
                 Debug.LogError($"注册表对象不唯一，已存在注册名为：\"{registry.registryKey}\" " +
                                $"的注册对象：{Key2ObjectMap[registry.registryKey.ToString()].name}， " + 
                                $"尝试注册的新对象：{obj.name}");
+                return;
             }
             
             Key2EntryMap.TryAdd(registry.registryKey.ToString(), registry);

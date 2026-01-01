@@ -64,7 +64,7 @@ namespace THNeonMirage
 
         private static readonly List<string> Textures = new()
         {
-            "Texture/cirno", "Textures/reimu", "Textures/youmu", "Texture/marisa", "Texture/flandre","Texture/sakuya"
+            "Texture/cirno", "Textures/reimu", "Textures/youmu", "Texture/marisa", "Texture/flandre", "Texture/sakuya"
         };
 
         private void Awake()
@@ -155,6 +155,7 @@ namespace THNeonMirage
         
         public void CreatePlayer(bool isBot)
         {
+            
             var playerObject = PrefabRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
             var player = playerObject.GetComponent<PlayerManager>();
             var sprite = player.GetComponent<SpriteRenderer>();
@@ -163,6 +164,8 @@ namespace THNeonMirage
             player.playerData.isBot = isBot;
             player.playerData.roundIndex = players.IndexOf(playerObject);
             sprite.color = Color.white;
+            
+            level.players.AddRange(players.ConvertAll(p => p.GetComponent<PlayerManager>()));
 
             if (isBot)
             {
