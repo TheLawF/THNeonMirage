@@ -1,3 +1,4 @@
+using Fictology.Data.Record;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace THNeonMirage.UI
         {
             confirmText.text = "加入房间";
             cancelText.text = "取消并退出";
+
         }
 
         public void CloseWindow() => dialogueUI.SetActive(false);

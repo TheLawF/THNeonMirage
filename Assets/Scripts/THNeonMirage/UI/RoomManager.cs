@@ -84,8 +84,10 @@ namespace THNeonMirage.UI
             {
                 var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
                 level.CreateLevel();
-                for(var i = 0; i < 3; i++) main.CreatePlayer(true);
-                main.CreatePlayer(false);
+                for(var i = 0; i < 3; i++) main.CreatePlayer(true, null);
+                main.CreatePlayer(false, localAvatar.GetComponent<AvatarManager>().avatarName);
+                gameObject.SetActive(false);
+                
                 return;
             }
             avatar_list.SetActive(true);

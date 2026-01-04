@@ -344,7 +344,6 @@ namespace THNeonMirage.Manager
         public static Vector3 GetPlayerPosByIndex(int index)
         {
             var level = Registries.Get<Level>(LevelRegistry.ClientLevel);
-            Debug.Log(index);
             var pos = level.fields[index].GetComponent<Transform>().position;
             return new Vector3(pos.x, pos.y, -1);
         }

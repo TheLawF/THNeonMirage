@@ -1,5 +1,6 @@
 using System.Collections;
 using Fictology.Registry;
+using Fictology.Util.Function;
 using UnityEngine;
 
 namespace THNeonMirage.UI

@@ -153,7 +153,7 @@ namespace THNeonMirage
         
         public void ShowInputRoomIdPanel() => joinRoomPanel.SetActive(true);
         
-        public void CreatePlayer(bool isBot)
+        public void CreatePlayer(bool isBot, string texturePath)
         {
             
             var playerObject = PrefabRegistry.Player.Instantiate(PlayerManager.GetPlayerPosByIndex(0), Quaternion.identity);
@@ -176,6 +176,8 @@ namespace THNeonMirage
             inGamePanelObj = Registries.GetObject(UIRegistry.InGamePanel);
             inGamePanel = Registries.GetComponent<InGamePanelHandler>(UIRegistry.InGamePanel);
             inGamePanel.player = player;
+
+            sprite.sprite = Resources.Load<Sprite>(texturePath);
             
             diceObj = Registries.GetObject(UIRegistry.DiceButton);
             diceObj.SetActive(true);
